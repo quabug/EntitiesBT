@@ -54,7 +54,7 @@ namespace EntitiesBT.Core
 
         public void Reset()
         {
-            for (int index = 0; index < this._nodes.Length; ++index) this._nodes[index].Reset(this, index);
+            for (int index = 0; index < _nodes.Length; ++index) _nodes[index].Reset(this, index);
         }
     }
 }

@@ -1,7 +1,9 @@
 {
     "name": "EntitiesBT.Tests.Editor",
     "references": [
-        ""
+        "Unity.Collections",
+        "Unity.Entities",
+        "EntitiesBT.Runtime"
     ],
     "includePlatforms": [
         "Editor"
