@@ -1,0 +1,19 @@
+{
+    "name": "EntitiesBT.Tests.Editor",
+    "references": [
+        "Unity.Collections",
+        "Unity.Entities",
+        "EntitiesBT.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
