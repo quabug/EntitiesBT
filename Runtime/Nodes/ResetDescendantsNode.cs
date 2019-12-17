@@ -2,7 +2,7 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    public class ResetDescendantsNode
+    public class ResetDescendantsNode : IBehaviorNode
     {
         public void Initialize(VirtualMachine vm, int index) {}
         public void Reset(VirtualMachine vm, int index) {}
