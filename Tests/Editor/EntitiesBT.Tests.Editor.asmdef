@@ -1,6 +1,8 @@
 {
     "name": "EntitiesBT.Tests.Editor",
     "references": [
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner",
         "Unity.Collections",
         "Unity.Entities",
         "EntitiesBT.Runtime"
@@ -11,7 +13,9 @@
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": true,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
     "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],

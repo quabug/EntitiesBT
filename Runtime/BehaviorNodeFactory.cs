@@ -6,8 +6,8 @@ namespace EntitiesBT
 {
     public class BehaviorNodeFactory : IBehaviorNodeFactory
     {
-        private List<Func<IBehaviorNode>> _creators = new List<Func<IBehaviorNode>>();
-        private Dictionary<Type, int> _nodeTypes = new Dictionary<Type, int>();
+        private readonly List<Func<IBehaviorNode>> _creators = new List<Func<IBehaviorNode>>();
+        private readonly Dictionary<Type, int> _nodeTypes = new Dictionary<Type, int>();
 
         public void Register<T>(Func<IBehaviorNode> creator) where T : IBehaviorNode
         {
@@ -21,8 +21,7 @@ namespace EntitiesBT
 
         public int GetTypeId<T>() where T : IBehaviorNode
         {
-            _nodeTypes.TryGetValue(typeof(T), out var id);
-            return id;
+            return _nodeTypes[typeof(T)];
         }
         
         public IBehaviorNode Create(int nodeType)

@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Core;
+using EntitiesBT.Editor;
 using NUnit.Framework;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -22,6 +26,44 @@ namespace EntitiesBT.Test
     
     public class TestBT
     {
+        private Dictionary<string, Func<BTNode>> _nodeCreators = new Dictionary<string, Func<BTNode>>
+        {
+            { "seq", Create<BTSequence> }
+          , { "sel", Create<BTSelector> }
+          , { "par", Create<BTParallel> }
+          , { "yes", () => CreateTerminal(NodeState.Success) }
+          , { "no", () => CreateTerminal(NodeState.Failure) }
+          , { "run", () => CreateTerminal(NodeState.Running) }
+        };
+
+        static BTTerminal CreateTerminal(NodeState state)
+        {
+            var terminal = Create<BTTerminal>();
+            terminal.State = state;
+            return terminal;
+        }
+
+        static T Create<T>() where T : BTNode
+        {
+            return new GameObject(typeof(T).Name).AddComponent<T>();
+        }
+
+        GameObject CreateBTNode(string branch)
+        {
+            branch = "seq:yes|no|run";
+            var splits = branch.Split(':');
+            Assert.AreEqual(splits.Length, 2);
+            var parent = Create(splits[0]);
+            foreach (var childName in splits[1].Split('|'))
+            {
+                var child = Create(childName);
+                child.transform.SetParent(parent.transform, false);
+            }
+            return parent;
+
+            GameObject Create(string name) => _nodeCreators[name]().gameObject;
+        }
+        
         [Test]
         public unsafe void TestNodeBlob()
         {

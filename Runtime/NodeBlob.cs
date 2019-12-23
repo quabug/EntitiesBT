@@ -33,9 +33,12 @@ namespace EntitiesBT
         {
             return (void*) ((IntPtr) DataBlob.GetUnsafePtr() + Offsets[nodeIndex]);
         }
+
+        public static int Size(int count, int dataSize) =>
+            dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
     }
 
-    public class NodeBlobRef : INodeBlob
+    public readonly struct NodeBlobRef : IComponentData, INodeBlob
     {
         private readonly BlobAssetReference<NodeBlob> _blobRef;
 
