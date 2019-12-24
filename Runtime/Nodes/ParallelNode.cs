@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
@@ -18,6 +20,9 @@ namespace EntitiesBT.Nodes
 
         public NodeState Tick(VirtualMachine vm, int index)
         {
+            if (_childrenStates.All(s => s != NodeState.Running))
+                throw new IndexOutOfRangeException();
+            
             var state = NodeState.Success;
             
             var localChildIndex = 0;

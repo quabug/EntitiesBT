@@ -21,7 +21,12 @@ namespace EntitiesBT
 
         public int GetTypeId<T>() where T : IBehaviorNode
         {
-            return _nodeTypes[typeof(T)];
+            return GetTypeId(typeof(T));
+        }
+        
+        public int GetTypeId(Type type)
+        {
+            return _nodeTypes[type];
         }
         
         public IBehaviorNode Create(int nodeType)

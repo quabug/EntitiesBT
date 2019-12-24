@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace EntitiesBT
+namespace EntitiesBT.Editor
 {
     public static class Utilities
     {

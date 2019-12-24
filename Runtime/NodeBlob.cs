@@ -38,21 +38,17 @@ namespace EntitiesBT
             dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
     }
 
-    public readonly struct NodeBlobRef : IComponentData, INodeBlob
+    public struct NodeBlobRef : IComponentData, INodeBlob
     {
-        private readonly BlobAssetReference<NodeBlob> _blobRef;
-
+        private BlobAssetReference<NodeBlob> _blobRef;
         private ref NodeBlob _blob => ref _blobRef.Value;
-        public NodeBlobRef(BlobAssetReference<NodeBlob> blobRef)
-        {
-            _blobRef = blobRef;
-        }
-
+        
+        public NodeBlobRef(BlobAssetReference<NodeBlob> blobRef) => _blobRef = blobRef;
+        
         public int Count => _blob.Count;
         public int GetNodeType(int nodeIndex) => _blob.GetNodeType(nodeIndex);
         public int GetEndIndex(int nodeIndex) => _blob.GetEndIndex(nodeIndex);
         public unsafe void* GetNodeDataPtr(int nodeIndex) => _blob.GetNodeDataPtr(nodeIndex);
-        public ref T GetNodeData<T>(int nodeIndex) where T : struct, INodeData =>
-            ref _blob.GetNodeData<T>(nodeIndex);
+        public ref T GetNodeData<T>(int nodeIndex) where T : struct, INodeData => ref _blob.GetNodeData<T>(nodeIndex);
     }
 }

@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using EntitiesBT.Core;
 using EntitiesBT.Editor;
+using EntitiesBT.Nodes;
 using NUnit.Framework;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -11,67 +9,15 @@ using UnityEngine;
 
 namespace EntitiesBT.Test
 {
-    public struct NodeDataA : INodeData
+    public class TestNodeBlob : BehaviorTreeTestBase
     {
-        public int A;
-    }
-    
-    public struct NodeDataB : INodeData
-    {
-        public int B;
-        public int BB;
-    }
-    
-    public struct CompositeData : INodeData {}
-    
-    public class TestBT
-    {
-        private Dictionary<string, Func<BTNode>> _nodeCreators = new Dictionary<string, Func<BTNode>>
-        {
-            { "seq", Create<BTSequence> }
-          , { "sel", Create<BTSelector> }
-          , { "par", Create<BTParallel> }
-          , { "yes", () => CreateTerminal(NodeState.Success) }
-          , { "no", () => CreateTerminal(NodeState.Failure) }
-          , { "run", () => CreateTerminal(NodeState.Running) }
-        };
-
-        static BTTerminal CreateTerminal(NodeState state)
-        {
-            var terminal = Create<BTTerminal>();
-            terminal.State = state;
-            return terminal;
-        }
-
-        static T Create<T>() where T : BTNode
-        {
-            return new GameObject(typeof(T).Name).AddComponent<T>();
-        }
-
-        GameObject CreateBTNode(string branch)
-        {
-            branch = "seq:yes|no|run";
-            var splits = branch.Split(':');
-            Assert.AreEqual(splits.Length, 2);
-            var parent = Create(splits[0]);
-            foreach (var childName in splits[1].Split('|'))
-            {
-                var child = Create(childName);
-                child.transform.SetParent(parent.transform, false);
-            }
-            return parent;
-
-            GameObject Create(string name) => _nodeCreators[name]().gameObject;
-        }
-        
         [Test]
-        public unsafe void TestNodeBlob()
+        public unsafe void should_able_to_create_and_fetch_data_from_node_blob()
         {
-            Debug.Log($"sizeof Composite: {sizeof(CompositeData)}");
             Debug.Log($"sizeof NodeA: {sizeof(NodeDataA)}");
             Debug.Log($"sizeof NodeB: {sizeof(NodeDataB)}");
             
-            var size = sizeof(CompositeData) + sizeof(NodeDataA) + sizeof(NodeDataB);
+            var size = sizeof(NodeDataA) + sizeof(NodeDataB);
             using (var blobBuilder = new BlobBuilder(Allocator.Temp))
             {
                 ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();
@@ -89,8 +35,6 @@ namespace EntitiesBT.Test
                 var unsafePtr = (byte*) blobBuilder.Allocate(ref blob.DataBlob, size).GetUnsafePtr();
                 var offset = 0;
                 offsets[0] = offset;
-                UnsafeUtilityEx.AsRef<CompositeData>(unsafePtr + offset);
-                offset += sizeof(CompositeData);
                 offsets[1] = offset;
                 UnsafeUtilityEx.AsRef<NodeDataA>(unsafePtr + offset).A = 111;
                 offset += sizeof(NodeDataA);
@@ -125,6 +69,43 @@ namespace EntitiesBT.Test
         }
 
         [Test]
-        public void TestSequence() { }
+        public void should_create_behavior_tree_objects_from_single_line_of_string()
+        {
+            var root = CreateBTNode("!seq>yes|yes|b:1,1|a:111");
+            Assert.AreEqual(root.name, "BTSequence");
+            Assert.AreEqual(root.transform.childCount, 4);
+            
+            var children = root.Children<BTNode>().ToArray();
+            
+            Assert.AreEqual(children[0].name, "BTTestNodeState");
+            Assert.AreEqual(children[0].transform.childCount, 0);
+            
+            Assert.AreEqual(children[1].name, "BTTestNodeState");
+            Assert.AreEqual(children[1].transform.childCount, 0);
+            
+            Assert.AreEqual(children[2].name, "BTTestNodeB");
+            Assert.AreEqual(children[2].transform.childCount, 0);
+            
+            Assert.AreEqual(children[3].name, "BTTestNodeA");
+            Assert.AreEqual(children[3].transform.childCount, 0);
+        }
+
+        [Test]
+        public void should_generate_blob_from_nodes()
+        {
+            var root = CreateBTNode("!seq>yes|no|b:1,1|a:111|run");
+            var rootNode = root.GetComponent<BTNode>();
+            var blobRef = rootNode.ToBlob(Factory);
+            Assert.True(blobRef.IsCreated);
+            Assert.AreEqual(blobRef.Value.Count, 6);
+            
+            var types = new[] { typeof(SequenceNode), typeof(TestNode), typeof(TestNode), typeof(NodeB), typeof(NodeA), typeof(TestNode) };
+            Assert.AreEqual(blobRef.Value.Types.ToArray(), types.Select(Factory.GetTypeId).ToArray());
+            Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 0, 4, 8, 16, 20 });
+            Assert.AreEqual(blobRef.Value.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
+            Assert.AreEqual(blobRef.Value.DataBlob.Length, 24);
+            Assert.AreEqual(blobRef.Value.GetNodeData<NodeDataB>(3), new NodeDataB {B = 1, BB = 1});
+            Assert.AreEqual(blobRef.Value.GetNodeData<NodeDataA>(4), new NodeDataA {A = 111});
+        }
     }
 }
