@@ -5,14 +5,20 @@ using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    [RequireComponent(typeof(BTNode)), DisallowMultipleComponent]
+    [DisallowMultipleComponent]
     public class BTRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
         public BehaviorNodeFactory Factory = new BehaviorNodeFactory();
+        public BTNode RootNode;
+
+        private void Reset()
+        {
+            RootNode = GetComponentInChildren<BTNode>();
+        }
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            var blobRef = GetComponent<BTNode>().ToBlob(Factory);
+            var blobRef = RootNode.ToBlob(Factory);
             dstManager.AddComponentData(entity, new NodeBlobRef(blobRef));
         }
     }
@@ -50,6 +56,7 @@ namespace EntitiesBT.Editor
                         var parent = node.transform.parent;
                         if (parent == null) break;
                         node = parent.GetComponent<BTNode>();
+                        if (node == null) break;
                     }
                 }
                 return blobBuilder.CreateBlobAssetReference<NodeBlob>(Allocator.Persistent);

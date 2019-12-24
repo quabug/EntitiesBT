@@ -1,39 +1,31 @@
 using System;
-using System.Linq;
 using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
     public class ParallelNode : IBehaviorNode
     {
-        private NodeState[] _childrenStates;
-
-        public void Initialize(VirtualMachine vm, int index)
+        public unsafe void Reset(VirtualMachine vm, int index)
         {
-            _childrenStates = new NodeState[vm.ChildrenCount(index)];
+            var childrenStates = new SimpleBlobArray<NodeState>(vm.GetNodeDataPtr(index));
+            for (var i = 0; i < childrenStates.Length; i++) childrenStates[i] = NodeState.Running;
         }
 
-        public void Reset(VirtualMachine vm, int index)
+        public unsafe NodeState Tick(VirtualMachine vm, int index)
         {
-            for (var i = 0; i < _childrenStates.Length; i++) _childrenStates[i] = NodeState.Running;
-        }
-
-        public NodeState Tick(VirtualMachine vm, int index)
-        {
-            if (_childrenStates.All(s => s != NodeState.Running))
-                throw new IndexOutOfRangeException();
-            
+            var childrenStates = new SimpleBlobArray<NodeState>(vm.GetNodeDataPtr(index));
+            var hasAnyRunningChild = false;
             var state = NodeState.Success;
-            
             var localChildIndex = 0;
             var childIndex = index + 1;
             while (childIndex < vm.EndIndex(index))
             {
-                var childState = _childrenStates[localChildIndex];
+                var childState = childrenStates[localChildIndex];
                 if (childState == NodeState.Running)
                 {
                     childState = vm.Tick(childIndex);
-                    _childrenStates[localChildIndex] = childState;
+                    childrenStates[localChildIndex] = childState;
+                    hasAnyRunningChild = true;
                 }
 
                 childIndex = vm.EndIndex(childIndex);
@@ -42,7 +34,9 @@ namespace EntitiesBT.Nodes
                 if (state == NodeState.Running) continue;
                 if (childState != NodeState.Success) state = childState;
             }
-            return state;
+            
+            if (hasAnyRunningChild) return state;
+            throw new IndexOutOfRangeException();
         }
     }
 }

@@ -17,9 +17,9 @@ namespace EntitiesBT.Core
                 .Select(nodeFactory.Create)
                 .ToArray()
             ;
-            
-            for (var index = 0; index < BehaviorNodes.Count; ++index)
-                BehaviorNodes[index].Initialize(this, index);
+            //
+            // for (var index = 0; index < BehaviorNodes.Count; ++index)
+            //     BehaviorNodes[index].Initialize(this, index);
             ResetAll();
         }
 
