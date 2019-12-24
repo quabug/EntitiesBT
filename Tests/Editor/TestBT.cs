@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Editor;
+using EntitiesBT.Nodes;
 using NUnit.Framework;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -11,61 +13,35 @@ using UnityEngine;
 
 namespace EntitiesBT.Test
 {
-    public struct NodeDataA : INodeData
-    {
-        public int A;
-    }
-    
-    public struct NodeDataB : INodeData
-    {
-        public int B;
-        public int BB;
-    }
-    
     public struct CompositeData : INodeData {}
     
     public class TestBT
     {
-        private Dictionary<string, Func<BTNode>> _nodeCreators = new Dictionary<string, Func<BTNode>>
+        private Dictionary<string, Func<string, BTNode>> _nodeCreators = new Dictionary<string, Func<string, BTNode>>
         {
             { "seq", Create<BTSequence> }
           , { "sel", Create<BTSelector> }
           , { "par", Create<BTParallel> }
-          , { "yes", () => CreateTerminal(NodeState.Success) }
-          , { "no", () => CreateTerminal(NodeState.Failure) }
-          , { "run", () => CreateTerminal(NodeState.Running) }
+          , { "yes", CreateTerminal(NodeState.Success) }
+          , { "no", CreateTerminal(NodeState.Failure) }
+          , { "run", CreateTerminal(NodeState.Running) }
+          , { "a", CreateA }
+          , { "b", CreateB }
         };
 
-        static BTTerminal CreateTerminal(NodeState state)
+        private BehaviorNodeFactory _factory;
+        
+        [SetUp]
+        public void Setup()
         {
-            var terminal = Create<BTTerminal>();
-            terminal.State = state;
-            return terminal;
-        }
-
-        static T Create<T>() where T : BTNode
-        {
-            return new GameObject(typeof(T).Name).AddComponent<T>();
-        }
-
-        GameObject CreateBTNode(string branch)
-        {
-            branch = "seq:yes|no|run";
-            var splits = branch.Split(':');
-            Assert.AreEqual(splits.Length, 2);
-            var parent = Create(splits[0]);
-            foreach (var childName in splits[1].Split('|'))
-            {
-                var child = Create(childName);
-                child.transform.SetParent(parent.transform, false);
-            }
-            return parent;
-
-            GameObject Create(string name) => _nodeCreators[name]().gameObject;
+            _factory = new BehaviorNodeFactory();
+            _factory.RegisterCommonNodes();
+            _factory.Register<NodeA>(() => new NodeA());
+            _factory.Register<NodeB>(() => new NodeB());
         }
         
         [Test]
-        public unsafe void TestNodeBlob()
+        public unsafe void should_able_to_create_and_fetch_data_from_node_blob()
         {
             Debug.Log($"sizeof Composite: {sizeof(CompositeData)}");
             Debug.Log($"sizeof NodeA: {sizeof(NodeDataA)}");
@@ -125,6 +101,130 @@ namespace EntitiesBT.Test
         }
 
         [Test]
-        public void TestSequence() { }
+        public void should_create_behavior_tree_objects_from_single_line_of_string()
+        {
+            var root = CreateBTNode("!seq>yes|yes|b:1,1|a:111");
+            Assert.AreEqual(root.name, "BTSequence");
+            Assert.AreEqual(root.transform.childCount, 4);
+            
+            var children = root.Children<BTNode>().ToArray();
+            
+            Assert.AreEqual(children[0].name, "BTTerminal");
+            Assert.AreEqual(children[0].transform.childCount, 0);
+            
+            Assert.AreEqual(children[1].name, "BTTerminal");
+            Assert.AreEqual(children[1].transform.childCount, 0);
+            
+            Assert.AreEqual(children[2].name, "BTNodeB");
+            Assert.AreEqual(children[2].transform.childCount, 0);
+            
+            Assert.AreEqual(children[3].name, "BTNodeA");
+            Assert.AreEqual(children[3].transform.childCount, 0);
+        }
+
+        [Test]
+        public void should_generate_blob_from_nodes()
+        {
+            var root = CreateBTNode("!seq>yes|no|b:1,1|a:111|run");
+            var rootNode = root.GetComponent<BTNode>();
+            var blobRef = rootNode.ToBlob(_factory);
+            Assert.True(blobRef.IsCreated);
+            Assert.AreEqual(blobRef.Value.Count, 6);
+            
+            var types = new[] { typeof(SequenceNode), typeof(SuccessNode), typeof(FailureNode), typeof(NodeB), typeof(NodeA), typeof(RunningNode) };
+            Assert.AreEqual(blobRef.Value.Types.ToArray(), types.Select(_factory.GetTypeId).ToArray());
+            Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 0, 0, 0, 8, 12 });
+            Assert.AreEqual(blobRef.Value.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
+            Assert.AreEqual(blobRef.Value.DataBlob.Length, 12);
+            Assert.AreEqual(blobRef.Value.GetNodeData<NodeDataB>(3), new NodeDataB {B = 1, BB = 1});
+            Assert.AreEqual(blobRef.Value.GetNodeData<NodeDataA>(4), new NodeDataA {A = 111});
+        }
+
+#region helpers
+        static BTNode CreateA(string @params)
+        {
+            var nodeA = Create<BTNodeA>();
+            nodeA.A = int.Parse(@params);
+            return nodeA;
+        }
+        
+        static BTNode CreateB(string @params)
+        {
+            var nodeB = Create<BTNodeB>();
+            var paramArray = @params.Split(',');
+            nodeB.B = int.Parse(paramArray[0].Trim());
+            nodeB.BB = int.Parse(paramArray[1].Trim());
+            return nodeB;
+        }
+
+        static Func<string, BTNode> CreateTerminal(NodeState state)
+        {
+            return @params =>
+            {
+                var terminal = Create<BTTerminal>();
+                terminal.State = state;
+                return terminal;
+            };
+        }
+
+        static T Create<T>(string @params = "") where T : BTNode
+        {
+            var obj = new GameObject(typeof(T).Name);
+            var comp = obj.AddComponent<T>();
+            return comp;
+        }
+
+        // sample 1: "!seq>yes|no|run|a:10";
+        // sample 2: @"
+        // seq
+        //   yes
+        //   no
+        //   run
+        //   a:10
+        //   b:1,2
+        // ";
+        GameObject CreateBTNode(string branch)
+        {
+            if (branch.First() == '!') return ParseSingleLine(branch.Substring(1));
+
+            using (var reader = new StringReader(branch))
+                return ParseMultiLines(reader);
+
+            GameObject ParseMultiLines(StringReader reader)
+            {
+                throw new NotImplementedException();
+                // var splits = branch.Split('>');
+                // Assert.AreEqual(splits.Length, 2);
+                // var parent = Create(splits[0].Trim());
+                // foreach (var nodeString in splits[1].Split('|'))
+                // {
+                //     var child = Create(nodeString.Trim());
+                //     child.transform.SetParent(parent.transform, false);
+                // }
+                // return parent;
+            }
+
+            GameObject ParseSingleLine(string branchString)
+            {
+                var splits = branchString.Split('>');
+                Assert.AreEqual(splits.Length, 2);
+                var parent = Create(splits[0].Trim());
+                foreach (var nodeString in splits[1].Split('|'))
+                {
+                    var child = Create(nodeString.Trim());
+                    child.transform.SetParent(parent.transform, false);
+                }
+                return parent;
+            }
+
+            GameObject Create(string nodeString)
+            {
+                var nameParamsArray = nodeString.Split(':');
+                var name = nameParamsArray[0].Trim();
+                var @params = nameParamsArray.Length >= 2 ? nameParamsArray[1].Trim() : "";
+                return _nodeCreators[name](@params).gameObject;
+            }
+        }
+#endregion
     }
 }

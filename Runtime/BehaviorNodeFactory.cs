@@ -24,6 +24,11 @@ namespace EntitiesBT
             return _nodeTypes[typeof(T)];
         }
         
+        public int GetTypeId(Type type)
+        {
+            return _nodeTypes[type];
+        }
+        
         public IBehaviorNode Create(int nodeType)
         {
             return _creators[nodeType]();

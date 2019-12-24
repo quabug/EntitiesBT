@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using EntitiesBT.Nodes;
 
 namespace EntitiesBT.Editor

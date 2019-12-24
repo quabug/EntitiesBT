@@ -1,7 +1,7 @@
 {
-    "name": "EntitiesBT.Runtime",
+    "name": "EntitiesBT.Editor",
     "references": [
-        "GUID:e0cd26848372d4e5c891c569017e11f1",
+        "GUID:c7babe7561eb244059259745ef27b866",
         "GUID:734d92eba21c94caba915361bd5ac177",
         "GUID:8819f35a0fc84499b990e90a4ca1911f"
     ],
@@ -13,5 +13,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

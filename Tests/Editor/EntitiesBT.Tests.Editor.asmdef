@@ -5,7 +5,9 @@
         "UnityEngine.TestRunner",
         "Unity.Collections",
         "Unity.Entities",
-        "EntitiesBT.Runtime"
+        "EntitiesBT.Runtime",
+        "EntitiesBT.Tests.Runtime",
+        "EntitiesBT.Editor"
     ],
     "includePlatforms": [
         "Editor"
