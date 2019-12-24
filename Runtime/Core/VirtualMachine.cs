@@ -6,19 +6,20 @@ namespace EntitiesBT.Core
     public class VirtualMachine
     {
         private readonly object _tickLocker = new object();
-        private readonly IBehaviorNode[] _nodes;
-        private readonly INodeBlob _root;
+        public IList<IBehaviorNode> BehaviorNodes { get; }
+        public INodeBlob NodeBlob { get; }
 
-        public VirtualMachine(INodeBlob root, IBehaviorNodeFactory nodeFactory)
+        public VirtualMachine(INodeBlob nodeBlob, IBehaviorNodeFactory nodeFactory)
         {
-            _root = root;
-            _nodes = Enumerable.Range(0, _root.Count)
-                .Select(_root.GetNodeType)
+            NodeBlob = nodeBlob;
+            BehaviorNodes = Enumerable.Range(0, NodeBlob.Count)
+                .Select(NodeBlob.GetNodeType)
                 .Select(nodeFactory.Create)
-                .ToArray();
+                .ToArray()
+            ;
             
-            for (var index = 0; index < _nodes.Length; ++index)
-                _nodes[index].Initialize(this, index);
+            for (var index = 0; index < BehaviorNodes.Count; ++index)
+                BehaviorNodes[index].Initialize(this, index);
             ResetAll();
         }
 
@@ -29,12 +30,12 @@ namespace EntitiesBT.Core
 
         public NodeState Tick(int index)
         {
-            return _nodes[index].Tick(this, index);
+            return BehaviorNodes[index].Tick(this, index);
         }
 
         public int EndIndex(int index)
         {
-            return _root.GetEndIndex(index);
+            return NodeBlob.GetEndIndex(index);
         }
 
         public int ChildrenCount(int parentIndex)
@@ -59,24 +60,29 @@ namespace EntitiesBT.Core
             return Enumerable.Range(firstChildIndex, endIndex - firstChildIndex);
         }
 
+        public IBehaviorNode GetBehaviorNode(int index)
+        {
+            return BehaviorNodes[index];
+        }
+
         public ref T GetNodeData<T>(int index) where T : struct, INodeData
         {
-            return ref _root.GetNodeData<T>(index);
+            return ref NodeBlob.GetNodeData<T>(index);
         }
 
         public unsafe void* GetNodeDataPtr(int index)
         {
-            return _root.GetNodeDataPtr(index);
+            return NodeBlob.GetNodeDataPtr(index);
         }
 
         public void Reset(int index)
         {
-            _nodes[index].Reset(this, index);
+            BehaviorNodes[index].Reset(this, index);
         }
 
         public void ResetAll()
         {
-            for (var index = 0; index < _nodes.Length; ++index) Reset(index);
+            for (var index = 0; index < BehaviorNodes.Count; ++index) Reset(index);
         }
     }
 }

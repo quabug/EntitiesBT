@@ -31,7 +31,7 @@ namespace EntitiesBT.Test
         }
     }
     
-    public class BTNodeB : BTNode
+    public class BTTestNodeB : BTNode
     {
         public int B;
         public int BB;

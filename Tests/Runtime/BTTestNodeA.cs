@@ -30,7 +30,7 @@ namespace EntitiesBT.Test
         }
     }
     
-    public class BTNodeA : BTNode
+    public class BTTestNodeA : BTNode
     {
         public int A;
         public override int Type => Factory.GetTypeId<NodeA>();
