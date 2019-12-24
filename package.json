@@ -1,17 +1,17 @@
 {
   "name": "entities-bt",
   "description": "Behavior Tree for Unity Entities",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "unity": "2019.3",
   "displayName": "Entities Behavior Tree",
   "dependencies": {
-    "com.unity.entities": "0.3.0-preview.4"
+    "com.unity.entities": "0.4.0-preview.10"
   },
   "samples": [
     {
-      "displayName": "sample",
-      "description": "basic usage of bt",
-      "path": "Samples~/Sample"
+      "displayName": "tests",
+      "description": "test cases of behavior tree",
+      "path": "Samples~/Tests"
     }
   ]
 }
