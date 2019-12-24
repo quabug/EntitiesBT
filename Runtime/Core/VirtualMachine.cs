@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EntitiesBT.Core
@@ -15,17 +16,20 @@ namespace EntitiesBT.Core
                 .Select(_root.GetNodeType)
                 .Select(nodeFactory.Create)
                 .ToArray();
-            Reset();
+            
+            for (var index = 0; index < _nodes.Length; ++index)
+                _nodes[index].Initialize(this, index);
+            ResetAll();
         }
 
         public NodeState Tick()
         {
-            lock (_tickLocker) return Tick(0).state;
+            lock (_tickLocker) return Tick(0);
         }
 
-        public (NodeState state, int endIndex) Tick(int index)
+        public NodeState Tick(int index)
         {
-            return (_nodes[index].Tick(this, index), EndIndex(index));
+            return _nodes[index].Tick(this, index);
         }
 
         public int EndIndex(int index)
@@ -35,11 +39,24 @@ namespace EntitiesBT.Core
 
         public int ChildrenCount(int parentIndex)
         {
+            return GetChildrenIndices(parentIndex).Count();
+        }
+
+        public IEnumerable<int> GetChildrenIndices(int parentIndex)
+        {
             var endIndex = EndIndex(parentIndex);
             var childIndex = parentIndex + 1;
-            var count = 0;
-            for (; childIndex < endIndex; childIndex = EndIndex(childIndex)) count++;
-            return count;
+            for (; childIndex < endIndex; childIndex = EndIndex(childIndex))
+            {
+                yield return childIndex;
+            }
+        }
+        
+        public IEnumerable<int> GetDescendantsIndices(int parentIndex)
+        {
+            var endIndex = EndIndex(parentIndex);
+            var firstChildIndex = parentIndex + 1;
+            return Enumerable.Range(firstChildIndex, endIndex - firstChildIndex);
         }
 
         public ref T GetNodeData<T>(int index) where T : struct, INodeData
@@ -52,9 +69,14 @@ namespace EntitiesBT.Core
             return _root.GetNodeDataPtr(index);
         }
 
-        public void Reset()
+        public void Reset(int index)
         {
-            for (int index = 0; index < _nodes.Length; ++index) _nodes[index].Reset(this, index);
+            _nodes[index].Reset(this, index);
+        }
+
+        public void ResetAll()
+        {
+            for (var index = 0; index < _nodes.Length; ++index) Reset(index);
         }
     }
 }
