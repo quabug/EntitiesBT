@@ -10,7 +10,7 @@ namespace EntitiesBT.Editor
         public float DelayInSeconds;
         
         public override unsafe void Build(void* dataPtr) =>
-            ((DelayTimerNode.Data*) dataPtr)->Value = TimeSpan.FromSeconds(DelayInSeconds);
+            ((DelayTimerNode.Data*) dataPtr)->Target = TimeSpan.FromSeconds(DelayInSeconds);
 
         public override IBehaviorNode BehaviorNode =>
             new DelayTimerNode(() => TimeSpan.FromSeconds(Time.deltaTime));
