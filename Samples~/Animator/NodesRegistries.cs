@@ -12,19 +12,8 @@ namespace EntitiesBT
         private void Awake()
         {
             var factory = GetComponent<UnityBehaviorNodeFactory>().Factory;
-            
-            factory.RegisterCommonNodes();
-            
-            factory.Register<DelayTimerNode>(
-                () => new DelayTimerNode(() => TimeSpan.FromSeconds(Time.deltaTime))
-            );
-            
-            factory.Register<SetAnimatorTriggerNode>(
-                () => new SetAnimatorTriggerNode(Animator)
-            );
-            
-            factory.Register<RepeatTimesNode>();
-            factory.Register<RepeatForeverNode>();
+            factory.RegisterCommonNodes(() => TimeSpan.FromSeconds(Time.deltaTime));
+            factory.Register<SetAnimatorTriggerNode>(() => new SetAnimatorTriggerNode(Animator));
         }
     }
 }

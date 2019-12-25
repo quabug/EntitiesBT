@@ -4,17 +4,12 @@ using UnityEngine;
 
 namespace EntitiesBT.Test
 {
-    public struct NodeDataB : INodeData
-    {
-        public int B;
-        public int BB;
-    }
-
     public class NodeB : IBehaviorNode
     {
-        public void Initialize(VirtualMachine vm, int index)
+        public struct Data : INodeData
         {
-            Debug.Log($"[B]: initialize {index}");
+            public int B;
+            public int BB;
         }
 
         public void Reset(VirtualMachine vm, int index)
@@ -24,7 +19,7 @@ namespace EntitiesBT.Test
 
         public NodeState Tick(VirtualMachine vm, int index)
         {
-            var data = vm.GetNodeData<NodeDataB>(index);
+            var data = vm.GetNodeData<Data>(index);
             var state = data.B == data.BB ? NodeState.Success : NodeState.Failure;
             Debug.Log($"[B]: tick {index} {state}");
             return state;
@@ -39,11 +34,11 @@ namespace EntitiesBT.Test
         public override int Type => Factory.GetTypeId<NodeB>();
         public override unsafe void Build(void* dataPtr)
         {
-            var ptr = (NodeDataB*) dataPtr;
+            var ptr = (NodeB.Data*) dataPtr;
             ptr->B = B;
             ptr->BB = BB;
         }
 
-        public override unsafe int Size => sizeof(NodeDataB);
+        public override unsafe int Size => sizeof(NodeB.Data);
     }
 }
