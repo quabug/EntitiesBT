@@ -10,8 +10,12 @@ namespace EntitiesBT.Editor
     [DisallowMultipleComponent]
     public class BTRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
-        public BTNode RootNode;
-        public VirtualMachine VirtualMachine;
+        [SerializeField] private BTNode RootNode;
+        public VirtualMachine VirtualMachine { get; private set; }
+        public EntityManager EntityManager { get; private set; }
+        public Entity Entity { get; private set; }
+
+        [SerializeField] private bool _destroyNodes = true;
 
         private void Reset()
         {
@@ -20,12 +24,15 @@ namespace EntitiesBT.Editor
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
+            EntityManager = dstManager;
+            Entity = entity;
+            
             var (blobRef, behaviorNodes) = RootNode.ToBlob();
             var nodeBlobRef = new NodeBlobRef(blobRef);
             dstManager.AddComponentData(entity, nodeBlobRef);
             VirtualMachine = new VirtualMachine(nodeBlobRef, behaviorNodes);
             dstManager.AddComponentObject(entity, this);
-            Destroy(RootNode.gameObject);
+            if (_destroyNodes) Destroy(RootNode.gameObject);
         }
     }
 
