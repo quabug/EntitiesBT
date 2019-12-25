@@ -7,17 +7,11 @@ namespace EntitiesBT
 {
     public struct NodeBlob : INodeBlob
     {
-        public BlobArray<int> Types;
         public BlobArray<int> EndIndices;
         public BlobArray<int> Offsets;
         public BlobArray<byte> DataBlob;
 
         public int Count => Offsets.Length;
-
-        public int GetNodeType(int nodeIndex)
-        {
-            return Types[nodeIndex];
-        }
 
         public int GetEndIndex(int nodeIndex)
         {
@@ -35,7 +29,7 @@ namespace EntitiesBT
         }
 
         public static int Size(int count, int dataSize) =>
-            dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
+            dataSize + sizeof(int) * count * 2 /* EndIndices/Offsets */;
     }
 
     public struct NodeBlobRef : IComponentData, INodeBlob
@@ -46,7 +40,6 @@ namespace EntitiesBT
         public NodeBlobRef(BlobAssetReference<NodeBlob> blobRef) => _blobRef = blobRef;
         
         public int Count => _blob.Count;
-        public int GetNodeType(int nodeIndex) => _blob.GetNodeType(nodeIndex);
         public int GetEndIndex(int nodeIndex) => _blob.GetEndIndex(nodeIndex);
         public unsafe void* GetNodeDataPtr(int nodeIndex) => _blob.GetNodeDataPtr(nodeIndex);
         public ref T GetNodeData<T>(int nodeIndex) where T : struct, INodeData => ref _blob.GetNodeData<T>(nodeIndex);

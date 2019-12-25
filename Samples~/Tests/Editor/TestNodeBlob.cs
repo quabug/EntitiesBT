@@ -21,10 +21,6 @@ namespace EntitiesBT.Test
             using (var blobBuilder = new BlobBuilder(Allocator.Temp))
             {
                 ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();
-                var types = blobBuilder.Allocate(ref blob.Types,  3);
-                types[0] = 123;
-                types[1] = 234;
-                types[2] = 345;
                 
                 var endIndices = blobBuilder.Allocate(ref blob.EndIndices, 3);
                 endIndices[0] = 3;
@@ -48,10 +44,6 @@ namespace EntitiesBT.Test
                     Assert.IsTrue(blobRef.IsCreated);
                     Assert.AreEqual(blobRef.Value.DataBlob.Length, size);
                     Assert.AreEqual(blobRef.Value.Count, 3);
-                    
-                    Assert.AreEqual(blobRef.Value.Types[0], 123);
-                    Assert.AreEqual(blobRef.Value.Types[1], 234);
-                    Assert.AreEqual(blobRef.Value.Types[2], 345);
                     
                     Assert.AreEqual(blobRef.Value.EndIndices[0], 3);
                     Assert.AreEqual(blobRef.Value.EndIndices[1], 2);
@@ -95,12 +87,14 @@ namespace EntitiesBT.Test
         {
             var root = CreateBTNode("!seq>yes|no|b:1,1|a:111|run");
             var rootNode = root.GetComponent<BTNode>();
-            var blobRef = rootNode.ToBlob(Factory);
+            var (blobRef, nodes) = rootNode.ToBlob();
+            
+            var types = new[] { typeof(SequenceNode), typeof(TestNode), typeof(TestNode), typeof(NodeB), typeof(NodeA), typeof(TestNode) };
+            Assert.AreEqual(nodes.Select(n => n.GetType()), types);
+            
             Assert.True(blobRef.IsCreated);
             Assert.AreEqual(blobRef.Value.Count, 6);
             
-            var types = new[] { typeof(SequenceNode), typeof(TestNode), typeof(TestNode), typeof(NodeB), typeof(NodeA), typeof(TestNode) };
-            Assert.AreEqual(blobRef.Value.Types.ToArray(), types.Select(Factory.GetTypeId).ToArray());
             Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 4, 24, 44, 52, 56 });
             Assert.AreEqual(blobRef.Value.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
             Assert.AreEqual(blobRef.Value.DataBlob.Length, 76);

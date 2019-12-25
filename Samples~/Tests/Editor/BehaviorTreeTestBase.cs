@@ -23,23 +23,11 @@ namespace EntitiesBT.Test
           , { "b", CreateB }
         };
 
-        protected BehaviorNodeFactory Factory;
-        
-        [SetUp]
-        public void Setup()
-        {
-            Factory = new BehaviorNodeFactory();
-            Factory.RegisterCommonNodes(() => TimeSpan.Zero);
-            Factory.Register<TestNode>(() => new TestNode());
-            Factory.Register<NodeA>(() => new NodeA());
-            Factory.Register<NodeB>(() => new NodeB());
-        }
-
         protected VirtualMachine CreateVM(string tree)
         {
             var root = CreateBTNode(tree).GetComponent<BTNode>();
-            var blobRef = root.ToBlob(Factory);
-            return new VirtualMachine(new NodeBlobRef(blobRef), Factory);
+            var (blobRef, nodes) = root.ToBlob();
+            return new VirtualMachine(new NodeBlobRef(blobRef), nodes);
         }
     
         private static BTNode CreateA(string @params)

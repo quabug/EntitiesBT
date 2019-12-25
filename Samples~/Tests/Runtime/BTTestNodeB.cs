@@ -31,7 +31,6 @@ namespace EntitiesBT.Test
         public int B;
         public int BB;
         
-        public override int Type => Factory.GetTypeId<NodeB>();
         public override unsafe void Build(void* dataPtr)
         {
             var ptr = (NodeB.Data*) dataPtr;
@@ -39,6 +38,7 @@ namespace EntitiesBT.Test
             ptr->BB = BB;
         }
 
+        public override IBehaviorNode BehaviorNode => new NodeB();
         public override unsafe int Size => sizeof(NodeB.Data);
     }
 }

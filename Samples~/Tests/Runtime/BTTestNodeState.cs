@@ -35,7 +35,7 @@ namespace EntitiesBT.Test
     public class BTTestNodeState : BTNode
     {
         public NodeState State;
-        public override int Type => Factory.GetTypeId<TestNode>();
+        public override IBehaviorNode BehaviorNode => new TestNode();
         public override unsafe int Size => sizeof(TestNode.Data);
         public override unsafe void Build(void* dataPtr)
         {

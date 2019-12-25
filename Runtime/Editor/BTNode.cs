@@ -6,10 +6,8 @@ namespace EntitiesBT.Editor
     [DisallowMultipleComponent]
     public abstract class BTNode : MonoBehaviour, INodeDataBuilder
     {
-        public BehaviorNodeFactory Factory { get; set; }
         public int Index { get; set; }
-        
-        public abstract int Type { get; }
+        public abstract IBehaviorNode BehaviorNode { get; }
         public abstract int Size { get; }
         public abstract unsafe void Build(void* dataPtr);
 
