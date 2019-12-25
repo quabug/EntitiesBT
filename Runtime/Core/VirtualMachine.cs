@@ -1,22 +1,25 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace EntitiesBT.Core
 {
+    [Serializable]
     public class VirtualMachine
     {
         private readonly object _tickLocker = new object();
         public IList<IBehaviorNode> BehaviorNodes { get; }
         public INodeBlob NodeBlob { get; }
 
-        public VirtualMachine(INodeBlob nodeBlob, IBehaviorNodeFactory nodeFactory)
+        public VirtualMachine(INodeBlob nodeBlob, IList<IBehaviorNode> nodes)
         {
             NodeBlob = nodeBlob;
-            BehaviorNodes = Enumerable.Range(0, NodeBlob.Count)
-                .Select(NodeBlob.GetNodeType)
-                .Select(nodeFactory.Create)
-                .ToArray()
-            ;
+            BehaviorNodes = nodes;
+            // BehaviorNodes = Enumerable.Range(0, NodeBlob.Count)
+            //     .Select(NodeBlob.GetNodeType)
+            //     .Select(nodeFactory.Create)
+            //     .ToArray()
+            // ;
             ResetAll();
         }
 

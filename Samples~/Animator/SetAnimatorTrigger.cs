@@ -3,12 +3,14 @@ using EntitiesBT.Editor;
 using UnityEditor.Animations;
 using UnityEngine;
 
-namespace EntitiesBT
+namespace EntitiesBT.Sample
 {
     public class SetAnimatorTrigger : BTNode
     {
+        public Animator Animator;
+        
         public string TriggerName;
-        public override int Type => Factory.GetTypeId<SetAnimatorTriggerNode>();
+        public override IBehaviorNode BehaviorNode => new SetAnimatorTriggerNode(Animator);
         public override unsafe int Size => sizeof(SetAnimatorTriggerNode.Data);
         public override unsafe void Build(void* dataPtr) =>
             ((SetAnimatorTriggerNode.Data*) dataPtr)->Value = Animator.StringToHash(TriggerName);
@@ -26,14 +28,8 @@ namespace EntitiesBT
         {
             _animator = animator;
         }
-        
-        public void Initialize(VirtualMachine vm, int index)
-        {
-        }
 
-        public void Reset(VirtualMachine vm, int index)
-        {
-        }
+        public void Reset(VirtualMachine vm, int index) {}
 
         public NodeState Tick(VirtualMachine vm, int index)
         {

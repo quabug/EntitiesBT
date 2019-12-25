@@ -8,18 +8,18 @@ namespace EntitiesBT.Editor
     {
         public NodeState State = NodeState.Success;
 
-        public override int Type
+        public override IBehaviorNode BehaviorNode
         {
             get
             {
                 switch (State)
                 {
                 case NodeState.Success:
-                    return Factory.GetTypeId<SuccessNode>();
+                    return new SuccessNode();
                 case NodeState.Failure:
-                    return Factory.GetTypeId<FailureNode>();
+                    return new FailureNode();
                 case NodeState.Running:
-                    return Factory.GetTypeId<RunningNode>();
+                    return new RunningNode();
                 default:
                     throw new ArgumentOutOfRangeException();
                 }

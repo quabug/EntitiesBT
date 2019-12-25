@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using EntitiesBT.Core;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -8,8 +10,8 @@ namespace EntitiesBT.Editor
     [DisallowMultipleComponent]
     public class BTRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
-        public UnityBehaviorNodeFactory Factory;
         public BTNode RootNode;
+        public VirtualMachine VirtualMachine;
 
         private void Reset()
         {
@@ -18,24 +20,26 @@ namespace EntitiesBT.Editor
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            var blobRef = RootNode.ToBlob(Factory.Factory);
-            dstManager.AddSharedComponentData(entity, new BehaviorNodeFactoryComponent(Factory.Factory));
-            dstManager.AddComponentData(entity, new NodeBlobRef(blobRef));
+            var (blobRef, behaviorNodes) = RootNode.ToBlob();
+            var nodeBlobRef = new NodeBlobRef(blobRef);
+            dstManager.AddComponentData(entity, nodeBlobRef);
+            VirtualMachine = new VirtualMachine(nodeBlobRef, behaviorNodes);
+            dstManager.AddComponentObject(entity, this);
             Destroy(RootNode.gameObject);
         }
     }
 
     public static class BehaviorTreeExtensions
     {
-        public static unsafe BlobAssetReference<NodeBlob> ToBlob(this BTNode root, BehaviorNodeFactory factory)
+        public static unsafe (BlobAssetReference<NodeBlob> blobRef, IList<IBehaviorNode> nodes) ToBlob(this BTNode root)
         {
             var nodes = root.DescendantsWithSelf().ToArray();
             var blobSize = nodes.Select(n => n.Size).Sum();
             var size = NodeBlob.Size(nodes.Length, blobSize);
+            var behaviorNodes = new IBehaviorNode[nodes.Length];
             using (var blobBuilder = new BlobBuilder(Allocator.Temp, size))
             {
                 ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();
-                var types = blobBuilder.Allocate(ref blob.Types, nodes.Length);
                 var endIndices = blobBuilder.Allocate(ref blob.EndIndices, nodes.Length);
                 var offsets = blobBuilder.Allocate(ref blob.Offsets, nodes.Length);
                 var unsafePtr = (byte*) blobBuilder.Allocate(ref blob.DataBlob, blobSize).GetUnsafePtr();
@@ -44,9 +48,8 @@ namespace EntitiesBT.Editor
                 for (var i = 0; i < nodes.Length; i++)
                 {
                     var node = nodes[i];
-                    node.Factory = factory;
                     node.Index = i;
-                    types[i] = node.Type;
+                    behaviorNodes[i] = node.BehaviorNode;
                     offsets[i] = offset;
                     node.Build(unsafePtr + offset);
                     offset += node.Size;
@@ -61,7 +64,7 @@ namespace EntitiesBT.Editor
                         if (node == null) break;
                     }
                 }
-                return blobBuilder.CreateBlobAssetReference<NodeBlob>(Allocator.Persistent);
+                return (blobBuilder.CreateBlobAssetReference<NodeBlob>(Allocator.Persistent), behaviorNodes);
             }
         }
     }

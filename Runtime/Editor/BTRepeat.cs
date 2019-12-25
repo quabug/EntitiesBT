@@ -8,11 +8,11 @@ namespace EntitiesBT.Editor
         public int RepeatTimes;
         public NodeState BreakStates;
 
-        public override int Type => RepeatTimes <= 0
-            ? Factory.GetTypeId<RepeatForeverNode>()
-            : Factory.GetTypeId<RepeatTimesNode>()
+        public override IBehaviorNode BehaviorNode => RepeatTimes <= 0
+            ? (IBehaviorNode)new RepeatForeverNode()
+            : (IBehaviorNode)new RepeatTimesNode()
         ;
-        
+
         public override unsafe int Size => RepeatTimes <= 0
             ? sizeof(RepeatForeverNode.Data)
             : sizeof(RepeatTimesNode.Data)

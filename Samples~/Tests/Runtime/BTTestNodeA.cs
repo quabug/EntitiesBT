@@ -28,8 +28,8 @@ namespace EntitiesBT.Test
     public class BTTestNodeA : BTNode
     {
         public int A;
-        public override int Type => Factory.GetTypeId<NodeA>();
         public override unsafe void Build(void* dataPtr) => ((NodeA.Data*) dataPtr)->A = A;
+        public override IBehaviorNode BehaviorNode => new NodeA();
         public override unsafe int Size => sizeof(NodeA.Data);
     }
 }
