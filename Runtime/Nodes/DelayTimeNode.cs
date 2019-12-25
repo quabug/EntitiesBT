@@ -1,21 +1,8 @@
 using System;
 using EntitiesBT.Core;
-using EntitiesBT.Editor;
 
-namespace EntitiesBT
+namespace EntitiesBT.Nodes
 {
-    public class BTDelayTimer : BTNode
-    {
-        public float DelayInSeconds;
-        
-        public override int Type => Factory.GetTypeId<DelayTimerNode>();
-
-        public override unsafe void Build(void* dataPtr) =>
-            ((DelayTimerNode.Data*) dataPtr)->Value = TimeSpan.FromSeconds(DelayInSeconds);
-
-        public override unsafe int Size => sizeof(DelayTimerNode.Data);
-    }
-    
     public class DelayTimerNode : IBehaviorNode
     {
         public struct Data : INodeData
@@ -30,8 +17,6 @@ namespace EntitiesBT
             _tickDelta = tickDelta;
         }
         
-        public void Initialize(VirtualMachine vm, int index) {}
-
         public void Reset(VirtualMachine vm, int index)
         {
             _timer = TimeSpan.Zero;

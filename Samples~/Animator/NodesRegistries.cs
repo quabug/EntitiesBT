@@ -1,5 +1,6 @@
 using System;
 using EntitiesBT.Editor;
+using EntitiesBT.Nodes;
 using UnityEngine;
 
 namespace EntitiesBT
