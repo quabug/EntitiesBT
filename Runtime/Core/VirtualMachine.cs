@@ -15,11 +15,6 @@ namespace EntitiesBT.Core
         {
             NodeBlob = nodeBlob;
             BehaviorNodes = nodes;
-            // BehaviorNodes = Enumerable.Range(0, NodeBlob.Count)
-            //     .Select(NodeBlob.GetNodeType)
-            //     .Select(nodeFactory.Create)
-            //     .ToArray()
-            // ;
             ResetAll();
         }
 
@@ -32,6 +27,7 @@ namespace EntitiesBT.Core
         {
             var node = BehaviorNodes[index];
             var state = node.Tick(this, index);
+            // Debug.Log($"[BT] tick: {index}-{node.GetType().Name}-{state}");
             return state;
         }
 
@@ -80,6 +76,7 @@ namespace EntitiesBT.Core
         public void Reset(int index)
         {
             var node = BehaviorNodes[index];
+            // Debug.Log($"[BT] reset: {index}-{node.GetType().Name}");
             node.Reset(this, index);
         }
 
