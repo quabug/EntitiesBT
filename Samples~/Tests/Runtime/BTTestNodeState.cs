@@ -4,37 +4,31 @@ using NUnit.Framework;
 
 namespace EntitiesBT.Test
 {
-    public struct TestNodeData : INodeData
-    {
-        public NodeState State;
-    }
-    
     public class TestNode : IBehaviorNode
     {
-        public NodeState State;
-        public int Index = -1;
-        public int InitializeTimes = 0;
-        public int ResetTimes = 0;
-        public int TickTimes = 0;
-
-        public void Initialize(VirtualMachine vm, int index)
+        public struct Data : INodeData
         {
-            Index = index;
-            InitializeTimes++;
+            public NodeState DefaultState;
+            public NodeState State;
+            public int Index;
+            public int ResetTimes;
+            public int TickTimes;
         }
 
         public void Reset(VirtualMachine vm, int index)
         {
-            State = vm.GetNodeData<TestNodeData>(index).State;
-            Assert.AreEqual(Index, index);
-            ResetTimes++;
+            ref var data = ref vm.GetNodeData<Data>(index);
+            data.State = data.DefaultState;
+            data.Index = index;
+            data.ResetTimes++;
         }
 
         public NodeState Tick(VirtualMachine vm, int index)
         {
-            Assert.AreEqual(Index, index);
-            TickTimes++;
-            return State;
+            ref var data = ref vm.GetNodeData<Data>(index);
+            Assert.AreEqual(data.Index, index);
+            data.TickTimes++;
+            return data.State;
         }
     }
     
@@ -42,8 +36,13 @@ namespace EntitiesBT.Test
     {
         public NodeState State;
         public override int Type => Factory.GetTypeId<TestNode>();
-        public override unsafe int Size => sizeof(TestNodeData);
-        public override unsafe void Build(void* dataPtr) =>
-            ((TestNodeData*) dataPtr)->State = State;
+        public override unsafe int Size => sizeof(TestNode.Data);
+        public override unsafe void Build(void* dataPtr)
+        {
+            var ptr = (TestNode.Data*) dataPtr;
+            ptr->DefaultState = State;
+            ptr->ResetTimes = 0;
+            ptr->TickTimes = 0;
+        }
     }
 }

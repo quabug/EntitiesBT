@@ -29,7 +29,7 @@ namespace EntitiesBT.Test
         public void Setup()
         {
             Factory = new BehaviorNodeFactory();
-            Factory.RegisterCommonNodes();
+            Factory.RegisterCommonNodes(() => TimeSpan.Zero);
             Factory.Register<TestNode>(() => new TestNode());
             Factory.Register<NodeA>(() => new NodeA());
             Factory.Register<NodeB>(() => new NodeB());
