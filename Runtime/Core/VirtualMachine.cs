@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace EntitiesBT.Core
 {
@@ -17,9 +18,6 @@ namespace EntitiesBT.Core
                 .Select(nodeFactory.Create)
                 .ToArray()
             ;
-            //
-            // for (var index = 0; index < BehaviorNodes.Count; ++index)
-            //     BehaviorNodes[index].Initialize(this, index);
             ResetAll();
         }
 
@@ -30,7 +28,10 @@ namespace EntitiesBT.Core
 
         public NodeState Tick(int index)
         {
-            return BehaviorNodes[index].Tick(this, index);
+            var node = BehaviorNodes[index];
+            var state = node.Tick(this, index);
+            Debug.Log($"[BT] Tick: {index}-{node.GetType().Name}-{state}");
+            return state;
         }
 
         public int EndIndex(int index)
@@ -77,7 +78,9 @@ namespace EntitiesBT.Core
 
         public void Reset(int index)
         {
-            BehaviorNodes[index].Reset(this, index);
+            var node = BehaviorNodes[index];
+            Debug.Log($"[BT] Reset: {index}-{node.GetType().Name}");
+            node.Reset(this, index);
         }
 
         public void ResetAll()

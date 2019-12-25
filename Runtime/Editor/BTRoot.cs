@@ -8,7 +8,7 @@ namespace EntitiesBT.Editor
     [DisallowMultipleComponent]
     public class BTRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
-        public BehaviorNodeFactory Factory = new BehaviorNodeFactory();
+        public UnityBehaviorNodeFactory Factory;
         public BTNode RootNode;
 
         private void Reset()
@@ -18,8 +18,10 @@ namespace EntitiesBT.Editor
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            var blobRef = RootNode.ToBlob(Factory);
+            var blobRef = RootNode.ToBlob(Factory.Factory);
+            dstManager.AddSharedComponentData(entity, new BehaviorNodeFactoryComponent(Factory.Factory));
             dstManager.AddComponentData(entity, new NodeBlobRef(blobRef));
+            Destroy(RootNode.gameObject);
         }
     }
 

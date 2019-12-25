@@ -23,9 +23,9 @@ namespace EntitiesBT
 
         public void* ArrayDataPtr => (byte*)_ptr + sizeof(int);
 
-        public static int Size(int Length)
+        public static int Size(int length)
         {
-            return sizeof(int) + UnsafeUtility.SizeOf<T>() * Length;
+            return sizeof(int) + UnsafeUtility.SizeOf<T>() * length;
         }
 
         public ref T this[int index]
