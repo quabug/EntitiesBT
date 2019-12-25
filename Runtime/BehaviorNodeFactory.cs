@@ -18,6 +18,11 @@ namespace EntitiesBT
                 _creators.Add(creator);
             }
         }
+        
+        public void Register<T>() where T : IBehaviorNode, new()
+        {
+            Register<T>(() => new T());
+        }
 
         public int GetTypeId<T>() where T : IBehaviorNode
         {
