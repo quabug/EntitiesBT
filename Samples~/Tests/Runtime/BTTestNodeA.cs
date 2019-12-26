@@ -11,12 +11,12 @@ namespace EntitiesBT.Test
             public int A;
         }
 
-        public void Reset(VirtualMachine vm, int index)
+        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             Debug.Log($"[A]: reset {index}");
         }
 
-        public NodeState Tick(VirtualMachine vm, int index)
+        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             var data = vm.GetNodeData<Data>(index);
             var state = data.A == 0 ? NodeState.Failure : NodeState.Success;

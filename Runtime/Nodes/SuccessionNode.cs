@@ -12,12 +12,12 @@ namespace EntitiesBT.Nodes
         
         protected abstract NodeState ContinueState { get; }
 
-        public virtual void Reset(VirtualMachine vm, int index)
+        public virtual void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             vm.GetNodeData<Data>(index).ChildIndex = index + 1;
         }
 
-        public virtual NodeState Tick(VirtualMachine vm, int index)
+        public virtual NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             ref var childIndex = ref vm.GetNodeData<Data>(index).ChildIndex;
             if (childIndex >= vm.EndIndex(index)) throw new IndexOutOfRangeException();

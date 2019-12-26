@@ -12,13 +12,13 @@ namespace EntitiesBT.Nodes
             public NodeState BreakStates;
         }
         
-        public void Reset(VirtualMachine vm, int index)
+        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             ref var data = ref vm.GetNodeData<Data>(index);
             data.CurrentTimes = 0;
         }
 
-        public NodeState Tick(VirtualMachine vm, int index)
+        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             ref var data = ref vm.GetNodeData<Data>(index);
             var childIndex = index + 1;

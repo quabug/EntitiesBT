@@ -15,7 +15,7 @@ namespace EntitiesBT.Test
             public int TickTimes;
         }
 
-        public void Reset(VirtualMachine vm, int index)
+        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             ref var data = ref vm.GetNodeData<Data>(index);
             data.State = data.DefaultState;
@@ -23,7 +23,7 @@ namespace EntitiesBT.Test
             data.ResetTimes++;
         }
 
-        public NodeState Tick(VirtualMachine vm, int index)
+        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             ref var data = ref vm.GetNodeData<Data>(index);
             Assert.AreEqual(data.Index, index);

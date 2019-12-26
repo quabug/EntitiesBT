@@ -7,10 +7,8 @@ namespace EntitiesBT.Sample
 {
     public class SetAnimatorTrigger : BTNode
     {
-        public Animator Animator;
-        
         public string TriggerName;
-        public override IBehaviorNode BehaviorNode => new SetAnimatorTriggerNode(Animator);
+        public override IBehaviorNode BehaviorNode => new SetAnimatorTriggerNode();
         public override unsafe int Size => sizeof(SetAnimatorTriggerNode.Data);
         public override unsafe void Build(void* dataPtr) =>
             ((SetAnimatorTriggerNode.Data*) dataPtr)->Value = Animator.StringToHash(TriggerName);
@@ -22,18 +20,13 @@ namespace EntitiesBT.Sample
         {
             public int Value;
         }
-        
-        private readonly Animator _animator;
-        public SetAnimatorTriggerNode(Animator animator)
-        {
-            _animator = animator;
-        }
 
-        public void Reset(VirtualMachine vm, int index) {}
+        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard) {}
 
-        public NodeState Tick(VirtualMachine vm, int index)
+        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
         {
-            _animator.SetTrigger(vm.GetNodeData<Data>(index).Value);
+            var animator = (Animator)blackboard[typeof(Animator)];
+            animator.SetTrigger(vm.GetNodeData<Data>(index).Value);
             return NodeState.Success;
         }
     }

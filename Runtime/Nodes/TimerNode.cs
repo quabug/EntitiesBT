@@ -5,8 +5,6 @@ namespace EntitiesBT.Nodes
 {
     public class TimerNode : IBehaviorNode
     {
-        private readonly Func<TimeSpan> _tickDelta;
-
         public struct Data : INodeData
         {
             public TimeSpan Target;
@@ -14,20 +12,15 @@ namespace EntitiesBT.Nodes
             public NodeState ChildState;
             public NodeState BreakReturnState;
         }
-
-        public TimerNode(Func<TimeSpan> tickDelta)
-        {
-            _tickDelta = tickDelta;
-        }
         
-        public void Reset(VirtualMachine vm, int index)
+        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             ref var data = ref vm.GetNodeData<Data>(index);
             data.Current = TimeSpan.Zero;
             data.ChildState = NodeState.Running;
         }
 
-        public NodeState Tick(VirtualMachine vm, int index)
+        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             ref var data = ref vm.GetNodeData<Data>(index);
 
@@ -40,7 +33,7 @@ namespace EntitiesBT.Nodes
                 var childState = vm.Tick(childIndex);
                 data.ChildState = childState;
             }
-            data.Current += _tickDelta();
+            data.Current += ((TickDeltaTime)blackboard[typeof(TickDeltaTime)]).Value;
             return NodeState.Running;
         }
     }

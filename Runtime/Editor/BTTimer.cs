@@ -11,8 +11,7 @@ namespace EntitiesBT.Editor
         public float TimeInSeconds;
         public NodeState BreakReturnState;
         
-        public override IBehaviorNode BehaviorNode => 
-            new TimerNode(() => TimeSpan.FromSeconds(Time.deltaTime));
+        public override IBehaviorNode BehaviorNode => new TimerNode();
         public override int Size => UnsafeUtility.SizeOf<TimerNode.Data>();
         public override unsafe void Build(void* dataPtr)
         {

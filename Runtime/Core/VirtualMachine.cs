@@ -8,11 +8,14 @@ namespace EntitiesBT.Core
     public class VirtualMachine
     {
         private readonly object _tickLocker = new object();
-        public IList<IBehaviorNode> BehaviorNodes { get; }
-        public INodeBlob NodeBlob { get; }
 
-        public VirtualMachine(INodeBlob nodeBlob, IList<IBehaviorNode> nodes)
+        public readonly IList<IBehaviorNode> BehaviorNodes;
+        public readonly INodeBlob NodeBlob;
+        public readonly IBlackboard Blackboard;
+
+        public VirtualMachine(INodeBlob nodeBlob, IList<IBehaviorNode> nodes, IBlackboard blackboard)
         {
+            Blackboard = blackboard;
             NodeBlob = nodeBlob;
             BehaviorNodes = nodes;
             ResetAll();
@@ -26,7 +29,7 @@ namespace EntitiesBT.Core
         public NodeState Tick(int index)
         {
             var node = BehaviorNodes[index];
-            var state = node.Tick(this, index);
+            var state = node.Tick(this, index, Blackboard);
             // Debug.Log($"[BT] tick: {index}-{node.GetType().Name}-{state}");
             return state;
         }
@@ -77,7 +80,7 @@ namespace EntitiesBT.Core
         {
             var node = BehaviorNodes[index];
             // Debug.Log($"[BT] reset: {index}-{node.GetType().Name}");
-            node.Reset(this, index);
+            node.Reset(this, index, Blackboard);
         }
 
         public void ResetAll()

@@ -29,7 +29,8 @@ namespace EntitiesBT.Editor
             var (blobRef, behaviorNodes) = RootNode.ToBlob();
             var nodeBlobRef = new NodeBlobRef(blobRef);
             dstManager.AddComponentData(entity, nodeBlobRef);
-            var vm = new VirtualMachine(nodeBlobRef, behaviorNodes);
+            var blackboard = new EntityBlackboard(dstManager, entity);
+            var vm = new VirtualMachine(nodeBlobRef, behaviorNodes, blackboard);
             dstManager.AddComponentData(entity, new VirtualMachineComponent { Value = vm });
             // if (_destroyNodes) Destroy(RootNode.gameObject);
         }
@@ -46,7 +47,7 @@ namespace EntitiesBT.Editor
             using (var blobBuilder = new BlobBuilder(Allocator.Temp, size))
             {
                 ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();
-                var types = blobBuilder.Allocate(ref blob.Types, nodes.Length);
+                // var types = blobBuilder.Allocate(ref blob.Types, nodes.Length);
                 var endIndices = blobBuilder.Allocate(ref blob.EndIndices, nodes.Length);
                 var offsets = blobBuilder.Allocate(ref blob.Offsets, nodes.Length);
                 var unsafePtr = (byte*) blobBuilder.Allocate(ref blob.DataBlob, blobSize).GetUnsafePtr();
