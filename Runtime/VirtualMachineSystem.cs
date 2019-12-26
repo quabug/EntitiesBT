@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Jobs;
 
 namespace EntitiesBT.Editor
 {
@@ -6,8 +7,7 @@ namespace EntitiesBT.Editor
     {
         protected override void OnUpdate()
         {
-            Entities.ForEach((Entity entity, BTRoot root, ref NodeBlobRef blob) =>
-                root.VirtualMachine.Tick());
+            Entities.ForEach((VirtualMachineComponent vm) => vm.Value.Tick());
         }
     }
 }
