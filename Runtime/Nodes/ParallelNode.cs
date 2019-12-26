@@ -5,13 +5,13 @@ namespace EntitiesBT.Nodes
 {
     public class ParallelNode : IBehaviorNode
     {
-        public unsafe void Reset(VirtualMachine vm, int index)
+        public unsafe void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             var childrenStates = new SimpleBlobArray<NodeState>(vm.GetNodeDataPtr(index));
             for (var i = 0; i < childrenStates.Length; i++) childrenStates[i] = NodeState.Running;
         }
 
-        public unsafe NodeState Tick(VirtualMachine vm, int index)
+        public unsafe NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
         {
             var childrenStates = new SimpleBlobArray<NodeState>(vm.GetNodeDataPtr(index));
             var hasAnyRunningChild = false;

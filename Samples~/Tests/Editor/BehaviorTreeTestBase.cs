@@ -27,7 +27,7 @@ namespace EntitiesBT.Test
         {
             var root = CreateBTNode(tree).GetComponent<BTNode>();
             var (blobRef, nodes) = root.ToBlob();
-            return new VirtualMachine(new NodeBlobRef(blobRef), nodes);
+            return new VirtualMachine(new NodeBlobRef(blobRef), nodes, null);
         }
     
         private static BTNode CreateA(string @params)
