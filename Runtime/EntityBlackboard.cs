@@ -41,7 +41,13 @@ namespace EntitiesBT
             }
         }
 
-        public object Get(object key)
+        public object this[object key]
+        {
+            get => Get(key);
+            set => Set(value, key);
+        }
+
+        private object Get(object key)
         {
             var type = key as Type;
             if (IsUnityComponentType(type)) return _getComponentObject(type);
@@ -51,7 +57,7 @@ namespace EntitiesBT
             return value;
         }
 
-        public void Set(object value, object key)
+        private void Set(object value, object key)
         {
             var type = key as Type;
             if (IsComponentDataType(type))
@@ -62,19 +68,13 @@ namespace EntitiesBT
             _dictionary[key] = value;
         }
 
-        public object this[object key]
-        {
-            get => Get(key);
-            set => Set(value, key);
-        }
-
-        bool IsComponentDataType(Type type) =>
+        private bool IsComponentDataType(Type type) =>
             type != null && type.IsValueType && typeof(IComponentData).IsAssignableFrom(type);
         
-        bool IsManagedDataType(Type type) =>
+        private bool IsManagedDataType(Type type) =>
             type != null && type.IsClass && typeof(IComponentData).IsAssignableFrom(type);
 
-        bool IsUnityComponentType(Type type) =>
+        private bool IsUnityComponentType(Type type) =>
             type != null && type.IsSubclassOf(typeof(UnityEngine.Component));
     }
 }

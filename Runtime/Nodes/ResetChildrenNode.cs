@@ -4,11 +4,18 @@ namespace EntitiesBT.Nodes
 {
     public class ResetChildrenNode : IBehaviorNode
     {
-        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard) {}
-
-        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
+        private readonly VirtualMachine _vm;
+        public ResetChildrenNode(VirtualMachine vm)
         {
-            foreach (var childIndex in vm.GetChildrenIndices(index)) vm.Reset(childIndex);
+            _vm = vm;
+        }
+        
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
+
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        {
+            foreach (var childIndex in blob.GetChildrenIndices(index))
+                _vm.Reset(childIndex, blob, blackboard);
             return NodeState.Success;
         }
     }

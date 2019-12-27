@@ -5,30 +5,36 @@ namespace EntitiesBT.Nodes
 {
     public class ParallelNode : IBehaviorNode
     {
-        public unsafe void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
+        private readonly VirtualMachine _vm;
+        public ParallelNode(VirtualMachine vm)
         {
-            var childrenStates = new SimpleBlobArray<NodeState>(vm.GetNodeDataPtr(index));
+            _vm = vm;
+        }
+        
+        public unsafe void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
+            var childrenStates = new SimpleBlobArray<NodeState>(blob.GetNodeDataPtr(index));
             for (var i = 0; i < childrenStates.Length; i++) childrenStates[i] = NodeState.Running;
         }
 
-        public unsafe NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
+        public unsafe NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            var childrenStates = new SimpleBlobArray<NodeState>(vm.GetNodeDataPtr(index));
+            var childrenStates = new SimpleBlobArray<NodeState>(blob.GetNodeDataPtr(index));
             var hasAnyRunningChild = false;
             var state = NodeState.Success;
             var localChildIndex = 0;
             var childIndex = index + 1;
-            while (childIndex < vm.EndIndex(index))
+            while (childIndex < blob.GetEndIndex(index))
             {
                 var childState = childrenStates[localChildIndex];
                 if (childState == NodeState.Running)
                 {
-                    childState = vm.Tick(childIndex);
+                    childState = _vm.Tick(childIndex, blob, blackboard);
                     childrenStates[localChildIndex] = childState;
                     hasAnyRunningChild = true;
                 }
 
-                childIndex = vm.EndIndex(childIndex);
+                childIndex = blob.GetEndIndex(childIndex);
                 localChildIndex++;
                 
                 if (state == NodeState.Running) continue;

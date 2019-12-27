@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -7,11 +8,17 @@ namespace EntitiesBT
 {
     public struct NodeBlob : INodeBlob
     {
+        public BlobArray<int> Types;
         public BlobArray<int> EndIndices;
         public BlobArray<int> Offsets;
         public BlobArray<byte> DataBlob;
 
         public int Count => Offsets.Length;
+
+        public int GetTypeId(int nodeIndex)
+        {
+            return Types[nodeIndex];
+        }
 
         public int GetEndIndex(int nodeIndex)
         {
@@ -28,8 +35,15 @@ namespace EntitiesBT
             return (void*) ((IntPtr) DataBlob.GetUnsafePtr() + Offsets[nodeIndex]);
         }
 
+        public IEnumerable<int> GetChildrenIndices(int parentIndex)
+        {
+            var endIndex = GetEndIndex(parentIndex);
+            for (var childIndex = parentIndex + 1; childIndex < endIndex; childIndex = GetEndIndex(childIndex))
+                yield return childIndex;
+        }
+
         public static int Size(int count, int dataSize) =>
-            dataSize + sizeof(int) * count * 2 /* EndIndices/Offsets */;
+            dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
     }
 
     public struct NodeBlobRef : IComponentData, INodeBlob
@@ -40,8 +54,10 @@ namespace EntitiesBT
         public NodeBlobRef(BlobAssetReference<NodeBlob> blobRef) => _blobRef = blobRef;
         
         public int Count => _blob.Count;
+        public int GetTypeId(int nodeIndex) => _blob.GetTypeId(nodeIndex);
         public int GetEndIndex(int nodeIndex) => _blob.GetEndIndex(nodeIndex);
         public unsafe void* GetNodeDataPtr(int nodeIndex) => _blob.GetNodeDataPtr(nodeIndex);
         public ref T GetNodeData<T>(int nodeIndex) where T : struct, INodeData => ref _blob.GetNodeData<T>(nodeIndex);
+        public IEnumerable<int> GetChildrenIndices(int parentIndex) => _blob.GetChildrenIndices(parentIndex);
     }
 }

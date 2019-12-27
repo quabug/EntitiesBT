@@ -6,13 +6,11 @@ using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public class BTTimer : BTNode
+    public class BTTimer : BTNode<TimerNode, TimerNode.Data>
     {
         public float TimeInSeconds;
         public NodeState BreakReturnState;
         
-        public override IBehaviorNode BehaviorNode => new TimerNode();
-        public override int Size => UnsafeUtility.SizeOf<TimerNode.Data>();
         public override unsafe void Build(void* dataPtr)
         {
             var ptr = (TimerNode.Data*) dataPtr;

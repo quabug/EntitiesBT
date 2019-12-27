@@ -5,6 +5,8 @@ namespace EntitiesBT.Nodes
 {
     public class TimerNode : IBehaviorNode
     {
+        private readonly VirtualMachine _vm;
+
         public struct Data : INodeData
         {
             public TimeSpan Target;
@@ -13,24 +15,29 @@ namespace EntitiesBT.Nodes
             public NodeState BreakReturnState;
         }
         
-        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
+        public TimerNode(VirtualMachine vm)
         {
-            ref var data = ref vm.GetNodeData<Data>(index);
+            _vm = vm;
+        }
+        
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
+            ref var data = ref blob.GetNodeData<Data>(index);
             data.Current = TimeSpan.Zero;
             data.ChildState = NodeState.Running;
         }
 
-        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref vm.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeData<Data>(index);
 
             if (data.Current >= data.Target)
                 return data.ChildState == NodeState.Running ? data.BreakReturnState : data.ChildState;
             
             var childIndex = index + 1;
-            if (data.ChildState == NodeState.Running && childIndex < vm.EndIndex(index))
+            if (data.ChildState == NodeState.Running && childIndex < blob.GetEndIndex(index))
             {
-                var childState = vm.Tick(childIndex);
+                var childState = _vm.Tick(childIndex, blob, blackboard);
                 data.ChildState = childState;
             }
             data.Current += ((TickDeltaTime)blackboard[typeof(TickDeltaTime)]).Value;

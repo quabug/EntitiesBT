@@ -7,11 +7,12 @@ namespace EntitiesBT
     {
         protected override void OnUpdate()
         {
-            Entities.ForEach((VirtualMachineComponent vm) =>
+            Entities.ForEach((Entity entity, BlackboardComponent bb, ref NodeBlobRef blob) =>
             {
+                var vm = EntityManager.GetSharedComponentData<VirtualMachineComponent>(entity).Value;
                 var deltaTime = TimeSpan.FromSeconds(Time.DeltaTime);
-                vm.Value.Blackboard[typeof(TickDeltaTime)] = new TickDeltaTime(deltaTime);
-                vm.Value.Tick();
+                bb.Value[typeof(TickDeltaTime)] = new TickDeltaTime(deltaTime);
+                vm.Tick(blob, bb.Value);
             });
         }
     }

@@ -4,7 +4,10 @@ using System.IO;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Editor;
+using EntitiesBT.Nodes;
 using NUnit.Framework;
+using Unity.Entities;
+using UnityEditor.Graphs.AnimationBlendTree;
 using UnityEngine;
 
 namespace EntitiesBT.Test
@@ -23,11 +26,38 @@ namespace EntitiesBT.Test
           , { "b", CreateB }
         };
 
-        protected VirtualMachine CreateVM(string tree)
+        protected IBlackboard _blackboard;
+        protected VirtualMachine _vm;
+        protected Registries<IBehaviorNode> _registries;
+        
+        class Blackboard : IBlackboard
+        {
+            public object this[object key]
+            {
+                get => throw new NotImplementedException();
+                set => throw new NotImplementedException();
+            }
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _blackboard = new Blackboard();
+            _registries = new Registries<IBehaviorNode>();
+            _vm = new VirtualMachine(_registries);
+            _registries.Register(new SequenceNode(_vm));
+            _registries.Register(new SelectorNode(_vm));
+            _registries.Register(new ParallelNode(_vm));
+            _registries.Register(new TestNode());
+            _registries.Register(new NodeA());
+            _registries.Register(new NodeB());
+        }
+
+        protected INodeBlob CreateBlob(string tree)
         {
             var root = CreateBTNode(tree).GetComponent<BTNode>();
-            var (blobRef, nodes) = root.ToBlob();
-            return new VirtualMachine(new NodeBlobRef(blobRef), nodes, null);
+            var blob = root.ToBlob(_registries);
+            return new NodeBlobRef(blob);
         }
     
         private static BTNode CreateA(string @params)

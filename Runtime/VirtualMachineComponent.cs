@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace EntitiesBT
 {
-    public class VirtualMachineComponent : IComponentData
+    public struct VirtualMachineComponent : ISharedComponentData
     {
         public VirtualMachine Value;
     }

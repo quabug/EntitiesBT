@@ -5,11 +5,9 @@ using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
-    public class SetAnimatorTrigger : BTNode
+    public class SetAnimatorTrigger : BTNode<SetAnimatorTriggerNode, SetAnimatorTriggerNode.Data>
     {
         public string TriggerName;
-        public override IBehaviorNode BehaviorNode => new SetAnimatorTriggerNode();
-        public override unsafe int Size => sizeof(SetAnimatorTriggerNode.Data);
         public override unsafe void Build(void* dataPtr) =>
             ((SetAnimatorTriggerNode.Data*) dataPtr)->Value = Animator.StringToHash(TriggerName);
     }
@@ -21,12 +19,12 @@ namespace EntitiesBT.Sample
             public int Value;
         }
 
-        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard) {}
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
 
-        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             var animator = (Animator)blackboard[typeof(Animator)];
-            animator.SetTrigger(vm.GetNodeData<Data>(index).Value);
+            animator.SetTrigger(blob.GetNodeData<Data>(index).Value);
             return NodeState.Success;
         }
     }
