@@ -7,7 +7,7 @@ namespace EntitiesBT.Editor
     [DisallowMultipleComponent]
     public abstract class BTNode : MonoBehaviour
     {
-        public abstract int GetTypeId(Registries<IBehaviorNode> registries);
+        public abstract int NodeId { get; }
         public abstract int Size { get; }
         public abstract unsafe void Build(void* dataPtr);
         
@@ -16,26 +16,12 @@ namespace EntitiesBT.Editor
     }
     
     [DisallowMultipleComponent]
-    public abstract class BTNode<T, U> : BTNode, INodeDataBuilder
-        where T : IBehaviorNode
-        where U : struct, INodeData
+    public abstract class BTNode<T> : BTNode, INodeDataBuilder
+        where T : struct, INodeData
     {
-        public override int GetTypeId(Registries<IBehaviorNode> registries) => registries.GetIndex<T>();
-        public override int Size => UnsafeUtility.SizeOf<U>();
+        public override int Size => UnsafeUtility.SizeOf<T>();
         public override unsafe void Build(void* dataPtr) {}
     }
     
     public struct ZeroNodeData : INodeData {}
-    
-    public class UnknownBehaviorNode : IBehaviorNode {
-        public void Reset(int index, INodeBlob blob, IBlackboard bb)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
 }

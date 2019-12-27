@@ -4,7 +4,7 @@ using System.Linq;
 using EntitiesBT.Core;
 using Unity.Entities;
 
-namespace EntitiesBT
+namespace EntitiesBT.Entities
 {
     public class EntityBlackboard : IBlackboard
     {

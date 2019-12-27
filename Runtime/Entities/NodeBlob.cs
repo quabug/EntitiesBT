@@ -4,7 +4,7 @@ using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
-namespace EntitiesBT
+namespace EntitiesBT.Entities
 {
     public struct NodeBlob : INodeBlob
     {

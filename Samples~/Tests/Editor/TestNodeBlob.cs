@@ -1,5 +1,6 @@
 using System.Linq;
 using EntitiesBT.Editor;
+using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using NUnit.Framework;
 using Unity.Collections;
@@ -87,12 +88,12 @@ namespace EntitiesBT.Test
         {
             var root = CreateBTNode("!seq>yes|no|b:1,1|a:111|run");
             var rootNode = root.GetComponent<BTNode>();
-            var blobRef = rootNode.ToBlob(_registries);
+            var blobRef = rootNode.ToBlob();
             
             Assert.True(blobRef.IsCreated);
             Assert.AreEqual(blobRef.Value.Count, 6);
             
-            Assert.AreEqual(blobRef.Value.Types.ToArray(), new [] { 0, 3, 3, 5, 4, 3 });
+            Assert.AreEqual(blobRef.Value.Types.ToArray(), new [] { SequenceNode.Id, TestNode.Id, TestNode.Id, NodeB.Id, NodeA.Id, TestNode.Id });
             Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 4, 24, 44, 52, 56 });
             Assert.AreEqual(blobRef.Value.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
             Assert.AreEqual(blobRef.Value.DataBlob.Length, 76);

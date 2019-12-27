@@ -3,18 +3,15 @@ using EntitiesBT.Nodes;
 
 namespace EntitiesBT.Editor
 {
-    public class BTRepeat : BTNode<UnknownBehaviorNode, ZeroNodeData>
+    public class BTRepeat : BTNode<ZeroNodeData>
     {
         public int RepeatTimes;
         public NodeState BreakStates;
-
-        public override int GetTypeId(Registries<IBehaviorNode> registries)
-        {
-            return RepeatTimes <= 0
-                ? registries.GetIndex<RepeatForeverNode>()
-                : registries.GetIndex<RepeatTimesNode>()
-            ;
-        }
+        
+        public override int NodeId => RepeatTimes <= 0
+            ? RepeatForeverNode.Id
+            : RepeatTimesNode.Id
+        ;
 
         public override unsafe int Size => RepeatTimes <= 0
             ? sizeof(RepeatForeverNode.Data)

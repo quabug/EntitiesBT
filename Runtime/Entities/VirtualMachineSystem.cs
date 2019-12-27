@@ -1,7 +1,8 @@
 using System;
+using EntitiesBT.Core;
 using Unity.Entities;
 
-namespace EntitiesBT
+namespace EntitiesBT.Entities
 {
     public class VirtualMachineSystem : ComponentSystem
     {
@@ -9,10 +10,9 @@ namespace EntitiesBT
         {
             Entities.ForEach((Entity entity, BlackboardComponent bb, ref NodeBlobRef blob) =>
             {
-                var vm = EntityManager.GetSharedComponentData<VirtualMachineComponent>(entity).Value;
                 var deltaTime = TimeSpan.FromSeconds(Time.DeltaTime);
                 bb.Value[typeof(TickDeltaTime)] = new TickDeltaTime(deltaTime);
-                vm.Tick(blob, bb.Value);
+                VirtualMachine.Tick(blob, bb.Value);
             });
         }
     }

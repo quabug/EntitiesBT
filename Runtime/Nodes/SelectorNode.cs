@@ -2,9 +2,13 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    public class SelectorNode : SuccessionNode
+    public static class SelectorNode
     {
-        public SelectorNode(VirtualMachine vm) : base(vm) { }
-        protected override NodeState ContinueState => NodeState.Failure;
+        public static int Id = 1;
+        
+        static SelectorNode()
+        {
+            VirtualMachine.Register(Id, SuccessionNode.Reset, SuccessionNode.Tick(NodeState.Failure));
+        }
     }
 }

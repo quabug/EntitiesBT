@@ -1,5 +1,6 @@
 using System.Linq;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -17,21 +18,19 @@ namespace EntitiesBT.Editor
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            // var blobRef = RootNode.ToBlob();
-            //
-            // var nodeBlobRef = new NodeBlobComponent(blobRef);
-            // dstManager.AddComponentData(entity, nodeBlobRef);
-            //
-            // var blackboard = new EntityBlackboard(dstManager, entity);
-            // dstManager.AddComponentData(entity, new BlackboardComponent {Value = blackboard});
-            // dstManager.AddComponentData(entity, new VirtualMachineComponent { Value = vm });
-            // if (_destroyNodes) Destroy(RootNode.gameObject);
+            var blobRef = new NodeBlobRef(RootNode.ToBlob());
+            var blackboard = new EntityBlackboard(dstManager, entity);
+            
+            VirtualMachine.Reset(blobRef, blackboard);
+            
+            dstManager.AddComponentData(entity, blobRef);
+            dstManager.AddComponentData(entity, new BlackboardComponent {Value = blackboard});
         }
     }
 
     public static class BehaviorTreeExtensions
     {
-        public static unsafe BlobAssetReference<NodeBlob> ToBlob(this BTNode root, Registries<IBehaviorNode> registries)
+        public static unsafe BlobAssetReference<NodeBlob> ToBlob(this BTNode root)
         {
             var nodes = root.DescendantsWithSelf().ToArray();
             var blobSize = nodes.Select(n => n.Size).Sum();
@@ -48,7 +47,7 @@ namespace EntitiesBT.Editor
                 for (var i = 0; i < nodes.Length; i++)
                 {
                     var node = nodes[i];
-                    types[i] = node.GetTypeId(registries);
+                    types[i] = node.NodeId;
                     node.Index = i;
                     offsets[i] = offset;
                     node.Build(unsafePtr + offset);

@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace EntitiesBT.Core
 {
-    public class Registries<T>
+    public class TypeRegistries<T>
     {
-        private readonly List<T> _registries = new List<T>();
+        private readonly List<T> _entries = new List<T>();
         private readonly Dictionary<Type, int> _indices = new Dictionary<Type, int>();
         
-        public void Register(T node)
+        public void Register(T entry)
         {
-            var type = node.GetType();
+            var type = entry.GetType();
             if (!_indices.ContainsKey(type))
             {
-                _indices[type] = _registries.Count;
-                _registries.Add(node);
+                _indices[type] = _entries.Count;
+                _entries.Add(entry);
             }
         }
 
@@ -23,6 +23,6 @@ namespace EntitiesBT.Core
             return _indices[typeof(U)];
         }
         
-        public T this[int index] => _registries[index];
+        public T this[int index] => _entries[index];
     }
 }

@@ -2,20 +2,21 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    public class ResetChildrenNode : IBehaviorNode
+    public static class ResetChildrenNode
     {
-        private readonly VirtualMachine _vm;
-        public ResetChildrenNode(VirtualMachine vm)
+        public static int Id = 6;
+        
+        static ResetChildrenNode()
         {
-            _vm = vm;
+            VirtualMachine.Register(Id, Reset, Tick);
         }
         
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
+        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
 
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             foreach (var childIndex in blob.GetChildrenIndices(index))
-                _vm.Reset(childIndex, blob, blackboard);
+                VirtualMachine.Reset(childIndex, blob, blackboard);
             return NodeState.Success;
         }
     }

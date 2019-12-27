@@ -3,10 +3,15 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    public class RepeatTimesNode : IBehaviorNode
+    public static class RepeatTimesNode
     {
-        private readonly VirtualMachine _vm;
-
+        public static int Id = 5;
+        
+        static RepeatTimesNode()
+        {
+            VirtualMachine.Register(Id, Reset, Tick);
+        }
+        
         public struct Data : INodeData
         {
             public int TargetTimes;
@@ -14,18 +19,13 @@ namespace EntitiesBT.Nodes
             public NodeState BreakStates;
         }
         
-        public RepeatTimesNode(VirtualMachine vm)
-        {
-            _vm = vm;
-        }
-        
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             data.CurrentTimes = 0;
         }
 
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             var childIndex = index + 1;
@@ -35,12 +35,12 @@ namespace EntitiesBT.Nodes
                 NodeState childState;
                 try
                 {
-                    childState = _vm.Tick(childIndex, blob, blackboard);
+                    childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 } catch (IndexOutOfRangeException)
                 {
                     // TODO: reset ticked children only?
-                    for (var i = index + 1; i < endIndex; i++) _vm.Reset(i, blob, blackboard);
-                    childState = _vm.Tick(childIndex, blob, blackboard);
+                    for (var i = index + 1; i < endIndex; i++) VirtualMachine.Reset(i, blob, blackboard);
+                    childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 }
                 if (data.BreakStates.HasFlag(childState)) return childState;
                 childIndex = blob.GetEndIndex(childIndex);

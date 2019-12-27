@@ -6,9 +6,11 @@ using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
-    public class EntityMove : BTNode<EntityMoveNode, EntityMoveNode.Data>
+    public class EntityMove : BTNode<EntityMoveNode.Data>
     {
         public Vector3 Velocity;
+        public override int NodeId => EntityMoveNode.Id;
+
         public override unsafe void Build(void* dataPtr)
         {
             var ptr = (EntityMoveNode.Data*) dataPtr;
@@ -16,16 +18,23 @@ namespace EntitiesBT.Sample
         }
     }
     
-    public class EntityMoveNode : IBehaviorNode
+    public static class EntityMoveNode
     {
+        public static int Id = 50;
+
+        static EntityMoveNode()
+        {
+            VirtualMachine.Register(Id, Reset, Tick);
+        }
+        
         public struct Data : INodeData
         {
             public float3 Velocity;
         }
         
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
+        static void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
 
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             var translation = (Translation) blackboard[typeof(Translation)];

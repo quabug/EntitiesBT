@@ -2,9 +2,13 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    public class SequenceNode : SuccessionNode
+    public static class SequenceNode
     {
-        public SequenceNode(VirtualMachine vm) : base(vm) { }
-        protected override NodeState ContinueState => NodeState.Success;
+        public static int Id = 0;
+
+        static SequenceNode()
+        {
+            VirtualMachine.Register(Id, SuccessionNode.Reset, SuccessionNode.Tick(NodeState.Success));
+        }
     }
 }

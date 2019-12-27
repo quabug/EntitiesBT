@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Editor;
+using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using NUnit.Framework;
 using Unity.Entities;
@@ -27,8 +28,6 @@ namespace EntitiesBT.Test
         };
 
         protected IBlackboard _blackboard;
-        protected VirtualMachine _vm;
-        protected Registries<IBehaviorNode> _registries;
         
         class Blackboard : IBlackboard
         {
@@ -43,20 +42,12 @@ namespace EntitiesBT.Test
         public void Setup()
         {
             _blackboard = new Blackboard();
-            _registries = new Registries<IBehaviorNode>();
-            _vm = new VirtualMachine(_registries);
-            _registries.Register(new SequenceNode(_vm));
-            _registries.Register(new SelectorNode(_vm));
-            _registries.Register(new ParallelNode(_vm));
-            _registries.Register(new TestNode());
-            _registries.Register(new NodeA());
-            _registries.Register(new NodeB());
         }
 
         protected INodeBlob CreateBlob(string tree)
         {
             var root = CreateBTNode(tree).GetComponent<BTNode>();
-            var blob = root.ToBlob(_registries);
+            var blob = root.ToBlob();
             return new NodeBlobRef(blob);
         }
     
