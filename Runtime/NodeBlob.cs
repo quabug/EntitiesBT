@@ -35,13 +35,6 @@ namespace EntitiesBT
             return (void*) ((IntPtr) DataBlob.GetUnsafePtr() + Offsets[nodeIndex]);
         }
 
-        public IEnumerable<int> GetChildrenIndices(int parentIndex)
-        {
-            var endIndex = GetEndIndex(parentIndex);
-            for (var childIndex = parentIndex + 1; childIndex < endIndex; childIndex = GetEndIndex(childIndex))
-                yield return childIndex;
-        }
-
         public static int Size(int count, int dataSize) =>
             dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
     }
@@ -58,6 +51,5 @@ namespace EntitiesBT
         public int GetEndIndex(int nodeIndex) => _blob.GetEndIndex(nodeIndex);
         public unsafe void* GetNodeDataPtr(int nodeIndex) => _blob.GetNodeDataPtr(nodeIndex);
         public ref T GetNodeData<T>(int nodeIndex) where T : struct, INodeData => ref _blob.GetNodeData<T>(nodeIndex);
-        public IEnumerable<int> GetChildrenIndices(int parentIndex) => _blob.GetChildrenIndices(parentIndex);
     }
 }

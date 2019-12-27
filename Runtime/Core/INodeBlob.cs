@@ -10,7 +10,16 @@ namespace EntitiesBT.Core
         int GetEndIndex(int nodeIndex);
         ref T GetNodeData<T>(int nodeIndex) where T : struct, INodeData;
         unsafe void* GetNodeDataPtr(int nodeIndex);
-        IEnumerable<int> GetChildrenIndices(int parentIndex);
+    }
+
+    public static class NodeBlobExtensions
+    {
+        public static IEnumerable<int> GetChildrenIndices(this INodeBlob blob, int parentIndex)
+        {
+            var endIndex = blob.GetEndIndex(parentIndex);
+            for (var childIndex = parentIndex + 1; childIndex < endIndex; childIndex = blob.GetEndIndex(childIndex))
+                yield return childIndex;
+        }
     }
 
 }
