@@ -3,41 +3,41 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    public abstract class SuccessionNode : IBehaviorNode
+    public static class SuccessionNode
     {
         public struct Data : INodeData
         {
             public int ChildIndex;
         }
-        
-        protected abstract NodeState ContinueState { get; }
 
-        public virtual void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
+        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            vm.GetNodeData<Data>(index).ChildIndex = index + 1;
+            blob.GetNodeData<Data>(index).ChildIndex = index + 1;
         }
 
-        public virtual NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
+        public static Func<int, INodeBlob, IBlackboard, NodeState> Tick(NodeState continueState)
         {
-            ref var childIndex = ref vm.GetNodeData<Data>(index).ChildIndex;
-            if (childIndex >= vm.EndIndex(index)) throw new IndexOutOfRangeException();
-            
-            while (childIndex < vm.EndIndex(index))
+            return (index, blob, bb) =>
             {
-                var childState = vm.Tick(childIndex);
-                
-                if (childState == NodeState.Running)
-                    return childState;
-                
-                if (childState != ContinueState)
+                ref var childIndex = ref blob.GetNodeData<Data>(index).ChildIndex;
+                if (childIndex >= blob.GetEndIndex(index)) throw new IndexOutOfRangeException();
+
+                while (childIndex < blob.GetEndIndex(index))
                 {
-                    childIndex = vm.EndIndex(index);
-                    return childState;
+                    var childState = VirtualMachine.Tick(childIndex, blob, bb);
+
+                    if (childState == NodeState.Running) return childState;
+
+                    if (childState != continueState)
+                    {
+                        childIndex = blob.GetEndIndex(index);
+                        return childState;
+                    }
+
+                    childIndex = blob.GetEndIndex(childIndex);
                 }
-                
-                childIndex = vm.EndIndex(childIndex);
-            }
-            return ContinueState;
+                return continueState;
+            };
         }
     }
 }

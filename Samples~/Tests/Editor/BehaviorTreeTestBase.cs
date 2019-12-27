@@ -4,7 +4,11 @@ using System.IO;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Editor;
+using EntitiesBT.Entities;
+using EntitiesBT.Nodes;
 using NUnit.Framework;
+using Unity.Entities;
+using UnityEditor.Graphs.AnimationBlendTree;
 using UnityEngine;
 
 namespace EntitiesBT.Test
@@ -23,11 +27,28 @@ namespace EntitiesBT.Test
           , { "b", CreateB }
         };
 
-        protected VirtualMachine CreateVM(string tree)
+        protected IBlackboard _blackboard;
+        
+        class Blackboard : IBlackboard
+        {
+            public object this[object key]
+            {
+                get => throw new NotImplementedException();
+                set => throw new NotImplementedException();
+            }
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _blackboard = new Blackboard();
+        }
+
+        protected INodeBlob CreateBlob(string tree)
         {
             var root = CreateBTNode(tree).GetComponent<BTNode>();
-            var (blobRef, nodes) = root.ToBlob();
-            return new VirtualMachine(new NodeBlobRef(blobRef), nodes, null);
+            var blob = root.ToBlob();
+            return new NodeBlobRef(blob);
         }
     
         private static BTNode CreateA(string @params)

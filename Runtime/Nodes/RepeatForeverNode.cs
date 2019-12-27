@@ -3,35 +3,42 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    public class RepeatForeverNode : IBehaviorNode
+    public static class RepeatForeverNode
     {
+        public static int Id = 4;
+
+        static RepeatForeverNode()
+        {
+            VirtualMachine.Register(Id, Reset, Tick);
+        }
+        
         public struct Data : INodeData
         {
             public NodeState BreakStates;
         }
         
-        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard) {}
+        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
 
-        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref vm.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeData<Data>(index);
             var childIndex = index + 1;
-            var endIndex = vm.EndIndex(index);
+            var endIndex = blob.GetEndIndex(index);
             while (childIndex < endIndex)
             {
                 NodeState childState;
                 try
                 {
-                    childState = vm.Tick(childIndex);
+                    childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 } catch (IndexOutOfRangeException)
                 {
                     // TODO: reset ticked node only?
-                    for (var i = index + 1; i < endIndex; i++) vm.Reset(i);
-                    childState = vm.Tick(childIndex);
+                    for (var i = index + 1; i < endIndex; i++) VirtualMachine.Reset(i, blob, blackboard);
+                    childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 }
                 if (data.BreakStates.HasFlag(childState))
                     return childState;
-                childIndex = vm.EndIndex(childIndex);
+                childIndex = blob.GetEndIndex(childIndex);
             }
             return NodeState.Running;
         }

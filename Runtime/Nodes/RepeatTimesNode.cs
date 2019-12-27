@@ -3,8 +3,15 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    public class RepeatTimesNode : IBehaviorNode
+    public static class RepeatTimesNode
     {
+        public static int Id = 5;
+        
+        static RepeatTimesNode()
+        {
+            VirtualMachine.Register(Id, Reset, Tick);
+        }
+        
         public struct Data : INodeData
         {
             public int TargetTimes;
@@ -12,31 +19,31 @@ namespace EntitiesBT.Nodes
             public NodeState BreakStates;
         }
         
-        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
+        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref vm.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeData<Data>(index);
             data.CurrentTimes = 0;
         }
 
-        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref vm.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeData<Data>(index);
             var childIndex = index + 1;
-            var endIndex = vm.EndIndex(index);
+            var endIndex = blob.GetEndIndex(index);
             while (childIndex < endIndex)
             {
                 NodeState childState;
                 try
                 {
-                    childState = vm.Tick(childIndex);
+                    childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 } catch (IndexOutOfRangeException)
                 {
                     // TODO: reset ticked children only?
-                    for (var i = index + 1; i < endIndex; i++) vm.Reset(i);
-                    childState = vm.Tick(childIndex);
+                    for (var i = index + 1; i < endIndex; i++) VirtualMachine.Reset(i, blob, blackboard);
+                    childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 }
                 if (data.BreakStates.HasFlag(childState)) return childState;
-                childIndex = vm.EndIndex(childIndex);
+                childIndex = blob.GetEndIndex(childIndex);
             }
             data.CurrentTimes++;
             if (data.CurrentTimes == data.TargetTimes) return NodeState.Success;

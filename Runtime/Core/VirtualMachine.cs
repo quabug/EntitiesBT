@@ -1,91 +1,55 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 
 namespace EntitiesBT.Core
 {
-    [Serializable]
-    public class VirtualMachine
+    using ResetFunc = Action<int, INodeBlob, IBlackboard>;
+    using TickFunc = Func<int, INodeBlob, IBlackboard, NodeState>;
+    public static class VirtualMachine
     {
-        private readonly object _tickLocker = new object();
+        private static readonly Dictionary<int, ResetFunc> _resets = new Dictionary<int, ResetFunc>();
+        private static readonly Dictionary<int, TickFunc> _ticks = new Dictionary<int, TickFunc>();
 
-        public readonly IList<IBehaviorNode> BehaviorNodes;
-        public readonly INodeBlob NodeBlob;
-        public readonly IBlackboard Blackboard;
-
-        public VirtualMachine(INodeBlob nodeBlob, IList<IBehaviorNode> nodes, IBlackboard blackboard)
+        public static void Register(int id, ResetFunc reset, TickFunc tick)
         {
-            Blackboard = blackboard;
-            NodeBlob = nodeBlob;
-            BehaviorNodes = nodes;
-            ResetAll();
+            if (_resets.ContainsKey(id)) throw new DuplicateNameException($"Reset function {id} already registered");
+            if (_ticks.ContainsKey(id)) throw new DuplicateNameException($"Tick function {id} already registered");
+
+            _resets[id] = reset;
+            _ticks[id] = tick;
         }
-
-        public NodeState Tick()
+        
+        public static NodeState Tick(INodeBlob blob, IBlackboard bb)
         {
-            lock (_tickLocker) return Tick(0);
+            return Tick(0, blob, bb);
         }
-
-        public NodeState Tick(int index)
+        
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var node = BehaviorNodes[index];
-            var state = node.Tick(this, index, Blackboard);
+            var typeId = blob.GetTypeId(index);
+            var state = _ticks[typeId](index, blob, bb);
             // Debug.Log($"[BT] tick: {index}-{node.GetType().Name}-{state}");
             return state;
         }
 
-        public int EndIndex(int index)
+        public static void Reset(int index, INodeBlob blob, IBlackboard bb)
         {
-            return NodeBlob.GetEndIndex(index);
+            var typeId = blob.GetTypeId(index);
+            _resets[typeId](index, blob, bb);
+            // Debug.Log($"[BT] tick: {index}-{node.GetType().Name}-{state}");
         }
 
-        public int ChildrenCount(int parentIndex)
+        public static void Reset(int fromIndex, int count, INodeBlob blob, IBlackboard bb)
         {
-            return GetChildrenIndices(parentIndex).Count();
+            for (var i = fromIndex; i < fromIndex + count; i++)
+                Reset(i, blob, bb);
         }
 
-        public IEnumerable<int> GetChildrenIndices(int parentIndex)
+        public static void Reset(INodeBlob blob, IBlackboard bb)
         {
-            var endIndex = EndIndex(parentIndex);
-            var childIndex = parentIndex + 1;
-            for (; childIndex < endIndex; childIndex = EndIndex(childIndex))
-            {
-                yield return childIndex;
-            }
-        }
-        
-        public IEnumerable<int> GetDescendantsIndices(int parentIndex)
-        {
-            var endIndex = EndIndex(parentIndex);
-            var firstChildIndex = parentIndex + 1;
-            return Enumerable.Range(firstChildIndex, endIndex - firstChildIndex);
-        }
-
-        public IBehaviorNode GetBehaviorNode(int index)
-        {
-            return BehaviorNodes[index];
-        }
-
-        public ref T GetNodeData<T>(int index) where T : struct, INodeData
-        {
-            return ref NodeBlob.GetNodeData<T>(index);
-        }
-
-        public unsafe void* GetNodeDataPtr(int index)
-        {
-            return NodeBlob.GetNodeDataPtr(index);
-        }
-
-        public void Reset(int index)
-        {
-            var node = BehaviorNodes[index];
-            // Debug.Log($"[BT] reset: {index}-{node.GetType().Name}");
-            node.Reset(this, index, Blackboard);
-        }
-
-        public void ResetAll()
-        {
-            for (var index = 0; index < BehaviorNodes.Count; ++index) Reset(index);
+            var count = blob.GetEndIndex(0);
+            Reset(0, count, blob, bb);
         }
     }
 }

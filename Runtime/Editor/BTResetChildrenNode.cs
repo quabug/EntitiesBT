@@ -1,12 +1,9 @@
-using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 
 namespace EntitiesBT.Editor
 {
-    public class BTResetChildrenNode : BTNode
+    public class BTResetChildrenNode : BTNode<ZeroNodeData>
     {
-        public override unsafe void Build(void* dataPtr) {}
-        public override IBehaviorNode BehaviorNode => new ResetChildrenNode();
-        public override int Size => 0;
+        public override int NodeId => ResetChildrenNode.Id;
     }
 }

@@ -3,23 +3,30 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    public class DelayTimerNode : IBehaviorNode
+    public static class DelayTimerNode
     {
+        public static int Id = 8;
+
+        static DelayTimerNode()
+        {
+            VirtualMachine.Register(Id, Reset, Tick);
+        }
+        
         public struct Data : INodeData
         {
             public TimeSpan Target;
             public TimeSpan Current;
         }
         
-        public void Reset(VirtualMachine vm, int index, IBlackboard blackboard)
+        static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref vm.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeData<Data>(index);
             data.Current = TimeSpan.Zero;
         }
 
-        public NodeState Tick(VirtualMachine vm, int index, IBlackboard blackboard)
+        static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref vm.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeData<Data>(index);
             if (data.Current >= data.Target)
                 return NodeState.Success;
             
