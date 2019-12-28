@@ -1,0 +1,17 @@
+{
+    "name": "GameObjectWithoutEntitySample",
+    "references": [
+        "GUID:c7babe7561eb244059259745ef27b866",
+        "GUID:d3630359ae08047918d5cd6cddd51767",
+        "GUID:734d92eba21c94caba915361bd5ac177"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
