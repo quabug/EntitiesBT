@@ -41,10 +41,10 @@ namespace EntitiesBT.Entities
 
     public struct NodeBlobRef : IComponentData, INodeBlob
     {
-        private BlobAssetReference<NodeBlob> _blobRef;
-        private ref NodeBlob _blob => ref _blobRef.Value;
+        private ref NodeBlob _blob => ref BlobRef.Value;
+        public BlobAssetReference<NodeBlob> BlobRef;
         
-        public NodeBlobRef(BlobAssetReference<NodeBlob> blobRef) => _blobRef = blobRef;
+        public NodeBlobRef(BlobAssetReference<NodeBlob> blobRef) => BlobRef = blobRef;
         
         public int Count => _blob.Count;
         public int GetTypeId(int nodeIndex) => _blob.GetTypeId(nodeIndex);

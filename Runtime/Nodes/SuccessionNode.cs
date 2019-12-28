@@ -20,9 +20,10 @@ namespace EntitiesBT.Nodes
             return (index, blob, bb) =>
             {
                 ref var childIndex = ref blob.GetNodeData<Data>(index).ChildIndex;
-                if (childIndex >= blob.GetEndIndex(index)) throw new IndexOutOfRangeException();
+                var endIndex = blob.GetEndIndex(index);
+                if (childIndex >= endIndex) throw new IndexOutOfRangeException();
 
-                while (childIndex < blob.GetEndIndex(index))
+                while (childIndex < endIndex)
                 {
                     var childState = VirtualMachine.Tick(childIndex, blob, bb);
 
@@ -30,7 +31,7 @@ namespace EntitiesBT.Nodes
 
                     if (childState != continueState)
                     {
-                        childIndex = blob.GetEndIndex(index);
+                        childIndex = endIndex;
                         return childState;
                     }
 
