@@ -2,7 +2,7 @@ using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
-namespace EntitiesBT.Editor
+namespace EntitiesBT.Components
 {
     [DisallowMultipleComponent]
     public abstract class BTNode : MonoBehaviour

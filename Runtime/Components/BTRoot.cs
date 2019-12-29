@@ -5,7 +5,7 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-namespace EntitiesBT.Editor
+namespace EntitiesBT.Components
 {
     [DisallowMultipleComponent]
     public class BTRoot : MonoBehaviour, IConvertGameObjectToEntity

@@ -256,7 +256,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01f5b98cb103407fabb64e2e665e8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 2006228427}
   TriggerName: Jump
 --- !u!1 &563495152
 GameObject:
@@ -301,7 +300,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01f5b98cb103407fabb64e2e665e8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 2006228427}
   TriggerName: Roll
 --- !u!1 &669880421
 GameObject:
@@ -700,7 +698,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01f5b98cb103407fabb64e2e665e8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 2006228427}
   TriggerName: Crouch
 --- !u!1 &2006228425
 GameObject:
@@ -717,7 +714,7 @@ GameObject:
   - component: {fileID: 2006228426}
   - component: {fileID: 2006228433}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

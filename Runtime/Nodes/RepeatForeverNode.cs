@@ -3,9 +3,10 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
+    [BehaviorNode("A13666BD-48E3-414A-BD13-5C696F2EA87E")]
     public static class RepeatForeverNode
     {
-        public static int Id = 4;
+        public static readonly int Id = typeof(RepeatForeverNode).GetBehaviorNodeId();
 
         static RepeatForeverNode()
         {
@@ -17,9 +18,9 @@ namespace EntitiesBT.Nodes
             public NodeState BreakStates;
         }
         
-        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
+        private static void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        private static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             var childIndex = index + 1;

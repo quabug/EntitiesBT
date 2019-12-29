@@ -7,7 +7,7 @@
         "Unity.Entities",
         "EntitiesBT.Runtime",
         "EntitiesBT.Tests.Runtime",
-        "EntitiesBT.Editor"
+        "EntitiesBT.Components"
     ],
     "includePlatforms": [
         "Editor"

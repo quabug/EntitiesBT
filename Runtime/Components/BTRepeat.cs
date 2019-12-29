@@ -1,7 +1,7 @@
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 
-namespace EntitiesBT.Editor
+namespace EntitiesBT.Components
 {
     public class BTRepeat : BTNode<ZeroNodeData>
     {

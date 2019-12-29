@@ -1,6 +1,6 @@
 using EntitiesBT.Nodes;
 
-namespace EntitiesBT.Editor
+namespace EntitiesBT.Components
 {
     public class BTSequence : BTNode<SuccessionNode.Data>
     {

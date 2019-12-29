@@ -2,13 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Editor;
 using EntitiesBT.Entities;
-using EntitiesBT.Nodes;
 using NUnit.Framework;
-using Unity.Entities;
-using UnityEditor.Graphs.AnimationBlendTree;
 using UnityEngine;
 
 namespace EntitiesBT.Test

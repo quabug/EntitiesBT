@@ -1,12 +1,13 @@
+using System;
+using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Editor;
 using NUnit.Framework;
 
 namespace EntitiesBT.Test
 {
     public static class TestNode
     {
-        public static int Id = 103;
+        public static readonly int Id = new Guid("59E8EB08-1652-45F3-81DB-775D9D76508D").GetHashCode();
 
         static TestNode()
         {

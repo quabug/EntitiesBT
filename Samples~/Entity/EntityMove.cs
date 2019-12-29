@@ -1,5 +1,6 @@
+using System;
 using EntitiesBT.Core;
-using EntitiesBT.Editor;
+using EntitiesBT.Components;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace EntitiesBT.Sample
     
     public static class EntityMoveNode
     {
-        public static int Id = 50;
+        public static readonly int Id = new Guid("F5C2EE7E-690A-4B5C-9489-FB362C949192").GetHashCode();
 
         static EntityMoveNode()
         {

@@ -1,6 +1,6 @@
-﻿using EntitiesBT.Core;
-using EntitiesBT.Editor;
-using UnityEditor.Animations;
+﻿using System;
+using EntitiesBT.Components;
+using EntitiesBT.Core;
 using UnityEngine;
 
 namespace EntitiesBT.Sample
@@ -16,7 +16,7 @@ namespace EntitiesBT.Sample
     
     public static class SetAnimatorTriggerNode
     {
-        public static int Id = 50;
+        public static readonly int Id = new Guid("EF8A0D43-DEA1-4D31-953C-77CD0BD8E26C").GetHashCode();
 
         static SetAnimatorTriggerNode()
         {

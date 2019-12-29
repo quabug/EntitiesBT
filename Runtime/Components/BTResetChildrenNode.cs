@@ -1,6 +1,6 @@
 using EntitiesBT.Nodes;
 
-namespace EntitiesBT.Editor
+namespace EntitiesBT.Components
 {
     public class BTResetChildrenNode : BTNode<ZeroNodeData>
     {
