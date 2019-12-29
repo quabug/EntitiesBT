@@ -32,7 +32,7 @@ namespace EntitiesBT.Sample
 
         static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            var animator = (Animator)blackboard[typeof(Animator)];
+            var animator = blackboard.GetData<Animator>();
             animator.SetTrigger(blob.GetNodeData<Data>(index).Value);
             return NodeState.Success;
         }

@@ -34,11 +34,11 @@ namespace EntitiesBT.Sample
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var deltaTime = (float)((TickDeltaTime) bb[typeof(TickDeltaTime)]).Value.TotalSeconds;
+            var deltaTime = (float)bb.GetData<TickDeltaTime>().Value.TotalSeconds;
             ref var data = ref blob.GetNodeData<Data>(index);
-            var transform = (Transform)bb[typeof(Transform)];
+            var transform = bb.GetData<Transform>();
             var deltaMove = data.Velocity * deltaTime;
-            transform.position = transform.position + deltaMove;
+            transform.position += deltaMove;
             return NodeState.Running;
         }
     }

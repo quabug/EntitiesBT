@@ -38,10 +38,10 @@ namespace EntitiesBT.Sample
         static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
-            var translation = (Translation) blackboard[typeof(Translation)];
-            var deltaTime = (TickDeltaTime) blackboard[typeof(TickDeltaTime)];
+            var translation = blackboard.GetData<Translation>();
+            var deltaTime = blackboard.GetData<TickDeltaTime>();
             translation.Value += data.Velocity * (float)deltaTime.Value.TotalSeconds;
-            blackboard[typeof(Translation)] = translation;
+            blackboard.SetData(translation);;
             return NodeState.Running;
         }
     }

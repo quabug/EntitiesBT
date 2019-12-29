@@ -41,7 +41,7 @@ namespace EntitiesBT.Nodes
                 var childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 data.ChildState = childState;
             }
-            data.Current += ((TickDeltaTime)blackboard[typeof(TickDeltaTime)]).Value;
+            data.Current += blackboard.GetData<TickDeltaTime>().Value;
             return NodeState.Running;
         }
     }
