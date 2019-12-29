@@ -6,12 +6,10 @@ using UnityEngine;
 
 namespace EntitiesBT.Components
 {
-    public class BTTimer : BTNode<TimerNode.Data>
+    public class BTTimer : BTNode<TimerNode, TimerNode.Data>
     {
         public float TimeInSeconds;
         public NodeState BreakReturnState;
-
-        public override int NodeId => TimerNode.Id;
 
         public override unsafe void Build(void* dataPtr)
         {

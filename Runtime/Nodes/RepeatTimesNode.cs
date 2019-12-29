@@ -3,16 +3,9 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    [BehaviorNode("76E27039-91C1-4DEF-AFEF-1EDDBAAE8CCE")]
-    public static class RepeatTimesNode
+    [BehaviorNode("76E27039-91C1-4DEF-AFEF-1EDDBAAE8CCE", BehaviorNodeType.Decorate)]
+    public class RepeatTimesNode
     {
-        public static readonly int Id = typeof(RepeatTimesNode).GetBehaviorNodeId();
-        
-        static RepeatTimesNode()
-        {
-            VirtualMachine.Register(Id, Reset, Tick);
-        }
-        
         public struct Data : INodeData
         {
             public int TargetTimes;
@@ -20,18 +13,18 @@ namespace EntitiesBT.Nodes
             public NodeState BreakStates;
         }
 
-        private static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             data.CurrentTimes = 0;
         }
 
-        private static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             var childIndex = index + 1;
             var endIndex = blob.GetEndIndex(index);
-            while (childIndex < endIndex)
+            if (childIndex < endIndex)
             {
                 NodeState childState;
                 try
@@ -44,7 +37,6 @@ namespace EntitiesBT.Nodes
                     childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 }
                 if (data.BreakStates.HasFlag(childState)) return childState;
-                childIndex = blob.GetEndIndex(childIndex);
             }
             data.CurrentTimes++;
             if (data.CurrentTimes == data.TargetTimes) return NodeState.Success;
