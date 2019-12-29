@@ -3,16 +3,9 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
-    [BehaviorNode("46540F67-6145-4433-9A3A-E470992B952E")]
-    public static class TimerNode
+    [BehaviorNode("46540F67-6145-4433-9A3A-E470992B952E", BehaviorNodeType.Decorate)]
+    public class TimerNode
     {
-        public static readonly int Id = typeof(TimerNode).GetBehaviorNodeId();
-        
-        static TimerNode()
-        {
-            VirtualMachine.Register(Id, Reset, Tick);
-        }
-
         public struct Data : INodeData
         {
             public TimeSpan Target;
@@ -21,14 +14,14 @@ namespace EntitiesBT.Nodes
             public NodeState BreakReturnState;
         }
 
-        private static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             data.Current = TimeSpan.Zero;
             data.ChildState = NodeState.Running;
         }
 
-        private static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
 

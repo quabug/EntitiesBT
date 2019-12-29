@@ -1,31 +1,24 @@
-using System;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using UnityEngine;
 
 namespace EntitiesBT.Test
 {
-    public static class NodeB
+    [BehaviorNode("793F38C5-B0BD-410A-87BD-D122B10E636F")]
+    public class NodeB
     {
-        public static readonly int Id = new Guid("793F38C5-B0BD-410A-87BD-D122B10E636F").GetHashCode();
-
-        static NodeB()
-        {
-            VirtualMachine.Register(Id, Reset, Tick);
-        }
-        
         public struct Data : INodeData
         {
             public int B;
             public int BB;
         }
 
-        static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
             Debug.Log($"[B]: reset {index}");
         }
 
-        static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             var data = blob.GetNodeData<Data>(index);
             var state = data.B == data.BB ? NodeState.Success : NodeState.Failure;
@@ -34,12 +27,10 @@ namespace EntitiesBT.Test
         }
     }
     
-    public class BTTestNodeB : BTNode<NodeB.Data>
+    public class BTTestNodeB : BTNode<NodeB, NodeB.Data>
     {
         public int B;
         public int BB;
-
-        public override int NodeId => NodeB.Id;
 
         public override unsafe void Build(void* dataPtr)
         {

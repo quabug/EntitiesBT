@@ -17,6 +17,12 @@ namespace EntitiesBT.Editor
             {
                 var attributes = type.GetCustomAttributes(typeof(BehaviorNodeAttribute));
                 if (!attributes.Any()) continue;
+
+                foreach (var constructor in type.GetConstructors())
+                {
+                    if (constructor.GetParameters().Length > 0)
+                        throw new Exception($"behavior node {type.Name} is not allowed to have constructor with parameters.");
+                }
                 
                 var behaviorNodeAttribute = attributes.First() as BehaviorNodeAttribute;
                 if (dictionary.TryGetValue(behaviorNodeAttribute.Id, out var other))

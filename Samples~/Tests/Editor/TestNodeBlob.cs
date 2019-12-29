@@ -1,5 +1,6 @@
 using System.Linq;
 using EntitiesBT.Components;
+using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using NUnit.Framework;
@@ -92,8 +93,9 @@ namespace EntitiesBT.Test
             
             Assert.True(blobRef.IsCreated);
             Assert.AreEqual(blobRef.Value.Count, 6);
-            
-            Assert.AreEqual(blobRef.Value.Types.ToArray(), new [] { SequenceNode.Id, TestNode.Id, TestNode.Id, NodeB.Id, NodeA.Id, TestNode.Id });
+
+            var types = new[] {typeof(SequenceNode), typeof(TestNode), typeof(TestNode), typeof(NodeB), typeof(NodeA), typeof(TestNode)};
+            Assert.AreEqual(blobRef.Value.Types.ToArray(), types.Select(t => t.GetBehaviorNodeAttribute().Id));
             Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 4, 24, 44, 52, 56 });
             Assert.AreEqual(blobRef.Value.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
             Assert.AreEqual(blobRef.Value.DataBlob.Length, 76);

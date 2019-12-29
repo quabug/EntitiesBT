@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Reflection;
 
 namespace EntitiesBT.Core
 {
@@ -12,7 +14,36 @@ namespace EntitiesBT.Core
         private static readonly Dictionary<int, ResetFunc> _resets = new Dictionary<int, ResetFunc>();
         private static readonly Dictionary<int, TickFunc> _ticks = new Dictionary<int, TickFunc>();
 
-        public static void Register(int id, ResetFunc reset, TickFunc tick)
+        static VirtualMachine()
+        {
+            foreach (var type in AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes()))
+            {
+                var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
+                if (attribute == null) continue;
+                var resetFunc = type.GetMethod(attribute.ResetFunc).GetResetFunc();
+                var tickFunc = type.GetMethod(attribute.TickFunc).GetTickFunc();
+                Register(attribute.Id, resetFunc, tickFunc);
+            }
+        }
+
+        static ResetFunc GetResetFunc(this MethodInfo methodInfo)
+        {
+            return methodInfo == null
+                ? (index, blob, bb) => {}
+                : (ResetFunc)methodInfo.CreateDelegate(typeof(ResetFunc))
+            ;
+        }
+
+        static TickFunc GetTickFunc(this MethodInfo methodInfo)
+        {
+            return methodInfo == null
+                ? (index, blob, bb) => NodeState.Running
+                : (TickFunc)methodInfo.CreateDelegate(typeof(TickFunc))
+            ;
+        }
+
+        static void Register(int id, ResetFunc reset, TickFunc tick)
         {
             if (_resets.ContainsKey(id)) throw new DuplicateNameException($"Reset function {id} already registered");
             if (_ticks.ContainsKey(id)) throw new DuplicateNameException($"Tick function {id} already registered");
