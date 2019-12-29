@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
-using EntitiesBT.Editor;
+using EntitiesBT.Components;
 using EntitiesBT.Entities;
 using UnityEngine;
 

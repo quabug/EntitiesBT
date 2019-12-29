@@ -1,5 +1,6 @@
+using System;
 using EntitiesBT.Core;
-using EntitiesBT.Editor;
+using EntitiesBT.Components;
 using UnityEngine;
 
 namespace EntitiesBT.Sample
@@ -17,7 +18,7 @@ namespace EntitiesBT.Sample
     
     public static class TransformMoveNode
     {
-        public static readonly int Id = 50;
+        public static readonly int Id = new Guid("B6DBD77F-1C83-4B0A-BB46-ECEE8D3C1BEF").GetHashCode();
 
         static TransformMoveNode()
         {

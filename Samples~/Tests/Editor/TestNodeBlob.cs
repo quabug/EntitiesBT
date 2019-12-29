@@ -1,5 +1,5 @@
 using System.Linq;
-using EntitiesBT.Editor;
+using EntitiesBT.Components;
 using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using NUnit.Framework;

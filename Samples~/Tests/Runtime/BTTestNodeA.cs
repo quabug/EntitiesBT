@@ -1,12 +1,13 @@
+using System;
+using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Editor;
 using UnityEngine;
 
 namespace EntitiesBT.Test
 {
     public static class NodeA
     {
-        public static int Id = 100;
+        public static readonly int Id = new Guid("29E6B4D9-4388-4EA8-8F36-162ACBE5C166").GetHashCode();
 
         static NodeA()
         {
