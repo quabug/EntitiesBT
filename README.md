@@ -17,5 +17,8 @@ While developing my new game by using Unity Entities, I found that the existing 
 TODO
 
 ### Sample: [Entity](Samples%7E/Entity)
+![Entity Sample](https://user-images.githubusercontent.com/683655/71561395-ddadff80-2ab0-11ea-9bd9-c5027c339331.png)
 ### Sample: [Animator](Samples%7E/Animator)
+![Animator Sample](https://user-images.githubusercontent.com/683655/71561423-37aec500-2ab1-11ea-9eb0-fcac56e332c9.png)
 ### Sample: [GameObject without entity](Samples%7E/GameObjectWithoutEntity)
+![GameObject Sample](https://user-images.githubusercontent.com/683655/71561413-1bab2380-2ab1-11ea-84a3-b3fa64f0592f.png)
