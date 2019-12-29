@@ -31,7 +31,7 @@ namespace EntitiesBT.Nodes
             if (data.Current >= data.Target)
                 return NodeState.Success;
             
-            data.Current += ((TickDeltaTime)blackboard[typeof(TickDeltaTime)]).Value;
+            data.Current += blackboard.GetData<TickDeltaTime>().Value;
             return NodeState.Running;
         }
     }
