@@ -4,7 +4,7 @@ using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using Unity.Collections.LowLevel.Unsafe;
 
-namespace EntitiesBT.Editor
+namespace EntitiesBT.Components
 {
     public class BTParallel : BTNode<ZeroNodeData>
     {

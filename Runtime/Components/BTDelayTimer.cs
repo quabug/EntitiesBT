@@ -1,7 +1,7 @@
 using System;
 using EntitiesBT.Nodes;
 
-namespace EntitiesBT.Editor
+namespace EntitiesBT.Components
 {
     public class BTDelayTimer : BTNode<DelayTimerNode.Data>
     {

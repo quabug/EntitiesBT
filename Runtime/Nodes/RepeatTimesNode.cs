@@ -3,9 +3,10 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
+    [BehaviorNode("76E27039-91C1-4DEF-AFEF-1EDDBAAE8CCE")]
     public static class RepeatTimesNode
     {
-        public static int Id = 5;
+        public static readonly int Id = typeof(RepeatTimesNode).GetBehaviorNodeId();
         
         static RepeatTimesNode()
         {
@@ -18,14 +19,14 @@ namespace EntitiesBT.Nodes
             public int CurrentTimes;
             public NodeState BreakStates;
         }
-        
-        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+
+        private static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             data.CurrentTimes = 0;
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        private static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             var childIndex = index + 1;

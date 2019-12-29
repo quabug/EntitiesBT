@@ -3,22 +3,23 @@ using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
+    [BehaviorNode("A316D182-7D8C-4075-A46D-FEE08CAEEEAF")]
     public static class ParallelNode
     {
-        public static int Id = 3;
+        public static readonly int Id = typeof(ParallelNode).GetBehaviorNodeId();
         
         static ParallelNode()
         {
             VirtualMachine.Register(Id, Reset, Tick);
         }
         
-        static unsafe void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        private static unsafe void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
             var childrenStates = new SimpleBlobArray<NodeState>(blob.GetNodeDataPtr(index));
             for (var i = 0; i < childrenStates.Length; i++) childrenStates[i] = NodeState.Running;
         }
 
-        static unsafe NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        private static unsafe NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             var childrenStates = new SimpleBlobArray<NodeState>(blob.GetNodeDataPtr(index));
             var hasAnyRunningChild = false;

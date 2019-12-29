@@ -6,6 +6,7 @@ namespace EntitiesBT.Core
 {
     using ResetFunc = Action<int, INodeBlob, IBlackboard>;
     using TickFunc = Func<int, INodeBlob, IBlackboard, NodeState>;
+    
     public static class VirtualMachine
     {
         private static readonly Dictionary<int, ResetFunc> _resets = new Dictionary<int, ResetFunc>();

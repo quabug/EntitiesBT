@@ -4,7 +4,7 @@ using EntitiesBT.Nodes;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
-namespace EntitiesBT.Editor
+namespace EntitiesBT.Components
 {
     public class BTTimer : BTNode<TimerNode.Data>
     {
