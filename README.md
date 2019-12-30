@@ -1,3 +1,4 @@
+[![openupm](https://img.shields.io/npm/v/entities-bt?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/entities-bt/)
 # EntitiesBT
 Behavior Tree framework based on and used for Unity Entities (DOTS)
 
