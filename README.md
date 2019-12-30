@@ -15,7 +15,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Also compatible with Unity GameObjects without any entity.
 
 ## Disadvantages
-- Incompatible with burst (Won't support this in the foreseen future)
+- Incompatible with burst (Won't support this in the foreseen future, see FAQ below)
 - No runtime debug window to show the states of nodes (TBD)
 - Lack of composite nodes, like RandomSelector, PrioritySelector, etc. (TBD)
 - Lack of action nodes. (Will add some actions as extension if I personally need them)
@@ -29,3 +29,13 @@ TODO
 ![Animator Sample](https://user-images.githubusercontent.com/683655/71561423-37aec500-2ab1-11ea-9eb0-fcac56e332c9.png)
 ### Sample: [GameObject without entity](Samples%7E/GameObjectWithoutEntity)
 ![GameObject Sample](https://user-images.githubusercontent.com/683655/71561413-1bab2380-2ab1-11ea-84a3-b3fa64f0592f.png)
+
+## FAQ
+- Q: Why not support burst?
+  
+  A: There must have some kind of runtime polymorphism (like [VirtualMachine](Runtime/Core/VirtualMachine.cs) which call different function by node id), for running different behavior/function/method for different node. But it is hard, or even not possible(?), to implement polymorphism by burst.
+
+
+- Q: How about job?
+  
+  A: Job(multithreading) is supported by behavior tree itself, but you must implement a job-safe blackboard first. Unfortunately [EntityBlackboard](Runtime/Entities/EntityBlackboard.cs) is not one of job-safe blackboard.
