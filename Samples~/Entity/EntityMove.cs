@@ -31,7 +31,7 @@ namespace EntitiesBT.Sample
             var translation = blackboard.GetData<Translation>();
             var deltaTime = blackboard.GetData<TickDeltaTime>();
             translation.Value += data.Velocity * (float)deltaTime.Value.TotalSeconds;
-            blackboard.SetData(translation);;
+            blackboard.SetData(translation);
             return NodeState.Running;
         }
     }
