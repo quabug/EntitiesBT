@@ -1,7 +1,7 @@
 {
   "name": "entities-bt",
   "description": "Behavior Tree for Unity Entities",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "unity": "2019.3",
   "displayName": "Entities Behavior Tree",
   "dependencies": {
@@ -25,8 +25,13 @@
     },
     {
       "displayName": "entity",
-      "description": "control tranlation of entity",
+      "description": "control translation of entity",
       "path": "Samples~/Entity"
+    },
+    {
+      "displayName": "serialization",
+      "description": "save behavior tree into file and load from it",
+      "path": "Samples~/Serialization"
     }
   ]
 }

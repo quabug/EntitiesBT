@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Components
@@ -43,6 +45,20 @@ namespace EntitiesBT.Components
             {
                 Debug.LogError($"{NodeType} node {name} is not allowed to have more than {maxChildCount} children", gameObject);
                 for (var i = childCount - 1; i >= maxChildCount; i--) DestroyImmediate(transform.GetChild(i).gameObject);
+            }
+        }
+
+        [ContextMenu("Save to file")]
+        public void SaveToFile()
+        {
+            var path = UnityEditor.EditorUtility.SaveFilePanel("save path", Application.dataPath, "behavior-tree", "bytes");
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            using (var builder = this.ToBlobBuilder())
+            {
+                BlobAssetReference<NodeBlob>.Write(builder, path, 0);
+                UnityEditor.AssetDatabase.Refresh();
             }
         }
 #endif

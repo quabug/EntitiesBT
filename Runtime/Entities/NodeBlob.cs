@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -35,8 +34,10 @@ namespace EntitiesBT.Entities
             return (void*) ((IntPtr) DataBlob.GetUnsafePtr() + Offsets[nodeIndex]);
         }
 
-        public static int Size(int count, int dataSize) =>
-            dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
+        public int Size => CalculateSize(Count, DataBlob.Length);
+
+        public static int CalculateSize(int count, int dataSize) =>
+            UnsafeUtility.SizeOf<NodeBlob>() + dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
     }
 
     public struct NodeBlobRef : IComponentData, INodeBlob
