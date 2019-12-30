@@ -13,6 +13,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Seperate runtime nodes and editor nodes.
 - Easy to extend.
 - Also compatible with Unity GameObjects without any entity.
+- Able to save behavior tree into campact-binary-formatted file.
 
 ## Disadvantages
 - Incompatible with burst (Won't support this in the foreseen future, see FAQ below)
