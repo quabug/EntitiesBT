@@ -14,6 +14,12 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Easy to extend.
 - Also compatible with Unity GameObjects without any entity.
 
+## Disadvantages
+- Incompatible with burst (Won't support this in the foreseen future)
+- No runtime debug window to show the states of nodes (TBD)
+- Lack of composite nodes, like RandomSelector, PrioritySelector, etc. (TBD)
+- Lack of action nodes. (Will add some actions as extension if I personally need them)
+
 ## How to use?
 TODO
 
