@@ -48,7 +48,6 @@ namespace EntitiesBT.Components
 #endif
     }
     
-    [DisallowMultipleComponent]
     public abstract class BTNode<T, U> : BTNode, INodeDataBuilder
         where U : struct, INodeData
     {
@@ -58,7 +57,6 @@ namespace EntitiesBT.Components
         public override unsafe void Build(void* dataPtr) {}
     }
     
-    [DisallowMultipleComponent]
     public abstract class BTNode<T> : BTNode, INodeDataBuilder
         where T : struct, INodeData
     {
