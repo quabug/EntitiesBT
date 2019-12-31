@@ -40,5 +40,3 @@ TODO
 - Q: How about job?
   
   A: Job(multithreading) is supported by behavior tree itself, but you must implement a job-safe blackboard first. Unfortunately [EntityBlackboard](Runtime/Entities/EntityBlackboard.cs) is not one of job-safe blackboard.
-  
-  IMO, full job support is not a priority task since the major tasks of behavior tree are not job-safe currently, like set animator trigger, play an audio, or play a particle. But it is still worth to implement a mix mechanic (systems) which running job actions by default and automaticlly back to main thread once meet a non-job (main thread) action.
