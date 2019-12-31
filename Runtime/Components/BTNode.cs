@@ -57,7 +57,7 @@ namespace EntitiesBT.Components
 
             using (var builder = this.ToBlobBuilder())
             {
-                BlobAssetReference<NodeBlob>.Write(builder, path, 0);
+                BlobAssetReference<NodeBlob>.Write(builder, path, NodeBlob.VERSION);
                 UnityEditor.AssetDatabase.Refresh();
             }
         }

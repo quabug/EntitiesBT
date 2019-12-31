@@ -51,10 +51,10 @@ namespace EntitiesBT.Components
             return blobBuilder;
         }
         
-        public static BlobAssetReference<NodeBlob> ToBlob(this TextAsset file, int version = 0)
+        public static BlobAssetReference<NodeBlob> ToBlob(this TextAsset file)
         {
-            var result = BlobAssetReference<NodeBlob>.TryRead(file.bytes, version, out var blobRef);
-            if (!result) throw new FormatException($"Invalid file {file.name}");
+            var result = BlobAssetReference<NodeBlob>.TryRead(file.bytes, NodeBlob.VERSION, out var blobRef);
+            if (!result) throw new FormatException("Version is not match.");
             return blobRef;
         }
     }

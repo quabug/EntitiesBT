@@ -7,6 +7,8 @@ namespace EntitiesBT.Entities
 {
     public struct NodeBlob : INodeBlob
     {
+        public const int VERSION = 0;
+
         public BlobArray<int> Types;
         public BlobArray<int> EndIndices;
         public BlobArray<int> Offsets;
