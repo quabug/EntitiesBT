@@ -17,12 +17,13 @@ namespace EntitiesBT.Components
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             var blobRef = new NodeBlobRef(RootNode.ToBlob());
-            var blackboard = new EntityBlackboard(dstManager, entity);
+            var bb = new EntityMainThreadBlackboard(dstManager, entity);
             
-            VirtualMachine.Reset(blobRef, blackboard);
+            VirtualMachine.Reset(blobRef, bb);
             
             dstManager.AddComponentData(entity, blobRef);
-            dstManager.AddComponentData(entity, new BlackboardComponent {Value = blackboard});
+            dstManager.AddComponentData(entity, new MainThreadOnlyBlackboard {Value = bb});
+            dstManager.AddComponentData(entity, new TickDeltaTime());
         }
     }
 }

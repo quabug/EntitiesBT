@@ -1,10 +1,16 @@
-using EntitiesBT.Core;
+using Entities;
 using Unity.Entities;
 
 namespace EntitiesBT.Entities
 {
-    public class BlackboardComponent : IComponentData
+    public class MainThreadOnlyBlackboard : IComponentData
     {
-        public IBlackboard Value;
+        public EntityMainThreadBlackboard Value;
+    }
+    
+    public class JobBlackboard : IComponentData
+    {
+        public EntityQuery EntityQuery;
+        public EntityJobChunkBlackboard Blackboard;
     }
 }
