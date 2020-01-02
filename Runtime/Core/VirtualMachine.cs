@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using Unity.Entities;
 
 namespace EntitiesBT.Core
 {
@@ -13,6 +14,7 @@ namespace EntitiesBT.Core
     {
         private static readonly Dictionary<int, ResetFunc> _resets = new Dictionary<int, ResetFunc>();
         private static readonly Dictionary<int, TickFunc> _ticks = new Dictionary<int, TickFunc>();
+        private static readonly Dictionary<int, ComponentTypes[]> _componentTypeDict = new Dictionary<int, ComponentTypes[]>();
 
         static VirtualMachine()
         {

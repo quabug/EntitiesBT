@@ -1,5 +1,7 @@
+using System;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
+using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -20,6 +22,12 @@ namespace EntitiesBT.Sample
     [BehaviorNode("F5C2EE7E-690A-4B5C-9489-FB362C949192")]
     public class EntityMoveNode
     {
+        public static ComponentType[] Types =
+        {
+            ComponentType.ReadWrite<Translation>()
+          , ComponentType.ReadOnly<TickDeltaTime>()
+        };
+        
         public struct Data : INodeData
         {
             public float3 Velocity;

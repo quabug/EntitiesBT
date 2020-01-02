@@ -15,12 +15,12 @@ namespace EntitiesBT.Core
         {
             return (T) bb[typeof(T)];
         }
-
+        
         public static void SetData<T>(this IBlackboard bb, T data)
         {
             bb[typeof(T)] = data;
         }
-
+        
         public static void HasData<T>(this IBlackboard bb)
         {
             bb.Has(typeof(T));
