@@ -60,5 +60,13 @@ namespace EntitiesBT.Sample
                 _dict[key] = value;
             }
         }
+
+        public bool Has(object key)
+        {
+            var type = key as Type;
+            if (type != null && type.IsSubclassOf(typeof(Component)))
+                return _gameObject.GetComponent(type) != null;
+            return _dict.ContainsKey(key);
+        }
     }
 }

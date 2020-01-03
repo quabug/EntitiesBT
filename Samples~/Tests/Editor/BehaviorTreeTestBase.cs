@@ -33,6 +33,11 @@ namespace EntitiesBT.Test
                 get => throw new NotImplementedException();
                 set => throw new NotImplementedException();
             }
+
+            public bool Has(object key)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [SetUp]

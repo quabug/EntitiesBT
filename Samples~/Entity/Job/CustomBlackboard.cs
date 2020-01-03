@@ -41,5 +41,15 @@ namespace EntitiesBT.Sample
                 throw new NotImplementedException();
             }
         }
+
+        public bool Has(object key)
+        {
+            if (key is Type type)
+            {
+                if (type == typeof(TickDeltaTime)) return true;
+                if (type == typeof(Translation)) return true;
+            }
+            return false;
+        }
     }
 }
