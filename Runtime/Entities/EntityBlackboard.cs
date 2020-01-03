@@ -20,27 +20,27 @@ namespace EntitiesBT.Entities
         static EntityBlackboard()
         {
             {
-                var getter = typeof(EntityBlackboard).GetMethod("GetComponentData", BindingFlags.NonPublic | BindingFlags.Instance);
+                var getter = typeof(EntityBlackboard).GetMethod("GetComponentData", BindingFlags.Public | BindingFlags.Instance);
                 _getComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
 
             {
-                var getter = typeof(EntityBlackboard).GetMethod("GetManagedData", BindingFlags.NonPublic | BindingFlags.Instance);
+                var getter = typeof(EntityBlackboard).GetMethod("GetManagedData", BindingFlags.Public | BindingFlags.Instance);
                 _getManagedData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
 
             {
-                var getter = typeof(EntityBlackboard).GetMethod("GetUnityComponent", BindingFlags.NonPublic | BindingFlags.Instance);
+                var getter = typeof(EntityBlackboard).GetMethod("GetUnityComponent", BindingFlags.Public | BindingFlags.Instance);
                 _getComponentObject = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
             
             {
-                var setter = typeof(EntityBlackboard).GetMethod("SetComponentData", BindingFlags.NonPublic | BindingFlags.Instance);
+                var setter = typeof(EntityBlackboard).GetMethod("SetComponentData", BindingFlags.Public | BindingFlags.Instance);
                 _setComponentData = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new [] { value });
             }
             
             {
-                var predicate = typeof(EntityBlackboard).GetMethod("HasComponent", BindingFlags.NonPublic | BindingFlags.Instance);
+                var predicate = typeof(EntityBlackboard).GetMethod("HasComponent", BindingFlags.Public | BindingFlags.Instance);
                 _hasComponent = (caller, type) => (bool)predicate.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
         }

@@ -23,7 +23,7 @@ namespace EntitiesBT.Sample
 
         private void Update()
         {
-            _bb.SetData(new TickDeltaTime(TimeSpan.FromSeconds(Time.deltaTime)));
+            _bb.SetData(new TickDeltaTime{Value = TimeSpan.FromSeconds(Time.deltaTime)});
             VirtualMachine.Tick(_nodeBlobRef, _bb);
         }
 

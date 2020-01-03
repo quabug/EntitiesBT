@@ -1,3 +1,4 @@
+using System;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Entities;
@@ -16,6 +17,7 @@ namespace EntitiesBT.Components
             var blackboard = new EntityBlackboard(dstManager, entity);
             VirtualMachine.Reset(blobRef, blackboard);
             
+            dstManager.AddComponentData(entity, new TickDeltaTime{Value = TimeSpan.Zero});
             dstManager.AddComponentData(entity, blobRef);
             dstManager.AddComponentData(entity, new BlackboardComponent {Value = blackboard});
         }

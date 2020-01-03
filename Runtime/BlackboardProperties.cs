@@ -1,14 +1,10 @@
 using System;
+using Unity.Entities;
 
 namespace EntitiesBT
 {
-    public readonly struct TickDeltaTime
+    public struct TickDeltaTime : IComponentData
     {
-        public readonly TimeSpan Value;
-        
-        public TickDeltaTime(TimeSpan value)
-        {
-            Value = value;
-        }
+        public TimeSpan Value;
     }
 }
