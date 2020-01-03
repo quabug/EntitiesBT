@@ -15,7 +15,7 @@ namespace EntitiesBT.Sample
             var deltaTime = Time.DeltaTime;
             return Entities.WithoutBurst().ForEach((ref CustomBlackboard bb, ref NodeBlobRef blob, ref Translation translation) =>
             {
-                bb.TickDeltaTime = new TickDeltaTime(TimeSpan.FromSeconds(deltaTime));
+                bb.TickDeltaTime = new TickDeltaTime{Value =TimeSpan.FromSeconds(deltaTime)};
                 bb.Translation = (Translation*) UnsafeUtility.AddressOf(ref translation);
                 VirtualMachine.Tick(blob, bb);
             }).Schedule(inputDeps);

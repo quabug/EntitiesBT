@@ -23,7 +23,7 @@ namespace EntitiesBT.Sample
 
         private void Update()
         {
-            _bb.SetData(new TickDeltaTime(TimeSpan.FromSeconds(Time.deltaTime)));
+            _bb.SetData(new TickDeltaTime{Value = TimeSpan.FromSeconds(Time.deltaTime)});
             VirtualMachine.Tick(_nodeBlobRef, _bb);
         }
 
@@ -59,6 +59,14 @@ namespace EntitiesBT.Sample
                     _gameObject.AddComponent(type);
                 _dict[key] = value;
             }
+        }
+
+        public bool Has(object key)
+        {
+            var type = key as Type;
+            if (type != null && type.IsSubclassOf(typeof(Component)))
+                return _gameObject.GetComponent(type) != null;
+            return _dict.ContainsKey(key);
         }
     }
 }
