@@ -16,7 +16,7 @@ namespace EntitiesBT.Entities
         public EntityJobChunkBlackboard Value;
     }
     
-    public struct JobBehaviorTreeTag : IComponentData {} 
+    public struct JobBehaviorTreeTag : IComponentData {}
 
     public struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
     {
@@ -26,7 +26,7 @@ namespace EntitiesBT.Entities
         public IEnumerable<Type> ReadOnlyTypes => _readOnlyTypes ?? Enumerable.Empty<Type>();
         public IEnumerable<Type> ReadWriteTypes => _readWriteTypes ?? Enumerable.Empty<Type>();
         public int Count => (_readOnlyTypes?.Count ?? 0) + (_readWriteTypes?.Count ?? 0);
-
+        
         public void AddReadOnly(Type type)
         {
             if (_readOnlyTypes == null) _readOnlyTypes = new HashSet<Type>();
@@ -65,7 +65,9 @@ namespace EntitiesBT.Entities
         {
             unchecked
             {
-                return ((_readOnlyTypes != null ? _readOnlyTypes.GetHashCode() : 0) * 397) ^ (_readWriteTypes != null ? _readWriteTypes.GetHashCode() : 0);
+                var readOnlyHash = ReadOnlyTypes.Aggregate(0, (hash, type) => hash ^ (type.GetHashCode() * 397));
+                var readWriteHash = ReadWriteTypes.Aggregate(0, (hash, type) => hash ^ (type.GetHashCode() * 398));
+                return readOnlyHash ^ readWriteHash;
             }
         }
     }

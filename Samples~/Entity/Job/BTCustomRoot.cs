@@ -1,3 +1,4 @@
+using Entities;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
@@ -23,10 +24,12 @@ namespace EntitiesBT.Sample
             var dataQuery = new BlackboardDataQuery();
             dataQuery.AddReadWrite(typeof(TickDeltaTime));
             dataQuery.AddReadWrite(typeof(Translation));
-            VirtualMachine.Reset(blobRef, null);
+            var bb = new EntityJobChunkBlackboard();
+            VirtualMachine.Reset(blobRef, bb);
             dstManager.AddComponentData(entity, blobRef);
             dstManager.AddComponentData(entity, new JobBehaviorTreeTag());
             dstManager.AddComponentData(entity, new TickDeltaTime());
+            dstManager.AddComponentData(entity, new JobBlackboard { Value = bb });
             dstManager.AddSharedComponentData(entity, dataQuery);
         }
     }

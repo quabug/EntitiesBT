@@ -11,7 +11,7 @@ namespace Entities
 {
     public struct EntityJobChunkBlackboard : IBlackboard
     {
-        public NativeHashMap<int, ArchetypeChunkComponentTypeDynamic> Types;
+        // public NativeHashMap<int, ArchetypeChunkComponentTypeDynamic> Types;
         public ArchetypeChunk Chunk;
         public int EntityIndex;
         
@@ -22,17 +22,17 @@ namespace Entities
         static EntityJobChunkBlackboard()
         {
             {
-                var getter = typeof(EntityJobChunkBlackboard).GetMethod("GetComponentData", BindingFlags.NonPublic | BindingFlags.Instance);
+                var getter = typeof(EntityJobChunkBlackboard).GetMethod("GetComponentData", BindingFlags.Public | BindingFlags.Instance);
                 _getComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
 
             {
-                var setter = typeof(EntityJobChunkBlackboard).GetMethod("SetComponentData", BindingFlags.NonPublic | BindingFlags.Instance);
+                var setter = typeof(EntityJobChunkBlackboard).GetMethod("SetComponentData", BindingFlags.Public | BindingFlags.Instance);
                 _setComponentData = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new[] { value });
             }
 
             {
-                var predicate = typeof(EntityJobChunkBlackboard).GetMethod("HasComponentData", BindingFlags.NonPublic | BindingFlags.Instance);
+                var predicate = typeof(EntityJobChunkBlackboard).GetMethod("HasComponentData", BindingFlags.Public | BindingFlags.Instance);
                 _hasComponentData = (caller, type) => (bool)predicate.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
         }
@@ -66,23 +66,25 @@ namespace Entities
         [Preserve]
         public T GetComponentData<T>() where T : struct, IComponentData
         {
-            var type = Types[TypeManager.GetTypeIndex<T>()];
-            return Chunk.GetDynamicComponentDataArrayReinterpret<T>(type, UnsafeUtility.SizeOf<T>())[EntityIndex];
+            return default;
+            // var type = Types[TypeManager.GetTypeIndex<T>()];
+            // return Chunk.GetDynamicComponentDataArrayReinterpret<T>(type, UnsafeUtility.SizeOf<T>())[EntityIndex];
         }
 
         [Preserve]
         public void SetComponentData<T>(T value) where T : struct, IComponentData
         {
-            var type = Types[TypeManager.GetTypeIndex<T>()];
-            var array = Chunk.GetDynamicComponentDataArrayReinterpret<T>(type, UnsafeUtility.SizeOf<T>());
-            array[EntityIndex] = value;
+            // var type = Types[TypeManager.GetTypeIndex<T>()];
+            // var array = Chunk.GetDynamicComponentDataArrayReinterpret<T>(type, UnsafeUtility.SizeOf<T>());
+            // array[EntityIndex] = value;
         }
         
         [Preserve]
         public bool HasComponentData<T>() where T : struct, IComponentData
         {
-            var type = Types[TypeManager.GetTypeIndex<T>()];
-            return Chunk.Has(type);
+            return false;
+            // var type = Types[TypeManager.GetTypeIndex<T>()];
+            // return Chunk.Has(type);
         }
     }
 }
