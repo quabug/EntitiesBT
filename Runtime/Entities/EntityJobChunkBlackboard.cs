@@ -95,7 +95,7 @@ namespace Entities
         }
         
         [Preserve]
-        public bool HasComponentData<T>() where T : struct, IComponentData
+        public unsafe bool HasComponentData<T>() where T : struct, IComponentData
         {
             var typeIndex = TypeManager.GetTypeIndex<T>();
             return ChunkDataUtility.GetIndexInTypeArray(Chunk.m_Chunk->Archetype, typeIndex) != -1;
