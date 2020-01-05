@@ -34,7 +34,7 @@ namespace EntitiesBT.Entities
                     var bb = blackboards[i];
                     bb.Value.GlobalSystemVersion = GlobalSystemVersion;
                     bb.Value.Chunk = chunk;
-                    bb.Value.EntityIndex = firstEntityIndex + i;
+                    bb.Value.Index = i;
                     VirtualMachine.Tick(nodeBlobs[i], bb.Value);
                 }
             }

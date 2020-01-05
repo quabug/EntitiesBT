@@ -11,7 +11,7 @@ namespace Entities
     {
         public uint GlobalSystemVersion;
         public ArchetypeChunk Chunk;
-        public int EntityIndex;
+        public int Index;
         
         private static Func<object, Type, object> _getComponentData;
         private static Action<object, Type, object> _setComponentData;
@@ -63,7 +63,7 @@ namespace Entities
             var typeIndex = TypeManager.GetTypeIndex<T>();
             if (TypeManager.IsZeroSized(typeIndex))
                 throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
-            var ptr = ChunkDataUtility.GetComponentDataWithTypeRW(Chunk.m_Chunk, EntityIndex, typeIndex, GlobalSystemVersion);
+            var ptr = ChunkDataUtility.GetComponentDataWithTypeRW(Chunk.m_Chunk, Index, typeIndex, GlobalSystemVersion);
             return ref UnsafeUtilityEx.AsRef<T>(ptr);
         }
 
@@ -79,9 +79,8 @@ namespace Entities
             var typeIndex = TypeManager.GetTypeIndex<T>();
             if (TypeManager.IsZeroSized(typeIndex))
                 throw new ArgumentException($"SetComponentData<{typeof(T)}> can not be called with a zero sized component.");
-            var ptr = ChunkDataUtility.GetComponentDataWithTypeRO(Chunk.m_Chunk, EntityIndex, typeIndex);
-            UnsafeUtility.CopyPtrToStructure(ptr, out T value);
-            return value;
+            var ptr = ChunkDataUtility.GetComponentDataWithTypeRO(Chunk.m_Chunk, Index, typeIndex);
+            return UnsafeUtilityEx.AsRef<T>(ptr);
         }
 
         [Preserve]
@@ -90,7 +89,7 @@ namespace Entities
             var typeIndex = TypeManager.GetTypeIndex<T>();
             if (TypeManager.IsZeroSized(typeIndex))
                 throw new ArgumentException($"SetComponentData<{typeof(T)}> can not be called with a zero sized component.");
-            var ptr = ChunkDataUtility.GetComponentDataWithTypeRW(Chunk.m_Chunk, EntityIndex, typeIndex, GlobalSystemVersion);
+            var ptr = ChunkDataUtility.GetComponentDataWithTypeRW(Chunk.m_Chunk, Index, typeIndex, GlobalSystemVersion);
             UnsafeUtilityEx.AsRef<T>(ptr) = value;
         }
         
