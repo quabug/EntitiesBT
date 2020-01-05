@@ -1,4 +1,3 @@
-using System;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
 using Unity.Entities;
@@ -22,7 +21,8 @@ namespace EntitiesBT.Sample
     [BehaviorNode("F5C2EE7E-690A-4B5C-9489-FB362C949192")]
     public class EntityMoveNode
     {
-        public static ComponentType[] Types =
+        // optional, used for job system
+        public static ComponentType[] Types => new []
         {
             ComponentType.ReadWrite<Translation>()
           , ComponentType.ReadOnly<TickDeltaTime>()

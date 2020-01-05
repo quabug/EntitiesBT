@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Collections;
 using Unity.Entities;
@@ -56,6 +58,15 @@ namespace EntitiesBT.Components
             var result = BlobAssetReference<NodeBlob>.TryRead(file.bytes, NodeBlob.VERSION, out var blobRef);
             if (!result) throw new FormatException("Version is not match.");
             return blobRef;
+        }
+
+        public static ISet<ComponentType> GetAccessTypes(this BlobAssetReference<NodeBlob> blob)
+        {
+            return new HashSet<ComponentType>(Enumerable
+                .Range(0, blob.Value.Types.Length)
+                .Select(i => blob.Value.Types[i])
+                .SelectMany(VirtualMachine.GetAccessTypes)
+            );
         }
     }
 }

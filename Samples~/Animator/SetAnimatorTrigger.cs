@@ -1,5 +1,6 @@
 ﻿using EntitiesBT.Components;
 using EntitiesBT.Core;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Sample
@@ -15,6 +16,8 @@ namespace EntitiesBT.Sample
     [BehaviorNode("EF8A0D43-DEA1-4D31-953C-77CD0BD8E26C")]
     public class SetAnimatorTriggerNode
     {
+        public static ComponentType[] Types => new [] {ComponentType.ReadWrite<Animator>()};
+        
         public struct Data : INodeData
         {
             public int Value;

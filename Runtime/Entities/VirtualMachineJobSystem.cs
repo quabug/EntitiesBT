@@ -10,15 +10,17 @@ namespace EntitiesBT.Entities
 {
     public class VirtualMachineJobSystems : JobComponentSystem
     {
+        public List<BlackboardDataQuery> _blackboardDataQueryList = new List<BlackboardDataQuery>();
+        public List<int> _blackboardDataQueryIndices = new List<int>();
+        
         struct TickJob : IJobChunk
         {
             public int BlackboardDataQueryIndex;
-            public TimeSpan DeltaTime;
             public uint GlobalSystemVersion;
             
             [ReadOnly] public ArchetypeChunkSharedComponentType<BlackboardDataQuery> BlackboardDataQueryType;
-            public ArchetypeChunkComponentType<NodeBlobRef> NodeBlobRefType;
-            public ArchetypeChunkComponentType<JobBlackboard> BlackboardType;
+            [ReadOnly] public ArchetypeChunkComponentType<NodeBlobRef> NodeBlobRefType;
+            [ReadOnly] public ArchetypeChunkComponentType<JobBlackboard> BlackboardType;
             
             public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
             {
@@ -33,7 +35,6 @@ namespace EntitiesBT.Entities
                     bb.Value.GlobalSystemVersion = GlobalSystemVersion;
                     bb.Value.Chunk = chunk;
                     bb.Value.EntityIndex = firstEntityIndex + i;
-                    bb.Value.GetDataRef<TickDeltaTime>().Value = DeltaTime;
                     VirtualMachine.Tick(nodeBlobs[i], bb.Value);
                 }
             }
@@ -42,36 +43,43 @@ namespace EntitiesBT.Entities
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
             var dt = TimeSpan.FromSeconds(Time.DeltaTime);
-            var jobs = new Dictionary<int, (TickJob job, EntityQuery query)>();
-            Entities.WithoutBurst().ForEach((Entity entity, BlackboardDataQuery blackboardDataQuery) =>
+            Entities.WithAll<JobBlackboard>()
+                .WithoutBurst()
+                .ForEach((ref TickDeltaTime deltaTime) => deltaTime.Value = dt)
+                .Run()
+            ;
+            
+            _blackboardDataQueryList.Clear();
+            _blackboardDataQueryIndices.Clear();
+            EntityManager.GetAllUniqueSharedComponentData(_blackboardDataQueryList, _blackboardDataQueryIndices);
+            
+            var jobHandler = inputDeps;
+            for (var i = 0; i < _blackboardDataQueryList.Count; i++)
             {
-                var index = EntityManager.GetSharedComponentDataIndex<BlackboardDataQuery>(entity);
-                if (!jobs.ContainsKey(index))
-                {
-                    var job = new TickJob {
-                        BlackboardDataQueryIndex = index
-                      , DeltaTime = dt
-                      , GlobalSystemVersion = EntityManager.GlobalSystemVersion
-                      , BlackboardDataQueryType = GetArchetypeChunkSharedComponentType<BlackboardDataQuery>()
-                      , BlackboardType = GetArchetypeChunkComponentType<JobBlackboard>()
-                      , NodeBlobRefType = GetArchetypeChunkComponentType<NodeBlobRef>()
-                    };
+                var query = _blackboardDataQueryList[i];
+                if (query.Value == null) continue;
+                
+                var sharedIndex = _blackboardDataQueryIndices[i];
+                
+                var job = new TickJob {
+                    BlackboardDataQueryIndex = sharedIndex
+                  , GlobalSystemVersion = EntityManager.GlobalSystemVersion
+                  , BlackboardDataQueryType = GetArchetypeChunkSharedComponentType<BlackboardDataQuery>()
+                  , BlackboardType = GetArchetypeChunkComponentType<JobBlackboard>()
+                  , NodeBlobRefType = GetArchetypeChunkComponentType<NodeBlobRef>()
+                };
 
-                    var query = EntityManager.CreateEntityQuery(
-                        blackboardDataQuery.Value.Select(type => new ComponentType(type))
-                            .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
-                            .Append(ComponentType.ReadWrite<NodeBlobRef>())
-                            .Append(ComponentType.ReadWrite<JobBlackboard>())
-                            .ToArray()
-                    );
-
-                    jobs[index] = (job, query);
-                }
-            }).Run();
-
-            var jobHandle = inputDeps;
-            foreach (var (job, query) in jobs.Values) jobHandle = job.Schedule(query, jobHandle);
-            return jobHandle;
+                var entityQuery = EntityManager.CreateEntityQuery(
+                    query.Value
+                        .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
+                        .Append(ComponentType.ReadWrite<NodeBlobRef>())
+                        .Append(ComponentType.ReadWrite<JobBlackboard>())
+                        .ToArray()
+                );
+                
+                jobHandler = job.Schedule(entityQuery, jobHandler);
+            }
+            return jobHandler;
         }
     }
 }

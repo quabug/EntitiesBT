@@ -18,18 +18,16 @@ namespace EntitiesBT.Entities
         public EntityJobChunkBlackboard Value;
     }
     
-    public struct JobBehaviorTreeTag : IComponentData {}
-
     public struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
     {
-        public HashSet<Type> Value;
+        public ISet<ComponentType> Value;
 
         public bool Equals(BlackboardDataQuery other)
         {
             return Equals(Value, other.Value);
         }
 
-        bool Equals(HashSet<Type> lhs, HashSet<Type> rhs)
+        bool Equals(ISet<ComponentType> lhs, ISet<ComponentType> rhs)
         {
             var lhsCount = lhs?.Count ?? 0;
             var rhsCount = rhs?.Count ?? 0;

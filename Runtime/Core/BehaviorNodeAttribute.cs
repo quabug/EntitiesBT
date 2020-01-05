@@ -18,14 +18,16 @@ namespace EntitiesBT.Core
         public BehaviorNodeType Type { get; }
         public string ResetFunc { get; }
         public string TickFunc { get; }
+        public string TypesProperty { get; }
         
-        public BehaviorNodeAttribute(string guid, BehaviorNodeType type = BehaviorNodeType.Action, string tickFunc = "Tick", string resetFunc = "Reset")
+        public BehaviorNodeAttribute(string guid, BehaviorNodeType type = BehaviorNodeType.Action, string tickFunc = "Tick", string resetFunc = "Reset", string typesProperty = "Types")
         {
             Type = type;
             Guid = new Guid(guid);
             Id = Guid.GetHashCode();
             TickFunc = tickFunc;
             ResetFunc = resetFunc;
+            TypesProperty = typesProperty;
         }
     }
 

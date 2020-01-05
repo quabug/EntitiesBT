@@ -19,10 +19,10 @@ namespace EntitiesBT.Sample
     [BehaviorNode("B6DBD77F-1C83-4B0A-BB46-ECEE8D3C1BEF")]
     public class TransformMoveNode
     {
-        public static ComponentType[] Types =
+        public static ComponentType[] Types => new []
         {
             ComponentType.ReadOnly<TickDeltaTime>()
-          , ComponentType.ReadOnly<Transform>()
+          , ComponentType.ReadWrite<Transform>()
         };
         
         public struct Data : INodeData

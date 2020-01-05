@@ -49,6 +49,12 @@ namespace Entities
             }
         }
 
+        public bool Has(object key)
+        {
+            var type = ValidateKey(key);
+            return _hasComponentData(this, type);
+        }
+
         public unsafe ref T GetRef<T>(object key) where T : struct
         {
             var type = typeof(T);
@@ -59,12 +65,6 @@ namespace Entities
                 throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
             var ptr = ChunkDataUtility.GetComponentDataWithTypeRW(Chunk.m_Chunk, EntityIndex, typeIndex, GlobalSystemVersion);
             return ref UnsafeUtilityEx.AsRef<T>(ptr);
-        }
-
-        public bool Has(object key)
-        {
-            var type = ValidateKey(key);
-            return _hasComponentData(this, type);
         }
 
         Type ValidateKey(object key)
