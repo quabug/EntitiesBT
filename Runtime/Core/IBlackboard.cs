@@ -1,4 +1,5 @@
 using System;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
 namespace EntitiesBT.Core
@@ -6,6 +7,7 @@ namespace EntitiesBT.Core
     public interface IBlackboard
     {
         object this[object key] { get; set; }
+        ref T GetRef<T>(object key) where T : struct;
         bool Has(object key);
     }
 
@@ -25,9 +27,17 @@ namespace EntitiesBT.Core
         {
             bb.Has(typeof(T));
         }
+        
+        public static unsafe ref T GetDataRef<T>(this IBlackboard bb) where T : struct
+        {
+            return ref bb.GetRef<T>(typeof(T));
+        }
 
         public static bool IsComponentDataType(this Type type) =>
             type != null && type.IsValueType && typeof(IComponentData).IsAssignableFrom(type);
+        
+        public static bool IsSharedComponentDataType(this Type type) =>
+            type != null && type.IsValueType && typeof(ISharedComponentData).IsAssignableFrom(type);
         
         public static bool IsManagedDataType(this Type type) =>
             type != null && type.IsClass && typeof(IComponentData).IsAssignableFrom(type);

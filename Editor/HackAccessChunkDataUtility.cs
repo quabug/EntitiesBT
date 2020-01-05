@@ -4,19 +4,31 @@ using System.Runtime.CompilerServices;
 using EntitiesBT.Core;
 using Mono.Cecil;
 using Unity.Entities;
-using UnityEditor.Callbacks;
+using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
+    [InitializeOnLoad]
     public class HackAccessChunkDataUtility
     {
-        // https://stackoverflow.com/a/44329684
-        [DidReloadScripts]
-        public static void OnScriptReload()
+        static HackAccessChunkDataUtility()
         {
+            MakeUnityEntitiesVisisbleToEntitiesBT();
+        }
+        
+        // https://stackoverflow.com/a/44329684
+        // add [InternalsVisibleTo("EntitiesBT.Runtime")] into assembly of Unity.Entities.dll
+        // [DidReloadScripts]
+        [MenuItem("Tools/EntitiesBT/CecilUnityEntities")]
+        public static void MakeUnityEntitiesVisisbleToEntitiesBT()
+        {
+            // my assembly(EntitiesBT.Runtime) which unable to access internal properties of Unity.Entities.dll
             var btRuntime = Path.GetFileNameWithoutExtension(typeof(VirtualMachine).Module.Name);
+            
+            // Unity.Entities.dll
             var entitiesModulePath = typeof(ArchetypeChunk).Module.FullyQualifiedName;
+            
             var resolver = new DefaultAssemblyResolver();
             resolver.AddSearchDirectory(Path.GetDirectoryName(entitiesModulePath));
             resolver.AddSearchDirectory(Path.GetDirectoryName(typeof(Application).Module.FullyQualifiedName));
@@ -27,9 +39,11 @@ namespace EntitiesBT.Editor
               , AssemblyResolver = resolver
             };
             
+            Debug.Log($"Cecil: Add [InternalsVisibleTo({btRuntime})] into {entitiesModulePath}"); 
+            
             using (var entitiesModule = ModuleDefinition.ReadModule(entitiesModulePath, moduleReaderParameter))
             {
-                var visibleToEntitiesBT = new CustomAttribute(entitiesModule.Import(
+                var visibleToEntitiesBT = new CustomAttribute(entitiesModule.ImportReference(
                     typeof(InternalsVisibleToAttribute).GetConstructor(new[] { typeof(string)})
                 ));
                 

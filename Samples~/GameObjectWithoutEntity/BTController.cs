@@ -61,6 +61,11 @@ namespace EntitiesBT.Sample
             }
         }
 
+        public ref T GetRef<T>(object key) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Has(object key)
         {
             var type = key as Type;

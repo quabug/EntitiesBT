@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
@@ -13,11 +14,12 @@ namespace EntitiesBT.Entities
         private readonly EntityManager _em;
         private readonly Entity _entity;
         
-        private Func<Type, object> _getComponentData;
-        private Func<Type, object> _getManagedData;
-        private Func<Type, object> _getComponentObject;
-        private Action<Type, object> _setComponentData;
-        private Predicate<Type> _hasComponent;
+        private static Func<object, Type, object> _getComponentData;
+        private static Func<object, Type, object> _getSharedComponentData;
+        private static Func<object, Type, object> _getManagedData;
+        private static Func<object, Type, object> _getComponentObject;
+        private static Action<object, Type, object> _setComponentData;
+        private static Func<object, Type, bool> _hasComponent;
         
         public EntityMainThreadBlackboard(EntityManager em, Entity entity)
         {
@@ -25,28 +27,33 @@ namespace EntitiesBT.Entities
             _entity = entity;
             
             {
-                var getter = GetType().GetMethod("GetComponentData", BindingFlags.NonPublic | BindingFlags.Instance);
-                _getComponentData = type => getter.MakeGenericMethod(type).Invoke(this, new object[0]);
-            }
-
-            {
-                var getter = GetType().GetMethod("GetManagedData", BindingFlags.NonPublic | BindingFlags.Instance);
-                _getManagedData = type => getter.MakeGenericMethod(type).Invoke(this, new object[0]);
-            }
-
-            {
-                var getter = GetType().GetMethod("GetUnityComponent", BindingFlags.NonPublic | BindingFlags.Instance);
-                _getComponentObject = type => getter.MakeGenericMethod(type).Invoke(this, new object[0]);
+                var getter = typeof(EntityMainThreadBlackboard).GetMethod("GetComponentData", BindingFlags.Public | BindingFlags.Instance);
+                _getComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
             
             {
-                var setter = GetType().GetMethod("SetComponentData", BindingFlags.NonPublic | BindingFlags.Instance);
-                _setComponentData = (type, value) => setter.MakeGenericMethod(type).Invoke(this, new [] { value });
+                var getter = typeof(EntityMainThreadBlackboard).GetMethod("GetSharedComponentData", BindingFlags.Public | BindingFlags.Instance);
+                _getSharedComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
+            }
+
+            {
+                var getter = typeof(EntityMainThreadBlackboard).GetMethod("GetManagedData", BindingFlags.Public | BindingFlags.Instance);
+                _getManagedData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
+            }
+
+            {
+                var getter = typeof(EntityMainThreadBlackboard).GetMethod("GetUnityComponent", BindingFlags.Public | BindingFlags.Instance);
+                _getComponentObject = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
             
             {
-                var predicate = GetType().GetMethod("HasComponent", BindingFlags.NonPublic | BindingFlags.Instance);
-                _hasComponent = type => (bool)predicate.MakeGenericMethod(type).Invoke(this, new object[0]);
+                var setter = typeof(EntityMainThreadBlackboard).GetMethod("SetComponentData", BindingFlags.Public | BindingFlags.Instance);
+                _setComponentData = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new [] { value });
+            }
+            
+            {
+                var predicate = typeof(EntityMainThreadBlackboard).GetMethod("HasComponent", BindingFlags.Public | BindingFlags.Instance);
+                _hasComponent = (caller, type) => (bool)predicate.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
         }
 
@@ -55,9 +62,10 @@ namespace EntitiesBT.Entities
             get
             {
                 var type = key as Type;
-                if (type.IsUnityComponentType()) return _getComponentObject(type);
-                if (type.IsComponentDataType()) return _getComponentData(type);
-                if (type.IsManagedDataType()) return _getManagedData(type);
+                if (type.IsComponentDataType()) return _getComponentData(this, type);
+                if (type.IsSharedComponentDataType()) return _getSharedComponentData(this, type);
+                if (type.IsManagedDataType()) return _getManagedData(this, type);
+                if (type.IsUnityComponentType()) return _getComponentObject(this, type);
                 throw new NotImplementedException();
             }
             set
@@ -65,7 +73,7 @@ namespace EntitiesBT.Entities
                 var type = key as Type;
                 if (type.IsComponentDataType())
                 {
-                    _setComponentData(type, value);
+                    _setComponentData(this, type, value);
                     return;
                 }
                 
@@ -75,11 +83,25 @@ namespace EntitiesBT.Entities
             }
         }
 
+        public unsafe ref T GetRef<T>(object key) where T : struct
+        {
+            var type = typeof(T);
+            if (!type.IsComponentDataType()) throw new NotImplementedException();
+            
+            var typeIndex = TypeManager.GetTypeIndex<T>();
+            _em.EntityComponentStore->AssertEntityHasComponent(_entity, typeIndex);
+            if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
+              throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
+            _em.DependencyManager->CompleteReadAndWriteDependency(typeIndex);
+            var componentDataWithTypeRw = _em.EntityComponentStore->GetComponentDataWithTypeRW(_entity, typeIndex, _em.EntityComponentStore->GlobalSystemVersion);
+            return ref UnsafeUtilityEx.AsRef<T>(componentDataWithTypeRw);
+        }
+
         public bool Has(object key)
         {
             var type = key as Type;
             if (type.IsUnityComponentType() || type.IsComponentDataType() || type.IsManagedDataType())
-                return _hasComponent(type);
+                return _hasComponent(this, type);
             return false;
         }
 
@@ -87,6 +109,12 @@ namespace EntitiesBT.Entities
         public T GetComponentData<T>() where T : struct, IComponentData
         {
             return _em.GetComponentData<T>(_entity);
+        }
+        
+        [Preserve]
+        public T GetSharedComponentData<T>() where T : struct, ISharedComponentData
+        {
+            return _em.GetSharedComponentData<T>(_entity);
         }
         
         [Preserve]

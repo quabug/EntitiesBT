@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using EntitiesBT.Core;
-using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
@@ -11,7 +9,7 @@ namespace Entities
 {
     public struct EntityJobChunkBlackboard : IBlackboard
     {
-        // public NativeHashMap<int, ArchetypeChunkComponentTypeDynamic> Types;
+        public uint GlobalSystemVersion;
         public ArchetypeChunk Chunk;
         public int EntityIndex;
         
@@ -51,6 +49,18 @@ namespace Entities
             }
         }
 
+        public unsafe ref T GetRef<T>(object key) where T : struct
+        {
+            var type = typeof(T);
+            if (!type.IsComponentDataType()) throw new NotImplementedException();
+            
+            var typeIndex = TypeManager.GetTypeIndex<T>();
+            if (TypeManager.IsZeroSized(typeIndex))
+                throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
+            var ptr = ChunkDataUtility.GetComponentDataWithTypeRW(Chunk.m_Chunk, EntityIndex, typeIndex, GlobalSystemVersion);
+            return ref UnsafeUtilityEx.AsRef<T>(ptr);
+        }
+
         public bool Has(object key)
         {
             var type = ValidateKey(key);
@@ -64,25 +74,30 @@ namespace Entities
         }
 
         [Preserve]
-        public T GetComponentData<T>() where T : struct, IComponentData
+        public unsafe T GetComponentData<T>() where T : struct, IComponentData
         {
-            return default;
-            // var type = Types[TypeManager.GetTypeIndex<T>()];
-            // return Chunk.GetDynamicComponentDataArrayReinterpret<T>(type, UnsafeUtility.SizeOf<T>())[EntityIndex];
+            var typeIndex = TypeManager.GetTypeIndex<T>();
+            if (TypeManager.IsZeroSized(typeIndex))
+                throw new ArgumentException($"SetComponentData<{typeof(T)}> can not be called with a zero sized component.");
+            var ptr = ChunkDataUtility.GetComponentDataWithTypeRO(Chunk.m_Chunk, EntityIndex, typeIndex);
+            UnsafeUtility.CopyPtrToStructure(ptr, out T value);
+            return value;
         }
 
         [Preserve]
-        public void SetComponentData<T>(T value) where T : struct, IComponentData
+        public unsafe void SetComponentData<T>(T value) where T : struct, IComponentData
         {
-            // var type = Types[TypeManager.GetTypeIndex<T>()];
-            // var array = Chunk.GetDynamicComponentDataArrayReinterpret<T>(type, UnsafeUtility.SizeOf<T>());
-            // array[EntityIndex] = value;
+            var typeIndex = TypeManager.GetTypeIndex<T>();
+            if (TypeManager.IsZeroSized(typeIndex))
+                throw new ArgumentException($"SetComponentData<{typeof(T)}> can not be called with a zero sized component.");
+            var ptr = ChunkDataUtility.GetComponentDataWithTypeRW(Chunk.m_Chunk, EntityIndex, typeIndex, GlobalSystemVersion);
+            UnsafeUtilityEx.AsRef<T>(ptr) = value;
         }
         
         [Preserve]
         public bool HasComponentData<T>() where T : struct, IComponentData
         {
-            return false;
+            throw new NotImplementedException();
             // var type = Types[TypeManager.GetTypeIndex<T>()];
             // return Chunk.Has(type);
         }

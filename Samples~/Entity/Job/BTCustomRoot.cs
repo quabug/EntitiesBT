@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Entities;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
@@ -21,9 +23,9 @@ namespace EntitiesBT.Sample
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             var blobRef = new NodeBlobRef(RootNode.ToBlob());
-            var dataQuery = new BlackboardDataQuery();
-            dataQuery.AddReadWrite(typeof(TickDeltaTime));
-            dataQuery.AddReadWrite(typeof(Translation));
+            var dataQuery = new BlackboardDataQuery {Value = new HashSet<Type>()};
+            dataQuery.Value.Add(typeof(TickDeltaTime));
+            dataQuery.Value.Add(typeof(Translation));
             var bb = new EntityJobChunkBlackboard();
             VirtualMachine.Reset(blobRef, bb);
             dstManager.AddComponentData(entity, blobRef);
