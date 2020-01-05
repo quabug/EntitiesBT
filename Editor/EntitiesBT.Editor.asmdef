@@ -1,7 +1,8 @@
 {
     "name": "EntitiesBT.Editor",
     "references": [
-        "GUID:c7babe7561eb244059259745ef27b866"
+        "GUID:c7babe7561eb244059259745ef27b866",
+        "GUID:734d92eba21c94caba915361bd5ac177"
     ],
     "includePlatforms": [
         "Editor"
@@ -9,7 +10,10 @@
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        "Mono.Cecil.dll",
+        "Mono.Cecil.Rocks.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
