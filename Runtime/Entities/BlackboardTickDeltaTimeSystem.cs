@@ -9,8 +9,8 @@ namespace EntitiesBT
     {
         protected override void OnUpdate()
         {
-            Entities.ForEach((MainThreadOnlyBlackboard bb, ref TickDeltaTime deltaTime) =>
-                deltaTime.Value = TimeSpan.FromSeconds(Time.DeltaTime)
+            Entities.ForEach((MainThreadOnlyBlackboard bb, ref TickDeltaTime deltaTime) => 
+                deltaTime.Value = Time.DeltaTime
             );
         }
     }

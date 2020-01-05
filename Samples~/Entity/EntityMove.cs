@@ -33,12 +33,12 @@ namespace EntitiesBT.Sample
             public float3 Velocity;
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
-            ref var translation = ref blackboard.GetDataRef<Translation>();
-            var deltaTime = blackboard.GetData<TickDeltaTime>();
-            translation.Value += data.Velocity * (float)deltaTime.Value.TotalSeconds;
+            ref var translation = ref bb.GetDataRef<Translation>();
+            var deltaTime = bb.GetData<TickDeltaTime>();
+            translation.Value += data.Velocity * deltaTime.Value;
             return NodeState.Running;
         }
     }

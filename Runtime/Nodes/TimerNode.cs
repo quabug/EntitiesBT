@@ -11,8 +11,8 @@ namespace EntitiesBT.Nodes
         
         public struct Data : INodeData
         {
-            public TimeSpan Target;
-            public TimeSpan Current;
+            public float TargetSeconds;
+            public float CurrentSeconds;
             public NodeState ChildState;
             public NodeState BreakReturnState;
         }
@@ -20,7 +20,7 @@ namespace EntitiesBT.Nodes
         public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
-            data.Current = TimeSpan.Zero;
+            data.CurrentSeconds = 0;
             data.ChildState = NodeState.Running;
         }
 
@@ -28,7 +28,7 @@ namespace EntitiesBT.Nodes
         {
             ref var data = ref blob.GetNodeData<Data>(index);
 
-            if (data.Current >= data.Target)
+            if (data.CurrentSeconds >= data.TargetSeconds)
                 return data.ChildState == NodeState.Running ? data.BreakReturnState : data.ChildState;
             
             var childIndex = index + 1;
@@ -37,7 +37,7 @@ namespace EntitiesBT.Nodes
                 var childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 data.ChildState = childState;
             }
-            data.Current += blackboard.GetData<TickDeltaTime>().Value;
+            data.CurrentSeconds += blackboard.GetData<TickDeltaTime>().Value;
             return NodeState.Running;
         }
     }

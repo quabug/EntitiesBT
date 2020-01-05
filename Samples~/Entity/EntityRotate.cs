@@ -36,14 +36,14 @@ namespace EntitiesBT.Sample
             public float RadianPerSecond;
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
-            ref var rotation = ref blackboard.GetDataRef<Rotation>();
-            var deltaTime = blackboard.GetData<TickDeltaTime>();
+            ref var rotation = ref bb.GetDataRef<Rotation>();
+            var deltaTime = bb.GetData<TickDeltaTime>();
             rotation.Value = math.mul(
                 math.normalize(rotation.Value)
-              , quaternion.AxisAngle(data.Axis, data.RadianPerSecond * (float)deltaTime.Value.TotalSeconds)
+              , quaternion.AxisAngle(data.Axis, data.RadianPerSecond * deltaTime.Value)
             );
             return NodeState.Running;
         }

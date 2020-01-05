@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
@@ -39,21 +38,20 @@ namespace EntitiesBT.Entities
                 }
             }
         }
-
+        
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            var dt = TimeSpan.FromSeconds(Time.DeltaTime);
-            Entities.WithAll<JobBlackboard>()
-                .WithoutBurst()
+            var dt = Time.DeltaTime;
+            var deltaTimeJobHandle = Entities.WithAll<JobBlackboard>()
                 .ForEach((ref TickDeltaTime deltaTime) => deltaTime.Value = dt)
-                .Run()
+                .Schedule(inputDeps)
             ;
             
             _blackboardDataQueryList.Clear();
             _blackboardDataQueryIndices.Clear();
             EntityManager.GetAllUniqueSharedComponentData(_blackboardDataQueryList, _blackboardDataQueryIndices);
-            
-            var jobHandler = inputDeps;
+
+            var jobHandler = new JobHandle();
             for (var i = 0; i < _blackboardDataQueryList.Count; i++)
             {
                 var query = _blackboardDataQueryList[i];
@@ -68,16 +66,15 @@ namespace EntitiesBT.Entities
                   , BlackboardType = GetArchetypeChunkComponentType<JobBlackboard>()
                   , NodeBlobRefType = GetArchetypeChunkComponentType<NodeBlobRef>()
                 };
-
-                var entityQuery = EntityManager.CreateEntityQuery(
-                    query.Value
-                        .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
-                        .Append(ComponentType.ReadWrite<NodeBlobRef>())
-                        .Append(ComponentType.ReadWrite<JobBlackboard>())
-                        .ToArray()
-                );
                 
-                jobHandler = job.Schedule(entityQuery, jobHandler);
+                // TODO: avoid GC? use NativeArray?
+                var entityQuery = GetEntityQuery(query.Value
+                    .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
+                    .Append(ComponentType.ReadWrite<NodeBlobRef>())
+                    .Append(ComponentType.ReadWrite<JobBlackboard>())
+                    .ToArray()
+                );
+                jobHandler = JobHandle.CombineDependencies(job.Schedule(entityQuery, deltaTimeJobHandle), jobHandler);
             }
             return jobHandler;
         }

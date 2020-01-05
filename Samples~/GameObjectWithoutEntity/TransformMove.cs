@@ -32,7 +32,7 @@ namespace EntitiesBT.Sample
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var deltaTime = (float)bb.GetData<TickDeltaTime>().Value.TotalSeconds;
+            var deltaTime = bb.GetData<TickDeltaTime>().Value;
             ref var data = ref blob.GetNodeData<Data>(index);
             var transform = bb.GetData<Transform>();
             var deltaMove = data.Velocity * deltaTime;

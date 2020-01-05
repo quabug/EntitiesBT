@@ -14,7 +14,7 @@ namespace EntitiesBT.Components
         public override unsafe void Build(void* dataPtr)
         {
             var ptr = (TimerNode.Data*) dataPtr;
-            ptr->Target = TimeSpan.FromSeconds(TimeInSeconds);
+            ptr->TargetSeconds = TimeInSeconds;
             ptr->BreakReturnState = BreakReturnState;
         }
     }

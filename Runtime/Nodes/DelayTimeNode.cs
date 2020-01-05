@@ -1,7 +1,5 @@
-using System;
 using EntitiesBT.Core;
 using Unity.Entities;
-using UnityEngine;
 
 namespace EntitiesBT.Nodes
 {
@@ -12,23 +10,22 @@ namespace EntitiesBT.Nodes
         
         public struct Data : INodeData
         {
-            public TimeSpan Target;
-            public TimeSpan Current;
+            public float TargetSeconds;
+            public float CurrentSeconds;
         }
 
-        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public static void Reset(int index, INodeBlob blob, IBlackboard bb)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
-            data.Current = TimeSpan.Zero;
+            data.CurrentSeconds = 0;
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
-            if (data.Current >= data.Target)
+            if (data.CurrentSeconds >= data.TargetSeconds)
                 return NodeState.Success;
-            
-            data.Current += blackboard.GetData<TickDeltaTime>().Value;
+            data.CurrentSeconds += bb.GetData<TickDeltaTime>().Value;
             return NodeState.Running;
         }
     }
