@@ -97,9 +97,8 @@ namespace Entities
         [Preserve]
         public bool HasComponentData<T>() where T : struct, IComponentData
         {
-            throw new NotImplementedException();
-            // var type = Types[TypeManager.GetTypeIndex<T>()];
-            // return Chunk.Has(type);
+            var typeIndex = TypeManager.GetTypeIndex<T>();
+            return ChunkDataUtility.GetIndexInTypeArray(Chunk.m_Chunk->Archetype, typeIndex) != -1;
         }
     }
 }
