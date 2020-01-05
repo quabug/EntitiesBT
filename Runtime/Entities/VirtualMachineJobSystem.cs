@@ -10,7 +10,7 @@ namespace EntitiesBT.Entities
 {
     public class VirtualMachineJobSystems : JobComponentSystem
     {
-        struct Job : IJobChunk
+        struct TickJob : IJobChunk
         {
             public int BlackboardDataQueryIndex;
             public TimeSpan DeltaTime;
@@ -42,13 +42,13 @@ namespace EntitiesBT.Entities
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
             var dt = TimeSpan.FromSeconds(Time.DeltaTime);
-            var jobs = new Dictionary<int, (Job job, EntityQuery query)>();
+            var jobs = new Dictionary<int, (TickJob job, EntityQuery query)>();
             Entities.WithoutBurst().ForEach((Entity entity, BlackboardDataQuery blackboardDataQuery) =>
             {
                 var index = EntityManager.GetSharedComponentDataIndex<BlackboardDataQuery>(entity);
                 if (!jobs.ContainsKey(index))
                 {
-                    var job = new Job {
+                    var job = new TickJob {
                         BlackboardDataQueryIndex = index
                       , DeltaTime = dt
                       , GlobalSystemVersion = EntityManager.GlobalSystemVersion
