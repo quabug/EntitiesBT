@@ -14,6 +14,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Easy to extend.
 - Also compatible with Unity GameObjects without any entity.
 - Able to save behavior tree into campact-binary-formatted file.
+- Flexible thread control: force on main thread, force on job thread, controlled by behavior tree
 
 ## Disadvantages
 - Incompatible with burst (Won't support this in the foreseen future, see FAQ below)
