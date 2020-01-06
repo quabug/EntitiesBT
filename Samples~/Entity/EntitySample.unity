@@ -480,7 +480,7 @@ GameObject:
   - component: {fileID: 170017255}
   - component: {fileID: 170017254}
   m_Layer: 0
-  m_Name: JobEntity (6)
+  m_Name: ForceJobEntity (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -498,8 +498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootNode: {fileID: 99409462}
-  EnableJob: 1
+  _rootNode: {fileID: 99409462}
+  _thread: 1
 --- !u!114 &170017255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1060,7 +1060,7 @@ GameObject:
   - component: {fileID: 466616109}
   - component: {fileID: 466616108}
   m_Layer: 0
-  m_Name: AnotherJobEntity
+  m_Name: ForceJobEntity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1078,8 +1078,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootNode: {fileID: 124417801}
-  EnableJob: 1
+  _rootNode: {fileID: 124417801}
+  _thread: 1
 --- !u!114 &466616109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1885,8 +1885,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootNode: {fileID: 99409462}
-  EnableJob: 1
+  _rootNode: {fileID: 99409462}
+  _thread: 2
 --- !u!114 &866470351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2344,8 +2344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootNode: {fileID: 99409462}
-  EnableJob: 1
+  _rootNode: {fileID: 99409462}
+  _thread: 2
 --- !u!114 &1134450522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2632,8 +2632,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootNode: {fileID: 271263580}
-  EnableJob: 0
+  _rootNode: {fileID: 271263580}
+  _thread: 0
 --- !u!114 &1314860103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3448,7 +3448,7 @@ GameObject:
   - component: {fileID: 2006228426}
   - component: {fileID: 2006228427}
   m_Layer: 0
-  m_Name: JobEntity
+  m_Name: ForceJobEntity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3479,8 +3479,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootNode: {fileID: 99409462}
-  EnableJob: 1
+  _rootNode: {fileID: 99409462}
+  _thread: 1
 --- !u!23 &2006228428
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3554,8 +3554,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootNode: {fileID: 648552812}
-  EnableJob: 0
+  _rootNode: {fileID: 648552812}
+  _thread: 0
 --- !u!1 &2033649725
 GameObject:
   m_ObjectHideFlags: 0

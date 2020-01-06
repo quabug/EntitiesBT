@@ -378,8 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootNode: {fileID: 512318345}
-  EnableJob: 1
+  _rootNode: {fileID: 512318345}
+  _thread: 2
 --- !u!114 &456945892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1446,8 +1446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RootNode: {fileID: 99409462}
-  EnableJob: 0
+  _rootNode: {fileID: 99409462}
+  _thread: 0
 --- !u!1 &2107458201
 GameObject:
   m_ObjectHideFlags: 0
