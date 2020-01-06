@@ -7,7 +7,7 @@ namespace EntitiesBT.Entities
     {
         protected override void OnUpdate()
         {
-            Entities.ForEach((Entity entity, BlackboardComponent bb, ref NodeBlobRef blob) =>
+            Entities.ForEach((Entity entity, MainThreadOnlyBlackboard bb, ref NodeBlobRef blob) =>
                 VirtualMachine.Tick(blob, bb.Value)
             );
         }

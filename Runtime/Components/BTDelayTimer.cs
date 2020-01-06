@@ -1,4 +1,3 @@
-using System;
 using EntitiesBT.Nodes;
 
 namespace EntitiesBT.Components
@@ -8,6 +7,6 @@ namespace EntitiesBT.Components
         public float DelayInSeconds;
 
         public override unsafe void Build(void* dataPtr) =>
-            ((DelayTimerNode.Data*) dataPtr)->Target = TimeSpan.FromSeconds(DelayInSeconds);
+            ((DelayTimerNode.Data*) dataPtr)->TargetSeconds = DelayInSeconds;
     }
 }

@@ -1,0 +1,17 @@
+{
+    "name": "EntitiesInternalMethods",
+    "references": [
+        "GUID:734d92eba21c94caba915361bd5ac177"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "BT_EDITOR_INTERAL_METHODS_DLL"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

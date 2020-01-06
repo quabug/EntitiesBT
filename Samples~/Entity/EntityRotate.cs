@@ -7,38 +7,44 @@ using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
-    public class EntityMove : BTNode<EntityMoveNode, EntityMoveNode.Data>
+    public class EntityRotate : BTNode<EntityRotateNode, EntityRotateNode.Data>
     {
-        public Vector3 Velocity;
+        public Vector3 Axis;
+        public float RadianPerSecond;
 
         public override unsafe void Build(void* dataPtr)
         {
-            var ptr = (EntityMoveNode.Data*) dataPtr;
-            ptr->Velocity = Velocity;
+            var ptr = (EntityRotateNode.Data*) dataPtr;
+            ptr->Axis = Axis;
+            ptr->RadianPerSecond = RadianPerSecond;
         }
     }
     
-    [BehaviorNode("F5C2EE7E-690A-4B5C-9489-FB362C949192")]
-    public class EntityMoveNode
+    [BehaviorNode("8E25032D-C06F-4AA9-B401-1AD31AF43A2F")]
+    public class EntityRotateNode
     {
         // optional, used for job system
         public static ComponentType[] Types => new []
         {
-            ComponentType.ReadWrite<Translation>()
+            ComponentType.ReadWrite<Rotation>()
           , ComponentType.ReadOnly<TickDeltaTime>()
         };
         
         public struct Data : INodeData
         {
-            public float3 Velocity;
+            public float3 Axis;
+            public float RadianPerSecond;
         }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
-            ref var translation = ref bb.GetDataRef<Translation>();
+            ref var rotation = ref bb.GetDataRef<Rotation>();
             var deltaTime = bb.GetData<TickDeltaTime>();
-            translation.Value += data.Velocity * deltaTime.Value;
+            rotation.Value = math.mul(
+                math.normalize(rotation.Value)
+              , quaternion.AxisAngle(data.Axis, data.RadianPerSecond * deltaTime.Value)
+            );
             return NodeState.Running;
         }
     }

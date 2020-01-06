@@ -23,7 +23,7 @@ namespace EntitiesBT.Sample
 
         private void Update()
         {
-            _bb.SetData(new TickDeltaTime{Value = TimeSpan.FromSeconds(Time.deltaTime)});
+            _bb.SetData(new TickDeltaTime{ Value = Time.deltaTime });
             VirtualMachine.Tick(_nodeBlobRef, _bb);
         }
 
@@ -59,6 +59,11 @@ namespace EntitiesBT.Sample
                     _gameObject.AddComponent(type);
                 _dict[key] = value;
             }
+        }
+
+        public ref T GetRef<T>(object key) where T : struct
+        {
+            throw new NotImplementedException();
         }
 
         public bool Has(object key)

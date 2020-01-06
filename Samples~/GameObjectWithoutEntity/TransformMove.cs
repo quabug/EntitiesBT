@@ -1,5 +1,6 @@
 using EntitiesBT.Core;
 using EntitiesBT.Components;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Sample
@@ -18,6 +19,12 @@ namespace EntitiesBT.Sample
     [BehaviorNode("B6DBD77F-1C83-4B0A-BB46-ECEE8D3C1BEF")]
     public class TransformMoveNode
     {
+        public static ComponentType[] Types => new []
+        {
+            ComponentType.ReadOnly<TickDeltaTime>()
+          , ComponentType.ReadWrite<Transform>()
+        };
+        
         public struct Data : INodeData
         {
             public Vector3 Velocity;
@@ -25,7 +32,7 @@ namespace EntitiesBT.Sample
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var deltaTime = (float)bb.GetData<TickDeltaTime>().Value.TotalSeconds;
+            var deltaTime = bb.GetData<TickDeltaTime>().Value;
             ref var data = ref blob.GetNodeData<Data>(index);
             var transform = bb.GetData<Transform>();
             var deltaMove = data.Velocity * deltaTime;

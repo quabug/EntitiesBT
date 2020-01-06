@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using Unity.Entities;
 
 namespace EntitiesBT.Core
 {
-    using ResetFunc = Action<int, INodeBlob, IBlackboard>;
-    using TickFunc = Func<int, INodeBlob, IBlackboard, NodeState>;
-    
     public static class VirtualMachine
     {
-        private static readonly Dictionary<int, ResetFunc> _resets = new Dictionary<int, ResetFunc>();
-        private static readonly Dictionary<int, TickFunc> _ticks = new Dictionary<int, TickFunc>();
+        public delegate void ResetFunc(int nodeIndex, INodeBlob blob, IBlackboard bb);
+        public delegate NodeState TickFunc(int nodeIndex, INodeBlob blob, IBlackboard bb);
+        
+        private static readonly Dictionary<int, ResetFunc> _RESETS = new Dictionary<int, ResetFunc>();
+        private static readonly Dictionary<int, TickFunc> _TICKS = new Dictionary<int, TickFunc>();
+        private static readonly Dictionary<int, ComponentType[]> _ACCESS_TYPES = new Dictionary<int, ComponentType[]>();
+
+        public static ComponentType[] GetAccessTypes(int nodeId) => _ACCESS_TYPES[nodeId];
 
         static VirtualMachine()
         {
@@ -21,35 +25,47 @@ namespace EntitiesBT.Core
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 if (attribute == null) continue;
-                var resetFunc = type.GetMethod(attribute.ResetFunc).GetResetFunc();
-                var tickFunc = type.GetMethod(attribute.TickFunc).GetTickFunc();
-                Register(attribute.Id, resetFunc, tickFunc);
+                var resetFunc = GetResetFunc(type.GetMethod(attribute.ResetFunc));
+                var tickFunc = GetTickFunc(type.GetMethod(attribute.TickFunc));
+                var accessTypes = GetAccessTypes(type.GetProperty(attribute.TypesProperty));
+                Register(attribute.Id, resetFunc, tickFunc, accessTypes);
             }
-        }
 
-        static ResetFunc GetResetFunc(this MethodInfo methodInfo)
-        {
-            return methodInfo == null
-                ? (index, blob, bb) => {}
-                : (ResetFunc)methodInfo.CreateDelegate(typeof(ResetFunc))
-            ;
-        }
+            ResetFunc GetResetFunc(MethodInfo methodInfo)
+            {
+                return methodInfo == null
+                    ? (index, blob, bb) => {}
+                    : (ResetFunc)methodInfo.CreateDelegate(typeof(ResetFunc))
+                ;
+            }
 
-        static TickFunc GetTickFunc(this MethodInfo methodInfo)
-        {
-            return methodInfo == null
-                ? (index, blob, bb) => NodeState.Running
-                : (TickFunc)methodInfo.CreateDelegate(typeof(TickFunc))
-            ;
-        }
+            TickFunc GetTickFunc(MethodInfo methodInfo)
+            {
+                return methodInfo == null
+                    ? (index, blob, bb) => NodeState.Running
+                    : (TickFunc)methodInfo.CreateDelegate(typeof(TickFunc))
+                ;
+            }
+            
+            ComponentType[] GetAccessTypes(PropertyInfo propertyInfo)
+            {
+                var methodInfo = propertyInfo?.GetGetMethod();
+                return methodInfo == null
+                    ? new ComponentType[0]
+                    : (ComponentType[])methodInfo.Invoke(null, new object[0])
+                ;
+            }
 
-        static void Register(int id, ResetFunc reset, TickFunc tick)
-        {
-            if (_resets.ContainsKey(id)) throw new DuplicateNameException($"Reset function {id} already registered");
-            if (_ticks.ContainsKey(id)) throw new DuplicateNameException($"Tick function {id} already registered");
+            void Register(int id, ResetFunc reset, TickFunc tick, ComponentType[] types)
+            {
+                if (_RESETS.ContainsKey(id)) throw new DuplicateNameException($"Reset function {id} already registered");
+                if (_TICKS.ContainsKey(id)) throw new DuplicateNameException($"Tick function {id} already registered");
+                if (_ACCESS_TYPES.ContainsKey(id)) throw new DuplicateNameException($"Access types {id} already registered");
 
-            _resets[id] = reset;
-            _ticks[id] = tick;
+                _RESETS[id] = reset;
+                _TICKS[id] = tick;
+                _ACCESS_TYPES[id] = types;
+            }
         }
         
         public static NodeState Tick(INodeBlob blob, IBlackboard bb)
@@ -60,16 +76,14 @@ namespace EntitiesBT.Core
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var typeId = blob.GetTypeId(index);
-            var state = _ticks[typeId](index, blob, bb);
-            // Debug.Log($"[BT] tick: {index}-{node.GetType().Name}-{state}");
+            var state = _TICKS[typeId](index, blob, bb);
             return state;
         }
 
         public static void Reset(int index, INodeBlob blob, IBlackboard bb)
         {
             var typeId = blob.GetTypeId(index);
-            _resets[typeId](index, blob, bb);
-            // Debug.Log($"[BT] tick: {index}-{node.GetType().Name}-{state}");
+            _RESETS[typeId](index, blob, bb);
         }
 
         public static void Reset(int fromIndex, int count, INodeBlob blob, IBlackboard bb)

@@ -40,5 +40,3 @@ TODO
 - Q: How about job?
   
   A: Job(multithreading) is supported by behavior tree itself, but you must implement a job-safe blackboard first. Unfortunately [EntityBlackboard](Runtime/Entities/EntityBlackboard.cs) is not one of job-safe blackboard.
-  
-  I am stucking on [issue #37](https://github.com/quabug/EntitiesBT/issues/37) while writing a general purpose job-safe EntityBlackboard, once its sovled I'll continue working on job-safe EntityBlackboard.

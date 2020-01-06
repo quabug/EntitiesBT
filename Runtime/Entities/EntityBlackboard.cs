@@ -1,27 +1,39 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
 namespace EntitiesBT.Entities
 {
-    public class EntityBlackboard : IBlackboard
+    public struct EntityBlackboard : IBlackboard
     {
         private readonly EntityManager _em;
         private readonly Entity _entity;
         
-        private static readonly Func<object, Type, object> _getComponentData;
-        private static readonly Func<object, Type, object> _getManagedData;
-        private static readonly Func<object, Type, object> _getComponentObject;
-        private static readonly Action<object, Type, object> _setComponentData;
-        private static readonly Func<object, Type, bool> _hasComponent;
-
-        static EntityBlackboard()
+        private static Func<object, Type, object> _getComponentData;
+        private static Func<object, Type, object> _getSharedComponentData;
+        private static Func<object, Type, object> _getManagedData;
+        private static Func<object, Type, object> _getComponentObject;
+        private static Action<object, Type, object> _setComponentData;
+        private static Func<object, Type, bool> _hasComponent;
+        
+        public EntityBlackboard(EntityManager em, Entity entity)
         {
+            _em = em;
+            _entity = entity;
+            
             {
                 var getter = typeof(EntityBlackboard).GetMethod("GetComponentData", BindingFlags.Public | BindingFlags.Instance);
                 _getComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
+            }
+            
+            {
+                var getter = typeof(EntityBlackboard).GetMethod("GetSharedComponentData", BindingFlags.Public | BindingFlags.Instance);
+                _getSharedComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
 
             {
@@ -44,21 +56,16 @@ namespace EntitiesBT.Entities
                 _hasComponent = (caller, type) => (bool)predicate.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
         }
-        
-        public EntityBlackboard(EntityManager em, Entity entity)
-        {
-            _em = em;
-            _entity = entity;
-        }
 
         public object this[object key]
         {
             get
             {
                 var type = key as Type;
-                if (type.IsUnityComponentType()) return _getComponentObject(this, type);
                 if (type.IsComponentDataType()) return _getComponentData(this, type);
+                if (type.IsSharedComponentDataType()) return _getSharedComponentData(this, type);
                 if (type.IsManagedDataType()) return _getManagedData(this, type);
+                if (type.IsUnityComponentType()) return _getComponentObject(this, type);
                 throw new NotImplementedException();
             }
             set
@@ -75,6 +82,19 @@ namespace EntitiesBT.Entities
                 throw new NotImplementedException();
             }
         }
+        
+        public unsafe ref T GetRef<T>(object key) where T : struct
+        {
+            var type = typeof(T);
+            if (!type.IsComponentDataType()) throw new NotImplementedException();
+            
+            var typeIndex = TypeManager.GetTypeIndex<T>();
+            
+            if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
+                throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
+            
+            return ref UnsafeUtilityEx.AsRef<T>(_entity.GetComponentDataRawRW(_em, typeIndex));
+        }
 
         public bool Has(object key)
         {
@@ -88,6 +108,12 @@ namespace EntitiesBT.Entities
         public T GetComponentData<T>() where T : struct, IComponentData
         {
             return _em.GetComponentData<T>(_entity);
+        }
+        
+        [Preserve]
+        public T GetSharedComponentData<T>() where T : struct, ISharedComponentData
+        {
+            return _em.GetSharedComponentData<T>(_entity);
         }
         
         [Preserve]
@@ -113,5 +139,6 @@ namespace EntitiesBT.Entities
         {
             return _em.HasComponent<T>(_entity);
         }
+
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Entities;
 
@@ -10,11 +9,9 @@ namespace EntitiesBT
     {
         protected override void OnUpdate()
         {
-            Entities.ForEach((BlackboardComponent bb, ref TickDeltaTime dt) =>
-            {
-                var deltaTime = TimeSpan.FromSeconds(Time.DeltaTime);
-                bb.Value.SetData(new TickDeltaTime{Value = deltaTime});
-            });
+            Entities.ForEach((MainThreadOnlyBlackboard bb, ref TickDeltaTime deltaTime) => 
+                deltaTime.Value = Time.DeltaTime
+            );
         }
     }
 }
