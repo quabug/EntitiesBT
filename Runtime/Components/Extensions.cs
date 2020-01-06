@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Entities;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Collections;
@@ -67,6 +68,29 @@ namespace EntitiesBT.Components
                 .Select(i => blob.Value.Types[i])
                 .SelectMany(VirtualMachine.GetAccessTypes)
             );
+        }
+
+        public static void AddBehaviorTree(this Entity entity, EntityManager dstManager, BlobAssetReference<NodeBlob> blobRef, bool enableJob)
+        {
+            var blob = new NodeBlobRef { BlobRef = blobRef };
+            if (enableJob)
+            {
+                var dataQuery = new BlackboardDataQuery {Value = blobRef.GetAccessTypes()};
+                var jobBlackboard = new EntityJobChunkBlackboard();
+                VirtualMachine.Reset(blob, jobBlackboard);
+                dstManager.AddComponentData(entity, new JobBlackboard { Value = jobBlackboard });
+                dstManager.AddSharedComponentData(entity, dataQuery);
+                dstManager.AddComponentData(entity, new IsMainThread { Value = false });
+            }
+            else
+            {
+                var mainThreadBlackboard = new EntityBlackboard(dstManager, entity);
+                VirtualMachine.Reset(blob, mainThreadBlackboard);
+                dstManager.AddComponentData(entity, new MainThreadOnlyBlackboard {Value = mainThreadBlackboard});
+                dstManager.AddComponentData(entity, new IsMainThread { Value = false });
+            }
+            dstManager.AddComponentData(entity, blob);
+            dstManager.AddComponentData(entity, new TickDeltaTime());
         }
     }
 }

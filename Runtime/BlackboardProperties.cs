@@ -6,4 +6,9 @@ namespace EntitiesBT
     {
         public float Value;
     }
+    
+    public struct IsMainThread : IComponentData
+    {
+        public bool Value;
+    }
 }
