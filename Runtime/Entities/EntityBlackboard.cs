@@ -9,10 +9,10 @@ using UnityEngine.Scripting;
 
 namespace EntitiesBT.Entities
 {
-    public struct EntityBlackboard : IBlackboard
+    public class EntityBlackboard : IBlackboard
     {
-        private readonly EntityManager _em;
-        private readonly Entity _entity;
+        public EntityManager EntityManager;
+        public Entity Entity;
         
         private static Func<object, Type, object> _getComponentData;
         private static Func<object, Type, object> _getSharedComponentData;
@@ -21,11 +21,8 @@ namespace EntitiesBT.Entities
         private static Action<object, Type, object> _setComponentData;
         private static Func<object, Type, bool> _hasComponent;
         
-        public EntityBlackboard(EntityManager em, Entity entity)
+        static EntityBlackboard()
         {
-            _em = em;
-            _entity = entity;
-            
             {
                 var getter = typeof(EntityBlackboard).GetMethod("GetComponentData", BindingFlags.Public | BindingFlags.Instance);
                 _getComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
@@ -93,7 +90,7 @@ namespace EntitiesBT.Entities
             if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
                 throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
             
-            return ref UnsafeUtilityEx.AsRef<T>(_entity.GetComponentDataRawRW(_em, typeIndex));
+            return ref UnsafeUtilityEx.AsRef<T>(Entity.GetComponentDataRawRW(EntityManager, typeIndex));
         }
 
         public bool Has(object key)
@@ -107,37 +104,37 @@ namespace EntitiesBT.Entities
         [Preserve]
         public T GetComponentData<T>() where T : struct, IComponentData
         {
-            return _em.GetComponentData<T>(_entity);
+            return EntityManager.GetComponentData<T>(Entity);
         }
         
         [Preserve]
         public T GetSharedComponentData<T>() where T : struct, ISharedComponentData
         {
-            return _em.GetSharedComponentData<T>(_entity);
+            return EntityManager.GetSharedComponentData<T>(Entity);
         }
         
         [Preserve]
         public T GetManagedData<T>() where T : class, IComponentData
         {
-            return _em.GetComponentData<T>(_entity);
+            return EntityManager.GetComponentData<T>(Entity);
         }
         
         [Preserve]
         public T GetUnityComponent<T>()
         {
-            return _em.GetComponentObject<T>(_entity);
+            return EntityManager.GetComponentObject<T>(Entity);
         }
         
         [Preserve]
         public void SetComponentData<T>(T value) where T : struct, IComponentData
         {
-            _em.SetComponentData(_entity, value);
+            EntityManager.SetComponentData(Entity, value);
         }
         
         [Preserve]
         public bool HasComponent<T>() where T : struct, IComponentData
         {
-            return _em.HasComponent<T>(_entity);
+            return EntityManager.HasComponent<T>(Entity);
         }
 
     }

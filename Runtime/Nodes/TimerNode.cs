@@ -7,7 +7,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("46540F67-6145-4433-9A3A-E470992B952E", BehaviorNodeType.Decorate)]
     public class TimerNode
     {
-        public static ComponentType[] Types => new [] { ComponentType.ReadOnly<TickDeltaTime>() };
+        public static ComponentType[] Types => new [] { ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>() };
         
         public struct Data : INodeData
         {
@@ -37,7 +37,7 @@ namespace EntitiesBT.Nodes
                 var childState = VirtualMachine.Tick(childIndex, blob, blackboard);
                 data.ChildState = childState;
             }
-            data.CurrentSeconds += blackboard.GetData<TickDeltaTime>().Value;
+            data.CurrentSeconds += blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
             return NodeState.Running;
         }
     }

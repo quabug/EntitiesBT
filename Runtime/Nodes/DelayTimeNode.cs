@@ -6,7 +6,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("2F6009D3-1314-42E6-8E52-4AEB7CDDB4CD")]
     public class DelayTimerNode
     {
-        public static ComponentType[] Types => new []{ComponentType.ReadOnly<TickDeltaTime>()};
+        public static ComponentType[] Types => new []{ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()};
         
         public struct Data : INodeData
         {
@@ -25,7 +25,7 @@ namespace EntitiesBT.Nodes
             ref var data = ref blob.GetNodeData<Data>(index);
             if (data.CurrentSeconds >= data.TargetSeconds)
                 return NodeState.Success;
-            data.CurrentSeconds += bb.GetData<TickDeltaTime>().Value;
+            data.CurrentSeconds += bb.GetData<BehaviorTreeTickDeltaTime>().Value;
             return NodeState.Running;
         }
     }
