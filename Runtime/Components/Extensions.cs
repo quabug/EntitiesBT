@@ -79,18 +79,17 @@ namespace EntitiesBT.Components
                 var jobBlackboard = new EntityJobChunkBlackboard();
                 VirtualMachine.Reset(blob, jobBlackboard);
                 dstManager.AddComponentData(entity, new JobBlackboard { Value = jobBlackboard });
+                dstManager.AddComponentData(entity, new IsRunOnMainThread { Value = false });
                 dstManager.AddSharedComponentData(entity, dataQuery);
-                dstManager.AddComponentData(entity, new IsMainThread { Value = false });
             }
             else
             {
-                var mainThreadBlackboard = new EntityBlackboard(dstManager, entity);
-                VirtualMachine.Reset(blob, mainThreadBlackboard);
-                dstManager.AddComponentData(entity, new MainThreadOnlyBlackboard {Value = mainThreadBlackboard});
-                dstManager.AddComponentData(entity, new IsMainThread { Value = false });
+                var bb = new EntityBlackboard { EntityManager = dstManager, Entity = entity };
+                VirtualMachine.Reset(blob, bb);
+                dstManager.AddComponentData(entity, new ForceRunOnMainThreadTag());
             }
             dstManager.AddComponentData(entity, blob);
-            dstManager.AddComponentData(entity, new TickDeltaTime());
+            dstManager.AddComponentData(entity, new BehaviorTreeTickDeltaTime());
         }
     }
 }

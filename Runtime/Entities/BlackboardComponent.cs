@@ -8,11 +8,6 @@ using UnityEngine;
 
 namespace EntitiesBT.Entities
 {
-    public class MainThreadOnlyBlackboard : IComponentData
-    {
-        public EntityBlackboard Value;
-    }
-    
     public struct JobBlackboard : IComponentData
     {
         public EntityJobChunkBlackboard Value;

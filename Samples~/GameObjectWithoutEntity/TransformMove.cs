@@ -21,7 +21,7 @@ namespace EntitiesBT.Sample
     {
         public static ComponentType[] Types => new []
         {
-            ComponentType.ReadOnly<TickDeltaTime>()
+            ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()
           , ComponentType.ReadWrite<Transform>()
         };
         
@@ -32,7 +32,7 @@ namespace EntitiesBT.Sample
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var deltaTime = bb.GetData<TickDeltaTime>().Value;
+            var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>().Value;
             ref var data = ref blob.GetNodeData<Data>(index);
             var transform = bb.GetData<Transform>();
             var deltaMove = data.Velocity * deltaTime;

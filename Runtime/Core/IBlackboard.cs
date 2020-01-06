@@ -23,9 +23,9 @@ namespace EntitiesBT.Core
             bb[typeof(T)] = data;
         }
         
-        public static void HasData<T>(this IBlackboard bb)
+        public static bool HasData<T>(this IBlackboard bb)
         {
-            bb.Has(typeof(T));
+            return bb.Has(typeof(T));
         }
         
         public static unsafe ref T GetDataRef<T>(this IBlackboard bb) where T : struct

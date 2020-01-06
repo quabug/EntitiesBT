@@ -27,7 +27,7 @@ namespace EntitiesBT.Sample
         public static ComponentType[] Types => new []
         {
             ComponentType.ReadWrite<Rotation>()
-          , ComponentType.ReadOnly<TickDeltaTime>()
+          , ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()
         };
         
         public struct Data : INodeData
@@ -40,7 +40,7 @@ namespace EntitiesBT.Sample
         {
             ref var data = ref blob.GetNodeData<Data>(index);
             ref var rotation = ref bb.GetDataRef<Rotation>();
-            var deltaTime = bb.GetData<TickDeltaTime>();
+            var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>();
             rotation.Value = math.mul(
                 math.normalize(rotation.Value)
               , quaternion.AxisAngle(data.Axis, data.RadianPerSecond * deltaTime.Value)
