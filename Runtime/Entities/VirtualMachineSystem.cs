@@ -38,7 +38,7 @@ namespace EntitiesBT.Entities
                         if (!isRunOnMainThread.Value) EntityManager.RemoveComponent<RunOnMainThreadTag>(entity);
                     });
                 
-                Entities.WithNone<RunOnMainThreadTag, ForceRunOnMainThreadTag>()
+                Entities.WithNone<RunOnMainThreadTag, ForceRunOnMainThreadTag, ForceRunOnJobTag>()
                     .ForEach((Entity entity, ref IsRunOnMainThread isRunOnMainThread) =>
                     {
                         if (isRunOnMainThread.Value) EntityManager.AddComponent<RunOnMainThreadTag>(entity);
@@ -100,12 +100,6 @@ namespace EntitiesBT.Entities
 
             protected override JobHandle OnUpdate(JobHandle inputDeps)
             {
-                Entities.WithoutBurst()
-                    .WithAll<JobBlackboard>()
-                    .ForEach((ref BehaviorTreeTickDeltaTime dt) => dt.Value = Time.DeltaTime)
-                    .Run()
-                ;
-                
                 _blackboardDataQueryList.Clear();
                 _blackboardDataQueryIndices.Clear();
                 EntityManager.GetAllUniqueSharedComponentData(_blackboardDataQueryList, _blackboardDataQueryIndices);

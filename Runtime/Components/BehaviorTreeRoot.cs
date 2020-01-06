@@ -6,17 +6,17 @@ namespace EntitiesBT.Components
     [DisallowMultipleComponent]
     public class BehaviorTreeRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
-        [SerializeField] private BTNode RootNode;
-        [SerializeField] private bool EnableJob = false;
+        [SerializeField] private BTNode _rootNode;
+        [SerializeField] private BehaviorTreeThread _thread = BehaviorTreeThread.ForceRunOnMainThread;
         
         private void Reset()
         {
-            RootNode = GetComponentInChildren<BTNode>();
+            _rootNode = GetComponentInChildren<BTNode>();
         }
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            entity.AddBehaviorTree(dstManager, RootNode.ToBlob(), EnableJob);
+            entity.AddBehaviorTree(dstManager, _rootNode.ToBlob(), _thread);
         }
     }
 }

@@ -10,6 +10,13 @@ using UnityEngine;
 
 namespace EntitiesBT.Components
 {
+    public enum BehaviorTreeThread
+    {
+        ForceRunOnMainThread
+      , ForceRunOnJob
+      , ControlledByBehaviorTree
+    }
+    
     public static class BehaviorTreeExtensions
     {
         public static BlobAssetReference<NodeBlob> ToBlob(this BTNode root)
@@ -70,10 +77,43 @@ namespace EntitiesBT.Components
             );
         }
 
-        public static void AddBehaviorTree(this Entity entity, EntityManager dstManager, BlobAssetReference<NodeBlob> blobRef, bool enableJob)
+        public static void AddBehaviorTree(
+            this Entity entity
+          , EntityManager dstManager
+          , BlobAssetReference<NodeBlob> blobRef
+          , BehaviorTreeThread thread = BehaviorTreeThread.ForceRunOnMainThread
+        )
         {
             var blob = new NodeBlobRef { BlobRef = blobRef };
-            if (enableJob)
+            
+            switch (thread)
+            {
+            case BehaviorTreeThread.ForceRunOnMainThread:
+            {
+                var bb = new EntityBlackboard { EntityManager = dstManager, Entity = entity };
+                VirtualMachine.Reset(blob, bb);
+                dstManager.AddComponentData(entity, new ForceRunOnMainThreadTag());
+                break;
+            }
+            case BehaviorTreeThread.ForceRunOnJob:
+            {
+                AddJobComponents();
+                dstManager.AddComponentData(entity, new ForceRunOnJobTag());
+                break;
+            }
+            case BehaviorTreeThread.ControlledByBehaviorTree:
+            {
+                AddJobComponents();
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException(nameof(thread), thread, null);
+            }
+            
+            dstManager.AddComponentData(entity, blob);
+            dstManager.AddComponentData(entity, new BehaviorTreeTickDeltaTime());
+
+            void AddJobComponents()
             {
                 var dataQuery = new BlackboardDataQuery {Value = blobRef.GetAccessTypes()};
                 var jobBlackboard = new EntityJobChunkBlackboard();
@@ -82,14 +122,6 @@ namespace EntitiesBT.Components
                 dstManager.AddComponentData(entity, new IsRunOnMainThread { Value = false });
                 dstManager.AddSharedComponentData(entity, dataQuery);
             }
-            else
-            {
-                var bb = new EntityBlackboard { EntityManager = dstManager, Entity = entity };
-                VirtualMachine.Reset(blob, bb);
-                dstManager.AddComponentData(entity, new ForceRunOnMainThreadTag());
-            }
-            dstManager.AddComponentData(entity, blob);
-            dstManager.AddComponentData(entity, new BehaviorTreeTickDeltaTime());
         }
     }
 }
