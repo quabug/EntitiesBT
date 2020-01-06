@@ -7,8 +7,8 @@ namespace EntitiesBT.Core
     public interface IBlackboard
     {
         object this[object key] { get; set; }
-        ref T GetRef<T>(object key) where T : struct;
         bool Has(object key);
+        ref T GetRef<T>(object key) where T : struct;
     }
 
     public static class BlackboardExtensions

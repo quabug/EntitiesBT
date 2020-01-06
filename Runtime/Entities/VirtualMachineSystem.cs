@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace EntitiesBT.Entities
 {
-    public class VirtualMachineMainThreadOnlySystem : ComponentSystem
+    public class VirtualMachineSystem : ComponentSystem
     {
         protected override void OnUpdate()
         {

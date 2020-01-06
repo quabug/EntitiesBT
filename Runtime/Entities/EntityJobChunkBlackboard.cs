@@ -1,8 +1,11 @@
 using System;
+using System.Linq;
 using System.Reflection;
+using EntitiesBT;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using UnityEngine;
 using UnityEngine.Scripting;
 
 namespace Entities
@@ -63,8 +66,7 @@ namespace Entities
             var typeIndex = TypeManager.GetTypeIndex<T>();
             if (TypeManager.IsZeroSized(typeIndex))
                 throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
-            var ptr = ChunkDataUtility.GetComponentDataWithTypeRW(Chunk.m_Chunk, Index, typeIndex, GlobalSystemVersion);
-            return ref UnsafeUtilityEx.AsRef<T>(ptr);
+            return ref UnsafeUtilityEx.AsRef<T>(Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion));
         }
 
         Type ValidateKey(object key)
@@ -79,8 +81,7 @@ namespace Entities
             var typeIndex = TypeManager.GetTypeIndex<T>();
             if (TypeManager.IsZeroSized(typeIndex))
                 throw new ArgumentException($"SetComponentData<{typeof(T)}> can not be called with a zero sized component.");
-            var ptr = ChunkDataUtility.GetComponentDataWithTypeRO(Chunk.m_Chunk, Index, typeIndex);
-            return UnsafeUtilityEx.AsRef<T>(ptr);
+            return UnsafeUtilityEx.AsRef<T>(Chunk.GetComponentDataWithTypeRO(Index, typeIndex));
         }
 
         [Preserve]
@@ -89,15 +90,14 @@ namespace Entities
             var typeIndex = TypeManager.GetTypeIndex<T>();
             if (TypeManager.IsZeroSized(typeIndex))
                 throw new ArgumentException($"SetComponentData<{typeof(T)}> can not be called with a zero sized component.");
-            var ptr = ChunkDataUtility.GetComponentDataWithTypeRW(Chunk.m_Chunk, Index, typeIndex, GlobalSystemVersion);
-            UnsafeUtilityEx.AsRef<T>(ptr) = value;
+            UnsafeUtilityEx.AsRef<T>(Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion)) = value;
         }
         
         [Preserve]
-        public unsafe bool HasComponentData<T>() where T : struct, IComponentData
+        public bool HasComponentData<T>() where T : struct, IComponentData
         {
             var typeIndex = TypeManager.GetTypeIndex<T>();
-            return ChunkDataUtility.GetIndexInTypeArray(Chunk.m_Chunk->Archetype, typeIndex) != -1;
+            return Chunk.GetIndexInTypeArray(typeIndex) != -1;
         }
     }
 }

@@ -4,7 +4,7 @@ using Unity.Entities;
 
 namespace EntitiesBT
 {
-    [UpdateBefore(typeof(VirtualMachineMainThreadOnlySystem))]
+    [UpdateBefore(typeof(VirtualMachineSystem))]
     public class BlackboardTickDeltaTimeSystem : ComponentSystem
     {
         protected override void OnUpdate()

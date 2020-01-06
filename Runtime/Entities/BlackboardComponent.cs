@@ -10,7 +10,7 @@ namespace EntitiesBT.Entities
 {
     public class MainThreadOnlyBlackboard : IComponentData
     {
-        public EntityMainThreadBlackboard Value;
+        public EntityBlackboard Value;
     }
     
     public struct JobBlackboard : IComponentData

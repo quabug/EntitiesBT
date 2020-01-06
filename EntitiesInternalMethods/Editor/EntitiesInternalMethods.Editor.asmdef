@@ -1,0 +1,23 @@
+{
+    "name": "EntitiesInternalMethods.Editor",
+    "references": [
+        "GUID:9e6d84b50759b4e79a76b5ef71ef2233",
+        "GUID:734d92eba21c94caba915361bd5ac177"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Mono.Cecil.dll",
+        "Mono.Cecil.Rocks.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "BT_EDITOR_INTERAL_METHODS_DLL"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
