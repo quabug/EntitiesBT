@@ -27,7 +27,7 @@ namespace EntitiesBT.Core
                 if (attribute == null) continue;
                 var resetFunc = GetResetFunc(type.GetMethod(attribute.ResetFunc));
                 var tickFunc = GetTickFunc(type.GetMethod(attribute.TickFunc));
-                var accessTypes = GetAccessTypes(type.GetProperty(attribute.TypesProperty));
+                var accessTypes = GetAccessTypes(type.GetField(attribute.TypesField));
                 Register(attribute.Id, resetFunc, tickFunc, accessTypes);
             }
 
@@ -47,12 +47,11 @@ namespace EntitiesBT.Core
                 ;
             }
             
-            ComponentType[] GetAccessTypes(PropertyInfo propertyInfo)
+            ComponentType[] GetAccessTypes(FieldInfo fieldInfo)
             {
-                var methodInfo = propertyInfo?.GetGetMethod();
-                return methodInfo == null
+                return fieldInfo == null
                     ? new ComponentType[0]
-                    : (ComponentType[])methodInfo.Invoke(null, new object[0])
+                    : (ComponentType[])fieldInfo.GetValue(null)
                 ;
             }
 

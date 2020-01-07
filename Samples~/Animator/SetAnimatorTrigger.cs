@@ -16,7 +16,7 @@ namespace EntitiesBT.Sample
     [BehaviorNode("EF8A0D43-DEA1-4D31-953C-77CD0BD8E26C")]
     public class SetAnimatorTriggerNode
     {
-        public static ComponentType[] Types => new [] {ComponentType.ReadWrite<Animator>()};
+        public static readonly ComponentType[] Types = {ComponentType.ReadWrite<Animator>()};
         
         public struct Data : INodeData
         {
