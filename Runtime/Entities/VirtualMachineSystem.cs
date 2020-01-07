@@ -76,20 +76,20 @@ namespace EntitiesBT.Entities
                 
                 [ReadOnly] public ArchetypeChunkSharedComponentType<BlackboardDataQuery> BlackboardDataQueryType;
                 [ReadOnly] public ArchetypeChunkComponentType<NodeBlobRef> NodeBlobRefType;
-                [ReadOnly] public ArchetypeChunkEntityType EntityType;
+                // [ReadOnly] public ArchetypeChunkEntityType EntityType;
                 
                 public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
                 {
                     var index = chunk.GetSharedComponentIndex(BlackboardDataQueryType);
                     if (index != BlackboardDataQueryIndex) return;
 
-                    var entities = chunk.GetNativeArray(EntityType);
+                    // var entities = chunk.GetNativeArray(EntityType);
                     var nodeBlobs = chunk.GetNativeArray(NodeBlobRefType);
                     for (var i = 0; i < chunk.Count; i++)
                     {
                         Blackboard.Chunk = chunk;
                         Blackboard.Index = i;
-                        Blackboard.Entity = entities[i];
+                        // Blackboard.Entity = entities[i];
                         VirtualMachine.Tick(nodeBlobs[i], Blackboard);
                     }
                 }
@@ -123,7 +123,7 @@ namespace EntitiesBT.Entities
                       , Blackboard = new EntityJobChunkBlackboard { GlobalSystemVersion = EntityManager.GlobalSystemVersion }
                       , BlackboardDataQueryType = GetArchetypeChunkSharedComponentType<BlackboardDataQuery>()
                       , NodeBlobRefType = GetArchetypeChunkComponentType<NodeBlobRef>()
-                      , EntityType = GetArchetypeChunkEntityType()
+                      // , EntityType = GetArchetypeChunkEntityType()
                     };
                     
                     jobHandler = JobHandle.CombineDependencies(job.Schedule(jobQuery, inputDeps), jobHandler);
