@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Entities;
 using EntitiesBT.Core;
 using Unity.Collections;
 using Unity.Entities;
@@ -70,12 +71,11 @@ namespace EntitiesBT.Entities
             
             struct TickJob : IJobChunk
             {
+                public EntityJobChunkBlackboard Blackboard;
                 public int BlackboardDataQueryIndex;
-                public uint GlobalSystemVersion;
                 
                 [ReadOnly] public ArchetypeChunkSharedComponentType<BlackboardDataQuery> BlackboardDataQueryType;
                 [ReadOnly] public ArchetypeChunkComponentType<NodeBlobRef> NodeBlobRefType;
-                [ReadOnly] public ArchetypeChunkComponentType<JobBlackboard> BlackboardType;
                 [ReadOnly] public ArchetypeChunkEntityType EntityType;
                 
                 public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
@@ -85,15 +85,12 @@ namespace EntitiesBT.Entities
 
                     var entities = chunk.GetNativeArray(EntityType);
                     var nodeBlobs = chunk.GetNativeArray(NodeBlobRefType);
-                    var blackboards = chunk.GetNativeArray(BlackboardType);
                     for (var i = 0; i < chunk.Count; i++)
                     {
-                        var bb = blackboards[i];
-                        bb.Value.GlobalSystemVersion = GlobalSystemVersion;
-                        bb.Value.Chunk = chunk;
-                        bb.Value.Index = i;
-                        bb.Value.Entity = entities[i];
-                        VirtualMachine.Tick(nodeBlobs[i], bb.Value);
+                        Blackboard.Chunk = chunk;
+                        Blackboard.Index = i;
+                        Blackboard.Entity = entities[i];
+                        VirtualMachine.Tick(nodeBlobs[i], Blackboard);
                     }
                 }
             }
@@ -115,7 +112,6 @@ namespace EntitiesBT.Entities
                     // TODO: avoid GC? use NativeArray?
                     var jobQuery = GetEntityQuery(query.Value
                         .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
-                        .Append(ComponentType.ReadOnly<JobBlackboard>())
                         .Append(ComponentType.ReadOnly<NodeBlobRef>())
                         .Append(ComponentType.Exclude<RunOnMainThreadTag>())
                         .Append(ComponentType.Exclude<ForceRunOnMainThreadTag>())
@@ -124,9 +120,8 @@ namespace EntitiesBT.Entities
                     
                     var job = new TickJob {
                         BlackboardDataQueryIndex = sharedIndex
-                      , GlobalSystemVersion = EntityManager.GlobalSystemVersion
+                      , Blackboard = new EntityJobChunkBlackboard { GlobalSystemVersion = EntityManager.GlobalSystemVersion }
                       , BlackboardDataQueryType = GetArchetypeChunkSharedComponentType<BlackboardDataQuery>()
-                      , BlackboardType = GetArchetypeChunkComponentType<JobBlackboard>()
                       , NodeBlobRefType = GetArchetypeChunkComponentType<NodeBlobRef>()
                       , EntityType = GetArchetypeChunkEntityType()
                     };

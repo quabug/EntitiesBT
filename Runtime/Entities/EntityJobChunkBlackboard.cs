@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using EntitiesBT;
 using EntitiesBT.Core;
-using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
