@@ -18,8 +18,11 @@ namespace EntitiesBT.Entities
             m_systemsToUpdate.Add(World.CreateSystem<ChangeThreadSystem>());
         }
 
+        // sort is not allowed
+        public override void SortSystemUpdateList() {}
+
         [DisableAutoCreation]
-        class DeltaTimeSystem : ComponentSystem
+        private class DeltaTimeSystem : ComponentSystem
         {
             protected override void OnUpdate()
             {
@@ -28,7 +31,7 @@ namespace EntitiesBT.Entities
         }
         
         [DisableAutoCreation]
-        class ChangeThreadSystem : ComponentSystem
+        private class ChangeThreadSystem : ComponentSystem
         {
             protected override void OnUpdate()
             {
@@ -48,7 +51,7 @@ namespace EntitiesBT.Entities
         }
 
         [DisableAutoCreation]
-        class MainThreadSystem : ComponentSystem
+        private class MainThreadSystem : ComponentSystem
         {
             private EntityBlackboard _blackboard = new EntityBlackboard();
 
@@ -64,7 +67,7 @@ namespace EntitiesBT.Entities
         }
         
         [DisableAutoCreation]
-        class JobSystem : JobComponentSystem
+        private class JobSystem : JobComponentSystem
         {
             private readonly List<BlackboardDataQuery> _blackboardDataQueryList = new List<BlackboardDataQuery>();
             private readonly List<int> _blackboardDataQueryIndices = new List<int>();
