@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using EntitiesBT;
 using EntitiesBT.Core;
-using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
@@ -14,12 +13,12 @@ namespace Entities
         public uint GlobalSystemVersion;
         public ArchetypeChunk Chunk;
         public int Index;
-        public Entity Entity;
+        // public Entity Entity;
         // public unsafe EntityCommandBuffer.Concurrent* ECB;
 
-        private static Func<object, Type, object> _getComponentData;
-        private static Action<object, Type, object> _setComponentData;
-        private static Func<object, Type, bool> _hasComponentData;
+        private static readonly GetDataDelegate _getComponentData;
+        private static readonly SetDataDelegate _setComponentData;
+        private static readonly HasDataDelegate _hasComponentData;
 
         static EntityJobChunkBlackboard()
         {

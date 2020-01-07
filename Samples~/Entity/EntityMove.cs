@@ -21,9 +21,7 @@ namespace EntitiesBT.Sample
     [BehaviorNode("F5C2EE7E-690A-4B5C-9489-FB362C949192")]
     public class EntityMoveNode
     {
-        // optional, used for job system
-        public static ComponentType[] Types => new []
-        {
+        public static readonly ComponentType[] Types = {
             ComponentType.ReadWrite<Translation>()
           , ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()
         };

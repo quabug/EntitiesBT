@@ -23,9 +23,7 @@ namespace EntitiesBT.Sample
     [BehaviorNode("8E25032D-C06F-4AA9-B401-1AD31AF43A2F")]
     public class EntityRotateNode
     {
-        // optional, used for job system
-        public static ComponentType[] Types => new []
-        {
+        public static readonly ComponentType[] Types = {
             ComponentType.ReadWrite<Rotation>()
           , ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()
         };

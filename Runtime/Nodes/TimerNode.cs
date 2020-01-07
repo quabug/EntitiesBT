@@ -1,4 +1,3 @@
-using System;
 using EntitiesBT.Core;
 using Unity.Entities;
 
@@ -7,7 +6,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("46540F67-6145-4433-9A3A-E470992B952E", BehaviorNodeType.Decorate)]
     public class TimerNode
     {
-        public static ComponentType[] Types => new [] { ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>() };
+        public static readonly ComponentType[] Types = { ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>() };
         
         public struct Data : INodeData
         {

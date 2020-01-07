@@ -1,7 +1,7 @@
 {
   "name": "entities-bt",
   "description": "Behavior Tree for Unity Entities",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "unity": "2019.3",
   "displayName": "Entities Behavior Tree",
   "dependencies": {
@@ -32,6 +32,11 @@
       "displayName": "serialization",
       "description": "save behavior tree into file and load from it",
       "path": "Samples~/Serialization"
+    },
+    {
+      "displayName": "(HACK)internal-methods-of-Unity.Entities",
+      "description": "(NOT A CODE SAMPLE) hacky way to access internal methods of unity entities",
+      "path": "Samples~/EntitiesInternalMethods"
     }
   ]
 }

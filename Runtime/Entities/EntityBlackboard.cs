@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Entities;
 using EntitiesBT.Core;
+using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
@@ -14,13 +16,13 @@ namespace EntitiesBT.Entities
         public EntityManager EntityManager;
         public Entity Entity;
         
-        private static Func<object, Type, object> _getComponentData;
-        private static Func<object, Type, object> _getSharedComponentData;
-        private static Func<object, Type, object> _getManagedData;
-        private static Func<object, Type, object> _getComponentObject;
-        private static Action<object, Type, object> _setComponentData;
-        private static Func<object, Type, bool> _hasComponent;
-        
+        private static readonly GetDataDelegate _getComponentData;
+        private static readonly GetDataDelegate _getSharedComponentData;
+        private static readonly GetDataDelegate _getManagedData;
+        private static readonly GetDataDelegate _getComponentObject;
+        private static readonly SetDataDelegate _setComponentData;
+        private static readonly HasDataDelegate _hasComponent;
+
         static EntityBlackboard()
         {
             {

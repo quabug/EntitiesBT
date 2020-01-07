@@ -11,7 +11,7 @@ namespace EntitiesBT.Core
         ref T GetRef<T>(object key) where T : struct;
     }
 
-    public static class BlackboardExtensions
+    public static partial class BlackboardExtensions
     {
         public static T GetData<T>(this IBlackboard bb)
         {
@@ -32,17 +32,5 @@ namespace EntitiesBT.Core
         {
             return ref bb.GetRef<T>(typeof(T));
         }
-
-        public static bool IsComponentDataType(this Type type) =>
-            type != null && type.IsValueType && typeof(IComponentData).IsAssignableFrom(type);
-        
-        public static bool IsSharedComponentDataType(this Type type) =>
-            type != null && type.IsValueType && typeof(ISharedComponentData).IsAssignableFrom(type);
-        
-        public static bool IsManagedDataType(this Type type) =>
-            type != null && type.IsClass && typeof(IComponentData).IsAssignableFrom(type);
-
-        public static bool IsUnityComponentType(this Type type) =>
-            type != null && type.IsSubclassOf(typeof(UnityEngine.Component));
     }
 }

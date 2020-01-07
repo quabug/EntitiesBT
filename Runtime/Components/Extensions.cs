@@ -116,9 +116,8 @@ namespace EntitiesBT.Components
             void AddJobComponents()
             {
                 var dataQuery = new BlackboardDataQuery {Value = blobRef.GetAccessTypes()};
-                var jobBlackboard = new EntityJobChunkBlackboard();
-                VirtualMachine.Reset(blob, jobBlackboard);
-                dstManager.AddComponentData(entity, new JobBlackboard { Value = jobBlackboard });
+                var bb = new EntityBlackboard();
+                VirtualMachine.Reset(blob, bb);
                 dstManager.AddComponentData(entity, new IsRunOnMainThread { Value = false });
                 dstManager.AddSharedComponentData(entity, dataQuery);
             }

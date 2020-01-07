@@ -6,7 +6,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("2F6009D3-1314-42E6-8E52-4AEB7CDDB4CD")]
     public class DelayTimerNode
     {
-        public static ComponentType[] Types => new []{ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()};
+        public static readonly ComponentType[] Types = {ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()};
         
         public struct Data : INodeData
         {
