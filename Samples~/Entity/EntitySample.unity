@@ -501,7 +501,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 99409462}
   _thread: 1
-  _generateDebugView: 1
+  _generateDebugView: 0
 --- !u!114 &170017255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1083,7 +1083,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 124417801}
   _thread: 1
-  _generateDebugView: 1
+  _generateDebugView: 0
 --- !u!114 &466616109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1892,7 +1892,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 99409462}
   _thread: 2
-  _generateDebugView: 1
+  _generateDebugView: 0
 --- !u!114 &866470351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2353,7 +2353,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 99409462}
   _thread: 2
-  _generateDebugView: 1
+  _generateDebugView: 0
 --- !u!114 &1134450522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3492,7 +3492,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 99409462}
   _thread: 1
-  _generateDebugView: 1
+  _generateDebugView: 0
 --- !u!23 &2006228428
 MeshRenderer:
   m_ObjectHideFlags: 0

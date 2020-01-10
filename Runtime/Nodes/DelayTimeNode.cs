@@ -1,3 +1,4 @@
+using System;
 using EntitiesBT.Core;
 using Unity.Entities;
 
@@ -8,6 +9,7 @@ namespace EntitiesBT.Nodes
     {
         public static readonly ComponentType[] Types = {ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()};
         
+        [Serializable]
         public struct Data : INodeData
         {
             public float TargetSeconds;

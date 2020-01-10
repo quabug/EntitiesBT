@@ -47,28 +47,5 @@ namespace Entities
                 return blobBuilder.CreateBlobAssetReference<NodeBlob>(allocator);
             }
         }
-
-        public static int ParentIndex(this BlobAssetReference<NodeBlob> blob, int index)
-        {
-            var endIndex = blob.Value.EndIndices[index];
-            for (var i = index - 1; i >= 0; i--)
-            {
-                if (blob.Value.EndIndices[i] >= endIndex)
-                    return i;
-            }
-            return -1;
-        }
-
-        public static IEnumerable<int> ChildrenIndices(this BlobAssetReference<NodeBlob> blob, int index)
-        {
-            var endIndex = blob.Value.EndIndices[index];
-            var childIndex = index + 1;
-            while (childIndex < endIndex)
-            {
-                var childEndIndex = blob.Value.EndIndices[childIndex];
-                yield return childIndex;
-                childIndex = childEndIndex;
-            }
-        }
     }
 }

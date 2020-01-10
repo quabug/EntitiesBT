@@ -1,0 +1,14 @@
+using System;
+
+namespace EntitiesBT.Components.DebugView
+{
+    [AttributeUsage(AttributeTargets.Class)]
+    public class BehaviorTreeDebugViewGenericAttribute : Attribute
+    {
+        public readonly int NodeTypeIndex;
+        public BehaviorTreeDebugViewGenericAttribute(int nodeTypeIndex = 0)
+        {
+            NodeTypeIndex = nodeTypeIndex;
+        }
+    }
+}

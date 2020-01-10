@@ -9,6 +9,7 @@ namespace EntitiesBT.Core
         int GetTypeId(int nodeIndex);
         int GetEndIndex(int nodeIndex);
         ref T GetNodeData<T>(int nodeIndex) where T : struct, INodeData;
+        int GetNodeDataSize(int nodeIndex);
         unsafe void* GetNodeDataPtr(int nodeIndex);
     }
 

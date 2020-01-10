@@ -6,6 +6,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("76E27039-91C1-4DEF-AFEF-1EDDBAAE8CCE", BehaviorNodeType.Decorate)]
     public class RepeatTimesNode
     {
+        [Serializable]
         public struct Data : INodeData
         {
             public int TargetTimes;

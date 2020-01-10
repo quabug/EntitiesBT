@@ -5,6 +5,7 @@ namespace EntitiesBT.Nodes
 {
     public static class SuccessionNode
     {
+        [Serializable]
         public struct Data : INodeData
         {
             public int ChildIndex;

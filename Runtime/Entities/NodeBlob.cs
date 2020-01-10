@@ -31,6 +31,13 @@ namespace EntitiesBT.Entities
             return ref UnsafeUtilityEx.AsRef<T>(GetNodeDataPtr(nodeIndex));
         }
 
+        public int GetNodeDataSize(int nodeIndex)
+        {
+            var currentOffset = Offsets[nodeIndex];
+            var nextOffset = nodeIndex + 1 < Offsets.Length ? Offsets[nodeIndex + 1] : Offsets.Length;
+            return nextOffset - currentOffset;
+        }
+
         public unsafe void* GetNodeDataPtr(int nodeIndex)
         {
             return (void*) ((IntPtr) DataBlob.GetUnsafePtr() + Offsets[nodeIndex]);
@@ -52,6 +59,8 @@ namespace EntitiesBT.Entities
         public int Count => _blob.Count;
         public int GetTypeId(int nodeIndex) => _blob.GetTypeId(nodeIndex);
         public int GetEndIndex(int nodeIndex) => _blob.GetEndIndex(nodeIndex);
+        public int GetNodeDataSize(int nodeIndex) => _blob.GetNodeDataSize(nodeIndex);
+
         public unsafe void* GetNodeDataPtr(int nodeIndex) => _blob.GetNodeDataPtr(nodeIndex);
         public ref T GetNodeData<T>(int nodeIndex) where T : struct, INodeData => ref _blob.GetNodeData<T>(nodeIndex);
     }

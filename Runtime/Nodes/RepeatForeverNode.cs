@@ -6,6 +6,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("A13666BD-48E3-414A-BD13-5C696F2EA87E", BehaviorNodeType.Decorate)]
     public class RepeatForeverNode
     {
+        [Serializable]
         public struct Data : INodeData
         {
             public NodeState BreakStates;

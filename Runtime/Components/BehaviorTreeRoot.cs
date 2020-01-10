@@ -1,4 +1,3 @@
-using EntitiesBT.Components.DebugView;
 using EntitiesBT.Entities;
 using Unity.Entities;
 using UnityEngine;
@@ -28,13 +27,10 @@ namespace EntitiesBT.Components
             entity.AddBehaviorTree(dstManager, blob, _thread);
             
 #if UNITY_EDITOR
-            if (_generateDebugView) GenerateDebugView();
-#endif
-
-            void GenerateDebugView()
+            if (_generateDebugView) 
             {
                 var debugView = new GameObject();
-                var root = debugView.AddComponent<BTDebugViewRoot>();
+                var root = debugView.AddComponent<DebugView.BTDebugViewRoot>();
                 if (GetComponentInParent<ConvertToEntity>().ConversionMode == ConvertToEntity.Mode.ConvertAndInjectGameObject)
                 {
                     debugView.name = "__bt_debug_view__";
@@ -48,6 +44,7 @@ namespace EntitiesBT.Components
                 }
                 root.Init(new NodeBlobRef {BlobRef = blob}, new EntityBlackboard {Entity = entity, EntityManager = dstManager});
             }
+#endif
         }
     }
 }
