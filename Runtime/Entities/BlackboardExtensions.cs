@@ -7,7 +7,7 @@ namespace Entities
     delegate void SetDataDelegate(object caller, Type dataType, object dataValue);
     delegate bool HasDataDelegate(object caller, Type dataType);
     
-    public static partial class BlackboardExtensions
+    public static class BlackboardExtensions
     {
         public static bool IsComponentDataType(this Type type) =>
             type != null && type.IsValueType && typeof(IComponentData).IsAssignableFrom(type);

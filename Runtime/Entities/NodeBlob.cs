@@ -98,5 +98,7 @@ namespace EntitiesBT.Entities
                 return blobBuilder.CreateBlobAssetReference<NodeBlob>(allocator);
             }
         }
+        
+        // public static IEnumerable<TreeNode<>>
     }
 }

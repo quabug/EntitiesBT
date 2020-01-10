@@ -9,6 +9,26 @@ namespace EntitiesBT.Core
         ITreeNode<T> Parent { get; }
         int Index { get; }
     }
+        
+    public class TreeNode<T> : ITreeNode<T>
+    {
+        public T Value { get; }
+        public ITreeNode<T> Parent { get; }
+        public int Index { get; private set; }
+
+        public TreeNode(T value, ITreeNode<T> parent, int index = -1)
+        {
+            Value = value;
+            Parent = parent;
+            Index = index;
+        }
+
+        public TreeNode<T> UpdateIndex(int index)
+        {
+            Index = index;
+            return this;
+        }
+    }
     
     public static class Utilities
     {
@@ -28,26 +48,6 @@ namespace EntitiesBT.Core
         {
             var treeNode = new TreeNode<T>(node, parent);
             return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => child.Flatten(childrenFunc, treeNode)));
-        }
-        
-        private class TreeNode<T> : ITreeNode<T>
-        {
-            public T Value { get; }
-            public ITreeNode<T> Parent { get; }
-            public int Index { get; private set; }
-
-            public TreeNode(T value, ITreeNode<T> parent, int index = -1)
-            {
-                Value = value;
-                Parent = parent;
-                Index = index;
-            }
-
-            public TreeNode<T> UpdateIndex(int index)
-            {
-                Index = index;
-                return this;
-            }
         }
     }
 }
