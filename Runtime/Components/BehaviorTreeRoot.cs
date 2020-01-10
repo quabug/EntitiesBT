@@ -6,6 +6,8 @@ namespace EntitiesBT.Components
     [DisallowMultipleComponent]
     public class BehaviorTreeRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
+        [Header("Order: File > RootNode")]
+        [SerializeField] private TextAsset _file = default;
         [SerializeField] private BTNode _rootNode;
         [SerializeField] private BehaviorTreeThread _thread = BehaviorTreeThread.ForceRunOnMainThread;
         
@@ -16,7 +18,8 @@ namespace EntitiesBT.Components
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            entity.AddBehaviorTree(dstManager, _rootNode.ToBlob(), _thread);
+            var blob = _file != null ? _file.ToBlob() : _rootNode.ToBlob();
+            entity.AddBehaviorTree(dstManager, blob, _thread);
         }
     }
 }
