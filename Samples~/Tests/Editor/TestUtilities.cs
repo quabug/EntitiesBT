@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Components;
+using EntitiesBT.Core;
 using NUnit.Framework;
 using UnityEngine;
+using Utilities = EntitiesBT.Components.Utilities;
 
 namespace EntitiesBT.Test
 {
@@ -79,14 +81,14 @@ namespace EntitiesBT.Test
 
         IEnumerable<string> Descendants(string rootName)
         {
-            return _objectNamesWithoutT
-                .Where(name => name.Length > rootName.Length && name.StartsWith(rootName))
-            ;
+            return rootName.Yield().Concat(
+                _objectNamesWithoutT.Where(name => name.Length > rootName.Length && name.StartsWith(rootName))
+            );
         }
         
         IEnumerable<string> DescendantsWithT(string rootName)
         {
-            return ChildrenWithT(rootName).SelectMany(child => child.Yield().Concat(DescendantsWithT(child)));
+            return rootName.Yield().Concat(ChildrenWithT(rootName).SelectMany(DescendantsWithT));
         }
         
         string ObjName(string name) => name.EndsWith("T") ? name.Substring(0, name.Length - 1) : name;
@@ -115,7 +117,7 @@ namespace EntitiesBT.Test
                 var objName = _objectNamesWithoutT[i];
                 
                 var childrenNames = Descendants(objName).ToArray();
-                var objectNames = obj.Descendants().Select(o => o.name).ToArray();
+                var objectNames = obj.Flatten(Utilities.Children).Select(o => o.Value.name).ToArray();
                 
                 Assert.AreEqual(objectNames, childrenNames);
             }
@@ -141,11 +143,11 @@ namespace EntitiesBT.Test
         {
             for (var i = 0; i < _objectNames.Length; i++)
             {
-                var obj = _objects[i];
+                var obj = _objects[i].GetComponent<TestComponent>();
                 var objName = _objectNamesWithoutT[i];
                 
-                var childrenNames = DescendantsWithT(objName).ToArray();
-                var objectNames = obj.Descendants<TestComponent>().Select(o => o.name).ToArray();
+                var childrenNames = _objectNames[i].EndsWith("T") ? DescendantsWithT(objName).ToArray() : new string[0];
+                var objectNames = obj == null ? new string[0] : obj.Flatten(Utilities.Children).Select(o => o.Value.name).ToArray();
                 
                 Assert.AreEqual(objectNames, childrenNames);
             }
