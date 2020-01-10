@@ -3,7 +3,7 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace EntitiesBT.Components
 {
-    public class BTParallel : BTNode<ParallelNode, ZeroNodeData>
+    public class BTParallel : BTNode<ParallelNode>
     {
         public override unsafe void Build(void* dataPtr)
         {

@@ -11,11 +11,10 @@ namespace EntitiesBT.Components
         public float TimeInSeconds;
         public NodeState BreakReturnState;
 
-        public override unsafe void Build(void* dataPtr)
+        protected override void Build(ref TimerNode.Data data)
         {
-            var ptr = (TimerNode.Data*) dataPtr;
-            ptr->TargetSeconds = TimeInSeconds;
-            ptr->BreakReturnState = BreakReturnState;
+            data.TargetSeconds = TimeInSeconds;
+            data.BreakReturnState = BreakReturnState;
         }
     }
 }

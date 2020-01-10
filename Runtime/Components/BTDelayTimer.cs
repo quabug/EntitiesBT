@@ -5,8 +5,9 @@ namespace EntitiesBT.Components
     public class BTDelayTimer : BTNode<DelayTimerNode, DelayTimerNode.Data>
     {
         public float DelayInSeconds;
-
-        public override unsafe void Build(void* dataPtr) =>
-            ((DelayTimerNode.Data*) dataPtr)->TargetSeconds = DelayInSeconds;
+        protected override void Build(ref DelayTimerNode.Data data)
+        {
+            data.TargetSeconds = DelayInSeconds;
+        }
     }
 }
