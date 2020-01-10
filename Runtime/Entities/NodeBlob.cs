@@ -34,7 +34,7 @@ namespace EntitiesBT.Entities
         public int GetNodeDataSize(int nodeIndex)
         {
             var currentOffset = Offsets[nodeIndex];
-            var nextOffset = nodeIndex + 1 < Offsets.Length ? Offsets[nodeIndex + 1] : Offsets.Length;
+            var nextOffset = nodeIndex + 1 < Offsets.Length ? Offsets[nodeIndex + 1] : DataBlob.Length;
             return nextOffset - currentOffset;
         }
 

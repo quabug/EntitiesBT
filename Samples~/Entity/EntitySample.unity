@@ -1083,7 +1083,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 124417801}
   _thread: 1
-  _generateDebugView: 0
+  _generateDebugView: 1
 --- !u!114 &466616109
 MonoBehaviour:
   m_ObjectHideFlags: 0

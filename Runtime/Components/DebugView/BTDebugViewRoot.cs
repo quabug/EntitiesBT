@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
@@ -12,11 +11,13 @@ namespace EntitiesBT.Components.DebugView
 {
     public class BTDebugViewRoot : MonoBehaviour
     {
-        private static readonly Dictionary<int, Type> _NODE_COMPONENTS_MAP = new Dictionary<int, Type>();
+        private static readonly ILookup<int, Type> _NODE_COMPONENTS_MAP;
         private static readonly Dictionary<int, Type> _BEHAVIOR_NODE_ID_TYPE_MAP = new Dictionary<int, Type>();
 
         static BTDebugViewRoot()
         {
+            List<(int nodeTypeId, Type debugViewType)> debugViews = new List<(int nodeTypeId, Type debugViewType)>();
+            
             foreach (var type in AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes()))
             {
@@ -53,57 +54,64 @@ namespace EntitiesBT.Components.DebugView
                 }
             }
 
+            _NODE_COMPONENTS_MAP = debugViews.ToLookup(t => t.nodeTypeId, t => t.debugViewType);
+
             void RegisterDebugView(Type nodeType, Type debugViewType)
             {
                 var nodeTypeId = nodeType.GetCustomAttribute<BehaviorNodeAttribute>().Id;
-                if (_NODE_COMPONENTS_MAP.TryGetValue(nodeTypeId, out var existViewType))
-                    if (existViewType != debugViewType)
-                        throw new DuplicateNameException($"{nodeType.Name} already has debug view {existViewType.Name}, cannot register {debugViewType.Name}");
-                _NODE_COMPONENTS_MAP[nodeTypeId] = debugViewType;
+                debugViews.Add((nodeTypeId, debugViewType));
             }
         }
         
         private INodeBlob _blob;
         private IBlackboard _blackboard;
-        private List<IBTDebugView> _views;
+        private List<GameObject> _views;
 
         public void Init(INodeBlob blob, IBlackboard blackboard)
         {
             _blob = blob;
             _blackboard = blackboard;
             
-            _views = new List<IBTDebugView>(_blob.Count);
+            _views = new List<GameObject>(_blob.Count);
             for (var i = 0; i < _blob.Count; i++)
             {
                 var nodeTypeId = _blob.GetTypeId(i);
-                _NODE_COMPONENTS_MAP.TryGetValue(nodeTypeId, out var debugViewType);
-                var debugName = debugViewType == null 
-                    ? $"? {_BEHAVIOR_NODE_ID_TYPE_MAP[nodeTypeId].Name}"
-                    : debugViewType.Name
-                ;
+                var debugViewTypeList = _NODE_COMPONENTS_MAP[nodeTypeId];
                 
                 var nodeGameObject = new GameObject();
-                nodeGameObject.name = debugName;
-                if (debugViewType == null)
+                _views.Add(nodeGameObject);
+                nodeGameObject.name = $"{_BEHAVIOR_NODE_ID_TYPE_MAP[nodeTypeId].Name}";
+                if (debugViewTypeList.Any())
                 {
-                    nodeGameObject.name = $"? {_BEHAVIOR_NODE_ID_TYPE_MAP[nodeTypeId].Name}";
-                    _views.Add(nodeGameObject.AddComponent<BTDebugView>());
+                    foreach (var viewType in debugViewTypeList)
+                        nodeGameObject.AddComponent(viewType);
                 }
                 else
                 {
-                    _views.Add((IBTDebugView)nodeGameObject.AddComponent(debugViewType));
+                    nodeGameObject.name = $"?? {nodeGameObject.name}";
+                    nodeGameObject.AddComponent<BTDebugView>();
                 }
                 
                 var parentIndex = _blob.ParentIndex(i);
-                var parent = parentIndex >= 0 ? ((Component)_views[parentIndex]).transform : transform;
+                var parent = parentIndex >= 0 ? _views[parentIndex].transform : transform;
                 nodeGameObject.transform.SetParent(parent);
+            }
+            
+            for (var i = 0; i < _views.Count; i++)
+            {
+                foreach (var view in _views[i].GetComponents<IBTDebugView>())
+                    view.InitView(_blob, _blackboard, i);
             }
         }
 
         private void Update()
         {
             if (_views == null) return;
-            for (var i = 0; i < _views.Count; i++) _views[i].Tick(_blob, _blackboard, i);
+            for (var i = 0; i < _views.Count; i++)
+            {
+                foreach (var view in _views[i].GetComponents<IBTDebugView>())
+                    view.TickView(_blob, _blackboard, i);
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
+using EntitiesBT.Components.DebugView;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -26,6 +28,7 @@ namespace EntitiesBT.Sample
           , ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()
         };
         
+        [Serializable]
         public struct Data : INodeData
         {
             public float3 Velocity;
@@ -38,6 +41,23 @@ namespace EntitiesBT.Sample
             var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>();
             translation.Value += data.Velocity * deltaTime.Value;
             return NodeState.Running;
+        }
+    }
+
+    public class EntityMoveDebugView : BTDebugView<EntityMoveNode, EntityMoveNode.Data>
+    {
+        public float3 EntityPosition;
+
+        public override void InitView(INodeBlob blob, IBlackboard bb, int index)
+        {
+            Data.Velocity = blob.GetNodeData<EntityMoveNode.Data>(index).Velocity;
+        }
+
+        public override void TickView(INodeBlob blob, IBlackboard bb, int index)
+        {
+            blob.GetNodeData<EntityMoveNode.Data>(index).Velocity = Data.Velocity;
+            base.TickView(blob, bb, index);
+            EntityPosition = bb.GetData<Translation>().Value;
         }
     }
 }

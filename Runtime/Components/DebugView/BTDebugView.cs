@@ -7,21 +7,23 @@ namespace EntitiesBT.Components.DebugView
 {
     public interface IBTDebugView
     {
-        void Tick(INodeBlob blob, IBlackboard bb, int index);
+        void InitView(INodeBlob blob, IBlackboard bb, int index);
+        void TickView(INodeBlob blob, IBlackboard bb, int index);
     }
 
     public class BTDebugView : MonoBehaviour, IBTDebugView
     {
-        public virtual void Tick(INodeBlob blob, IBlackboard bb, int index) {}
+        public virtual void InitView(INodeBlob blob, IBlackboard bb, int index) {}
+        public virtual void TickView(INodeBlob blob, IBlackboard bb, int index) {}
     }
 
     [BehaviorTreeDebugViewGeneric]
     public class BTDebugView<T, U> : BTDebugView
         where U : struct, INodeData
     {
-        [SerializeField] private U _data;
+        public U Data;
 
-        public override void Tick(INodeBlob blob, IBlackboard bb, int index)
+        public override void TickView(INodeBlob blob, IBlackboard bb, int index)
         {
             var dataSize = blob.GetNodeDataSize(index);
             var typeSize = UnsafeUtility.SizeOf<U>();
@@ -30,7 +32,7 @@ namespace EntitiesBT.Components.DebugView
                 Debug.LogWarning($"Data size not match: data-{index}({dataSize}) != {typeof(T).Name}({typeSize})");
                 return;
             }
-            _data = blob.GetNodeData<U>(index);
+            Data = blob.GetNodeData<U>(index);
         }
     }
     
