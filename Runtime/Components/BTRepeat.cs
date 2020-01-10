@@ -1,10 +1,12 @@
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
+using UnityEngine;
 
 namespace EntitiesBT.Components
 {
     public class BTRepeat : BTNode
     {
+        [Header("ForeverRepeat = RepeatTimes <= 0")]
         public int RepeatTimes;
         public NodeState BreakStates;
 

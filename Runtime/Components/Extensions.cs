@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Entities;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Collections;
@@ -83,6 +84,15 @@ namespace EntitiesBT.Components
                 dstManager.AddComponentData(entity, new IsRunOnMainThread { Value = false });
                 dstManager.AddSharedComponentData(entity, dataQuery);
             }
+        }
+    }
+    
+    public static class UnityExtensions
+    {
+        public static GameObject FindOrCreateGameObject(this string name)
+        {
+            var obj = GameObject.Find(name);
+            return obj ? obj : new GameObject(name);
         }
     }
 }

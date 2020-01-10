@@ -17,8 +17,23 @@ namespace EntitiesBT.Core
         public static IEnumerable<int> GetChildrenIndices(this INodeBlob blob, int parentIndex)
         {
             var endIndex = blob.GetEndIndex(parentIndex);
-            for (var childIndex = parentIndex + 1; childIndex < endIndex; childIndex = blob.GetEndIndex(childIndex))
+            var childIndex = parentIndex + 1;
+            while (childIndex < endIndex)
+            {
                 yield return childIndex;
+                childIndex = blob.GetEndIndex(childIndex);
+            }
+        }
+
+        public static int ParentIndex(this INodeBlob blob, int childIndex)
+        {
+            var endIndex = blob.GetEndIndex(childIndex);
+            for (var i = childIndex - 1; i >= 0; i--)
+            {
+                if (blob.GetEndIndex(i) >= endIndex)
+                    return i;
+            }
+            return -1;
         }
     }
 
