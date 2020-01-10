@@ -2,24 +2,23 @@ using System;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
+using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using Unity.Entities.Serialization;
 using UnityEngine;
 
 namespace EntitiesBT.Components
 {
     [DisallowMultipleComponent, ExecuteInEditMode]
-    public abstract class BTNode : MonoBehaviour
+    public abstract class BTNode : MonoBehaviour, INodeDataBuilder
     {
         public abstract BehaviorNodeType NodeType { get; }
         public abstract int NodeId { get; }
         public abstract int Size { get; }
         public abstract unsafe void Build(void* dataPtr);
-        
-        public int Index { get; set; }
         private void Reset() => name = GetType().Name;
-
-        public int ChildCount => gameObject.Children<BTNode>().Count();
+        public int ChildCount => gameObject.GetComponent<BTNode>().Children().Count();
 
 #if UNITY_EDITOR
         private void Update()
@@ -55,16 +54,20 @@ namespace EntitiesBT.Components
             if (string.IsNullOrEmpty(path))
                 return;
 
-            using (var builder = this.ToBlobBuilder())
+            using (var blob = this.ToBlob(Allocator.Temp))
             {
-                BlobAssetReference<NodeBlob>.Write(builder, path, NodeBlob.VERSION);
+                using (var writer = new StreamBinaryWriter(path))
+                {
+                    writer.Write(NodeBlob.VERSION);
+                    writer.Write(blob);
+                }
                 UnityEditor.AssetDatabase.Refresh();
             }
         }
 #endif
     }
     
-    public abstract class BTNode<T, U> : BTNode, INodeDataBuilder
+    public abstract class BTNode<T, U> : BTNode
         where U : struct, INodeData
     {
         public override BehaviorNodeType NodeType => typeof(T).GetBehaviorNodeAttribute().Type;
@@ -73,7 +76,7 @@ namespace EntitiesBT.Components
         public override unsafe void Build(void* dataPtr) {}
     }
     
-    public abstract class BTNode<T> : BTNode, INodeDataBuilder
+    public abstract class BTNode<T> : BTNode
         where T : struct, INodeData
     {
         public override int Size => UnsafeUtility.SizeOf<T>();
