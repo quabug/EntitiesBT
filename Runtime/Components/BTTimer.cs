@@ -13,7 +13,7 @@ namespace EntitiesBT.Components
 
         protected override void Build(ref TimerNode.Data data)
         {
-            data.TargetSeconds = TimeInSeconds;
+            data.Seconds = TimeInSeconds;
             data.BreakReturnState = BreakReturnState;
         }
     }

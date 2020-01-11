@@ -17,7 +17,7 @@ namespace EntitiesBT.Test
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Failure);
             Assert.AreEqual(nodes.Select(n => n.ResetTimes), new [] { 1, 1, 1, 1, 1 });
             Assert.AreEqual(nodes.Select(n => n.TickTimes), new [] { 1, 1, 1, 1, 0 });
-            Assert.Catch<IndexOutOfRangeException>(() => VirtualMachine.Tick(blobRef, _blackboard));
+            Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), (NodeState)0);
             
             VirtualMachine.Reset(blobRef, _blackboard);
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Failure);
@@ -35,7 +35,7 @@ namespace EntitiesBT.Test
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Success);
             Assert.AreEqual(nodes.Select(n => n.ResetTimes), new [] { 1, 1, 1, 1, 1 });
             Assert.AreEqual(nodes.Select(n => n.TickTimes), new [] { 1, 1, 1, 1, 0 });
-            Assert.Catch<IndexOutOfRangeException>(() => VirtualMachine.Tick(blobRef, _blackboard));
+            Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), (NodeState)0);
             
             VirtualMachine.Reset(blobRef, _blackboard);
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Success);
@@ -53,7 +53,7 @@ namespace EntitiesBT.Test
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Failure);
             Assert.AreEqual(nodes.Select(n => n.ResetTimes), new [] { 1, 1, 1, 1, 1 });
             Assert.AreEqual(nodes.Select(n => n.TickTimes), new [] { 1, 1, 1, 1, 1 });
-            Assert.Catch<IndexOutOfRangeException>(() => VirtualMachine.Tick(blobRef, _blackboard));
+            Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), (NodeState)0);
             
             VirtualMachine.Reset(blobRef, _blackboard);
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Failure);
@@ -80,7 +80,7 @@ namespace EntitiesBT.Test
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Failure);
             Assert.AreEqual(nodes.Select(n => n.ResetTimes), new [] { 1, 1, 1, 1, 1 });
             Assert.AreEqual(nodes.Select(n => n.TickTimes), new [] { 1, 3, 1, 1, 1 });
-            Assert.Catch<IndexOutOfRangeException>(() => VirtualMachine.Tick(blobRef, _blackboard));
+            Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), (NodeState)0);
             
             VirtualMachine.Reset(blobRef, _blackboard);
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Running);
@@ -107,7 +107,7 @@ namespace EntitiesBT.Test
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Success);
             Assert.AreEqual(nodes.Select(n => n.ResetTimes), new [] { 1, 1, 1, 1, 1 });
             Assert.AreEqual(nodes.Select(n => n.TickTimes), new [] { 1, 3, 1, 1, 1 });
-            Assert.Catch<IndexOutOfRangeException>(() => VirtualMachine.Tick(blobRef, _blackboard));
+            Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), (NodeState)0);
             
             VirtualMachine.Reset(blobRef, _blackboard);
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Running);
@@ -135,7 +135,7 @@ namespace EntitiesBT.Test
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Failure);
             Assert.AreEqual(nodes.Select(n => n.ResetTimes), new [] { 1, 1, 1, 1, 1 });
             Assert.AreEqual(nodes.Select(n => n.TickTimes), new [] { 1, 2, 1, 3, 1 });
-            Assert.Catch<IndexOutOfRangeException>(() => VirtualMachine.Tick(blobRef, _blackboard));
+            Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), (NodeState)0);
             
             VirtualMachine.Reset(blobRef, _blackboard);
             Assert.AreEqual(VirtualMachine.Tick(blobRef, _blackboard), NodeState.Running);

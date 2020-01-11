@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
@@ -6,40 +6,18 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("A316D182-7D8C-4075-A46D-FEE08CAEEEAF", BehaviorNodeType.Composite)]
     public class ParallelNode
     {
-        public static int DataSize(int childCount) => SimpleBlobArray<NodeState>.Size(childCount);
-        
-        public static unsafe void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            var childrenStates = new SimpleBlobArray<NodeState>(blob.GetNodeDataPtr(index));
-            for (var i = 0; i < childrenStates.Length; i++) childrenStates[i] = NodeState.Running;
-        }
+            var flags = blob.TickChildren(index, blackboard)
+                .Aggregate((NodeState)0, (childStateFlags, childState) => {
+                    childStateFlags |= childState;
+                    return childStateFlags;
+                });
 
-        public static unsafe NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
-        {
-            var childrenStates = new SimpleBlobArray<NodeState>(blob.GetNodeDataPtr(index));
-            var hasAnyRunningChild = false;
-            var state = NodeState.Success;
-            var localChildIndex = 0;
-            var childIndex = index + 1;
-            while (childIndex < blob.GetEndIndex(index))
-            {
-                var childState = childrenStates[localChildIndex];
-                if (childState == NodeState.Running)
-                {
-                    childState = VirtualMachine.Tick(childIndex, blob, blackboard);
-                    childrenStates[localChildIndex] = childState;
-                    hasAnyRunningChild = true;
-                }
-
-                childIndex = blob.GetEndIndex(childIndex);
-                localChildIndex++;
-                
-                if (state == NodeState.Running) continue;
-                if (childState != NodeState.Success) state = childState;
-            }
-            
-            if (hasAnyRunningChild) return state;
-            throw new IndexOutOfRangeException();
+            if (flags.HasFlagFast(NodeState.Running)) return NodeState.Running;
+            if (flags.HasFlagFast(NodeState.Failure)) return NodeState.Failure;
+            if (flags.HasFlagFast(NodeState.Success)) return NodeState.Success;
+            return 0;
         }
     }
 }

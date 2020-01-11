@@ -7,7 +7,7 @@ namespace EntitiesBT.Components
         public float DelayInSeconds;
         protected override void Build(ref DelayTimerNode.Data data)
         {
-            data.TargetSeconds = DelayInSeconds;
+            data.TimerSeconds = DelayInSeconds;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace EntitiesBT.Core
         ref T GetRef<T>(object key) where T : struct;
     }
 
-    public static partial class BlackboardExtensions
+    public static class BlackboardExtensions
     {
         public static T GetData<T>(this IBlackboard bb)
         {

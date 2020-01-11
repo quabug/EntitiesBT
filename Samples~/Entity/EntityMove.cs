@@ -2,6 +2,7 @@ using System;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
 using EntitiesBT.Components.DebugView;
+using EntitiesBT.Entities;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -46,8 +47,6 @@ namespace EntitiesBT.Sample
 
     public class EntityMoveDebugView : BTDebugView<EntityMoveNode, EntityMoveNode.Data>
     {
-        public float3 EntityPosition;
-
         public override void InitView(INodeBlob blob, IBlackboard bb, int index)
         {
             Data.Velocity = blob.GetNodeData<EntityMoveNode.Data>(index).Velocity;
@@ -57,7 +56,6 @@ namespace EntitiesBT.Sample
         {
             blob.GetNodeData<EntityMoveNode.Data>(index).Velocity = Data.Velocity;
             base.TickView(blob, bb, index);
-            EntityPosition = bb.GetData<Translation>().Value;
         }
     }
 }

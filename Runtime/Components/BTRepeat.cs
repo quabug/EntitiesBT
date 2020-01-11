@@ -35,7 +35,7 @@ namespace EntitiesBT.Components
             else
             {
                 var ptr = (RepeatTimesNode.Data*) dataPtr;
-                ptr->TargetTimes = RepeatTimes;
+                ptr->TickTimes = RepeatTimes;
                 ptr->BreakStates = BreakStates;
             }
         }

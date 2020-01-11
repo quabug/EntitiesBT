@@ -725,7 +725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeInSeconds: 1
-  BreakReturnState: 1
+  BreakReturnState: 0
 --- !u!1 &313404455
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,7 +1892,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 99409462}
   _thread: 2
-  _generateDebugView: 0
+  _generateDebugView: 1
 --- !u!114 &866470351
 MonoBehaviour:
   m_ObjectHideFlags: 0

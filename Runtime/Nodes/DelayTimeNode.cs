@@ -1,5 +1,6 @@
 using System;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using Unity.Entities;
 
 namespace EntitiesBT.Nodes
@@ -12,23 +13,14 @@ namespace EntitiesBT.Nodes
         [Serializable]
         public struct Data : INodeData
         {
-            public float TargetSeconds;
-            public float CurrentSeconds;
-        }
-
-        public static void Reset(int index, INodeBlob blob, IBlackboard bb)
-        {
-            ref var data = ref blob.GetNodeData<Data>(index);
-            data.CurrentSeconds = 0;
+            public float TimerSeconds;
         }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             ref var data = ref blob.GetNodeData<Data>(index);
-            if (data.CurrentSeconds >= data.TargetSeconds)
-                return NodeState.Success;
-            data.CurrentSeconds += bb.GetData<BehaviorTreeTickDeltaTime>().Value;
-            return NodeState.Running;
+            data.TimerSeconds -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;
+            return data.TimerSeconds <= 0 ? NodeState.Success : NodeState.Running;
         }
     }
 }

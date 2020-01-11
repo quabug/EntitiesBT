@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
@@ -30,7 +31,7 @@ namespace EntitiesBT.Test
                 endIndices[2] = 3;
                 
                 var offsets = blobBuilder.Allocate(ref blob.Offsets,  3);
-                var unsafePtr = (byte*) blobBuilder.Allocate(ref blob.DataBlob, size).GetUnsafePtr();
+                var unsafePtr = (byte*) blobBuilder.Allocate(ref blob.DefaultDataBlob, size).GetUnsafePtr();
                 var offset = 0;
                 offsets[0] = offset;
                 offsets[1] = offset;
@@ -44,22 +45,28 @@ namespace EntitiesBT.Test
                 try
                 {
                     Assert.IsTrue(blobRef.IsCreated);
-                    Assert.AreEqual(blobRef.Value.DataBlob.Length, size);
+                    Assert.AreEqual(blobRef.Value.DefaultDataBlob.Length, size);
                     Assert.AreEqual(blobRef.Value.Count, 3);
                     
                     Assert.AreEqual(blobRef.Value.EndIndices[0], 3);
                     Assert.AreEqual(blobRef.Value.EndIndices[1], 2);
                     Assert.AreEqual(blobRef.Value.EndIndices[2], 3);
-                    
-                    Assert.AreEqual(blobRef.Value.GetNodeData<NodeA.Data>(1).A, 111);
-                    ref var b = ref blobRef.Value.GetNodeData<NodeB.Data>(2);
+
+                    Assert.AreEqual(GetDefaultData<NodeA.Data>(1).A, 111);
+                    ref var b = ref GetDefaultData<NodeB.Data>(2);
                     Assert.AreEqual(b.B, 222);
                     Assert.AreEqual(b.BB, 2222);
-                } finally
+                }
+                finally
                 {
                     if (blobRef.IsCreated) blobRef.Dispose();
                 }
+                
+                ref T GetDefaultData<T>(int nodeIndex) where T : struct =>
+                    ref UnsafeUtilityEx.AsRef<T>((byte*) blobRef.Value.DefaultDataBlob.GetUnsafePtr() + blobRef.Value.Offsets[nodeIndex]);
             }
+            
+            
         }
 
         [Test]
@@ -85,7 +92,7 @@ namespace EntitiesBT.Test
         }
 
         [Test]
-        public void should_generate_blob_from_nodes()
+        public unsafe void should_generate_blob_from_nodes()
         {
             var root = CreateBTNode("!seq>yes|no|b:1,1|a:111|run");
             var rootNode = root.GetComponent<BTNode>();
@@ -96,11 +103,14 @@ namespace EntitiesBT.Test
 
             var types = new[] {typeof(SequenceNode), typeof(TestNode), typeof(TestNode), typeof(NodeB), typeof(NodeA), typeof(TestNode)};
             Assert.AreEqual(blobRef.Value.Types.ToArray(), types.Select(t => t.GetBehaviorNodeAttribute().Id));
-            Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 4, 24, 44, 52, 56 });
+            Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 0, 20, 40, 48, 52 });
             Assert.AreEqual(blobRef.Value.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
-            Assert.AreEqual(blobRef.Value.DataBlob.Length, 76);
-            Assert.AreEqual(blobRef.Value.GetNodeData<NodeB.Data>(3), new NodeB.Data {B = 1, BB = 1});
-            Assert.AreEqual(blobRef.Value.GetNodeData<NodeA.Data>(4), new NodeA.Data {A = 111});
+            Assert.AreEqual(blobRef.Value.DefaultDataBlob.Length, 72);
+            Assert.AreEqual(GetDefaultData<NodeB.Data>(3), new NodeB.Data {B = 1, BB = 1});
+            Assert.AreEqual(GetDefaultData<NodeA.Data>(4), new NodeA.Data {A = 111});
+            
+            ref T GetDefaultData<T>(int nodeIndex) where T : struct =>
+                ref UnsafeUtilityEx.AsRef<T>((byte*) blobRef.Value.DefaultDataBlob.GetUnsafePtr() + blobRef.Value.Offsets[nodeIndex]);
         }
     }
 }
