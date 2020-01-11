@@ -54,6 +54,7 @@ namespace EntitiesBT.Components
             if (string.IsNullOrEmpty(path))
                 return;
 
+            // TODO: only save "default" part of data blob into file for saving some space
             using (var blob = this.ToBlob(Allocator.Temp))
             {
                 using (var writer = new StreamBinaryWriter(path))
