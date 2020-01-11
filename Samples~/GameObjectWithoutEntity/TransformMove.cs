@@ -1,5 +1,6 @@
 using EntitiesBT.Core;
 using EntitiesBT.Components;
+using EntitiesBT.Entities;
 using Unity.Entities;
 using UnityEngine;
 

@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using Unity.Entities;
 
 namespace EntitiesBT.Nodes
@@ -8,35 +11,19 @@ namespace EntitiesBT.Nodes
     {
         public static readonly ComponentType[] Types = { ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>() };
         
+        [Serializable]
         public struct Data : INodeData
         {
-            public float TargetSeconds;
-            public float CurrentSeconds;
-            public NodeState ChildState;
+            public float Seconds;
             public NodeState BreakReturnState;
-        }
-
-        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
-        {
-            ref var data = ref blob.GetNodeData<Data>(index);
-            data.CurrentSeconds = 0;
-            data.ChildState = NodeState.Running;
         }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
+            var childState = blob.TickChildren(index, blackboard, state => state.IsCompleted()).FirstOrDefault();
             ref var data = ref blob.GetNodeData<Data>(index);
-
-            if (data.CurrentSeconds >= data.TargetSeconds)
-                return data.ChildState == NodeState.Running ? data.BreakReturnState : data.ChildState;
-            
-            var childIndex = index + 1;
-            if (data.ChildState == NodeState.Running && childIndex < blob.GetEndIndex(index))
-            {
-                var childState = VirtualMachine.Tick(childIndex, blob, blackboard);
-                data.ChildState = childState;
-            }
-            data.CurrentSeconds += blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
+            data.Seconds -= blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
+            if (data.Seconds <= 0f) return childState.IsCompleted() ? childState : data.BreakReturnState;
             return NodeState.Running;
         }
     }

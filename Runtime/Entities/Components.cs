@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-namespace EntitiesBT
+namespace EntitiesBT.Entities
 {
     public struct BehaviorTreeTickDeltaTime : IComponentData
     {

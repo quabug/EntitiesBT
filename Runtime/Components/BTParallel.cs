@@ -3,13 +3,5 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace EntitiesBT.Components
 {
-    public class BTParallel : BTNode<ParallelNode, ZeroNodeData>
-    {
-        public override unsafe void Build(void* dataPtr)
-        {
-            UnsafeUtilityEx.AsRef<int>(dataPtr) = ChildCount;
-        }
-
-        public override int Size => ParallelNode.DataSize(ChildCount);
-    }
+    public class BTParallel : BTNode<ParallelNode> {}
 }

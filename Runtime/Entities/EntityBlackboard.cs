@@ -16,43 +16,43 @@ namespace EntitiesBT.Entities
         public EntityManager EntityManager;
         public Entity Entity;
         
-        private static readonly GetDataDelegate _getComponentData;
-        private static readonly GetDataDelegate _getSharedComponentData;
-        private static readonly GetDataDelegate _getManagedData;
-        private static readonly GetDataDelegate _getComponentObject;
-        private static readonly SetDataDelegate _setComponentData;
-        private static readonly HasDataDelegate _hasComponent;
+        private static readonly GetDataDelegate _GET_COMPONENT_DATA;
+        private static readonly GetDataDelegate _GET_SHARED_COMPONENT_DATA;
+        private static readonly GetDataDelegate _GET_MANAGED_DATA;
+        private static readonly GetDataDelegate _GET_COMPONENT_OBJECT;
+        private static readonly SetDataDelegate _SET_COMPONENT_DATA;
+        private static readonly HasDataDelegate _HAS_COMPONENT;
 
         static EntityBlackboard()
         {
             {
                 var getter = typeof(EntityBlackboard).GetMethod("GetComponentData", BindingFlags.Public | BindingFlags.Instance);
-                _getComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
+                _GET_COMPONENT_DATA = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
             
             {
                 var getter = typeof(EntityBlackboard).GetMethod("GetSharedComponentData", BindingFlags.Public | BindingFlags.Instance);
-                _getSharedComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
+                _GET_SHARED_COMPONENT_DATA = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
 
             {
                 var getter = typeof(EntityBlackboard).GetMethod("GetManagedData", BindingFlags.Public | BindingFlags.Instance);
-                _getManagedData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
+                _GET_MANAGED_DATA = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
 
             {
                 var getter = typeof(EntityBlackboard).GetMethod("GetUnityComponent", BindingFlags.Public | BindingFlags.Instance);
-                _getComponentObject = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
+                _GET_COMPONENT_OBJECT = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
             
             {
                 var setter = typeof(EntityBlackboard).GetMethod("SetComponentData", BindingFlags.Public | BindingFlags.Instance);
-                _setComponentData = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new [] { value });
+                _SET_COMPONENT_DATA = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new [] { value });
             }
             
             {
                 var predicate = typeof(EntityBlackboard).GetMethod("HasComponent", BindingFlags.Public | BindingFlags.Instance);
-                _hasComponent = (caller, type) => (bool)predicate.MakeGenericMethod(type).Invoke(caller, new object[0]);
+                _HAS_COMPONENT = (caller, type) => (bool)predicate.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
         }
 
@@ -61,10 +61,10 @@ namespace EntitiesBT.Entities
             get
             {
                 var type = key as Type;
-                if (type.IsComponentDataType()) return _getComponentData(this, type);
-                if (type.IsSharedComponentDataType()) return _getSharedComponentData(this, type);
-                if (type.IsManagedDataType()) return _getManagedData(this, type);
-                if (type.IsUnityComponentType()) return _getComponentObject(this, type);
+                if (type.IsComponentDataType()) return _GET_COMPONENT_DATA(this, type);
+                if (type.IsSharedComponentDataType()) return _GET_SHARED_COMPONENT_DATA(this, type);
+                if (type.IsManagedDataType()) return _GET_MANAGED_DATA(this, type);
+                if (type.IsUnityComponentType()) return _GET_COMPONENT_OBJECT(this, type);
                 throw new NotImplementedException();
             }
             set
@@ -72,7 +72,7 @@ namespace EntitiesBT.Entities
                 var type = key as Type;
                 if (type.IsComponentDataType())
                 {
-                    _setComponentData(this, type, value);
+                    _SET_COMPONENT_DATA(this, type, value);
                     return;
                 }
                 
@@ -99,7 +99,7 @@ namespace EntitiesBT.Entities
         {
             var type = key as Type;
             if (type.IsUnityComponentType() || type.IsComponentDataType() || type.IsManagedDataType())
-                return _hasComponent(this, type);
+                return _HAS_COMPONENT(this, type);
             return false;
         }
 

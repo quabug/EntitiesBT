@@ -14,11 +14,11 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Easy to extend.
 - Also compatible with Unity GameObjects without any entity.
 - Able to save behavior tree into campact-binary-formatted file.
-- Flexible thread control: force on main thread, force on job thread, controlled by behavior tree
+- Flexible thread control: force on main thread, force on job thread, controlled by behavior tree.
+- Runtime debug window to show the states of nodes.
 
 ## Disadvantages
 - Incompatible with burst (Won't support this in the foreseen future, see FAQ below)
-- No runtime debug window to show the states of nodes (TBD)
 - Lack of composite nodes, like RandomSelector, PrioritySelector, etc. (TBD)
 - Lack of action nodes. (Will add some actions as extension if I personally need them)
 

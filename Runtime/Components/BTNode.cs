@@ -18,7 +18,7 @@ namespace EntitiesBT.Components
         public abstract int Size { get; }
         public abstract unsafe void Build(void* dataPtr);
         private void Reset() => name = GetType().Name;
-        public int ChildCount => gameObject.GetComponent<BTNode>().Children().Count();
+        protected int ChildCount => this.Children().Count();
 
 #if UNITY_EDITOR
         private void Update()
@@ -54,6 +54,7 @@ namespace EntitiesBT.Components
             if (string.IsNullOrEmpty(path))
                 return;
 
+            // TODO: only save "default" part of data blob into file for saving some space
             using (var blob = this.ToBlob(Allocator.Temp))
             {
                 using (var writer = new StreamBinaryWriter(path))
@@ -66,6 +67,14 @@ namespace EntitiesBT.Components
         }
 #endif
     }
+
+    public abstract class BTNode<T> : BTNode
+    {
+        public override BehaviorNodeType NodeType => typeof(T).GetBehaviorNodeAttribute().Type;
+        public override int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
+        public override int Size => 0;
+        public override unsafe void Build(void* dataPtr) {}
+    }
     
     public abstract class BTNode<T, U> : BTNode
         where U : struct, INodeData
@@ -73,15 +82,7 @@ namespace EntitiesBT.Components
         public override BehaviorNodeType NodeType => typeof(T).GetBehaviorNodeAttribute().Type;
         public override int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
         public override int Size => UnsafeUtility.SizeOf<U>();
-        public override unsafe void Build(void* dataPtr) {}
+        public override unsafe void Build(void* dataPtr) => Build(ref UnsafeUtilityEx.AsRef<U>(dataPtr));
+        protected virtual void Build(ref U data) {}
     }
-    
-    public abstract class BTNode<T> : BTNode
-        where T : struct, INodeData
-    {
-        public override int Size => UnsafeUtility.SizeOf<T>();
-        public override unsafe void Build(void* dataPtr) {}
-    }
-    
-    public struct ZeroNodeData : INodeData {}
 }

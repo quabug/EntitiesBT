@@ -1,4 +1,6 @@
+using System.Linq;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using Unity.Entities;
 
 namespace EntitiesBT.Nodes
@@ -10,25 +12,18 @@ namespace EntitiesBT.Nodes
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            if (!bb.HasData<IsRunOnMainThread>()) return RunChildNode();
+            if (!bb.HasData<IsRunOnMainThread>())
+                return blob.TickChildren(index, bb).FirstOrDefault();
+            
             ref var isRunOnMainThread = ref bb.GetDataRef<IsRunOnMainThread>();
             if (!isRunOnMainThread.Value)
             {
                 isRunOnMainThread.Value = true;
                 return NodeState.Running;
             }
-            var state = RunChildNode();
+            var state = blob.TickChildren(index, bb).FirstOrDefault();
             if (state != NodeState.Running) isRunOnMainThread.Value = false;
             return state;
-
-            NodeState RunChildNode()
-            {
-                var childIndex = index + 1;
-                var childState = NodeState.Failure;
-                if (childIndex < blob.GetEndIndex(index))
-                    childState = VirtualMachine.Tick(childIndex, blob, bb);
-                return childState;
-            }
         }
     }
 }

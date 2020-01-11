@@ -76,25 +76,25 @@ namespace EntitiesBT.Core
         {
             var typeId = blob.GetTypeId(index);
             var state = _TICKS[typeId](index, blob, bb);
+            blob.SetState(index, state);
             return state;
         }
 
-        public static void Reset(int index, INodeBlob blob, IBlackboard bb)
+        public static void Reset(int fromIndex, INodeBlob blob, IBlackboard bb, int count = 1)
         {
-            var typeId = blob.GetTypeId(index);
-            _RESETS[typeId](index, blob, bb);
-        }
-
-        public static void Reset(int fromIndex, int count, INodeBlob blob, IBlackboard bb)
-        {
+            blob.ResetStates(fromIndex, count);
+            blob.ResetRuntimeData(fromIndex, count);
             for (var i = fromIndex; i < fromIndex + count; i++)
-                Reset(i, blob, bb);
+            {
+                var typeId = blob.GetTypeId(i);
+                _RESETS[typeId](i, blob, bb);
+            }
         }
 
         public static void Reset(INodeBlob blob, IBlackboard bb)
         {
             var count = blob.GetEndIndex(0);
-            Reset(0, count, blob, bb);
+            Reset(0, blob, bb, count);
         }
     }
 }

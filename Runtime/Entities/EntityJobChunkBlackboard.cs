@@ -16,25 +16,25 @@ namespace Entities
         // public Entity Entity;
         // public unsafe EntityCommandBuffer.Concurrent* ECB;
 
-        private static readonly GetDataDelegate _getComponentData;
-        private static readonly SetDataDelegate _setComponentData;
-        private static readonly HasDataDelegate _hasComponentData;
+        private static readonly GetDataDelegate _GET_COMPONENT_DATA;
+        private static readonly SetDataDelegate _SET_COMPONENT_DATA;
+        private static readonly HasDataDelegate _HAS_COMPONENT_DATA;
 
         static EntityJobChunkBlackboard()
         {
             {
                 var getter = typeof(EntityJobChunkBlackboard).GetMethod("GetComponentData", BindingFlags.Public | BindingFlags.Instance);
-                _getComponentData = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
+                _GET_COMPONENT_DATA = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
 
             {
                 var setter = typeof(EntityJobChunkBlackboard).GetMethod("SetComponentData", BindingFlags.Public | BindingFlags.Instance);
-                _setComponentData = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new[] { value });
+                _SET_COMPONENT_DATA = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new[] { value });
             }
 
             {
                 var predicate = typeof(EntityJobChunkBlackboard).GetMethod("HasComponentData", BindingFlags.Public | BindingFlags.Instance);
-                _hasComponentData = (caller, type) => (bool)predicate.MakeGenericMethod(type).Invoke(caller, new object[0]);
+                _HAS_COMPONENT_DATA = (caller, type) => (bool)predicate.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
         }
         
@@ -43,19 +43,19 @@ namespace Entities
             get
             {
                 var type = ValidateKey(key);
-                return _getComponentData(this, type);
+                return _GET_COMPONENT_DATA(this, type);
             }
             set
             {
                 var type = ValidateKey(key);
-                _setComponentData(this, type, value);
+                _SET_COMPONENT_DATA(this, type, value);
             }
         }
 
         public bool Has(object key)
         {
             var type = ValidateKey(key);
-            return _hasComponentData(this, type);
+            return _HAS_COMPONENT_DATA(this, type);
         }
 
         public unsafe ref T GetRef<T>(object key) where T : struct
