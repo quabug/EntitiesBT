@@ -55,7 +55,7 @@ namespace EntitiesBT.Entities
             (IntPtr) _blob.DefaultDataBlob.GetUnsafePtr() + _blob.Offsets[nodeIndex];
         
         public unsafe IntPtr GetRuntimeDataPtr(int nodeIndex) =>
-            (IntPtr) _blob.DefaultDataBlob.GetUnsafePtr() + _blob.Offsets[nodeIndex];
+            (IntPtr) _blob.RuntimeDataBlob.GetUnsafePtr() + _blob.Offsets[nodeIndex];
 
         public NodeState GetState(int nodeIndex) => _blob.States[nodeIndex];
         public void SetState(int nodeIndex, NodeState state) => _blob.States[nodeIndex] = state;
