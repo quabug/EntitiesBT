@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
@@ -44,10 +45,10 @@ namespace EntitiesBT.DebugView
     
     public class BTDebugViewRoot : MonoBehaviour
     {
-        public Entity Entity;
-        public EntityManager EntityManager;
+        [NonSerialized] public List<GameObject> Views;
+        [NonSerialized] public Entity Entity;
+        [NonSerialized] public EntityManager EntityManager;
         private EntityBlackboard _blackboard;
-        private List<GameObject> _views;
 
         private void OnEnable() {}
 
@@ -58,25 +59,21 @@ namespace EntitiesBT.DebugView
             if (_blackboard == null) _blackboard = new EntityBlackboard {EntityManager = EntityManager, Entity = Entity};
             
             var blob = EntityManager.GetComponentData<NodeBlobRef>(Entity);
-            if (_views == null) CreateViews(blob);
+            if (Views == null) CreateViews(blob);
             
-            for (var i = 0; i < _views.Count; i++)
-            {
-                foreach (var view in _views[i].GetComponents<IBTDebugView>())
-                    view.TickView(blob, _blackboard, i);
-            }
+            foreach (var view in Views.SelectMany(t => t.GetComponents<IBTDebugView>())) view.Tick();
         }
 
         private void CreateViews(NodeBlobRef blob)
         {
-            _views = new List<GameObject>(blob.Count);
+            Views = new List<GameObject>(blob.Count);
             for (var i = 0; i < blob.Count; i++)
             {
                 var nodeTypeId = blob.GetTypeId(i);
                 var debugViewTypeList = DebugComponentLookUp.NODE_COMPONENTS_MAP[nodeTypeId];
                 
                 var nodeGameObject = new GameObject();
-                _views.Add(nodeGameObject);
+                Views.Add(nodeGameObject);
                 nodeGameObject.name = $"{DebugComponentLookUp.BEHAVIOR_NODE_ID_TYPE_MAP[nodeTypeId].Name}";
                 if (debugViewTypeList.Any())
                 {
@@ -90,14 +87,21 @@ namespace EntitiesBT.DebugView
                 }
                 
                 var parentIndex = blob.ParentIndex(i);
-                var parent = parentIndex >= 0 ? _views[parentIndex].transform : transform;
+                var parent = parentIndex >= 0 ? Views[parentIndex].transform : transform;
                 nodeGameObject.transform.SetParent(parent);
             }
             
-            for (var i = 0; i < _views.Count; i++)
+            for (var i = 0; i < Views.Count; i++)
             {
-                foreach (var view in _views[i].GetComponents<IBTDebugView>())
-                    view.InitView(blob, _blackboard, i);
+                foreach (var view in Views[i].GetComponents<BTDebugView>())
+                {
+                    view.Index = i;
+                    view.Blackboard = _blackboard;
+                    view.Blob = blob;
+                    view.Entity = Entity;
+                    view.EntityManager = EntityManager;
+                    view.Init();
+                }
             }
         }
     }

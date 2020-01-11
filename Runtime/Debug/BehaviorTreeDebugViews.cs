@@ -1,20 +1,31 @@
+using System;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.DebugView
 {
     public interface IBTDebugView
     {
-        void InitView(INodeBlob blob, IBlackboard bb, int index);
-        void TickView(INodeBlob blob, IBlackboard bb, int index);
+        void Init();
+        void Tick();
     }
 
     public class BTDebugView : MonoBehaviour, IBTDebugView
     {
-        public virtual void InitView(INodeBlob blob, IBlackboard bb, int index) {}
-        public virtual void TickView(INodeBlob blob, IBlackboard bb, int index) {}
+        public bool IsValid => EntityManager != null && Blackboard != null && Blob.BlobRef.IsCreated;
+        
+        [NonSerialized] public EntityManager EntityManager;
+        [NonSerialized] public Entity Entity;
+        [NonSerialized] public EntityBlackboard Blackboard;
+        [NonSerialized] public NodeBlobRef Blob;
+        [NonSerialized] public int Index;
+        
+        public virtual void Init() {}
+        public virtual void Tick() {}
     }
 
     [BehaviorTreeDebugViewGeneric]
@@ -23,16 +34,16 @@ namespace EntitiesBT.DebugView
     {
         public U Data;
 
-        public override void TickView(INodeBlob blob, IBlackboard bb, int index)
+        public override void Tick()
         {
-            var dataSize = blob.GetNodeDataSize(index);
+            var dataSize = Blob.GetNodeDataSize(Index);
             var typeSize = UnsafeUtility.SizeOf<U>();
             if (dataSize != typeSize)
             {
-                Debug.LogWarning($"Data size not match: data-{index}({dataSize}) != {typeof(T).Name}({typeSize})");
+                Debug.LogWarning($"Data size not match: data-{Index}({dataSize}) != {typeof(T).Name}({typeSize})");
                 return;
             }
-            Data = blob.GetNodeData<U>(index);
+            Data = Blob.GetNodeData<U>(Index);
         }
     }
     

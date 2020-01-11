@@ -47,15 +47,15 @@ namespace EntitiesBT.Sample
 
     public class EntityMoveDebugView : BTDebugView<EntityMoveNode, EntityMoveNode.Data>
     {
-        public override void InitView(INodeBlob blob, IBlackboard bb, int index)
+        public override void Init()
         {
-            Data.Velocity = blob.GetNodeData<EntityMoveNode.Data>(index).Velocity;
+            Data.Velocity = Blob.GetNodeData<EntityMoveNode.Data>(Index).Velocity;
         }
 
-        public override void TickView(INodeBlob blob, IBlackboard bb, int index)
+        public override void Tick()
         {
-            blob.GetNodeData<EntityMoveNode.Data>(index).Velocity = Data.Velocity;
-            base.TickView(blob, bb, index);
+            Blob.GetNodeData<EntityMoveNode.Data>(Index).Velocity = Data.Velocity;
+            base.Tick();
         }
     }
 }
