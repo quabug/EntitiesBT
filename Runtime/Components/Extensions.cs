@@ -86,13 +86,4 @@ namespace EntitiesBT.Components
             }
         }
     }
-    
-    public static class UnityExtensions
-    {
-        public static GameObject FindOrCreateGameObject(this string name)
-        {
-            var obj = GameObject.Find(name);
-            return obj ? obj : new GameObject(name);
-        }
-    }
 }

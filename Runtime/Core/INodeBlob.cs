@@ -67,6 +67,11 @@ namespace EntitiesBT.Core
         {
             return ref UnsafeUtilityEx.AsRef<T>((void*)blob.GetRuntimeDataPtr(index));
         }
+        
+        public static unsafe ref T GetNodeDefaultData<T>(this INodeBlob blob, int index) where T : struct
+        {
+            return ref UnsafeUtilityEx.AsRef<T>((void*)blob.GetDefaultDataPtr(index));
+        }
     }
 
 }

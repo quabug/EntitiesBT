@@ -3,7 +3,7 @@ using EntitiesBT.Nodes;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
-namespace EntitiesBT.Components.DebugView
+namespace EntitiesBT.DebugView
 {
     public interface IBTDebugView
     {

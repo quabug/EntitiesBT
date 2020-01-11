@@ -1,7 +1,7 @@
 using System;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
-using EntitiesBT.Components.DebugView;
+using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
 using Unity.Entities;
 using Unity.Mathematics;

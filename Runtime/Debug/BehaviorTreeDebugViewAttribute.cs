@@ -1,6 +1,6 @@
 using System;
 
-namespace EntitiesBT.Components.DebugView
+namespace EntitiesBT.DebugView
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class BehaviorTreeDebugViewAttribute : Attribute
