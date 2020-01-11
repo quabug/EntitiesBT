@@ -1,23 +1,22 @@
 #if UNITY_EDITOR
 
-using System;
 using EntitiesBT.Core;
-using EntitiesBT.Entities;
 using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.DebugView
 {
+    // https://www.reddit.com/r/Unity3D/comments/4cjxcp/custom_editor_how_to_color_text_in_hierarchy/?utm_source=share&utm_medium=web2x
     [InitializeOnLoad]
-    public class HierarchyHighlighter {
+    public class HierarchyHighlightDebugView {
  
-        static HierarchyHighlighter() {
-            EditorApplication.hierarchyWindowItemOnGUI -= ColorState;
-            EditorApplication.hierarchyWindowItemOnGUI += ColorState;
+        static HierarchyHighlightDebugView() {
+            EditorApplication.hierarchyWindowItemOnGUI -= Highlight;
+            EditorApplication.hierarchyWindowItemOnGUI += Highlight;
             // EditorApplication.hierarchyWindowItemOnGUI += HierarchyWindowItem_CB;
         }
    
-        private static void ColorState(int instanceId, Rect selectionRect)
+        private static void Highlight(int instanceId, Rect selectionRect)
         {
             if (Event.current.type != EventType.Repaint) return;
             if (!EditorApplication.isPlaying) return;
