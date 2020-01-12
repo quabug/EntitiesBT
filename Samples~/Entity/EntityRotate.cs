@@ -14,11 +14,10 @@ namespace EntitiesBT.Sample
         public Vector3 Axis;
         public float RadianPerSecond;
 
-        public override unsafe void Build(void* dataPtr)
+        protected override void Build(ref EntityRotateNode.Data data)
         {
-            var ptr = (EntityRotateNode.Data*) dataPtr;
-            ptr->Axis = Axis;
-            ptr->RadianPerSecond = RadianPerSecond;
+            data.Axis = Axis;
+            data.RadianPerSecond = RadianPerSecond;
         }
     }
     

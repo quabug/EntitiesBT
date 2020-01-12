@@ -14,10 +14,9 @@ namespace EntitiesBT.Sample
     {
         public Vector3 Velocity;
 
-        public override unsafe void Build(void* dataPtr)
+        protected override void Build(ref EntityMoveNode.Data data)
         {
-            var ptr = (EntityMoveNode.Data*) dataPtr;
-            ptr->Velocity = Velocity;
+            data.Velocity = Velocity;
         }
     }
     
