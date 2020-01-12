@@ -1,12 +1,11 @@
 using System;
 using System.Reflection;
-using EntitiesBT;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
-namespace Entities
+namespace EntitiesBT.Entities
 {
     public struct EntityJobChunkBlackboard : IBlackboard
     {

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Entities;
 using EntitiesBT.Core;
 using Unity.Collections;
 using Unity.Entities;
@@ -12,7 +11,6 @@ namespace EntitiesBT.Entities
     {
         protected override void OnCreate()
         {
-            m_systemsToUpdate.Add(World.CreateSystem<DeltaTimeSystem>());
             m_systemsToUpdate.Add(World.CreateSystem<MainThreadSystem>());
             m_systemsToUpdate.Add(World.CreateSystem<JobSystem>());
             m_systemsToUpdate.Add(World.CreateSystem<ChangeThreadSystem>());
@@ -20,15 +18,6 @@ namespace EntitiesBT.Entities
 
         // sort is not allowed
         public override void SortSystemUpdateList() {}
-
-        [DisableAutoCreation]
-        private class DeltaTimeSystem : ComponentSystem
-        {
-            protected override void OnUpdate()
-            {
-                Entities.ForEach((ref BehaviorTreeTickDeltaTime deltaTime) => deltaTime.Value = Time.DeltaTime);
-            }
-        }
         
         [DisableAutoCreation]
         private class ChangeThreadSystem : ComponentSystem

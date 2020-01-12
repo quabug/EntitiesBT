@@ -14,7 +14,7 @@ namespace EntitiesBT.Nodes
         [Serializable]
         public struct Data : INodeData
         {
-            public float Seconds;
+            public float CountdownSeconds;
             public NodeState BreakReturnState;
         }
 
@@ -22,8 +22,8 @@ namespace EntitiesBT.Nodes
         {
             var childState = blob.TickChildren(index, blackboard, state => state.IsCompleted()).FirstOrDefault();
             ref var data = ref blob.GetNodeData<Data>(index);
-            data.Seconds -= blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
-            if (data.Seconds <= 0f) return childState.IsCompleted() ? childState : data.BreakReturnState;
+            data.CountdownSeconds -= blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
+            if (data.CountdownSeconds <= 0f) return childState.IsCompleted() ? childState : data.BreakReturnState;
             return NodeState.Running;
         }
     }

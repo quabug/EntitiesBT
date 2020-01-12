@@ -1,7 +1,7 @@
 using System;
 using Unity.Entities;
 
-namespace Entities
+namespace EntitiesBT.Entities
 {
     delegate object GetDataDelegate(object caller, Type dataType);
     delegate void SetDataDelegate(object caller, Type dataType, object dataValue);

@@ -1,7 +1,7 @@
 {
   "name": "entities-bt",
   "description": "Behavior Tree for Unity Entities",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "unity": "2019.3",
   "displayName": "Entities Behavior Tree",
   "dependencies": {
@@ -14,12 +14,12 @@
       "path": "Samples~/Tests"
     },
     {
-      "displayName": "animator",
+      "displayName": "hybrid-animator",
       "description": "animator controlled by behavior tree",
       "path": "Samples~/Animator"
     },
     {
-      "displayName": "transform",
+      "displayName": "unity-transform",
       "description": "control transform of game object directly without entity",
       "path": "Samples~/GameObjectWithoutEntity"
     },
