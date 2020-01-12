@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
+using UnityEngine;
 
 namespace EntitiesBT.Core
 {
@@ -48,6 +50,19 @@ namespace EntitiesBT.Core
         {
             var treeNode = new TreeNode<T>(node, parent);
             return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => child.Flatten(childrenFunc, treeNode)));
+        }
+
+        public static IEnumerable<float> NormalizeUnsafe(this IEnumerable<float> weights)
+        {
+            var sum = weights.Sum();
+            return weights.Select(w => w / sum);
+        }
+        
+        public static IEnumerable<float> Normalize(this IEnumerable<float> weights)
+        {
+            var sum = weights.Where(w => w > 0).Sum();
+            if (sum <= math.FLT_MIN_NORMAL) sum = 1;
+            return weights.Select(w => math.max(w, 0) / sum);
         }
     }
 }
