@@ -45,17 +45,5 @@ namespace EntitiesBT.Sample
         }
     }
 
-    public class EntityMoveDebugView : BTDebugView<EntityMoveNode, EntityMoveNode.Data>
-    {
-        public override void Init()
-        {
-            Data.Velocity = Blob.GetNodeData<EntityMoveNode.Data>(Index).Velocity;
-        }
-
-        public override void Tick()
-        {
-            Blob.GetNodeData<EntityMoveNode.Data>(Index).Velocity = Data.Velocity;
-            base.Tick();
-        }
-    }
+    public class EntityMoveDebugView : BTDebugView<EntityMoveNode, EntityMoveNode.Data> {}
 }
