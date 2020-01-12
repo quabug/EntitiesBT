@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
-using EntitiesBT.Entities;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
-namespace Entities
+namespace EntitiesBT.Entities
 {
     public static class NodeBlobExtensions
     {

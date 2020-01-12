@@ -53,7 +53,7 @@ namespace EntitiesBT.DebugView
             RuntimeData = Blob.GetNodeData<U>(Index);
         }
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if (!Blob.BlobRef.IsCreated) return;
             Blob.GetNodeData<U>(Index) = RuntimeData;

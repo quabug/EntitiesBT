@@ -1,8 +1,5 @@
-using System;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
-using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine;
 
 namespace EntitiesBT.Components
 {
@@ -13,7 +10,7 @@ namespace EntitiesBT.Components
 
         protected override void Build(ref TimerNode.Data data)
         {
-            data.Seconds = TimeInSeconds;
+            data.CountdownSeconds = TimeInSeconds;
             data.BreakReturnState = BreakReturnState;
         }
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Entities;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Collections;
@@ -74,7 +73,6 @@ namespace EntitiesBT.Components
             }
             
             dstManager.AddComponentData(entity, blob);
-            dstManager.AddComponentData(entity, new BehaviorTreeTickDeltaTime());
 
             void AddJobComponents()
             {
