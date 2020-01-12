@@ -32,7 +32,14 @@ namespace EntitiesBT.DebugView
     public class BTDebugView<T, U> : BTDebugView
         where U : struct, INodeData
     {
-        public U Data;
+        public U DefaultData;
+        public U RuntimeData;
+
+        public override void Init()
+        {
+            RuntimeData = Blob.GetNodeData<U>(Index);
+            DefaultData = Blob.GetNodeDefaultData<U>(Index);
+        }
 
         public override void Tick()
         {
@@ -43,7 +50,15 @@ namespace EntitiesBT.DebugView
                 Debug.LogWarning($"Data size not match: data-{Index}({dataSize}) != {typeof(T).Name}({typeSize})");
                 return;
             }
-            Data = Blob.GetNodeData<U>(Index);
+            RuntimeData = Blob.GetNodeData<U>(Index);
+        }
+
+        private void OnValidate()
+        {
+            if (!Blob.BlobRef.IsCreated) return;
+            Blob.GetNodeData<U>(Index) = RuntimeData;
+            Blob.GetNodeDefaultData<U>(Index) = DefaultData;
+            Debug.Log("node data changed");
         }
     }
     

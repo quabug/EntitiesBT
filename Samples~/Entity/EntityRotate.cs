@@ -1,5 +1,6 @@
 using EntitiesBT.Core;
 using EntitiesBT.Components;
+using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -47,4 +48,6 @@ namespace EntitiesBT.Sample
             return NodeState.Running;
         }
     }
+    
+    public class EntityRotateDebugView : BTDebugView<EntityRotateNode, EntityRotateNode.Data> {}
 }
