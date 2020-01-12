@@ -13,7 +13,7 @@ namespace Entities
         public static unsafe BlobAssetReference<NodeBlob> ToBlob(this IList<ITreeNode<INodeDataBuilder>> nodes, Allocator allocator)
         {
             var blobSize = nodes.Select(n => n.Value.Size).Sum();
-            var size = NodeBlob.CalculateRuntimeSize(nodes.Count, blobSize);
+            var size = NodeBlob.CalculateSize(nodes.Count, blobSize);
             using (var blobBuilder = new BlobBuilder(Allocator.Temp, size))
             {
                 ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();

@@ -24,9 +24,12 @@ namespace EntitiesBT.Entities
 
         public static int CalculateDefaultSize(int count, int dataSize) =>
             UnsafeUtility.SizeOf<NodeBlob>() + dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
-
+        
         public static int CalculateRuntimeSize(int count, int dataSize) =>
-            CalculateDefaultSize(count, dataSize) + dataSize/* RuntimeDataBlob */ + sizeof(NodeState) * count;
+            dataSize/* RuntimeDataBlob */ + sizeof(NodeState) * count;
+
+        public static int CalculateSize(int count, int dataSize) =>
+            CalculateDefaultSize(count, dataSize) + CalculateRuntimeSize(count, dataSize);
     }
 
     public struct NodeBlobRef : IComponentData, INodeBlob
