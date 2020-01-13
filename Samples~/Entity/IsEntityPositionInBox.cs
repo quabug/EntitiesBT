@@ -2,9 +2,7 @@ using System;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
-using EntitiesBT.Entities;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -14,7 +12,7 @@ namespace EntitiesBT.Sample
     {
         public BoxCollider Box;
         
-        protected override void Build(ref IsEntityPositionInBoxNode.Data data)
+        protected override void Build(ref IsEntityPositionInBoxNode.Data data, ITreeNode<INodeDataBuilder>[] builders)
         {
             // rotation is not count into.
             data.Bounds = new Bounds(Box.center + transform.position, Box.size);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using UnityEngine;
@@ -32,7 +33,7 @@ namespace EntitiesBT.Test
         public int B;
         public int BB;
 
-        public override unsafe void Build(void* dataPtr)
+        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
         {
             var ptr = (NodeB.Data*) dataPtr;
             ptr->B = B;

@@ -7,7 +7,7 @@ namespace EntitiesBT.Core
         BehaviorNodeType NodeType { get; }
         int NodeId { get; }
         int Size { get; }
-        unsafe void Build(void* dataPtr);
+        unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders);
         INodeDataBuilder Self { get; }
         IEnumerable<INodeDataBuilder> Children { get; }
     }

@@ -14,7 +14,7 @@ namespace EntitiesBT.Sample
     {
         public Vector3 Velocity;
 
-        protected override void Build(ref EntityMoveNode.Data data)
+        protected override void Build(ref EntityMoveNode.Data data, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.Velocity = Velocity;
         }

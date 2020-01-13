@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace EntitiesBT.Components
 
         public override int Size => WeightRandomSelectorNode.Data.Size(_weights.Length);
 
-        protected override void Build(ref WeightRandomSelectorNode.Data data)
+        protected override void Build(ref WeightRandomSelectorNode.Data data, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.Sum = _weights.Sum();
             data.Weights.FromArrayUnsafe(_weights);

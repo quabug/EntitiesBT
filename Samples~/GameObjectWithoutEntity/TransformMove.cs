@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
 using EntitiesBT.Entities;
@@ -10,7 +11,7 @@ namespace EntitiesBT.Sample
     {
         public Vector3 Velocity;
         
-        public override unsafe void Build(void* dataPtr)
+        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
         {
             var ptr = (TransformMoveNode.Data*) dataPtr;
             ptr->Velocity = Velocity;

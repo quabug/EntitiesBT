@@ -18,7 +18,7 @@ namespace EntitiesBT.Test
 
         public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref blob.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeDefaultData<Data>(index);
             data.State = data.DefaultState;
             data.Index = index;
             data.ResetTimes++;
@@ -26,7 +26,7 @@ namespace EntitiesBT.Test
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref blob.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeDefaultData<Data>(index);
             Assert.AreEqual(data.Index, index);
             data.TickTimes++;
             return data.State;
@@ -37,7 +37,7 @@ namespace EntitiesBT.Test
     {
         public NodeState State;
 
-        public override unsafe void Build(void* dataPtr)
+        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
         {
             var ptr = (TestNode.Data*) dataPtr;
             ptr->DefaultState = State;

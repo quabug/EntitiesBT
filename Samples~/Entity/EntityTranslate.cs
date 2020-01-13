@@ -2,7 +2,6 @@ using System;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
 using EntitiesBT.DebugView;
-using EntitiesBT.Entities;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -14,7 +13,7 @@ namespace EntitiesBT.Sample
     {
         public Vector3 Position;
 
-        protected override void Build(ref EntityTranslateNode.Data data)
+        protected override void Build(ref EntityTranslateNode.Data data, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.Position = Position;
         }
