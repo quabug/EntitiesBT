@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
+using UnityEngine;
 
 namespace EntitiesBT.Core
 {
@@ -33,6 +35,7 @@ namespace EntitiesBT.Core
     public static class Utilities
     {
         public delegate IEnumerable<T> ChildrenFunc<T>(T parent);
+        public delegate T SelfFunc<T>(T self);
         
         public static IEnumerable<T> Yield<T>(this T self)
         {
@@ -41,13 +44,37 @@ namespace EntitiesBT.Core
 
         public static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc)
         {
-            return node.Flatten(childrenFunc, default).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
+            return node.Flatten(childrenFunc, default(ITreeNode<T>)).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
         }
 
         private static IEnumerable<TreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, ITreeNode<T> parent)
         {
             var treeNode = new TreeNode<T>(node, parent);
             return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => child.Flatten(childrenFunc, treeNode)));
+        }
+        
+        public static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, SelfFunc<T> selfFunc)
+        {
+            return selfFunc(node).Flatten(childrenFunc, default, selfFunc).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
+        }
+
+        private static IEnumerable<TreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, ITreeNode<T> parent, SelfFunc<T> selfFunc)
+        {
+            var treeNode = new TreeNode<T>(node, parent);
+            return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => selfFunc(child).Flatten(childrenFunc, treeNode, selfFunc)));
+        }
+
+        public static IEnumerable<float> NormalizeUnsafe(this IEnumerable<float> weights)
+        {
+            var sum = weights.Sum();
+            return weights.Select(w => w / sum);
+        }
+        
+        public static IEnumerable<float> Normalize(this IEnumerable<float> weights)
+        {
+            var sum = weights.Where(w => w > 0).Sum();
+            if (sum <= math.FLT_MIN_NORMAL) sum = 1;
+            return weights.Select(w => math.max(w, 0) / sum);
         }
     }
 }

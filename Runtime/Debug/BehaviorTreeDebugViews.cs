@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
@@ -8,13 +9,7 @@ using UnityEngine;
 
 namespace EntitiesBT.DebugView
 {
-    public interface IBTDebugView
-    {
-        void Init();
-        void Tick();
-    }
-
-    public class BTDebugView : MonoBehaviour, IBTDebugView
+    public class BTDebugView : MonoBehaviour
     {
         public bool IsValid => EntityManager != null && Blackboard != null && Blob.BlobRef.IsCreated;
         
@@ -23,10 +18,16 @@ namespace EntitiesBT.DebugView
         [NonSerialized] public EntityBlackboard Blackboard;
         [NonSerialized] public NodeBlobRef Blob;
         [NonSerialized] public int Index;
+
+        // TODO: not implemented yet
+        [NonSerialized] public bool PauseOnTick = false;
         
         public virtual void Init() {}
         public virtual void Tick() {}
     }
+    
+    [BehaviorTreeDebugViewGeneric]
+    public class BTDebugView<T> : BTDebugView {}
 
     [BehaviorTreeDebugViewGeneric]
     public class BTDebugView<T, U> : BTDebugView
@@ -55,15 +56,11 @@ namespace EntitiesBT.DebugView
 
         protected virtual void OnValidate()
         {
-            if (!Blob.BlobRef.IsCreated) return;
+            if (!IsValid) return;
             Blob.GetNodeData<U>(Index) = RuntimeData;
             Blob.GetNodeDefaultData<U>(Index) = DefaultData;
             Debug.Log("node data changed");
         }
     }
     
-    public class BTDebugTimer : BTDebugView<TimerNode, TimerNode.Data> {}
-    public class BTDebugDelayTimer : BTDebugView<DelayTimerNode, DelayTimerNode.Data> {}
-    public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode, RepeatForeverNode.Data> {}
-    public class BTDebugRepeatTimes : BTDebugView<RepeatTimesNode, RepeatTimesNode.Data> {}
 }

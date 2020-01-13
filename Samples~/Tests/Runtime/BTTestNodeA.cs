@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using UnityEngine;
@@ -29,6 +30,6 @@ namespace EntitiesBT.Test
     public class BTTestNodeA : BTNode<NodeA, NodeA.Data>
     {
         public int A;
-        public override unsafe void Build(void* dataPtr) => ((NodeA.Data*) dataPtr)->A = A;
+        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders) => ((NodeA.Data*) dataPtr)->A = A;
     }
 }

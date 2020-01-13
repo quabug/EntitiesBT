@@ -1,4 +1,5 @@
-﻿using EntitiesBT.Components;
+﻿using System.Collections.Generic;
+using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace EntitiesBT.Sample
     {
         public string TriggerName;
 
-        public override unsafe void Build(void* dataPtr) =>
+        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders) =>
             ((SetAnimatorTriggerNode.Data*) dataPtr)->Value = Animator.StringToHash(TriggerName);
     }
     

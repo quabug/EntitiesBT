@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace EntitiesBT.Components
             : sizeof(RepeatTimesNode.Data)
         ;
         
-        public override unsafe void Build(void* dataPtr)
+        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
         {
             if (RepeatTimes <= 0)
             {
