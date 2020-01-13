@@ -25,7 +25,7 @@ namespace EntitiesBT.DebugView
                     continue;
                 }
 
-                if (!typeof(IBTDebugView).IsAssignableFrom(type)) continue;
+                if (!type.IsSubclassOf(typeof(BTDebugView))) continue;
                 
                 var debugViewAttribute = type.GetCustomAttribute<BehaviorTreeDebugViewAttribute>();
                 if (debugViewAttribute != null)

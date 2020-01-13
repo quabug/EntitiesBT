@@ -9,6 +9,11 @@ namespace EntitiesBT.Entities
 {
     public static class NodeBlobExtensions
     {
+        public static BlobAssetReference<NodeBlob> ToBlob(this INodeDataBuilder root, Allocator allocator = Allocator.Persistent)
+        {
+            return root.Flatten(builder => builder.Children, builder => builder.Self).ToArray().ToBlob(allocator);
+        }
+
         public static unsafe BlobAssetReference<NodeBlob> ToBlob(this IList<ITreeNode<INodeDataBuilder>> nodes, Allocator allocator)
         {
             var blobSize = nodes.Select(n => n.Value.Size).Sum();
@@ -29,7 +34,6 @@ namespace EntitiesBT.Entities
                     node.Value.Build(unsafeDataPtr + offset);
                     offset += node.Value.Size;
                 }
-                
                 
                 var endIndices = blobBuilder.Allocate(ref blob.EndIndices, nodes.Count);
                 // make sure the memory is clear to 0 (even it had been cleared on allocate)

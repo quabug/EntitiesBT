@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -18,11 +17,6 @@ namespace EntitiesBT.Components
     
     public static class BehaviorTreeExtensions
     {
-        public static BlobAssetReference<NodeBlob> ToBlob(this BTNode root, Allocator allocator = Allocator.Persistent)
-        {
-            return root.Flatten(Utilities.Children).ToArray().ToBlob(allocator);
-        }
-
         public static BlobAssetReference<NodeBlob> ToBlob(this TextAsset file)
         {
             var result = BlobAssetReference<NodeBlob>.TryRead(file.bytes, NodeBlob.VERSION, out var blobRef);

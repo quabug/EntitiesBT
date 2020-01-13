@@ -17,14 +17,16 @@ namespace EntitiesBT.Components
             data.Weights.FromArrayUnsafe(_weights);
         }
 
-        private void OnTransformChildrenChanged()
+        protected override void OnTransformChildrenChanged()
         {
-            Array.Resize(ref _weights, ChildCount);
+            base.OnTransformChildrenChanged();
+            Array.Resize(ref _weights, Children.Count());
         }
 
-        private void OnValidate()
+        protected override void OnValidate()
         {
-            Array.Resize(ref _weights, ChildCount);
+            base.OnValidate();
+            Array.Resize(ref _weights, Children.Count());
             for (var i = 0; i < _weights.Length; i++)
                 if (_weights[i] < 0) _weights[i] = 0;
         }

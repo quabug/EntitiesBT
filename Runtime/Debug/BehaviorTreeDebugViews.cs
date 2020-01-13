@@ -9,13 +9,7 @@ using UnityEngine;
 
 namespace EntitiesBT.DebugView
 {
-    public interface IBTDebugView
-    {
-        void Init();
-        void Tick();
-    }
-
-    public class BTDebugView : MonoBehaviour, IBTDebugView
+    public class BTDebugView : MonoBehaviour
     {
         public bool IsValid => EntityManager != null && Blackboard != null && Blob.BlobRef.IsCreated;
         
@@ -24,6 +18,8 @@ namespace EntitiesBT.DebugView
         [NonSerialized] public EntityBlackboard Blackboard;
         [NonSerialized] public NodeBlobRef Blob;
         [NonSerialized] public int Index;
+
+        public bool PauseOnTick = false;
         
         public virtual void Init() {}
         public virtual void Tick() {}
