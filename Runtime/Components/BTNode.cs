@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
-using Unity.Entities.Serialization;
 using UnityEngine;
 
 namespace EntitiesBT.Components
@@ -54,24 +50,15 @@ namespace EntitiesBT.Components
 
 #if UNITY_EDITOR
         [ContextMenu("Save to file")]
-        public unsafe void SaveToFile()
+        public void SaveToFile()
         {
             var path = UnityEditor.EditorUtility.SaveFilePanel("save path", Application.dataPath, "behavior-tree", "bytes");
             if (string.IsNullOrEmpty(path))
                 return;
 
-            using (var blob = this.ToBlob(Allocator.Temp))
-            using (var writer = new MemoryBinaryWriter())
-            {
-                writer.Write(NodeBlob.VERSION);
-                writer.Write(blob);
-                var runtimePartSize = NodeBlob.CalculateRuntimeSize(blob.Value.Count, blob.Value.RuntimeDataBlob.Length);
-                // HACK: truncate the runtime part of data (NodeState and RuntimeNodeData)
-                var fileSize = writer.Length - runtimePartSize;
-                using (var file = new FileStream(path, FileMode.OpenOrCreate))
-                using (var writerData = new UnmanagedMemoryStream(writer.Data, fileSize))
-                    writerData.CopyTo(file);
-            }
+            using (var file = new FileStream(path, FileMode.OpenOrCreate))
+                this.SaveToStream(file);
+            
             UnityEditor.AssetDatabase.Refresh();
         }
 #endif
