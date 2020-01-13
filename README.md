@@ -19,8 +19,19 @@ While developing my new game by using Unity Entities, I found that the existing 
 
 ## Disadvantages
 - Incompatible with burst (Won't support this in the foreseen future)
-- Lack of composite nodes, like RandomSelector, PrioritySelector, etc. (TBD)
 - Lack of action nodes. (Will add some actions as extension if I personally need them)
 
 ## HowTo
-
+### Usage
+#### Create behavior tree
+#### Attach behavior tree onto _Entity_
+#### Serialization
+#### Thread control
+### Debug
+#### Advanced: custom debug view
+#### Advanced: multiple debug view component
+### Custom behavior node
+#### Action
+#### Decorator
+#### Composite
+#### Advanced: access other node data
