@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using EntitiesBT.Core;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using Unity.Entities.Serialization;
 
 namespace EntitiesBT.Entities
 {
@@ -56,6 +59,21 @@ namespace EntitiesBT.Entities
                 UnsafeUtility.MemCpy(runtimeDataBlob.GetUnsafePtr(), unsafeDataPtr, blobSize);
                 
                 return blobBuilder.CreateBlobAssetReference<NodeBlob>(allocator);
+            }
+        }
+
+        public static unsafe void SaveToStream(this INodeDataBuilder builder, Stream stream)
+        {
+            using (var blob = builder.ToBlob(Allocator.Temp))
+            using (var writer = new MemoryBinaryWriter())
+            {
+                writer.Write(NodeBlob.VERSION);
+                writer.Write(blob);
+                var runtimePartSize = NodeBlob.CalculateRuntimeSize(blob.Value.Count, blob.Value.RuntimeDataBlob.Length);
+                // HACK: truncate the runtime part of data (NodeState and RuntimeNodeData)
+                var finalSize = writer.Length - runtimePartSize;
+                using (var writerData = new UnmanagedMemoryStream(writer.Data, finalSize))
+                    writerData.CopyTo(stream);
             }
         }
     }
