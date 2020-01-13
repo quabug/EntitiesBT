@@ -61,11 +61,7 @@ namespace EntitiesBT.DebugView
             var blob = EntityManager.GetComponentData<NodeBlobRef>(Entity);
             if (Views == null) CreateViews(blob);
 
-            foreach (var view in Views.SelectMany(t => t.GetComponents<BTDebugView>()))
-            {
-                if (view.PauseOnTick) Debug.Break();
-                view.Tick();
-            }
+            foreach (var view in Views.SelectMany(t => t.GetComponents<BTDebugView>())) view.Tick();
         }
 
         private void CreateViews(NodeBlobRef blob)

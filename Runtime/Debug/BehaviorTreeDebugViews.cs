@@ -19,7 +19,8 @@ namespace EntitiesBT.DebugView
         [NonSerialized] public NodeBlobRef Blob;
         [NonSerialized] public int Index;
 
-        public bool PauseOnTick = false;
+        // TODO: not implemented yet
+        [NonSerialized] public bool PauseOnTick = false;
         
         public virtual void Init() {}
         public virtual void Tick() {}
