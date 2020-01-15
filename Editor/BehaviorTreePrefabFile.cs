@@ -2,17 +2,19 @@ using System.IO;
 using EntitiesBT.Components;
 using EntitiesBT.Entities;
 using UnityEditor;
+using UnityEditor.Experimental;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    [InitializeOnLoad]
+    // [InitializeOnLoad]
     public class BehaviorTreePrefabFile : AssetPostprocessor
     {
         static BehaviorTreePrefabFile()
         {
             // not work
             // PrefabStage.prefabSaved += OnPrefabSaved;
+            PrefabUtility.prefabInstanceUpdated -= OnPrefabSaved;
             PrefabUtility.prefabInstanceUpdated += OnPrefabSaved;
         }
 
