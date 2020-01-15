@@ -1,4 +1,31 @@
 [![openupm](https://img.shields.io/npm/v/entities-bt?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/entities-bt/)
+
+
+
+
+> **Table of contents**
+> 
+> * [EntitiesBT](#entitiesbt)
+>   * [Why another Behavior Tree framework?](#why-another-behavior-tree-framework)
+>   * [Features](#features)
+>   * [Disadvantages](#disadvantages)
+>   * [HowTo](#howto)
+>     - [Usage](#usage)
+>       - [Create behavior tree](#create-behavior-tree)
+>       - [Attach behavior tree onto Entity](#attach-behavior-tree-onto-entity)
+>       - [Serialization](#serialization)
+>       - [Thread control](#thread-control)
+>     - [Debug](#debug)
+>     - [Custom behavior node](#custom-behavior-node)
+>       - [Action](#action)
+>       - [Decorator](#decorator)
+>       - [Composite](#composite)
+>       - [Advanced: customize debug view](#advanced-customize-debug-view)
+>       - [Advanced: access other node data](#advanced-access-other-node-data)
+>       - [Advanced: behavior tree component](#advanced-behavior-tree-component)
+>       - [Advanced: virtual node builder](#advanced-virtual-node-builder)
+>     - [Data Structure](#data-structure)
+
 # EntitiesBT
 Behavior Tree framework based on and used for Unity Entities (DOTS)
 
