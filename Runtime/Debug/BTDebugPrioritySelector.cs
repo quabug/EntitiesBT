@@ -1,9 +1,11 @@
 using System;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
+using UnityEngine;
 
 namespace EntitiesBT.DebugView
 {
+    [AddComponentMenu("")] // hide from component menu
     public class BTDebugPrioritySelector : BTDebugView<PrioritySelectorNode>
     {
         public int[] DefaultWeights;
