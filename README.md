@@ -1,4 +1,31 @@
 [![openupm](https://img.shields.io/npm/v/entities-bt?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/entities-bt/)
+
+
+
+
+> **Table of contents**
+> 
+> * [EntitiesBT](#entitiesbt)
+>   * [Why another Behavior Tree framework?](#why-another-behavior-tree-framework)
+>   * [Features](#features)
+>   * [Disadvantages](#disadvantages)
+>   * [HowTo](#howto)
+>     - [Usage](#usage)
+>       - [Create behavior tree](#create-behavior-tree)
+>       - [Attach behavior tree onto Entity](#attach-behavior-tree-onto-entity)
+>       - [Serialization](#serialization)
+>       - [Thread control](#thread-control)
+>     - [Debug](#debug)
+>     - [Custom behavior node](#custom-behavior-node)
+>       - [Action](#action)
+>       - [Decorator](#decorator)
+>       - [Composite](#composite)
+>       - [Advanced: customize debug view](#advanced-customize-debug-view)
+>       - [Advanced: access other node data](#advanced-access-other-node-data)
+>       - [Advanced: behavior tree component](#advanced-behavior-tree-component)
+>       - [Advanced: virtual node builder](#advanced-virtual-node-builder)
+>     - [Data Structure](#data-structure)
+
 # EntitiesBT
 Behavior Tree framework based on and used for Unity Entities (DOTS)
 
@@ -24,20 +51,27 @@ While developing my new game by using Unity Entities, I found that the existing 
 ## HowTo
 ### Usage
 #### Create behavior tree
-![create](https://user-images.githubusercontent.com/683655/72404172-5b4f5c00-378f-11ea-94a1-bb8aa5eb2608.gif)
+<img width="600" alt="create" src="https://user-images.githubusercontent.com/683655/72404172-5b4f5c00-378f-11ea-94a1-bb8aa5eb2608.gif" />
+
 #### Attach behavior tree onto _Entity_
-![attach](https://user-images.githubusercontent.com/683655/72404398-27c10180-3790-11ea-82e3-0a973369ab0f.gif)
+<img width="600" alt="attach" src="https://user-images.githubusercontent.com/683655/72404398-27c10180-3790-11ea-82e3-0a973369ab0f.gif" />
+
 #### Serialization
-![save-to-file](https://user-images.githubusercontent.com/683655/72407209-b7b77900-3799-11ea-9de3-0703b1936f63.gif)
+<img width="600" alt="save-to-file" src="https://user-images.githubusercontent.com/683655/72407209-b7b77900-3799-11ea-9de3-0703b1936f63.gif" />
+
 #### Thread control
-![thread-control](https://user-images.githubusercontent.com/683655/72407274-ee8d8f00-3799-11ea-9847-76ad6fdc5a37.png)
+<img width="400" alt="thread-control" src="https://user-images.githubusercontent.com/683655/72407274-ee8d8f00-3799-11ea-9847-76ad6fdc5a37.png" />
+
 - Force Run on Main Thread: running on main thread only, will not use job to tick behavior tree. Safe to call `UnityEngine` method.
 - Force Run on Job: running on job threads only, will not use main thread to tick behavior tree. Not safe to call `UnityEngine` method.
 - Controlled by Behavior Tree: Running on job threads by default, but will switch to main thread once meet decorator of [`RunOnMainThread`](Runtime/Nodes/RunOnMainThreadNode.cs)
-![](https://user-images.githubusercontent.com/683655/72407836-cdc63900-379b-11ea-8979-605e725ab0f7.png)
+<img width="300" alt="" src="https://user-images.githubusercontent.com/683655/72407836-cdc63900-379b-11ea-8979-605e725ab0f7.png" />
+
 ### Debug
-![debug](https://user-images.githubusercontent.com/683655/72407368-517f2600-379a-11ea-8aa9-c72754abce9f.gif)
+<img width="600" alt="debug" src="https://user-images.githubusercontent.com/683655/72407368-517f2600-379a-11ea-8aa9-c72754abce9f.gif" />
+
 ### Custom behavior node
+
 #### Action
 ``` c#
 // most imporkotant part of node, actual logic on runtime.
@@ -83,6 +117,7 @@ public class EntityMove : BTNode<EntityMoveNode, EntityMoveNode.Data>
 // debug view (optional)
 public class EntityMoveDebugView : BTDebugView<EntityMoveNode, EntityMoveNode.Data> {}
 ```
+
 #### Decorator
 ``` c#
 // runtime behavior
@@ -127,6 +162,7 @@ public class BTRepeat : BTNode<RepeatForeverNode, RepeatForeverNode.Data>
 // debug view (optional)
 public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode, RepeatForeverNode.Data> {}
 ```
+
 #### Composite
 ``` c#
 // runtime behavior
@@ -146,14 +182,17 @@ public class BTSelector : BTNode<SelectorNode> {}
 
 // avoid debug view since there's nothing need to be debug for `Selector`
 ```
+
 #### Advanced: customize debug view
 - Behavior Node example: [PrioritySelectorNode.cs](Runtime/Nodes/PrioritySelectorNode.cs)
 - Debug View example: [BTDebugPrioritySelector.cs](Runtime/Debug/BTDebugPrioritySelector.cs)
+
 #### Advanced: access other node data
 `NodeBlob` store all internal data of behavior tree, and it can be access from any node.
 To access specific node data, just store its index and access by `INodeData.GetNodeData<T>(index)`.
 - Behavior Node example: [ModifyPriorityNode.cs](Runtime/Nodes/ModifyPriorityNode.cs)
 - Editor/Builder example: [BTModifyPriority.cs](Runtime/Components/BTModifyPriority.cs)
+
 #### Advanced: behavior tree component
 ``` c#
 [BehaviorTreeComponent] // mark a component data as `BehaviorTreeComponent`
@@ -172,7 +211,8 @@ public class BehaviorTreeDeltaTimeSystem : ComponentSystem
 }
 ```
 The components of behavior will add into `Entity` automatically on the stage of convert `GameObject` to `Entity`, if `AutoAddBehaviorTreeComponents` is enabled.
-![](https://user-images.githubusercontent.com/683655/72411453-d7549e80-37a5-11ea-925a-b3949180dd16.png)
+<img width="600" alt="" src="https://user-images.githubusercontent.com/683655/72411453-d7549e80-37a5-11ea-925a-b3949180dd16.png" />
+
 #### Advanced: virtual node builder
 A single builder node is able to product multiple behavior nodes while building.
 ``` C#
@@ -188,8 +228,8 @@ public class BTSequence : BTNode<SequenceNode>
     ;
 }
 ```
+
 ### Data Structure
-![data-structure](https://user-images.githubusercontent.com/683655/72414832-1edf2880-37ae-11ea-8ef1-146e99d30727.png)
 ``` c#
 public struct NodeBlob
 {
@@ -205,3 +245,4 @@ public struct NodeBlob
     public BlobArray<byte> RuntimeDataBlob; // same as `DefaultNodeData` but only available at runtime and will reset to `DefaultNodeData` once reset.
 }
 ```
+<img width="600" alt="data-structure" src="https://user-images.githubusercontent.com/683655/72414832-1edf2880-37ae-11ea-8ef1-146e99d30727.png" />
