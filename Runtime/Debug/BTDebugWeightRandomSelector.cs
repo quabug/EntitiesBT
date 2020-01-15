@@ -2,9 +2,11 @@ using System;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
+using UnityEngine;
 
 namespace EntitiesBT.DebugView
 {
+    [AddComponentMenu("")] // hide from component menu
     public class BTDebugWeightRandomSelector : BTDebugView<WeightRandomSelectorNode>
     {
         public float[] DefaultWeights;
