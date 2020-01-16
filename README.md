@@ -1,15 +1,13 @@
+# EntitiesBT
+
 [![openupm](https://img.shields.io/npm/v/entities-bt?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/entities-bt/)
 
-
-
-
 > **Table of contents**
-> 
-> * [EntitiesBT](#entitiesbt)
 >   * [Why another Behavior Tree framework?](#why-another-behavior-tree-framework)
 >   * [Features](#features)
 >   * [Disadvantages](#disadvantages)
 >   * [HowTo](#howto)
+>     - [Install](#install)
 >     - [Usage](#usage)
 >       - [Create behavior tree](#create-behavior-tree)
 >       - [Attach behavior tree onto Entity](#attach-behavior-tree-onto-entity)
@@ -24,9 +22,8 @@
 >       - [Advanced: access other node data](#advanced-access-other-node-data)
 >       - [Advanced: behavior tree component](#advanced-behavior-tree-component)
 >       - [Advanced: virtual node builder](#advanced-virtual-node-builder)
->     - [Data Structure](#data-structure)
+>   * [Data Structure](#data-structure)
 
-# EntitiesBT
 Behavior Tree framework based on and used for Unity Entities (DOTS)
 
 ## Why another Behavior Tree framework?
@@ -49,6 +46,17 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Lack of action nodes. (Will add some actions as extension if I personally need them)
 
 ## HowTo
+### Install
+Requirement: Unity >= 2019.3 and entities package >= 0.4.0-preview.10
+
+Install the package either by
+
+[UMP](https://docs.unity3d.com/2019.3/Documentation/Manual/upm-ui-giturl.html): `https://github.com/quabug/EntitiesBT.git` 
+
+or 
+
+[OpenUMP](https://openupm.com/docs/getting-started.html#installing-an-upm-package): `openupm add entities-bt`
+
 ### Usage
 #### Create behavior tree
 <img width="600" alt="create" src="https://user-images.githubusercontent.com/683655/72404172-5b4f5c00-378f-11ea-94a1-bb8aa5eb2608.gif" />
@@ -229,7 +237,7 @@ public class BTSequence : BTNode<SequenceNode>
 }
 ```
 
-### Data Structure
+## Data Structure
 ``` c#
 public struct NodeBlob
 {
