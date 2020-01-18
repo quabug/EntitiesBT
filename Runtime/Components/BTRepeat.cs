@@ -22,20 +22,20 @@ namespace EntitiesBT.Components
         ;
 
         public override unsafe int Size => RepeatTimes <= 0
-            ? sizeof(RepeatForeverNode.Data)
-            : sizeof(RepeatTimesNode.Data)
+            ? sizeof(RepeatForeverNode)
+            : sizeof(RepeatTimesNode)
         ;
         
         public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
         {
             if (RepeatTimes <= 0)
             {
-                var ptr = (RepeatForeverNode.Data*) dataPtr;
+                var ptr = (RepeatForeverNode*) dataPtr;
                 ptr->BreakStates = BreakStates;
             }
             else
             {
-                var ptr = (RepeatTimesNode.Data*) dataPtr;
+                var ptr = (RepeatTimesNode*) dataPtr;
                 ptr->TickTimes = RepeatTimes;
                 ptr->BreakStates = BreakStates;
             }

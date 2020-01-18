@@ -10,7 +10,7 @@ namespace EntitiesBT.Core
         Action,
     }
     
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class BehaviorNodeAttribute : Attribute
     {
         public Guid Guid { get; } 

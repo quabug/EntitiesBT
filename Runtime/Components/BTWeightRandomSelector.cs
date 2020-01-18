@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace EntitiesBT.Components
 {
-    public class BTWeightRandomSelector : BTNode<WeightRandomSelectorNode, WeightRandomSelectorNode.Data>
+    public class BTWeightRandomSelector : BTNode<WeightRandomSelectorNode>
     {
         [SerializeField] private float[] _weights;
 
-        public override int Size => WeightRandomSelectorNode.Data.Size(_weights.Length);
+        public override int Size => WeightRandomSelectorNode.Size(_weights.Length);
 
-        protected override void Build(ref WeightRandomSelectorNode.Data data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref WeightRandomSelectorNode data, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.Sum = _weights.Sum();
             data.Weights.FromArrayUnsafe(_weights);

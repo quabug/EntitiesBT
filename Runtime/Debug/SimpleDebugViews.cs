@@ -3,8 +3,8 @@ using EntitiesBT.Nodes;
 namespace EntitiesBT.DebugView
 {
     // TODO: automatically generate those class by Cecil?
-    public class BTDebugTimer : BTDebugView<TimerNode, TimerNode.Data> {}
-    public class BTDebugDelayTimer : BTDebugView<DelayTimerNode, DelayTimerNode.Data> {}
-    public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode, RepeatForeverNode.Data> {}
-    public class BTDebugRepeatTimes : BTDebugView<RepeatTimesNode, RepeatTimesNode.Data> {}
+    public class BTDebugTimer : BTDebugView<TimerNode> {}
+    public class BTDebugDelayTimer : BTDebugView<DelayTimerNode> {}
+    public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode> {}
+    public class BTDebugRepeatTimes : BTDebugView<RepeatTimesNode> {}
 }

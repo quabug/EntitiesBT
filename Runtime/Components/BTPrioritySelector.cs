@@ -5,13 +5,13 @@ using EntitiesBT.Nodes;
 
 namespace EntitiesBT.Components
 {
-    public class BTPrioritySelector : BTNode<PrioritySelectorNode, PrioritySelectorNode.Data>
+    public class BTPrioritySelector : BTNode<PrioritySelectorNode>
     {
         public int[] Weights;
 
-        public override int Size => PrioritySelectorNode.Data.Size(Weights.Length);
+        public override int Size => PrioritySelectorNode.Size(Weights.Length);
 
-        protected override void Build(ref PrioritySelectorNode.Data data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref PrioritySelectorNode data, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.Weights.FromArrayUnsafe(Weights);
         }

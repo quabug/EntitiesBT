@@ -3,10 +3,10 @@ using EntitiesBT.Nodes;
 
 namespace EntitiesBT.Components
 {
-    public class BTDelayTimer : BTNode<DelayTimerNode, DelayTimerNode.Data>
+    public class BTDelayTimer : BTNode<DelayTimerNode>
     {
         public float DelayInSeconds;
-        protected override void Build(ref DelayTimerNode.Data data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref DelayTimerNode data, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.TimerSeconds = DelayInSeconds;
         }

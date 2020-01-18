@@ -17,10 +17,10 @@ namespace EntitiesBT.Test
         [Test]
         public unsafe void should_able_to_create_and_fetch_data_from_node_blob()
         {
-            Debug.Log($"sizeof NodeA: {sizeof(NodeA.Data)}");
-            Debug.Log($"sizeof NodeB: {sizeof(NodeB.Data)}");
+            Debug.Log($"sizeof NodeA: {sizeof(NodeA)}");
+            Debug.Log($"sizeof NodeB: {sizeof(NodeB)}");
             
-            var size = sizeof(NodeA.Data) + sizeof(NodeB.Data);
+            var size = sizeof(NodeA) + sizeof(NodeB);
             using (var blobBuilder = new BlobBuilder(Allocator.Temp))
             {
                 ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();
@@ -35,10 +35,10 @@ namespace EntitiesBT.Test
                 var offset = 0;
                 offsets[0] = offset;
                 offsets[1] = offset;
-                UnsafeUtilityEx.AsRef<NodeA.Data>(unsafePtr + offset).A = 111;
-                offset += sizeof(NodeA.Data);
+                UnsafeUtilityEx.AsRef<NodeA>(unsafePtr + offset).A = 111;
+                offset += sizeof(NodeA);
                 offsets[2] = offset;
-                ref var local2 = ref UnsafeUtilityEx.AsRef<NodeB.Data>(unsafePtr + offset);
+                ref var local2 = ref UnsafeUtilityEx.AsRef<NodeB>(unsafePtr + offset);
                 local2.B = 222;
                 local2.BB = 2222;
                 var blobRef = blobBuilder.CreateBlobAssetReference<NodeBlob>(Allocator.Persistent);
@@ -52,8 +52,8 @@ namespace EntitiesBT.Test
                     Assert.AreEqual(blobRef.Value.EndIndices[1], 2);
                     Assert.AreEqual(blobRef.Value.EndIndices[2], 3);
 
-                    Assert.AreEqual(GetDefaultData<NodeA.Data>(1).A, 111);
-                    ref var b = ref GetDefaultData<NodeB.Data>(2);
+                    Assert.AreEqual(GetDefaultData<NodeA>(1).A, 111);
+                    ref var b = ref GetDefaultData<NodeB>(2);
                     Assert.AreEqual(b.B, 222);
                     Assert.AreEqual(b.BB, 2222);
                 }
@@ -106,8 +106,8 @@ namespace EntitiesBT.Test
             Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 0, 20, 40, 48, 52 });
             Assert.AreEqual(blobRef.Value.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
             Assert.AreEqual(blobRef.Value.DefaultDataBlob.Length, 72);
-            Assert.AreEqual(GetDefaultData<NodeB.Data>(3), new NodeB.Data {B = 1, BB = 1});
-            Assert.AreEqual(GetDefaultData<NodeA.Data>(4), new NodeA.Data {A = 111});
+            Assert.AreEqual(GetDefaultData<NodeB>(3), new NodeB {B = 1, BB = 1});
+            Assert.AreEqual(GetDefaultData<NodeA>(4), new NodeA {A = 111});
             
             ref T GetDefaultData<T>(int nodeIndex) where T : struct =>
                 ref UnsafeUtilityEx.AsRef<T>((byte*) blobRef.Value.DefaultDataBlob.GetUnsafePtr() + blobRef.Value.Offsets[nodeIndex]);

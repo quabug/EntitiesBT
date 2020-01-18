@@ -14,16 +14,16 @@ namespace EntitiesBT.DebugView
 
         public override void Init()
         {
-            ref var runtime = ref Blob.GetNodeData<WeightRandomSelectorNode.Data>(Index).Weights;
+            ref var runtime = ref Blob.GetNodeData<WeightRandomSelectorNode>(Index).Weights;
             RuntimeWeights = runtime.ToArray();
             
-            ref var @default = ref Blob.GetNodeDefaultData<WeightRandomSelectorNode.Data>(Index).Weights;
+            ref var @default = ref Blob.GetNodeDefaultData<WeightRandomSelectorNode>(Index).Weights;
             DefaultWeights = @default.ToArray();
         }
 
         public override void Tick()
         {
-            ref var runtime = ref Blob.GetNodeData<WeightRandomSelectorNode.Data>(Index).Weights;
+            ref var runtime = ref Blob.GetNodeData<WeightRandomSelectorNode>(Index).Weights;
             RuntimeWeights = runtime.ToArray();
         }
 
@@ -31,13 +31,13 @@ namespace EntitiesBT.DebugView
         {
             if (!IsValid) return;
             
-            ref var @default = ref Blob.GetNodeDefaultData<WeightRandomSelectorNode.Data>(Index);
+            ref var @default = ref Blob.GetNodeDefaultData<WeightRandomSelectorNode>(Index);
             SetData(ref @default, DefaultWeights);
             
-            ref var runtime = ref Blob.GetNodeData<WeightRandomSelectorNode.Data>(Index);
+            ref var runtime = ref Blob.GetNodeData<WeightRandomSelectorNode>(Index);
             SetData(ref runtime, RuntimeWeights);
 
-            void SetData(ref WeightRandomSelectorNode.Data data, float[] array)
+            void SetData(ref WeightRandomSelectorNode data, float[] array)
             {
                 Array.Resize(ref array, data.Weights.Length);
                 for (var i = 0; i < array.Length; i++) if (array[i] < 0) array[i] = 0;
