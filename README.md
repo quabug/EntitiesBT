@@ -82,27 +82,23 @@ or
 
 #### Action
 ``` c#
-// most imporkotant part of node, actual logic on runtime.
+// most important part of node, actual logic on runtime.
+[Serializable] // for debug view only
 [BehaviorNode("F5C2EE7E-690A-4B5C-9489-FB362C949192")] // must add this attribute to indicate a class is a `BehaviorNode`
-public class EntityMoveNode
+public struct EntityMoveNode : INodeData
 {
+    public float3 Velocity; // node data saved in `INodeBlob`
+    
     // declare access of each component data.
     public static readonly ComponentType[] Types = {
         ComponentType.ReadWrite<Translation>()
       , ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()
     };
-    
-    // node data saved in `INodeBlob`
-    [Serializable] // for debug view only
-    public struct Data : INodeData
-    {
-        public float3 Velocity;
-    }
 
     // access and modify node data
     public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
     {
-        ref var data = ref blob.GetNodeData<Data>(index);
+        ref var data = ref blob.GetNodeData<EntityMoveNode>(index);
         ref var translation = ref bb.GetDataRef<Translation>(); // get blackboard data by ref (read/write)
         var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>(); // get blackboard data by value (readonly)
         translation.Value += data.Velocity * deltaTime.Value;
@@ -111,11 +107,11 @@ public class EntityMoveNode
 }
 
 // builder and editor part of node
-public class EntityMove : BTNode<EntityMoveNode, EntityMoveNode.Data>
+public class EntityMove : BTNode<EntityMoveNode>
 {
     public Vector3 Velocity;
 
-    protected override void Build(ref EntityMoveNode.Data data, ITreeNode<INodeDataBuilder>[] _)
+    protected override void Build(ref EntityMoveNode data, ITreeNode<INodeDataBuilder>[] _)
     {
         // set `NodeData` here
         data.Velocity = Velocity;
@@ -123,25 +119,21 @@ public class EntityMove : BTNode<EntityMoveNode, EntityMoveNode.Data>
 }
 
 // debug view (optional)
-public class EntityMoveDebugView : BTDebugView<EntityMoveNode, EntityMoveNode.Data> {}
+public class EntityMoveDebugView : BTDebugView<EntityMoveNode> {}
 ```
 
 #### Decorator
 ``` c#
 // runtime behavior
-// decorator must explicite declared in `BehaviorNode`
-[BehaviorNode("A13666BD-48E3-414A-BD13-5C696F2EA87E", BehaviorNodeType.Decorate)]
-public class RepeatForeverNode
+[Serializable] // for debug view only
+[BehaviorNode("A13666BD-48E3-414A-BD13-5C696F2EA87E", BehaviorNodeType.Decorate/*decorator must explicit declared*/)]
+public struct RepeatForeverNode : INodeData
 {
-    [Serializable]
-    public struct Data : INodeData
-    {
-        public NodeState BreakStates;
-    }
+    public NodeState BreakStates;
     
     public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
     {
-        // short way to tick first only children
+        // short-cut to tick first only children
         var childState = blob.TickChildren(index, blackboard).FirstOrDefault();
         if (childState == 0) // 0 means no child was ticked
                              // tick a already completed `Sequence` or `Selector` will return 0
@@ -149,7 +141,7 @@ public class RepeatForeverNode
             blob.ResetChildren(index, blackboard);
             childState = blob.TickChildren(index, blackboard).FirstOrDefault();
         }
-        ref var data = ref blob.GetNodeData<Data>(index);
+        ref var data = ref blob.GetNodeData<RepeatForeverNode>(index);
         if (data.BreakStates.HasFlag(childState)) return childState;
         
         return NodeState.Running;
@@ -157,26 +149,26 @@ public class RepeatForeverNode
 }
 
 // builder and editor
-public class BTRepeat : BTNode<RepeatForeverNode, RepeatForeverNode.Data>
+public class BTRepeat : BTNode<RepeatForeverNode>
 {
     public NodeState BreakStates;
     
-    public override void Build(ref RepeatForeverNode.Data data, ITreeNode<INodeDataBuilder>[] _)
+    public override void Build(ref RepeatForeverNode data, ITreeNode<INodeDataBuilder>[] _)
     {
         data.BreakStates = BreakStates;
     }
 }
 
 // debug view (optional)
-public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode, RepeatForeverNode.Data> {}
+public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode> {}
 ```
 
 #### Composite
 ``` c#
 // runtime behavior
-// composite must explicite declared in `BehaviorNode`
-[BehaviorNode("BD4C1D8F-BA8E-4D74-9039-7D1E6010B058", BehaviorNodeType.Composite)]
-public class SelectorNode
+[StructLayout(LayoutKind.Explicit)] // sizeof(SelectorNode) == 0
+[BehaviorNode("BD4C1D8F-BA8E-4D74-9039-7D1E6010B058", BehaviorNodeType.Composite/*composite must explicit declared*/)]
+public struct SelectorNode : INodeData
 {
     public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
     {
