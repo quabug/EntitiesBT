@@ -26,7 +26,7 @@ namespace EntitiesBT.DebugView
             RuntimeWeights = runtime.ToArray();
         }
 
-        protected virtual void OnValidate()
+        protected override void OnValidate()
         {
             if (!IsValid) return;
             

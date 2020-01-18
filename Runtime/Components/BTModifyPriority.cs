@@ -7,9 +7,9 @@ namespace EntitiesBT.Components
 {
     public class BTModifyPriority : BTNode<ModifyPriorityNode>
     {
-        [SerializeField] private BTPrioritySelector _prioritySelector;
-        [SerializeField] private int _weightIndex;
-        [SerializeField] private int _addWeight;
+        [SerializeField] private BTPrioritySelector _prioritySelector = default;
+        [SerializeField] private int _weightIndex = default;
+        [SerializeField] private int _addWeight = default;
 
         protected override void Reset()
         {
@@ -19,7 +19,7 @@ namespace EntitiesBT.Components
 
         protected override void Build(ref ModifyPriorityNode data, ITreeNode<INodeDataBuilder>[] builders)
         {
-            var prioritySelectorIndex = Array.FindIndex(builders, b => b.Value == _prioritySelector);
+            var prioritySelectorIndex = Array.FindIndex(builders, b => b.Value == (INodeDataBuilder)_prioritySelector);
             data.PrioritySelectorIndex = prioritySelectorIndex;
             data.WeightIndex = _weightIndex;
             data.AddWeight = _addWeight;
