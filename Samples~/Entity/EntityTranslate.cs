@@ -9,35 +9,32 @@ using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
-    public class EntityTranslate : BTNode<EntityTranslateNode, EntityTranslateNode.Data>
+    public class EntityTranslate : BTNode<EntityTranslateNode>
     {
         public Vector3 Position;
 
-        protected override void Build(ref EntityTranslateNode.Data data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref EntityTranslateNode data, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.Position = Position;
         }
     }
     
+    [Serializable]
     [BehaviorNode("29A30E27-7A3C-42F4-A0A4-49EFBD890279")]
-    public class EntityTranslateNode
+    public struct EntityTranslateNode : INodeData
     {
-        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<Translation>() };
+        public float3 Position;
         
-        [Serializable]
-        public struct Data : INodeData
-        {
-            public float3 Position;
-        }
+        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<Translation>() };
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            ref var data = ref blob.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeData<EntityTranslateNode>(index);
             ref var translation = ref bb.GetDataRef<Translation>();
             translation.Value = data.Position;
             return NodeState.Success;
         }
     }
 
-    public class EntityTranslateDebugView : BTDebugView<EntityTranslateNode, EntityTranslateNode.Data> {}
+    public class EntityTranslateDebugView : BTDebugView<EntityTranslateNode> {}
 }

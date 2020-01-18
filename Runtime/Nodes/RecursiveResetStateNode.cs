@@ -1,10 +1,12 @@
 using System.Linq;
+using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
+    [StructLayout(LayoutKind.Explicit)]
     [BehaviorNode("7656C8CB-EBC9-4C82-A374-511D4CB4D7FA", BehaviorNodeType.Decorate)]
-    public class RecursiveResetStateNode
+    public struct RecursiveResetStateNode : INodeData
     {
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

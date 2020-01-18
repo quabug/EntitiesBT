@@ -1,12 +1,14 @@
 using System.Linq;
+using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Entities;
 
 namespace EntitiesBT.Nodes
 {
+    [StructLayout(LayoutKind.Explicit)]
     [BehaviorNode("BA0106CA-618F-409A-903A-973B89F1470A", BehaviorNodeType.Composite)]
-    public class RandomSelectorNode
+    public struct RandomSelectorNode : INodeData
     {
         public static readonly ComponentType[] Types = { ComponentType.ReadWrite<BehaviorTreeRandom>() };
         

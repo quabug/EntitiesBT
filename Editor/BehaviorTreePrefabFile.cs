@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    // [InitializeOnLoad]
+    [InitializeOnLoad]
     public class BehaviorTreePrefabFile : AssetPostprocessor
     {
         static BehaviorTreePrefabFile()
@@ -27,6 +27,8 @@ namespace EntitiesBT.Editor
             var filePath = $"{Path.GetDirectoryName(path)}/{Path.GetFileNameWithoutExtension(path)}.bytes";
             using (var file = new FileStream(filePath, FileMode.OpenOrCreate))
                 node.SaveToStream(file);
+            AssetDatabase.ImportAsset(filePath);
+            AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
     }

@@ -3891,6 +3891,9 @@ GameObject:
   - component: {fileID: 1197847201}
   - component: {fileID: 1197847200}
   - component: {fileID: 1197847199}
+  - component: {fileID: 1197847203}
+  - component: {fileID: 1197847202}
+  - component: {fileID: 1197847204}
   m_Layer: 0
   m_Name: SubTree
   m_TagString: Untagged
@@ -3905,7 +3908,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197847198}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1197847200
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3960,6 +3963,47 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1197847202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197847198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _file: {fileID: 0}
+  _rootNode: {fileID: 1659773008}
+  _thread: 0
+  _autoAddBehaviorTreeComponents: 1
+--- !u!114 &1197847203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197847198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 0
+--- !u!114 &1197847204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197847198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1211126285
 GameObject:
   m_ObjectHideFlags: 0
@@ -6708,8 +6752,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8.215502, y: 2.528781, z: 1}
-  m_Center: {x: 3.607751, y: -0.16984129, z: 0}
+  m_Size: {x: 8.215502, y: 3.0092669, z: 1.9488525}
+  m_Center: {x: 3.607751, y: 2.129757, z: -0.47442627}
 --- !u!114 &2120445312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6722,7 +6766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d1924163dff4365be3e6247abbac188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Box: {fileID: 0}
+  Box: {fileID: 2120445311}
 --- !u!1 &2138827749
 GameObject:
   m_ObjectHideFlags: 0

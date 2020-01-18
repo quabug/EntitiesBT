@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Components
 {
-    public class BTModifyPriority : BTNode<ModifyPriorityNode, ModifyPriorityNode.Data>
+    public class BTModifyPriority : BTNode<ModifyPriorityNode>
     {
         [SerializeField] private BTPrioritySelector _prioritySelector;
         [SerializeField] private int _weightIndex;
@@ -17,7 +17,7 @@ namespace EntitiesBT.Components
             _prioritySelector = GetComponentInParent<BTPrioritySelector>();
         }
 
-        protected override void Build(ref ModifyPriorityNode.Data data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref ModifyPriorityNode data, ITreeNode<INodeDataBuilder>[] builders)
         {
             var prioritySelectorIndex = Array.FindIndex(builders, b => b.Value == _prioritySelector);
             data.PrioritySelectorIndex = prioritySelectorIndex;

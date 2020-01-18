@@ -40,6 +40,12 @@ namespace EntitiesBT.Entities
                     EntityManager.AddComponent<ExistTag>(entity);
                 });
             
+            Entities.WithNone<ExistTag>()
+                .ForEach((Entity entity, ref BehaviorTreeRandom random, ref BehaviorTreeRandomSeed seed) => {
+                    random.Value.InitState(seed.Value);
+                    EntityManager.AddComponent<ExistTag>(entity);
+                });
+            
             Entities.WithNone<BehaviorTreeRandomSeed>().WithAll<ExistTag>().ForEach(entity =>
                 EntityManager.RemoveComponent<ExistTag>(entity)
             );

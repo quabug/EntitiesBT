@@ -63,45 +63,25 @@ namespace EntitiesBT.Components
         }
 #endif
     }
-
-    public abstract class BTNode<T> : BTNode
-    {
-        public override BehaviorNodeType NodeType => typeof(T).GetBehaviorNodeAttribute().Type;
-        public override int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
-        public override int Size => 0;
-        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders) {}
-    }
     
-    public abstract class BTNode<T, U> : BTNode
-        where U : struct, INodeData
+    public abstract class BTNode<T> : BTNode where T : struct, INodeData
     {
         public override BehaviorNodeType NodeType => typeof(T).GetBehaviorNodeAttribute().Type;
         public override int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
-        public override int Size => UnsafeUtility.SizeOf<U>();
+        public override int Size => UnsafeUtility.SizeOf<T>();
         public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders) =>
-            Build(ref UnsafeUtilityEx.AsRef<U>(dataPtr), builders);
-        protected virtual void Build(ref U data, ITreeNode<INodeDataBuilder>[] builders) {}
+            Build(ref UnsafeUtilityEx.AsRef<T>(dataPtr), builders);
+        protected virtual void Build(ref T data, ITreeNode<INodeDataBuilder>[] builders) {}
     }
     
-    public abstract class BTVirtualNode<T> : INodeDataBuilder
+    public abstract class BTVirtualNode<T> : INodeDataBuilder where T : struct, INodeData
     {
         public virtual BehaviorNodeType NodeType => typeof(T).GetBehaviorNodeAttribute().Type;
         public virtual int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
-        public virtual int Size => 0;
-        public virtual unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders) {}
-        public virtual INodeDataBuilder Self => this;
-        public abstract IEnumerable<INodeDataBuilder> Children { get; }
-    }
-    
-    public abstract class BTVirtualNode<T, U> : INodeDataBuilder
-        where U : struct, INodeData
-    {
-        public virtual BehaviorNodeType NodeType => typeof(T).GetBehaviorNodeAttribute().Type;
-        public virtual int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
-        public virtual int Size => UnsafeUtility.SizeOf<U>();
+        public virtual int Size => UnsafeUtility.SizeOf<T>();
         public virtual unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders) =>
-            Build(ref UnsafeUtilityEx.AsRef<U>(dataPtr), builders);
-        protected virtual void Build(ref U data, IList<ITreeNode<INodeDataBuilder>> builders) {}
+            Build(ref UnsafeUtilityEx.AsRef<T>(dataPtr), builders);
+        protected virtual void Build(ref T data, IList<ITreeNode<INodeDataBuilder>> builders) {}
         public virtual INodeDataBuilder Self => this;
         public abstract IEnumerable<INodeDataBuilder> Children { get; }
     }
@@ -118,15 +98,7 @@ namespace EntitiesBT.Components
         public IEnumerable<INodeDataBuilder> Children => _self.Children;
     }
     
-    public class BTVirtualDecorator<T> : BTVirtualNode<T>
-    {
-        private readonly INodeDataBuilder _child;
-        public BTVirtualDecorator(INodeDataBuilder child) => _child = new BTVirtualRealSelf(child);
-        public override IEnumerable<INodeDataBuilder> Children => _child.Yield();
-    }
-    
-    public class BTVirtualDecorator<T, U> : BTVirtualNode<T, U>
-        where U : struct, INodeData
+    public class BTVirtualDecorator<T> : BTVirtualNode<T> where T : struct, INodeData
     {
         private readonly INodeDataBuilder _child;
         public BTVirtualDecorator(INodeDataBuilder child) => _child = new BTVirtualRealSelf(child);

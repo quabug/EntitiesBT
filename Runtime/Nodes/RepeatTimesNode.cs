@@ -5,15 +5,12 @@ using UnityEngine.UIElements;
 
 namespace EntitiesBT.Nodes
 {
+    [Serializable]
     [BehaviorNode("76E27039-91C1-4DEF-AFEF-1EDDBAAE8CCE", BehaviorNodeType.Decorate)]
-    public class RepeatTimesNode
+    public struct RepeatTimesNode : INodeData
     {
-        [Serializable]
-        public struct Data : INodeData
-        {
-            public int TickTimes;
-            public NodeState BreakStates;
-        }
+        public int TickTimes;
+        public NodeState BreakStates;
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
@@ -23,7 +20,7 @@ namespace EntitiesBT.Nodes
                 blob.ResetChildren(index, blackboard);
                 childState = blob.TickChildren(index, blackboard).FirstOrDefault();
             }
-            ref var data = ref blob.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeData<RepeatTimesNode>(index);
             if (data.BreakStates.HasFlag(childState)) return childState;
 
             data.TickTimes--;

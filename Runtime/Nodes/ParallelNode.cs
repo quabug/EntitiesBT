@@ -1,10 +1,12 @@
 using System.Linq;
+using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
+    [StructLayout(LayoutKind.Explicit)]
     [BehaviorNode("A316D182-7D8C-4075-A46D-FEE08CAEEEAF", BehaviorNodeType.Composite)]
-    public class ParallelNode
+    public struct ParallelNode : INodeData
     {
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {

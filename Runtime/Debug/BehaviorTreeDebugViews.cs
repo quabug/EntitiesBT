@@ -28,38 +28,34 @@ namespace EntitiesBT.DebugView
     }
     
     [BehaviorTreeDebugViewGeneric]
-    public class BTDebugView<T> : BTDebugView {}
-
-    [BehaviorTreeDebugViewGeneric]
-    public class BTDebugView<T, U> : BTDebugView
-        where U : struct, INodeData
+    public class BTDebugView<T> : BTDebugView where T : struct, INodeData
     {
-        public U DefaultData;
-        public U RuntimeData;
+        public T DefaultData;
+        public T RuntimeData;
 
         public override void Init()
         {
-            RuntimeData = Blob.GetNodeData<U>(Index);
-            DefaultData = Blob.GetNodeDefaultData<U>(Index);
+            RuntimeData = Blob.GetNodeData<T>(Index);
+            DefaultData = Blob.GetNodeDefaultData<T>(Index);
         }
 
         public override void Tick()
         {
             var dataSize = Blob.GetNodeDataSize(Index);
-            var typeSize = UnsafeUtility.SizeOf<U>();
+            var typeSize = UnsafeUtility.SizeOf<T>();
             if (dataSize != typeSize)
             {
                 Debug.LogWarning($"Data size not match: data-{Index}({dataSize}) != {typeof(T).Name}({typeSize})");
                 return;
             }
-            RuntimeData = Blob.GetNodeData<U>(Index);
+            RuntimeData = Blob.GetNodeData<T>(Index);
         }
 
         protected virtual void OnValidate()
         {
             if (!IsValid) return;
-            Blob.GetNodeData<U>(Index) = RuntimeData;
-            Blob.GetNodeDefaultData<U>(Index) = DefaultData;
+            Blob.GetNodeData<T>(Index) = RuntimeData;
+            Blob.GetNodeDefaultData<T>(Index) = DefaultData;
             Debug.Log("node data changed");
         }
     }

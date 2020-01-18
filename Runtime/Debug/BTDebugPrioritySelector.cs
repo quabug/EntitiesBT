@@ -13,16 +13,16 @@ namespace EntitiesBT.DebugView
 
         public override void Init()
         {
-            ref var runtime = ref Blob.GetNodeData<PrioritySelectorNode.Data>(Index).Weights;
+            ref var runtime = ref Blob.GetNodeData<PrioritySelectorNode>(Index).Weights;
             RuntimeWeights = runtime.ToArray();
             
-            ref var @default = ref Blob.GetNodeDefaultData<PrioritySelectorNode.Data>(Index).Weights;
+            ref var @default = ref Blob.GetNodeDefaultData<PrioritySelectorNode>(Index).Weights;
             DefaultWeights = @default.ToArray();
         }
 
         public override void Tick()
         {
-            ref var runtime = ref Blob.GetNodeData<PrioritySelectorNode.Data>(Index).Weights;
+            ref var runtime = ref Blob.GetNodeData<PrioritySelectorNode>(Index).Weights;
             RuntimeWeights = runtime.ToArray();
         }
 
@@ -30,13 +30,13 @@ namespace EntitiesBT.DebugView
         {
             if (!IsValid) return;
             
-            ref var @default = ref Blob.GetNodeDefaultData<PrioritySelectorNode.Data>(Index);
+            ref var @default = ref Blob.GetNodeDefaultData<PrioritySelectorNode>(Index);
             SetData(ref @default, DefaultWeights);
             
-            ref var runtime = ref Blob.GetNodeData<PrioritySelectorNode.Data>(Index);
+            ref var runtime = ref Blob.GetNodeData<PrioritySelectorNode>(Index);
             SetData(ref runtime, RuntimeWeights);
 
-            void SetData(ref PrioritySelectorNode.Data data, int[] array)
+            void SetData(ref PrioritySelectorNode data, int[] array)
             {
                 Array.Resize(ref array, data.Weights.Length);
                 for (var i = 0; i < array.Length; i++) if (array[i] < 0) array[i] = 0;

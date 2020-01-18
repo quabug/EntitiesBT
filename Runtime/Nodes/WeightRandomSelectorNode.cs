@@ -6,16 +6,13 @@ using Unity.Entities;
 namespace EntitiesBT.Nodes
 {
     [BehaviorNode("4790499A-D4D6-4998-BF53-043323162A7F", BehaviorNodeType.Composite)]
-    public class WeightRandomSelectorNode
+    public struct WeightRandomSelectorNode : INodeData
     {
+        public float Sum;
+        public SimpleBlobArray<float> Weights;
+        public static int Size(int count) => SimpleBlobArray<float>.Size(count) + sizeof(float);
+        
         public static readonly ComponentType[] Types = { ComponentType.ReadWrite<BehaviorTreeRandom>() };
-
-        public struct Data : INodeData
-        {
-            public float Sum;
-            public SimpleBlobArray<float> Weights;
-            public static int Size(int count) => SimpleBlobArray<float>.Size(count) + sizeof(float);
-        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
@@ -25,7 +22,7 @@ namespace EntitiesBT.Nodes
                 return childIndex != default ? VirtualMachine.Tick(childIndex, blob, blackboard) : 0;
             }
             
-            ref var data = ref blob.GetNodeData<Data>(index);
+            ref var data = ref blob.GetNodeData<WeightRandomSelectorNode>(index);
             var rn = blackboard.GetDataRef<BehaviorTreeRandom>().Value.NextFloat(data.Sum);
             var weightIndex = 0;
             var currentWeightSum = 0f;
