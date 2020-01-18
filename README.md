@@ -44,6 +44,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 ## Disadvantages
 - Incompatible with burst (Won't support this in the foreseen future)
 - Lack of action nodes. (Will add some actions as extension if I personally need them)
+- Not easy to modify tree structure at runtime.
 
 ## HowTo
 ### Install
