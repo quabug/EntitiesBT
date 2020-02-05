@@ -1,5 +1,6 @@
+using System;
 using Unity.Entities;
-using Unity.Mathematics;
+using Random = Unity.Mathematics.Random;
 
 namespace EntitiesBT.Entities
 {
@@ -34,9 +35,9 @@ namespace EntitiesBT.Entities
         
         protected override void OnUpdate()
         {
-            Entities.WithNone<ExistTag>()
-                .ForEach((Entity entity, ref BehaviorTreeRandom random, ref BehaviorTreeRandomSeed seed) => {
-                    random.Value.InitState(seed.Value);
+            Entities.WithNone<ExistTag, BehaviorTreeRandomSeed>()
+                .ForEach((Entity entity, ref BehaviorTreeRandom random) => {
+                    random.Value.InitState((uint)Environment.TickCount);
                     EntityManager.AddComponent<ExistTag>(entity);
                 });
             
@@ -46,7 +47,7 @@ namespace EntitiesBT.Entities
                     EntityManager.AddComponent<ExistTag>(entity);
                 });
             
-            Entities.WithNone<BehaviorTreeRandomSeed>().WithAll<ExistTag>().ForEach(entity =>
+            Entities.WithNone<BehaviorTreeRandom>().WithAll<ExistTag>().ForEach(entity =>
                 EntityManager.RemoveComponent<ExistTag>(entity)
             );
         }
