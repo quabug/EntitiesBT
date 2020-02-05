@@ -1,5 +1,6 @@
 ﻿using EntitiesBT.Components;
 using EntitiesBT.Core;
+using EntitiesBT.Nodes;
 using Unity.Entities;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace EntitiesBT.Sample
 
         public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders) =>
             ((SetAnimatorTriggerNode*) dataPtr)->Value = Animator.StringToHash(TriggerName);
+
+        public override INodeDataBuilder Self => new BTVirtualDecorator<RunOnMainThreadNode>(this);
     }
     
     [BehaviorNode("EF8A0D43-DEA1-4D31-953C-77CD0BD8E26C")]

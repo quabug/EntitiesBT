@@ -1,35 +1,35 @@
 {
   "name": "entities-bt",
   "description": "Behavior Tree for Unity Entities",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "unity": "2019.3",
   "displayName": "Entities Behavior Tree",
   "dependencies": {
-    "com.unity.entities": "0.4.0-preview.10"
+    "com.unity.entities": "0.5.1-preview.11"
   },
   "samples": [
     {
-      "displayName": "tests",
-      "description": "test cases of behavior tree",
-      "path": "Samples~/Tests"
-    },
-    {
-      "displayName": "hybrid-animator",
+      "displayName": "[Sample] hybrid-animator",
       "description": "animator controlled by behavior tree",
       "path": "Samples~/Animator"
     },
     {
-      "displayName": "unity-transform",
+      "displayName": "[Sample] unity-transform",
       "description": "control transform of game object directly without entity",
       "path": "Samples~/GameObjectWithoutEntity"
     },
     {
-      "displayName": "entity",
+      "displayName": "[Sample] entity",
       "description": "control translation of entity",
       "path": "Samples~/Entity"
     },
     {
-      "displayName": "(HACK)internal-methods-of-Unity.Entities",
+      "displayName": "[Test] tests",
+      "description": "test cases of behavior tree",
+      "path": "Samples~/Tests"
+    },
+    {
+      "displayName": "[HACK] internal-methods-of-Unity.Entities",
       "description": "(NOT A CODE SAMPLE) hacky way to access internal methods of unity entities",
       "path": "Samples~/EntitiesInternalMethods"
     }
