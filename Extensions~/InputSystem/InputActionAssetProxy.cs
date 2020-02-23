@@ -6,7 +6,7 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class InputActionAssetComponent : IComponentData
     {
-        public InputActionAsset Value { get; set; }
+        public InputActionAsset Value { get; internal set; }
     }
     
     public class InputActionAssetProxy : MonoBehaviour, IConvertGameObjectToEntity
