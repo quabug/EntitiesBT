@@ -20,7 +20,7 @@ namespace EntitiesBT.Components
 
         protected virtual void Reset() => name = GetType().Name;
 
-        protected virtual void OnTransformChildrenChanged()
+        protected virtual void Update()
         {
             int maxChildCount;
             switch (NodeType)
