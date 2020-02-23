@@ -15,7 +15,8 @@ namespace EntitiesBT.Extensions.InputSystem
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            return bb.IsInputActionTriggered<InputTriggerNode>(index, blob) ? NodeState.Success : NodeState.Failure;
+            var isTriggered = bb.IsInputActionTriggered<InputTriggerNode>(index, blob);
+            return isTriggered ? NodeState.Success : NodeState.Failure;
         }
     }
 }
