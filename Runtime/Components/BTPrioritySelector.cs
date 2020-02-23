@@ -16,9 +16,9 @@ namespace EntitiesBT.Components
             data.Weights.FromArrayUnsafe(Weights);
         }
 
-        protected override void OnTransformChildrenChanged()
+        protected override void Update()
         {
-            base.OnTransformChildrenChanged();
+            base.Update();
             Array.Resize(ref Weights, Children.Count());
         }
 
