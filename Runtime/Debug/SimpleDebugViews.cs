@@ -7,4 +7,5 @@ namespace EntitiesBT.DebugView
     public class BTDebugDelayTimer : BTDebugView<DelayTimerNode> {}
     public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode> {}
     public class BTDebugRepeatTimes : BTDebugView<RepeatTimesNode> {}
+    public class BTDebugRepeatDuration : BTDebugView<RepeatDurationNode> {}
 }
