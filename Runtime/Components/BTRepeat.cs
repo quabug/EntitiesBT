@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using UnityEngine;
@@ -11,10 +10,7 @@ namespace EntitiesBT.Components
         public int RepeatTimes;
         public NodeState BreakStates;
 
-        public override BehaviorNodeType NodeType => RepeatTimes <= 0
-            ? typeof(RepeatForeverNode).GetBehaviorNodeAttribute().Type
-            : typeof(RepeatTimesNode).GetBehaviorNodeAttribute().Type
-        ;
+        public override BehaviorNodeType NodeType => BehaviorNodeType.Decorate;
 
         public override int NodeId => RepeatTimes <= 0
             ? typeof(RepeatForeverNode).GetBehaviorNodeAttribute().Id
