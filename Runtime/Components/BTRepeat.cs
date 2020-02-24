@@ -14,11 +14,11 @@ namespace EntitiesBT.Components
             Duration
         }
 
-        [SerializeField] private RepeatType Type;
+        [SerializeField] private RepeatType Type = RepeatType.Forever;
         public NodeState BreakStates;
-        [Header("Needed for `Times` repeater")]
+        [Header("for `Times` repeater")]
         public int RepeatTimes;
-        [Header("Needed for `Duration` repeater")]
+        [Header("for `Duration` repeater")]
         public float RepeatDurationInSeconds;
 
         public override BehaviorNodeType NodeType => BehaviorNodeType.Decorate;
