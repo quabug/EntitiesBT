@@ -7,18 +7,18 @@ using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
 
-namespace EntitiesBT.Extensions.CharacterController
+namespace EntitiesBT.Extensions.UnityMovement
 {
     public class BTCharacterSimpleMove : BTNode
     {
-        public enum VelocitySource
+        enum VelocitySource
         {
             Component,
             CustomGlobal,
             CustomLocal
         }
         
-        public VelocitySource Source = VelocitySource.Component;
+        [SerializeField] private VelocitySource Source = VelocitySource.Component;
 
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.HideIf("Source", VelocitySource.Component)]
@@ -93,13 +93,13 @@ namespace EntitiesBT.Extensions.CharacterController
     {
         public static readonly ComponentType[] Types =
         {
-            ComponentType.ReadWrite<UnityEngine.CharacterController>()
+            ComponentType.ReadWrite<CharacterController>()
           , ComponentType.ReadOnly<BTCharacterSimpleMoveVelocity>()
         };
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var controller = bb.GetData<UnityEngine.CharacterController>();
+            var controller = bb.GetData<CharacterController>();
             if (controller == null) return NodeState.Failure;
             controller.SimpleMove(bb.GetData<BTCharacterSimpleMoveVelocity>().Value);
             return NodeState.Success;
@@ -111,7 +111,7 @@ namespace EntitiesBT.Extensions.CharacterController
     {
         public Vector3 Velocity;
         
-        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<UnityEngine.CharacterController>() };
+        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<CharacterController>() };
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
@@ -127,14 +127,14 @@ namespace EntitiesBT.Extensions.CharacterController
     {
         public Vector3 Velocity;
         
-        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<UnityEngine.CharacterController>() };
+        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<CharacterController>() };
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var controller = bb.GetData<UnityEngine.CharacterController>();
+            var controller = bb.GetData<CharacterController>();
             if (controller == null) return NodeState.Failure;
             var velocity = blob.GetNodeData<CharacterSimpleMoveWithCustomLocalVelocityNode>(index).Velocity;
-            velocity = controller.transform.worldToLocalMatrix.MultiplyVector(velocity);
+            velocity = controller.transform.localToWorldMatrix.MultiplyVector(velocity);
             controller.SimpleMove(velocity);
             return NodeState.Success;
         }

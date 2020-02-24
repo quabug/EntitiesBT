@@ -4,10 +4,10 @@ using Unity.Entities;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
-    public class BTInputTriggerd : BTInputActionBase<InputTriggerNode> {}
+    public class BTIsInputActionTriggered : BTInputActionBase<IsInputActionTriggeredNode> {}
 
     [BehaviorNode("EF8EAB7A-2D0B-443C-B2BC-125A6A0CF1ED")]
-    public struct InputTriggerNode : IInputActionNodeData
+    public struct IsInputActionTriggeredNode : IInputActionNodeData
     {
         public Guid ActionId { get; set; }
         
@@ -15,7 +15,7 @@ namespace EntitiesBT.Extensions.InputSystem
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var isTriggered = bb.IsInputActionTriggered<InputTriggerNode>(index, blob);
+            var isTriggered = bb.IsInputActionTriggered<IsInputActionTriggeredNode>(index, blob);
             return isTriggered ? NodeState.Success : NodeState.Failure;
         }
     }

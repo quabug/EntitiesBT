@@ -1,7 +1,7 @@
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Extensions.CharacterController;
 using EntitiesBT.Extensions.InputSystem;
+using EntitiesBT.Extensions.UnityMovement;
 using Unity.Entities;
 using UnityEngine;
 
