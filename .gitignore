@@ -1,4 +1,7 @@
 /Samples
 /Samples.meta
-
 !/Samples~/
+
+/Extensions
+/Extensions.meta
+!/Extensions~/
