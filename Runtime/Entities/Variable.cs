@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
@@ -28,11 +31,8 @@ namespace EntitiesBT.Entities
         public VariableValueSource ValueSource;
         public T CustomValue;
         public string ComponentValue;
-        public ulong ComponentStableHash;
-        public int ComponentDataOffset;
 
         public int BlobSize => ValueSource == VariableValueSource.ComponentValue ? 16 : 4 + UnsafeUtility.SizeOf<T>();
-        public Type Type => typeof(T);
     }
     
     [StructLayout(LayoutKind.Explicit), MayOnlyLiveInBlobStorage, Serializable]
@@ -50,14 +50,30 @@ namespace EntitiesBT.Entities
             _isCustomVariable = variable.ValueSource == VariableValueSource.CustomValue;
             if (_isCustomVariable)
             {
-                _dataSize = Variable<T>.DataSize;
-                UnsafeUtilityEx.AsRef<T>(_dataPtr) = variable.CustomValue;
+                SetCustomVariable(variable);
             }
             else
             {
-                _componentStableHash = variable.ComponentStableHash;
-                _componentDataOffset = variable.ComponentDataOffset;
+                var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(variable.ComponentValue);
+                if (valueType != typeof(T) || hash == 0)
+                {
+                    Debug.LogError($"ComponentVariable({variable.ComponentValue}) is not valid, fallback to CustomVariable");
+                    // fallback to custom variable
+                    SetCustomVariable(variable);
+                }
+                else
+                {
+                    _componentStableHash = hash;
+                    _componentDataOffset = offset;
+                }
             }
+        }
+
+        void SetCustomVariable<T>(Variable<T> variable) where T : struct
+        {
+            _isCustomVariable = true;
+            _dataSize = Variable<T>.DataSize;
+            UnsafeUtilityEx.AsRef<T>(_dataPtr) = variable.CustomValue;
         }
 
         public Variable<T> ToVariable<T>() where T : struct
@@ -71,11 +87,11 @@ namespace EntitiesBT.Entities
                 };
             }
 
+            var (componentType, fieldInfo) = Variable.GetComponentDataType(_componentStableHash, _componentDataOffset);
             return new Variable<T>
             {
                 ValueSource = VariableValueSource.ComponentValue
-              , ComponentStableHash = _componentStableHash
-              , ComponentDataOffset = _componentDataOffset
+              , ComponentValue = $"{componentType.Name}.{fieldInfo.Name}"
             };
         }
 
@@ -89,6 +105,51 @@ namespace EntitiesBT.Entities
         {
             if (_isCustomVariable) UnsafeUtilityEx.AsRef<T>(_dataPtr) = value; // TODO: check size
             else bb.GetDataRef<T>(_componentStableHash, _componentDataOffset) = value;
+        }
+    }
+
+    public static class Variable
+    {
+        private static Lazy<IEnumerable<(Type componentType, FieldInfo field, ulong hash, int offset)>> _VALUES =
+            new Lazy<IEnumerable<(Type componentType, FieldInfo field, ulong hash, int offset)>>(() =>
+            {
+                var types =
+                    from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                    from type in assembly.GetTypes()
+                    where type.IsValueType && typeof(IComponentData).IsAssignableFrom(type)
+                    select (type, hash: TypeHash.CalculateStableTypeHash(type))
+                ;
+                
+                return
+                    from t in types
+                    from field in t.type.GetFields(BindingFlags.Instance | BindingFlags.Public)
+                    where !field.IsLiteral && !field.IsStatic
+                    select (t.type, field, t.hash, offset: Marshal.OffsetOf(t.type, field.Name).ToInt32())
+                ;
+            });
+        
+        private static readonly Lazy<Dictionary<string, (ulong hash, int offset, Type valueType)>> _NAME_VALUE_MAP =
+            new Lazy<Dictionary<string, (ulong hash, int offset, Type valueType)>>(() =>
+            {
+                return _VALUES.Value.ToDictionary(t => $"{t.componentType.Name}.{t.field.Name}", t => (t.hash, t.offset, t.field.FieldType));
+            });
+        
+        private static readonly Lazy<Dictionary<(ulong hash, int offset), (Type componentType, FieldInfo componentDataField)>> _VALUE_TYPE_MAP =
+            new Lazy<Dictionary<(ulong hash, int offset), (Type componentType, FieldInfo componentDataField)>>(() =>
+            {
+                return _VALUES.Value.ToDictionary(t => (t.hash, t.offset), t => (t.componentType, t.field));
+            });
+
+        public static (ulong hash, int offset, Type valueType) GetTypeHashAndFieldOffset(string componentDataName)
+        {
+            _NAME_VALUE_MAP.Value.TryGetValue(componentDataName, out var result);
+            return result;
+        }
+        
+        public static (Type componentType, FieldInfo componentDataField) GetComponentDataType(ulong hash, int offset)
+        {
+            _VALUE_TYPE_MAP.Value.TryGetValue((hash, offset), out var result);
+            return result;
         }
     }
 }

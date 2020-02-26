@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using EntitiesBT.Entities;
-using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,31 +10,6 @@ namespace EntitiesBT.Editor
     [CustomPropertyDrawer(typeof(Variable<>))]
     public class VariableDrawer : PropertyDrawer
     {
-        private static Lazy<Dictionary<Type, Dictionary<string, (ulong hash, int offset)>>> _validComponents =
-            new Lazy<Dictionary<Type, Dictionary<string, (ulong hash, int offset)>>>(() =>
-            {
-                var types =
-                    from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                    from type in assembly.GetTypes()
-                    where type.IsValueType && typeof(IComponentData).IsAssignableFrom(type)
-                    select (type, hash: TypeHash.CalculateStableTypeHash(type))
-                ;
-                
-                var typeFields =
-                    from t in types
-                    from field in t.type.GetFields(BindingFlags.Instance | BindingFlags.Public)
-                    where field.IsLiteral == false
-                    select (t.type, field, t.hash, offset: Marshal.OffsetOf(t.type, field.Name).ToInt32())
-                ;
-
-                return typeFields.GroupBy(t => t.field.FieldType)
-                    .ToDictionary(
-                        group => group.Key
-                      , group => group.ToDictionary(t => $"{t.type.Name}.{t.field.Name}", t => (t.hash, t.offset))
-                    )
-                ;
-            });
-
         public override float GetPropertyHeight( SerializedProperty property, GUIContent label )
         {
             var variableTypeProperty = property.FindPropertyRelative("ValueSource");
@@ -63,30 +35,22 @@ namespace EntitiesBT.Editor
             var variableTypeProperty = property.FindPropertyRelative("ValueSource");
             EditorGUI.PropertyField(LineRect(1), variableTypeProperty);
 
-            property.FindPropertyRelative("CustomValue");
-            if ((VariableValueSource) variableTypeProperty.enumValueIndex == VariableValueSource.CustomValue)
+            EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("CustomValue"));
+            if ((VariableValueSource) variableTypeProperty.enumValueIndex == VariableValueSource.ComponentValue)
             {
-                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("CustomValue"));
-            }
-            else
-            {
-                var componentStableHashProperty = property.FindPropertyRelative("ComponentStableHash");
-                var componentDataOffsetProperty = property.FindPropertyRelative("ComponentDataOffset");
                 var componentValueProperty = property.FindPropertyRelative("ComponentValue");
-                EditorGUI.BeginChangeCheck();
-                EditorGUI.PropertyField(LineRect(2), componentValueProperty);
+                // EditorGUI.BeginChangeCheck();
+                var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(componentValueProperty.stringValue);
+                var color = GUI.color;
+                if (hash == 0 || offset < 0 || valueType != property.GetGenericType())
+                    GUI.color = Color.red;
+                EditorGUI.PropertyField(LineRect(3), componentValueProperty);
+                GUI.color = color;
                 // Call OnValueChanged callbacks
-                if (EditorGUI.EndChangeCheck())
-                {
-                    var (hash, offset) = GetComponentFromName(property.GetGenericType(), componentValueProperty.stringValue);
-                    componentStableHashProperty.longValue = (long)hash;
-                    componentDataOffsetProperty.intValue = offset;
-                }
-                var guiEnabled = GUI.enabled;
-                GUI.enabled = false;
-                EditorGUI.PropertyField(LineRect(3), componentStableHashProperty);
-                EditorGUI.PropertyField(LineRect(4), componentDataOffsetProperty);
-                GUI.enabled = guiEnabled;
+                // if (EditorGUI.EndChangeCheck())
+                // {
+                //     var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(componentValueProperty.stringValue);
+                // }
             }
 
             EditorGUIUtility.labelWidth = labelWidth;
@@ -96,16 +60,6 @@ namespace EntitiesBT.Editor
             
             Rect LineRect(int lineNumber) =>
                 new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight * lineNumber, position.width, 16);
-
-            (ulong componentStableHash, int componentDataOffset) GetComponentFromName(Type type, string componentDataName)
-            {
-                (ulong, int) result = (0, 0);
-                // if (_validComponents.Value.Values.Any(dict => dict.TryGetValue(componentDataName, out result)))
-                    // return result;
-                if (_validComponents.Value.TryGetValue(type, out var dict))
-                    dict.TryGetValue(componentDataName, out result);
-                return result;
-            }
         }
     }
 

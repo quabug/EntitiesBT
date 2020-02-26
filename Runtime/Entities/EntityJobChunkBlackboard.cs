@@ -13,8 +13,6 @@ namespace EntitiesBT.Entities
         public uint GlobalSystemVersion;
         public ArchetypeChunk Chunk;
         public int Index;
-        // public Entity Entity;
-        // public unsafe EntityCommandBuffer.Concurrent* ECB;
 
         private static readonly GetDataDelegate _GET_COMPONENT_DATA;
         private static readonly SetDataDelegate _SET_COMPONENT_DATA;

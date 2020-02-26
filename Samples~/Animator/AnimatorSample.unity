@@ -810,8 +810,6 @@ MonoBehaviour:
     ValueSource: 0
     CustomValue: 3
     ComponentValue: 
-    ComponentStableHash: 0
-    ComponentDataOffset: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,11 +937,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DelayInSeconds:
-    ValueSource: 0
+    ValueSource: 1
     CustomValue: 1
-    ComponentValue: 
-    ComponentStableHash: 0
-    ComponentDataOffset: 0
+    ComponentValue: SampleTimeDelayData.TwoSeconds
 --- !u!1 &1182967184
 GameObject:
   m_ObjectHideFlags: 0
@@ -988,11 +984,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DelayInSeconds:
-    ValueSource: 0
+    ValueSource: 1
     CustomValue: 1
-    ComponentValue: 
-    ComponentStableHash: 0
-    ComponentDataOffset: 0
+    ComponentValue: SampleTimeDelayData.ThreeSeconds
 --- !u!1 &1219867600
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,8 +1034,6 @@ MonoBehaviour:
     ValueSource: 0
     CustomValue: 4
     ComponentValue: 
-    ComponentStableHash: 0
-    ComponentDataOffset: 0
 --- !u!1 &1365720264
 GameObject:
   m_ObjectHideFlags: 0
@@ -1178,11 +1170,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DelayInSeconds:
-    ValueSource: 0
+    ValueSource: 1
     CustomValue: 1
-    ComponentValue: BTTransformRotationData.Value
-    ComponentStableHash: 0
-    ComponentDataOffset: 0
+    ComponentValue: SampleTimeDelayData.OneSecond
 --- !u!1 &1669391231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1242,6 +1232,7 @@ GameObject:
   - component: {fileID: 2006228426}
   - component: {fileID: 2006228433}
   - component: {fileID: 2006228431}
+  - component: {fileID: 2006228432}
   m_Layer: 0
   m_Name: Animator
   m_TagString: Untagged
@@ -1357,6 +1348,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2006228432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006228425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 446430773823740d59154b70c261c266, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OneSecond: 1
+  TwoSeconds: 2
+  ThreeSeconds: 3
 --- !u!114 &2006228433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1420,5 +1426,3 @@ MonoBehaviour:
     ValueSource: 0
     CustomValue: 2
     ComponentValue: 
-    ComponentStableHash: 0
-    ComponentDataOffset: 0
