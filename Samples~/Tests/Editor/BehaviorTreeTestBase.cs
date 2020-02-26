@@ -34,7 +34,7 @@ namespace EntitiesBT.Test
                 set => throw new NotImplementedException();
             }
 
-            public ref T GetRef<T>(object key) where T : struct
+            public unsafe void* GetPtr(object key)
             {
                 throw new NotImplementedException();
             }

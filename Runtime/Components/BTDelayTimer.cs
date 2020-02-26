@@ -1,14 +1,18 @@
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 
 namespace EntitiesBT.Components
 {
     public class BTDelayTimer : BTNode<DelayTimerNode>
     {
-        public float DelayInSeconds;
+        public Variable<float> DelayInSeconds;
+        
+        public override int Size => DelayInSeconds.BlobSize;
+
         protected override void Build(ref DelayTimerNode data, ITreeNode<INodeDataBuilder>[] builders)
         {
-            data.TimerSeconds = DelayInSeconds;
+            data.TimerSeconds.FromVariableUnsafe(DelayInSeconds);
         }
     }
 }

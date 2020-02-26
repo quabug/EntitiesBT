@@ -56,12 +56,21 @@ namespace EntitiesBT.Entities
         {
             get
             {
-                var type = key as Type;
-                if (type.IsComponentDataType()) return _GET_COMPONENT_DATA(this, type);
-                if (type.IsSharedComponentDataType()) return _GET_SHARED_COMPONENT_DATA(this, type);
-                if (type.IsManagedDataType()) return _GET_MANAGED_DATA(this, type);
-                if (type.IsUnityComponentType()) return _GET_COMPONENT_OBJECT(this, type);
-                throw new NotImplementedException();
+                switch (key)
+                {
+                case Type type:
+                {
+                    if (type.IsComponentDataType()) return _GET_COMPONENT_DATA(this, type);
+                    if (type.IsSharedComponentDataType()) return _GET_SHARED_COMPONENT_DATA(this, type);
+                    if (type.IsManagedDataType()) return _GET_MANAGED_DATA(this, type);
+                    if (type.IsUnityComponentType()) return _GET_COMPONENT_OBJECT(this, type);
+                    throw new NotImplementedException();
+                }
+                // case int typeId:
+                //     break;
+                default:
+                    throw new NotImplementedException();
+                }
             }
             set
             {
@@ -78,17 +87,27 @@ namespace EntitiesBT.Entities
             }
         }
         
-        public unsafe ref T GetRef<T>(object key) where T : struct
+        public unsafe void* GetPtr(object key)
         {
-            var type = typeof(T);
-            if (!type.IsComponentDataType()) throw new NotImplementedException();
-            
-            var typeIndex = TypeManager.GetTypeIndex<T>();
-            
-            if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
-                throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
-            
-            return ref UnsafeUtilityEx.AsRef<T>(Entity.GetComponentDataRawRW(EntityManager, typeIndex));
+            switch (key)
+            {
+            case Type type when type.IsComponentDataType():
+            {
+                var typeIndex = TypeManager.GetTypeIndex(type);
+                if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
+                    throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
+                return Entity.GetComponentDataRawRW(EntityManager, typeIndex);
+            }
+            case ulong componentStableHash:
+            {
+                var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash);
+                if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
+                    throw new ArgumentException($"SetComponentData can not be called with a zero sized component.");
+                return Entity.GetComponentDataRawRW(EntityManager, typeIndex);
+            }
+            default:
+                throw new NotImplementedException();
+            }
         }
 
         public bool Has(object key)
@@ -134,6 +153,11 @@ namespace EntitiesBT.Entities
         {
             return EntityManager.HasComponent<T>(Entity);
         }
-
+        //
+        // [Preserve]
+        // public object GetComponentDataById(int typeId)
+        // {
+        //     EntityManager.GetComponentData<>()
+        // }
     }
 }

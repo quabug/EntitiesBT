@@ -33,7 +33,7 @@ namespace EntitiesBT.Sample
             }
         }
 
-        public ref T GetRef<T>(object key) where T : struct
+        public unsafe void* GetPtr(object key)
         {
             throw new NotImplementedException();
         }
