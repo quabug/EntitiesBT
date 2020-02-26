@@ -806,10 +806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DelayInSeconds:
-    ValueSource: 0
-    CustomValue: 3
-    ComponentValue: 
+  DelayInSeconds: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,10 +933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DelayInSeconds:
-    ValueSource: 1
-    CustomValue: 1
-    ComponentValue: SampleTimeDelayData.TwoSeconds
+  DelayInSeconds: 2
 --- !u!1 &1182967184
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,10 +977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DelayInSeconds:
-    ValueSource: 1
-    CustomValue: 1
-    ComponentValue: SampleTimeDelayData.ThreeSeconds
+  DelayInSeconds: 2
 --- !u!1 &1219867600
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,10 +1021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DelayInSeconds:
-    ValueSource: 0
-    CustomValue: 4
-    ComponentValue: 
+  DelayInSeconds: 0
 --- !u!1 &1365720264
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,10 +1157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DelayInSeconds:
-    ValueSource: 1
-    CustomValue: 1
-    ComponentValue: SampleTimeDelayData.OneSecond
+  DelayInSeconds: 1
 --- !u!1 &1669391231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,7 +1407,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DelayInSeconds:
-    ValueSource: 0
-    CustomValue: 2
-    ComponentValue: 
+  DelayInSeconds: 0
