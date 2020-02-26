@@ -13,7 +13,21 @@ namespace EntitiesBT.Editor
         public override float GetPropertyHeight( SerializedProperty property, GUIContent label )
         {
             var variableTypeProperty = property.FindPropertyRelative("ValueSource");
-            var lines = (VariableValueSource) variableTypeProperty.enumValueIndex == VariableValueSource.CustomValue ? 3 : 5;
+            var lines = 0;
+            switch ((VariableValueSource) variableTypeProperty.enumValueIndex)
+            {
+            case VariableValueSource.CustomValue:
+                lines = 3;
+                break;
+            case VariableValueSource.ComponentValue:
+                lines = 5;
+                break;
+            case VariableValueSource.ScriptableObjectValue:
+                lines = 6;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
             return EditorGUIUtility.singleLineHeight * lines + 6;
         }
         
@@ -35,22 +49,45 @@ namespace EntitiesBT.Editor
             var variableTypeProperty = property.FindPropertyRelative("ValueSource");
             EditorGUI.PropertyField(LineRect(1), variableTypeProperty);
 
-            EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("CustomValue"));
-            if ((VariableValueSource) variableTypeProperty.enumValueIndex == VariableValueSource.ComponentValue)
+            switch ((VariableValueSource) variableTypeProperty.enumValueIndex)
             {
+            case VariableValueSource.CustomValue:
+            {
+                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("CustomValue"));
+                break;
+            }
+            case VariableValueSource.ComponentValue:
+            {
+                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("FallbackValue"));
                 var componentValueProperty = property.FindPropertyRelative("ComponentValue");
-                // EditorGUI.BeginChangeCheck();
                 var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(componentValueProperty.stringValue);
                 var color = GUI.color;
                 if (hash == 0 || offset < 0 || valueType != property.GetGenericType())
                     GUI.color = Color.red;
                 EditorGUI.PropertyField(LineRect(3), componentValueProperty);
                 GUI.color = color;
-                // Call OnValueChanged callbacks
-                // if (EditorGUI.EndChangeCheck())
-                // {
-                //     var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(componentValueProperty.stringValue);
-                // }
+                break;
+            }
+            case VariableValueSource.ScriptableObjectValue:
+            {
+                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("FallbackValue"));
+                var configSourceProperty = property.FindPropertyRelative("ConfigSource");
+                var configValueNameProerpty = property.FindPropertyRelative("ConfigValueName");
+                var color = GUI.color;
+                var config = configSourceProperty.objectReferenceValue;
+                if (config == null) GUI.color = Color.red;
+                EditorGUI.PropertyField(LineRect(3), configSourceProperty);
+                GUI.color = color;
+
+                var valueName = configValueNameProerpty.stringValue;
+                var valueInfo = config.GetType().GetField(valueName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (valueInfo == null || valueInfo.FieldType != property.GetGenericType()) GUI.color = Color.red;
+                EditorGUI.PropertyField(LineRect(4), configValueNameProerpty);
+                GUI.color = color;
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException();
             }
 
             EditorGUIUtility.labelWidth = labelWidth;

@@ -14,8 +14,9 @@ namespace EntitiesBT.Entities
     [Serializable]
     public enum VariableValueSource
     {
-        CustomValue,
-        ComponentValue
+        CustomValue
+      , ComponentValue
+      , ScriptableObjectValue
     }
         
     [Serializable]
@@ -31,6 +32,9 @@ namespace EntitiesBT.Entities
         public VariableValueSource ValueSource;
         public T CustomValue;
         public string ComponentValue;
+        public T FallbackValue;
+        public ScriptableObject ConfigSource;
+        public string ConfigValueName;
 
         public int BlobSize => ValueSource == VariableValueSource.ComponentValue ? 16 : 4 + UnsafeUtility.SizeOf<T>();
     }
@@ -47,33 +51,52 @@ namespace EntitiesBT.Entities
 
         public void FromVariableUnsafe<T>(Variable<T> variable) where T : struct
         {
-            _isCustomVariable = variable.ValueSource == VariableValueSource.CustomValue;
-            if (_isCustomVariable)
+            switch (variable.ValueSource)
             {
-                SetCustomVariable(variable);
+            case VariableValueSource.CustomValue:
+            {
+                SetCustomVariable(variable.CustomValue);
+                break;
             }
-            else
+            case VariableValueSource.ComponentValue:
             {
                 var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(variable.ComponentValue);
                 if (valueType != typeof(T) || hash == 0)
                 {
                     Debug.LogError($"ComponentVariable({variable.ComponentValue}) is not valid, fallback to CustomVariable");
                     // fallback to custom variable
-                    SetCustomVariable(variable);
+                    SetCustomVariable(variable.FallbackValue);
+                    break;
                 }
-                else
+                _isCustomVariable = false;
+                _componentStableHash = hash;
+                _componentDataOffset = offset;
+                break;
+            }
+            case VariableValueSource.ScriptableObjectValue:
+            {
+                var value = variable.FallbackValue;
+                if (variable.ConfigSource != null)
                 {
-                    _componentStableHash = hash;
-                    _componentDataOffset = offset;
+                    var field = variable.ConfigSource.GetType().GetField(
+                        variable.ConfigValueName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    ;
+                    if (field != null && field.FieldType == typeof(T))
+                        value = (T)field.GetValue(variable.ConfigSource);
                 }
+                SetCustomVariable(value);
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException();
             }
         }
 
-        void SetCustomVariable<T>(Variable<T> variable) where T : struct
+        void SetCustomVariable<T>(T value) where T : struct
         {
             _isCustomVariable = true;
-            _dataSize = Variable<T>.DataSize;
-            UnsafeUtilityEx.AsRef<T>(_dataPtr) = variable.CustomValue;
+            _dataSize = UnsafeUtility.SizeOf<T>();
+            UnsafeUtilityEx.AsRef<T>(_dataPtr) = value;
         }
 
         public Variable<T> ToVariable<T>() where T : struct
