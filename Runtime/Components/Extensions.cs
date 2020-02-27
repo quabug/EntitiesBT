@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace EntitiesBT.Components
 {
@@ -76,6 +80,59 @@ namespace EntitiesBT.Components
                 dstManager.AddComponentData(entity, new IsRunOnMainThread { Value = false });
                 dstManager.AddSharedComponentData(entity, dataQuery);
             }
+        }
+        
+        // https://stackoverflow.com/a/27851610
+        public static bool IsZeroSizeStruct(this Type t)
+        {
+            return t.IsValueType && !t.IsPrimitive && 
+                   t.GetFields((BindingFlags)0x34).All(fi => IsZeroSizeStruct(fi.FieldType));
+        }
+    }
+
+    public static class BlobBuilderExtensions
+    {
+        private static Func<BlobBuilder, Type, object> _CONSTRUCT_ROOT;
+        private static Func<BlobBuilder, Type, Allocator, object> _CREATE_REFERENCE;
+        
+        static BlobBuilderExtensions()
+        {
+            var methodFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static;
+            var constructRoot = typeof(BlobBuilderExtensions).GetMethod("ConstructRootPtr", methodFlags);
+            _CONSTRUCT_ROOT = (builder, type) => constructRoot.MakeGenericMethod(type).Invoke(null, new object[] {builder});
+            
+            var createReference = typeof(BlobBuilderExtensions).GetMethod("CreateReference", methodFlags);
+            _CREATE_REFERENCE = (builder, type, allocator) => createReference.MakeGenericMethod(type).Invoke(null, new object[] {builder, allocator});
+        }
+        
+        public static unsafe void* ConstructRootPtr<T>(this BlobBuilder builder) where T : struct
+        {
+            return UnsafeUtility.AddressOf(ref builder.ConstructRoot<T>());
+        }
+
+        public static unsafe void* ConstructRootPtrByType(this BlobBuilder builder, Type dataType)
+        {
+            Assert.IsTrue(dataType.IsValueType);
+            var ptr = _CONSTRUCT_ROOT(builder, dataType);
+            return Pointer.Unbox(ptr);
+        }
+
+        public static void AllocateArray<T>(this BlobBuilder builder, ref BlobArray<T> blobArray, IList<T> sourceArray) where T : struct
+        {
+            builder.Allocate(ref blobArray, sourceArray.Count);
+            for (var i = 0; i < sourceArray.Count; i++) blobArray[i] = sourceArray[i];
+        }
+
+        public static unsafe BlobAssetReference CreateReference<T>(this BlobBuilder builder, Allocator allocator = Allocator.Temp) where T : struct
+        {
+            var @ref = builder.CreateBlobAssetReference<T>(allocator);
+            return new BlobAssetReference(@ref.GetUnsafePtr(), @ref.GetLength());
+        }
+        
+        public static BlobAssetReference CreateReferenceByType(this BlobBuilder builder, Type type, Allocator allocator = Allocator.Temp)
+        {
+            var @ref = _CREATE_REFERENCE(builder, type, allocator);
+            return (BlobAssetReference)@ref;
         }
     }
 }

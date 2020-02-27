@@ -1,13 +1,13 @@
 using System.Collections.Generic;
+using EntitiesBT.Entities;
 
 namespace EntitiesBT.Core
 {
     public interface INodeDataBuilder
     {
-        BehaviorNodeType NodeType { get; }
+        BehaviorNodeType BehaviorNodeType { get; }
         int NodeId { get; }
-        int Size { get; }
-        unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders);
+        BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders);
         INodeDataBuilder Self { get; }
         IEnumerable<INodeDataBuilder> Children { get; }
     }

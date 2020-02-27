@@ -1,6 +1,7 @@
 using System;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Components
@@ -17,7 +18,7 @@ namespace EntitiesBT.Components
             _prioritySelector = GetComponentInParent<BTPrioritySelector>();
         }
 
-        protected override void Build(ref ModifyPriorityNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref ModifyPriorityNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] builders)
         {
             var prioritySelectorIndex = Array.FindIndex(builders, b => b.Value == (INodeDataBuilder)_prioritySelector);
             data.PrioritySelectorIndex = prioritySelectorIndex;

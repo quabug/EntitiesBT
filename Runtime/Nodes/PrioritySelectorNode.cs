@@ -1,14 +1,14 @@
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
+using Unity.Entities;
 
 namespace EntitiesBT.Nodes
 {
     [BehaviorNode("57BB1429-1ECC-431D-BD8C-6A70FDD14516", BehaviorNodeType.Composite)]
     public struct PrioritySelectorNode : INodeData
     {
-        public SimpleBlobArray<int> Weights;
-        public static int Size(int count) => SimpleBlobArray<int>.Size(count);
+        public BlobArray<int> Weights;
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {

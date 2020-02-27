@@ -2,17 +2,18 @@ using System;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace EntitiesBT.Entities
 {
     public struct NodeBlob
     {
-        public const int VERSION = 1;
+        public const int VERSION = 2;
 
         // default data (serializable data)
         public BlobArray<int> Types;
         public BlobArray<int> EndIndices;
-        public BlobArray<int> Offsets;
+        public BlobArray<int> Offsets; // count = count of nodes + 1
         public BlobArray<byte> DefaultDataBlob;
         
         // runtime only data (only exist on runtime)
@@ -20,7 +21,7 @@ namespace EntitiesBT.Entities
         // initialize from `DefaultDataBlob`
         public BlobArray<byte> RuntimeDataBlob;
 
-        public int Count => Offsets.Length;
+        public int Count => Types.Length;
 
         public static int CalculateDefaultSize(int count, int dataSize) =>
             UnsafeUtility.SizeOf<NodeBlob>() + dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
@@ -44,10 +45,8 @@ namespace EntitiesBT.Entities
         public int GetEndIndex(int nodeIndex) => _blob.EndIndices[nodeIndex];
         public int GetNodeDataSize(int nodeIndex, int count = 1)
         {
-            // TOOD: assert if count < 1 or nodeIndex+count out of range?
             var currentOffset = _blob.Offsets[nodeIndex];
-            var endNodeIndex = nodeIndex + count;
-            var nextOffset = endNodeIndex < _blob.Offsets.Length ? _blob.Offsets[endNodeIndex] : _blob.DefaultDataBlob.Length;
+            var nextOffset = _blob.Offsets[math.min(nodeIndex + count, Count)];
             return nextOffset - currentOffset;
         }
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Test
@@ -11,12 +12,12 @@ namespace EntitiesBT.Test
         public int B;
         public int BB;
 
-        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public static void Reset(int index, INodeBlob _, IBlackboard __)
         {
             Debug.Log($"[B]: reset {index}");
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard __)
         {
             var data = blob.GetNodeData<NodeB>(index);
             var state = data.B == data.BB ? NodeState.Success : NodeState.Failure;
@@ -30,11 +31,10 @@ namespace EntitiesBT.Test
         public int B;
         public int BB;
 
-        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref NodeB data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
-            var ptr = (NodeB*) dataPtr;
-            ptr->B = B;
-            ptr->BB = BB;
+            data.B = B;
+            data.BB = BB;
         }
     }
 }

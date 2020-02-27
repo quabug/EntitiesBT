@@ -25,47 +25,26 @@ namespace EntitiesBT.Extensions.UnityMovement
 #endif
         public Vector3 CustomVelocity;
 
-        public override BehaviorNodeType NodeType => BehaviorNodeType.Action;
-        
-        public override int NodeId
+        protected override Type NodeType
         {
             get
             {
                 switch (Source)
                 {
                 case VelocitySource.Component:
-                    return typeof(CharacterSimpleMoveWithComponentVelocityNode).GetBehaviorNodeAttribute().Id;
+                    return typeof(CharacterSimpleMoveWithComponentVelocityNode);
                 case VelocitySource.CustomGlobal:
-                    return typeof(CharacterSimpleMoveWithCustomGlobalVelocityNode).GetBehaviorNodeAttribute().Id;
+                    return typeof(CharacterSimpleMoveWithCustomGlobalVelocityNode);
                 case VelocitySource.CustomLocal:
-                    return typeof(CharacterSimpleMoveWithCustomLocalVelocityNode).GetBehaviorNodeAttribute().Id;
+                    return typeof(CharacterSimpleMoveWithCustomLocalVelocityNode);
                 default:
                     throw new ArgumentOutOfRangeException();
                 }
             }
         }
 
-        public override unsafe int Size 
+        protected override unsafe void Build(void* dataPtr, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
-            get
-            {
-                switch (Source)
-                {
-                case VelocitySource.Component:
-                    return sizeof(CharacterSimpleMoveWithComponentVelocityNode);
-                case VelocitySource.CustomGlobal:
-                    return sizeof(CharacterSimpleMoveWithCustomGlobalVelocityNode);
-                case VelocitySource.CustomLocal:
-                    return sizeof(CharacterSimpleMoveWithCustomLocalVelocityNode);
-                default:
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-        }
-        
-        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
-        {
-                
             switch (Source)
             {
             case VelocitySource.Component:

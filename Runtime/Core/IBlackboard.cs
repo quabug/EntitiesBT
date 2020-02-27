@@ -1,7 +1,3 @@
-using System;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
-
 namespace EntitiesBT.Core
 {
     public interface IBlackboard
@@ -28,7 +24,7 @@ namespace EntitiesBT.Core
             return bb.Has(typeof(T));
         }
         
-        public static unsafe ref T GetDataRef<T>(this IBlackboard bb) where T : struct
+        public static ref T GetDataRef<T>(this IBlackboard bb) where T : struct
         {
             return ref bb.GetRef<T>(typeof(T));
         }

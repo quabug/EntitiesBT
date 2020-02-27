@@ -40,9 +40,12 @@ namespace EntitiesBT.DebugView
             void SetData(ref WeightRandomSelectorNode data, float[] array)
             {
                 Array.Resize(ref array, data.Weights.Length);
-                for (var i = 0; i < array.Length; i++) if (array[i] < 0) array[i] = 0;
+                for (var i = 0; i < array.Length; i++)
+                {
+                    if (array[i] < 0) array[i] = 0;
+                    data.Weights[i] = array[i];
+                }
                 data.Sum = array.Sum();
-                data.Weights.FromArrayUnsafe(array);
             }
         }
     }

@@ -1,5 +1,6 @@
 using EntitiesBT.Components;
 using EntitiesBT.Core;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Test
@@ -9,12 +10,12 @@ namespace EntitiesBT.Test
     {
         public int A;
 
-        public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public static void Reset(int index, INodeBlob _, IBlackboard __)
         {
             Debug.Log($"[A]: reset {index}");
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard __)
         {
             var data = blob.GetNodeData<NodeA>(index);
             var state = data.A == 0 ? NodeState.Failure : NodeState.Success;
@@ -26,6 +27,6 @@ namespace EntitiesBT.Test
     public class BTTestNodeA : BTNode<NodeA>
     {
         public int A;
-        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders) => ((NodeA*) dataPtr)->A = A;
+        protected override void Build(ref NodeA data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __) => data.A = A;
     }
 }

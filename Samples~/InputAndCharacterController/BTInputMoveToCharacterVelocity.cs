@@ -14,7 +14,7 @@ namespace EntitiesBT.Samples
 #endif
         public float Speed;
 
-        protected override void Build(ref InputMoveToCharacterVelocityNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
             data.Speed = Speed;
         }

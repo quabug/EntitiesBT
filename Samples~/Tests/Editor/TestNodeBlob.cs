@@ -25,12 +25,17 @@ namespace EntitiesBT.Test
             {
                 ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();
                 
+                var types = blobBuilder.Allocate(ref blob.Types, 3);
+                types[0] = 11;
+                types[1] = 22;
+                types[2] = 33;
+                
                 var endIndices = blobBuilder.Allocate(ref blob.EndIndices, 3);
                 endIndices[0] = 3;
                 endIndices[1] = 2;
                 endIndices[2] = 3;
                 
-                var offsets = blobBuilder.Allocate(ref blob.Offsets,  3);
+                var offsets = blobBuilder.Allocate(ref blob.Offsets, 4);
                 var unsafePtr = (byte*) blobBuilder.Allocate(ref blob.DefaultDataBlob, size).GetUnsafePtr();
                 var offset = 0;
                 offsets[0] = offset;
@@ -41,6 +46,8 @@ namespace EntitiesBT.Test
                 ref var local2 = ref UnsafeUtilityEx.AsRef<NodeB>(unsafePtr + offset);
                 local2.B = 222;
                 local2.BB = 2222;
+                offset += sizeof(NodeB);
+                offsets[3] = offset;
                 var blobRef = blobBuilder.CreateBlobAssetReference<NodeBlob>(Allocator.Persistent);
                 try
                 {
@@ -103,7 +110,7 @@ namespace EntitiesBT.Test
 
             var types = new[] {typeof(SequenceNode), typeof(TestNode), typeof(TestNode), typeof(NodeB), typeof(NodeA), typeof(TestNode)};
             Assert.AreEqual(blobRef.Value.Types.ToArray(), types.Select(t => t.GetBehaviorNodeAttribute().Id));
-            Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 0, 20, 40, 48, 52 });
+            Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 0, 20, 40, 48, 52, 72 });
             Assert.AreEqual(blobRef.Value.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
             Assert.AreEqual(blobRef.Value.DefaultDataBlob.Length, 72);
             Assert.AreEqual(GetDefaultData<NodeB>(3), new NodeB {B = 1, BB = 1});

@@ -12,7 +12,7 @@ namespace EntitiesBT.Sample
     {
         public BoxCollider Box;
         
-        protected override void Build(ref IsEntityPositionInBoxNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref IsEntityPositionInBoxNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
             // rotation is not count into.
             data.Bounds = new Bounds(Box.center + transform.position, Box.size);

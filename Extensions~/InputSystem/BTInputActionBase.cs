@@ -2,6 +2,7 @@ using System;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Extensions.InputSystem
@@ -10,7 +11,7 @@ namespace EntitiesBT.Extensions.InputSystem
     {
         [SerializeField] private string _actionId;
         
-        protected override void Build(ref TNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref TNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
             data.ActionId = Guid.Parse(_actionId);
         }

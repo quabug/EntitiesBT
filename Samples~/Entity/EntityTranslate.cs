@@ -13,7 +13,7 @@ namespace EntitiesBT.Sample
     {
         public Vector3 Position;
 
-        protected override void Build(ref EntityTranslateNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref EntityTranslateNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
             data.Position = Position;
         }
