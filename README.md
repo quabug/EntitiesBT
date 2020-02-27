@@ -112,7 +112,7 @@ public class EntityMove : BTNode<EntityMoveNode>
 {
     public Vector3 Velocity;
 
-    protected override void Build(ref EntityMoveNode data, ITreeNode<INodeDataBuilder>[] _)
+    protected override void Build(ref EntityMoveNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
     {
         // set `NodeData` here
         data.Velocity = Velocity;
@@ -154,7 +154,7 @@ public class BTRepeat : BTNode<RepeatForeverNode>
 {
     public NodeState BreakStates;
     
-    public override void Build(ref RepeatForeverNode data, ITreeNode<INodeDataBuilder>[] _)
+    public override void Build(ref RepeatForeverNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
     {
         data.BreakStates = BreakStates;
     }
