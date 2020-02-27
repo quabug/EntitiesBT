@@ -4,16 +4,17 @@ using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputActionBase<TNode> : BTNode<TNode> where TNode : struct, IInputActionNodeData
     {
-        [SerializeField] private string _actionId;
+        [SerializeField] private InputActionReference InputAction;
         
         protected override void Build(ref TNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
-            data.ActionId = Guid.Parse(_actionId);
+            data.ActionId = InputAction.action.id;
         }
 
         public override INodeDataBuilder Self => new BTVirtualDecorator<RunOnMainThreadNode>(this);
