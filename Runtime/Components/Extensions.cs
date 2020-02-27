@@ -119,8 +119,8 @@ namespace EntitiesBT.Components
 
         public static void AllocateArray<T>(this BlobBuilder builder, ref BlobArray<T> blobArray, IList<T> sourceArray) where T : struct
         {
-            builder.Allocate(ref blobArray, sourceArray.Count);
-            for (var i = 0; i < sourceArray.Count; i++) blobArray[i] = sourceArray[i];
+            var array = builder.Allocate(ref blobArray, sourceArray.Count);
+            for (var i = 0; i < sourceArray.Count; i++) array[i] = sourceArray[i];
         }
 
         public static unsafe BlobAssetReference CreateReference<T>(this BlobBuilder builder, Allocator allocator = Allocator.Temp) where T : struct
