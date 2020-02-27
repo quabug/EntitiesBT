@@ -1,9 +1,6 @@
 using System;
-using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using EntitiesBT.Nodes;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
 
@@ -41,13 +38,6 @@ namespace EntitiesBT.DebugView
 
         public override void Tick()
         {
-            var dataSize = Blob.GetNodeDataSize(Index);
-            var typeSize = UnsafeUtility.SizeOf<T>();
-            if (dataSize != typeSize)
-            {
-                Debug.LogWarning($"Data size not match: data-{Index}({dataSize}) != {typeof(T).Name}({typeSize})");
-                return;
-            }
             RuntimeData = Blob.GetNodeData<T>(Index);
         }
 

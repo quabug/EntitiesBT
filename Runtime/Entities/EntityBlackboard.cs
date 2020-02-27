@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using EntitiesBT.Core;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
@@ -152,11 +153,5 @@ namespace EntitiesBT.Entities
         {
             return EntityManager.HasComponent<T>(Entity);
         }
-        //
-        // [Preserve]
-        // public object GetComponentDataById(int typeId)
-        // {
-        //     EntityManager.GetComponentData<>()
-        // }
     }
 }
