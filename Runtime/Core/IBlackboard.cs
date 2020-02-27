@@ -1,10 +1,12 @@
+using Unity.Collections.LowLevel.Unsafe;
+
 namespace EntitiesBT.Core
 {
     public interface IBlackboard
     {
         object this[object key] { get; set; }
         bool Has(object key);
-        ref T GetRef<T>(object key) where T : struct;
+        unsafe void* GetPtr(object key);
     }
 
     public static class BlackboardExtensions
@@ -24,9 +26,18 @@ namespace EntitiesBT.Core
             return bb.Has(typeof(T));
         }
         
-        public static ref T GetDataRef<T>(this IBlackboard bb) where T : struct
+        public static unsafe ref T GetDataRef<T>(this IBlackboard bb) where T : struct
         {
-            return ref bb.GetRef<T>(typeof(T));
+            return ref UnsafeUtilityEx.AsRef<T>(bb.GetPtr(typeof(T)));
+        }
+        
+        public static unsafe ref T GetDataRef<T>(this IBlackboard bb, ulong componentStableHash, int componentDataOffset)
+            where T : struct
+        {
+            var componentPtr = (byte*)bb.GetPtr(componentStableHash);
+            // TODO: type safety check
+            var dataPtr = componentPtr + componentDataOffset;
+            return ref UnsafeUtilityEx.AsRef<T>(dataPtr);
         }
     }
 }

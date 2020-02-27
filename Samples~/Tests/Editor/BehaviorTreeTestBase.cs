@@ -34,12 +34,12 @@ namespace EntitiesBT.Test
                 set => throw new NotImplementedException();
             }
 
-            public ref T GetRef<T>(object key) where T : struct
+            public bool Has(object key)
             {
                 throw new NotImplementedException();
             }
 
-            public bool Has(object key)
+            public unsafe void* GetPtr(object key)
             {
                 throw new NotImplementedException();
             }

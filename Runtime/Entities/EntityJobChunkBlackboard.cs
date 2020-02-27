@@ -57,15 +57,27 @@ namespace EntitiesBT.Entities
             return _HAS_COMPONENT_DATA(this, type);
         }
 
-        public unsafe ref T GetRef<T>(object key) where T : struct
+        public unsafe void* GetPtr(object key)
         {
-            var type = typeof(T);
-            if (!type.IsComponentDataType()) throw new NotImplementedException();
-            
-            var typeIndex = TypeManager.GetTypeIndex<T>();
-            if (TypeManager.IsZeroSized(typeIndex))
-                throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
-            return ref UnsafeUtilityEx.AsRef<T>(Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion));
+            switch (key)
+            {
+            case Type type when type.IsComponentDataType():
+            {
+                var typeIndex = TypeManager.GetTypeIndex(type);
+                if (TypeManager.IsZeroSized(typeIndex))
+                    throw new ArgumentException($"GetComponentData<{type}> can not be called with a zero sized component.");
+                return Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion);
+            }
+            case ulong componentStableHash:
+            {
+                var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash);
+                if (TypeManager.IsZeroSized(typeIndex))
+                    throw new ArgumentException("GetComponentData can not be called with a zero sized component.");
+                return Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion);
+            }
+            default:
+                 throw new NotImplementedException();
+            }
         }
 
         Type ValidateKey(object key)
@@ -79,7 +91,7 @@ namespace EntitiesBT.Entities
         {
             var typeIndex = TypeManager.GetTypeIndex<T>();
             if (TypeManager.IsZeroSized(typeIndex))
-                throw new ArgumentException($"SetComponentData<{typeof(T)}> can not be called with a zero sized component.");
+                throw new ArgumentException($"GetComponentData<{typeof(T)}> can not be called with a zero sized component.");
             return UnsafeUtilityEx.AsRef<T>(Chunk.GetComponentDataWithTypeRO(Index, typeIndex));
         }
 
