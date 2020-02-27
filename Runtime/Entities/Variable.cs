@@ -17,117 +17,42 @@ namespace EntitiesBT.Entities
         CustomValue
       , ComponentValue
       , ScriptableObjectValue
+      //, NodeValue
     }
-        
+    
     [Serializable]
     public struct Variable<T> where T : struct
     {
         static Variable()
         {
-            Assert.AreNotEqual(DataSize, 0);
+            Assert.IsFalse(typeof(T).IsZeroSizeStruct());
         }
-        
-        public static int DataSize => UnsafeUtility.SizeOf<T>();
         
         public VariableValueSource ValueSource;
         public T CustomValue;
         public string ComponentValue;
-        public T FallbackValue;
         public ScriptableObject ConfigSource;
         public string ConfigValueName;
-
-        public int BlobSize => ValueSource == VariableValueSource.ComponentValue ? 16 : 4 + UnsafeUtility.SizeOf<T>();
     }
     
     [StructLayout(LayoutKind.Explicit), MayOnlyLiveInBlobStorage, Serializable]
-    public unsafe struct BlobVariable
+    public struct BlobVariable<T> where T : struct
     {
-        [FieldOffset(0), SerializeField] private bool _isCustomVariable;
-        [FieldOffset(4)] private int _componentDataOffset;
-        [FieldOffset(8)] private ulong _componentStableHash;
-        
-        [FieldOffset(0), SerializeField] private int _dataSize;
-        private void* _dataPtr => UnsafeUtility.AddressOf(ref _componentDataOffset);
+        [FieldOffset(0), SerializeField] public bool IsCustomVariable;
+        [FieldOffset(4)] public int ComponentDataOffset;
+        [FieldOffset(8)] public ulong ComponentStableHash;
+        [FieldOffset(0), SerializeField] public BlobPtr<T> CustomData;
 
-        public void FromVariableUnsafe<T>(Variable<T> variable) where T : struct
+        public ref T GetData(IBlackboard bb)
         {
-            switch (variable.ValueSource)
-            {
-            case VariableValueSource.CustomValue:
-            {
-                SetCustomVariable(variable.CustomValue);
-                break;
-            }
-            case VariableValueSource.ComponentValue:
-            {
-                var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(variable.ComponentValue);
-                if (valueType != typeof(T) || hash == 0)
-                {
-                    Debug.LogError($"ComponentVariable({variable.ComponentValue}) is not valid, fallback to CustomVariable");
-                    // fallback to custom variable
-                    SetCustomVariable(variable.FallbackValue);
-                    break;
-                }
-                _isCustomVariable = false;
-                _componentStableHash = hash;
-                _componentDataOffset = offset;
-                break;
-            }
-            case VariableValueSource.ScriptableObjectValue:
-            {
-                var value = variable.FallbackValue;
-                if (variable.ConfigSource != null)
-                {
-                    var field = variable.ConfigSource.GetType().GetField(
-                        variable.ConfigValueName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    ;
-                    if (field != null && field.FieldType == typeof(T))
-                        value = (T)field.GetValue(variable.ConfigSource);
-                }
-                SetCustomVariable(value);
-                break;
-            }
-            default:
-                throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        void SetCustomVariable<T>(T value) where T : struct
-        {
-            _isCustomVariable = true;
-            _dataSize = UnsafeUtility.SizeOf<T>();
-            UnsafeUtilityEx.AsRef<T>(_dataPtr) = value;
-        }
-
-        public Variable<T> ToVariable<T>() where T : struct
-        {
-            if (_isCustomVariable)
-            {
-                return new Variable<T>
-                {
-                    ValueSource = VariableValueSource.CustomValue
-                  , CustomValue = UnsafeUtilityEx.AsRef<T>(_dataPtr)
-                };
-            }
-
-            var (componentType, fieldInfo) = Variable.GetComponentDataType(_componentStableHash, _componentDataOffset);
-            return new Variable<T>
-            {
-                ValueSource = VariableValueSource.ComponentValue
-              , ComponentValue = $"{componentType.Name}.{fieldInfo.Name}"
-            };
-        }
-
-        public ref T GetData<T>(IBlackboard bb) where T : struct
-        {
-            if (_isCustomVariable) return ref UnsafeUtilityEx.AsRef<T>(_dataPtr); // TODO: check size
-            return ref bb.GetDataRef<T>(_componentStableHash, _componentDataOffset);
+            if (IsCustomVariable) return ref CustomData.Value;
+            else return ref bb.GetDataRef<T>(ComponentStableHash, ComponentDataOffset);
         }
         
-        public void SetData<T>(IBlackboard bb, T value) where T : struct
+        public void SetData(IBlackboard bb, T value)
         {
-            if (_isCustomVariable) UnsafeUtilityEx.AsRef<T>(_dataPtr) = value; // TODO: check size
-            else bb.GetDataRef<T>(_componentStableHash, _componentDataOffset) = value;
+            if (IsCustomVariable) CustomData.Value = value;
+            else bb.GetDataRef<T>(ComponentStableHash, ComponentDataOffset) = value;
         }
     }
 
@@ -173,6 +98,26 @@ namespace EntitiesBT.Entities
         {
             _VALUE_TYPE_MAP.Value.TryGetValue((hash, offset), out var result);
             return result;
+        }
+
+        public static Variable<T> ToVariable<T>(this BlobVariable<T> blobVariable) where T : struct
+        {
+            if (blobVariable.IsCustomVariable)
+            {
+                return new Variable<T>
+                {
+                    ValueSource = VariableValueSource.CustomValue
+                  , CustomValue = blobVariable.CustomData.Value
+                };
+            }
+
+            var (componentType, fieldInfo) = 
+                GetComponentDataType(blobVariable.ComponentStableHash, blobVariable.ComponentDataOffset);
+            return new Variable<T>
+            {
+                ValueSource = VariableValueSource.ComponentValue
+              , ComponentValue = $"{componentType.Name}.{fieldInfo.Name}"
+            };
         }
     }
 }

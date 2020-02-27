@@ -58,7 +58,7 @@ namespace EntitiesBT.Editor
             }
             case VariableValueSource.ComponentValue:
             {
-                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("FallbackValue"));
+                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("CustomValue"), new GUIContent("Fallback"));
                 var componentValueProperty = property.FindPropertyRelative("ComponentValue");
                 var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(componentValueProperty.stringValue);
                 var color = GUI.color;
@@ -70,7 +70,7 @@ namespace EntitiesBT.Editor
             }
             case VariableValueSource.ScriptableObjectValue:
             {
-                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("FallbackValue"));
+                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("CustomValue"), new GUIContent("Fallback"));
                 var configSourceProperty = property.FindPropertyRelative("ConfigSource");
                 var configValueNameProerpty = property.FindPropertyRelative("ConfigValueName");
                 var color = GUI.color;

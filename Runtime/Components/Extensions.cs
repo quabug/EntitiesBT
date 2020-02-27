@@ -81,13 +81,6 @@ namespace EntitiesBT.Components
                 dstManager.AddSharedComponentData(entity, dataQuery);
             }
         }
-        
-        // https://stackoverflow.com/a/27851610
-        public static bool IsZeroSizeStruct(this Type t)
-        {
-            return t.IsValueType && !t.IsPrimitive && 
-                   t.GetFields((BindingFlags)0x34).All(fi => IsZeroSizeStruct(fi.FieldType));
-        }
     }
 
     public static class BlobBuilderExtensions
@@ -133,6 +126,48 @@ namespace EntitiesBT.Components
         {
             var @ref = _CREATE_REFERENCE(builder, type, allocator);
             return (BlobAssetReference)@ref;
+        }
+
+        public static void AllocateVariable<T>(this BlobBuilder builder, ref BlobVariable<T> blobVariable, Variable<T> variable) where T : struct
+        {
+            switch (variable.ValueSource)
+            {
+            case VariableValueSource.CustomValue:
+            {
+                builder.Allocate(ref blobVariable.CustomData) = variable.CustomValue;
+                break;
+            }
+            case VariableValueSource.ComponentValue:
+            {
+                var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(variable.ComponentValue);
+                if (valueType != typeof(T) || hash == 0)
+                {
+                    Debug.LogError($"ComponentVariable({variable.ComponentValue}) is not valid, fallback to CustomVariable");
+                    builder.Allocate(ref blobVariable.CustomData) = variable.CustomValue;
+                    break;
+                }
+                blobVariable.IsCustomVariable = false;
+                blobVariable.ComponentDataOffset = offset;
+                blobVariable.ComponentStableHash = hash;
+                break;
+            }
+            case VariableValueSource.ScriptableObjectValue:
+            {
+                var value = variable.CustomValue;
+                if (variable.ConfigSource != null)
+                {
+                    var field = variable.ConfigSource.GetType().GetField(
+                        variable.ConfigValueName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    ;
+                    if (field != null && field.FieldType == typeof(T))
+                        value = (T)field.GetValue(variable.ConfigSource);
+                }
+                builder.Allocate(ref blobVariable.CustomData) = value;
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }
