@@ -9,9 +9,9 @@ namespace EntitiesBT.Extensions.InputSystem
     {
         public InputActionPhase Phase;
         
-        protected override void Build(ref CheckInputActionPhaseNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref CheckInputActionPhaseNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
-            base.Build(ref data, builders);
+            base.Build(ref data, _, __);
             data.Phase = Phase;
         }
     }

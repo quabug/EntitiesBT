@@ -25,41 +25,23 @@ namespace EntitiesBT.Extensions.UnityMovement
 #endif
         public float3 CustomRotation;
 
-        public override BehaviorNodeType NodeType => BehaviorNodeType.Action;
-
-        public override int NodeId
+        protected override Type NodeType
         {
             get
             {
                 switch (Source)
                 {
                 case SourceType.Component:
-                    return typeof(SetTransformRotationWithComponentRotationNode).GetBehaviorNodeAttribute().Id;
+                    return typeof(SetTransformRotationWithComponentRotationNode);
                 case SourceType.Custom:
-                    return typeof(SetTransformRotationWithCustomRotationNode).GetBehaviorNodeAttribute().Id;
+                    return typeof(SetTransformRotationWithCustomRotationNode);
                 default:
                     throw new ArgumentOutOfRangeException();
                 }
             }
         }
 
-        public override unsafe int Size
-        {
-            get
-            {
-                switch (Source)
-                {
-                case SourceType.Component:
-                    return sizeof(SetTransformRotationWithComponentRotationNode);
-                case SourceType.Custom:
-                    return sizeof(SetTransformRotationWithCustomRotationNode);
-                default:
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-        }
-
-        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
+        protected override unsafe void Build(void* dataPtr, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
             switch (Source)
             {

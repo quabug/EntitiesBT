@@ -1,6 +1,10 @@
 using System;
+using System.Reflection;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
+using Unity.Collections;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Components
@@ -21,45 +25,25 @@ namespace EntitiesBT.Components
         [Header("for `Duration` repeater")]
         public float RepeatDurationInSeconds;
 
-        public override BehaviorNodeType NodeType => BehaviorNodeType.Decorate;
-
-        public override int NodeId
+        protected override Type NodeType
         {
             get
             {
                 switch (Type)
                 {
                 case RepeatType.Forever:
-                    return typeof(RepeatForeverNode).GetBehaviorNodeAttribute().Id;
+                    return typeof(RepeatForeverNode);
                 case RepeatType.Times:
-                    return typeof(RepeatTimesNode).GetBehaviorNodeAttribute().Id;
+                    return typeof(RepeatTimesNode);
                 case RepeatType.Duration:
-                    return typeof(RepeatDurationNode).GetBehaviorNodeAttribute().Id;
+                    return typeof(RepeatDurationNode);
                 default:
                     throw new ArgumentOutOfRangeException();
                 }
             }
         }
 
-        public override unsafe int Size
-        {
-            get
-            {
-                switch (Type)
-                {
-                case RepeatType.Forever:
-                    return sizeof(RepeatForeverNode);
-                case RepeatType.Times:
-                    return sizeof(RepeatTimesNode);
-                case RepeatType.Duration:
-                    return sizeof(RepeatDurationNode);
-                default:
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-        }
-
-        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
+        protected override unsafe void Build(void* dataPtr, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders)
         {
             switch (Type)
             {
@@ -67,14 +51,14 @@ namespace EntitiesBT.Components
             {
                 var ptr = (RepeatForeverNode*) dataPtr;
                 ptr->BreakStates = BreakStates;
-                break;
+                return;
             }
             case RepeatType.Times:
             {
                 var ptr = (RepeatTimesNode*) dataPtr;
                 ptr->TickTimes = RepeatTimes;
                 ptr->BreakStates = BreakStates;
-                break;
+                return;
             }
             case RepeatType.Duration:
             {

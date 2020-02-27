@@ -39,8 +39,11 @@ namespace EntitiesBT.DebugView
             void SetData(ref PrioritySelectorNode data, int[] array)
             {
                 Array.Resize(ref array, data.Weights.Length);
-                for (var i = 0; i < array.Length; i++) if (array[i] < 0) array[i] = 0;
-                data.Weights.FromArrayUnsafe(array);
+                for (var i = 0; i < array.Length; i++)
+                {
+                    if (array[i] < 0) array[i] = 0;
+                    data.Weights[i] = array[i];
+                }
             }
         }
     }

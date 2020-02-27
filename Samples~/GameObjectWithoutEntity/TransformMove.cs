@@ -9,8 +9,8 @@ namespace EntitiesBT.Sample
     public class TransformMove : BTNode<TransformMoveNode>
     {
         public Vector3 Velocity;
-        
-        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
+
+        protected override unsafe void Build(void* dataPtr, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
             var ptr = (TransformMoveNode*) dataPtr;
             ptr->Velocity = Velocity;

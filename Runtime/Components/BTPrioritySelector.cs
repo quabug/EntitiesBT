@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
+using Unity.Entities;
 
 namespace EntitiesBT.Components
 {
@@ -9,11 +10,9 @@ namespace EntitiesBT.Components
     {
         public int[] Weights;
 
-        public override int Size => PrioritySelectorNode.Size(Weights.Length);
-
-        protected override void Build(ref PrioritySelectorNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref PrioritySelectorNode data, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders)
         {
-            data.Weights.FromArrayUnsafe(Weights);
+            blobBuilder.AllocateArray(ref data.Weights, Weights);
         }
 
         protected override void Update()

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
+using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Components
@@ -10,12 +11,10 @@ namespace EntitiesBT.Components
     {
         [SerializeField] private float[] _weights;
 
-        public override int Size => WeightRandomSelectorNode.Size(_weights.Length);
-
-        protected override void Build(ref WeightRandomSelectorNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref WeightRandomSelectorNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] __)
         {
             data.Sum = _weights.Sum();
-            data.Weights.FromArrayUnsafe(_weights);
+            builder.AllocateArray(ref data.Weights, _weights);
         }
 
         protected override void Update()

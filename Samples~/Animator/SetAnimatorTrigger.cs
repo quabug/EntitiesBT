@@ -10,7 +10,7 @@ namespace EntitiesBT.Sample
     {
         public string TriggerName;
 
-        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders) =>
+        protected override unsafe void Build(void* dataPtr, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __) =>
             ((SetAnimatorTriggerNode*) dataPtr)->Value = Animator.StringToHash(TriggerName);
 
         public override INodeDataBuilder Self => new BTVirtualDecorator<RunOnMainThreadNode>(this);

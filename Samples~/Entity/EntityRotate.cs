@@ -15,7 +15,7 @@ namespace EntitiesBT.Sample
         public Vector3 Axis;
         public float RadianPerSecond;
 
-        protected override void Build(ref EntityRotateNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref EntityRotateNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
             data.Axis = Axis;
             data.RadianPerSecond = RadianPerSecond;

@@ -1,33 +1,39 @@
-// using System;
-// using Unity.Entities;
+using System;
+using Unity.Entities;
 
 namespace EntitiesBT
 {
      public static class EntitiesInternalMethods
      {
-//         public static unsafe void* GetComponentDataWithTypeRW(this ArchetypeChunk chunk, int chunkIndex, int typeIndex, uint globalSystemVersion)
-//         {
-//             throw new NotImplementedException();
-//             // return ChunkDataUtility.GetComponentDataWithTypeRW(chunk.m_Chunk, chunkIndex, typeIndex, globalSystemVersion);
-//         }
-//         
-//         public static unsafe void* GetComponentDataWithTypeRO(this ArchetypeChunk chunk, int chunkIndex, int typeIndex)
-//         {
-//             throw new NotImplementedException();
-//             // return ChunkDataUtility.GetComponentDataWithTypeRO(chunk.m_Chunk, chunkIndex, typeIndex);
-//         }
-//         
-//         public static unsafe int GetIndexInTypeArray(this ArchetypeChunk chunk, int typeIndex)
-//         {
-//             throw new NotImplementedException();
-//             // return ChunkDataUtility.GetIndexInTypeArray(chunk.m_Chunk->Archetype, typeIndex);
-//         }
-//         
-//         public static unsafe void* GetComponentDataRawRW(this Entity entity, EntityManager em, int typeIndex)
-//         {
-//             throw new NotImplementedException();
-//             // return em.GetComponentDataRawRW(entity, typeIndex);
-//         }
+//          public static unsafe void* GetComponentDataWithTypeRW(this ArchetypeChunk chunk, int chunkIndex, int typeIndex, uint globalSystemVersion)
+//          {
+//              return ChunkDataUtility.GetComponentDataWithTypeRW(chunk.m_Chunk, chunkIndex, typeIndex, globalSystemVersion);
+//          }
+//          
+//          public static unsafe void* GetComponentDataWithTypeRO(this ArchetypeChunk chunk, int chunkIndex, int typeIndex)
+//          {
+//              return ChunkDataUtility.GetComponentDataWithTypeRO(chunk.m_Chunk, chunkIndex, typeIndex);
+//          }
+//          
+//          public static unsafe int GetIndexInTypeArray(this ArchetypeChunk chunk, int typeIndex)
+//          {
+//              return ChunkDataUtility.GetIndexInTypeArray(chunk.m_Chunk->Archetype, typeIndex);
+//          }
+//          
+//          public static unsafe void* GetComponentDataRawRW(this Entity entity, EntityManager em, int typeIndex)
+//          {
+//              return em.GetComponentDataRawRW(entity, typeIndex);
+//          }
+//
+//          public static unsafe int GetLength<T>(this BlobAssetReference<T> blobAssetReference) where T : struct
+//          {
+//              return blobAssetReference.m_data.Header->Length;
+//          }
+//          
+//          public static unsafe ulong GetHash<T>(this BlobAssetReference<T> blobAssetReference) where T : struct
+//          {
+//              return blobAssetReference.m_data.Header->Hash;
+//          }
      }
 }
 //

@@ -226,8 +226,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3013650591734b2cbe7111fcc10341ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RepeatTimes: 0
+  Type: 0
   BreakStates: 0
+  RepeatTimes: 0
+  RepeatDurationInSeconds: 0
 --- !u!1 &7154796706242749372
 GameObject:
   m_ObjectHideFlags: 0

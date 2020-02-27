@@ -33,17 +33,17 @@ namespace EntitiesBT.Sample
             }
         }
 
-        public ref T GetRef<T>(object key) where T : struct
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Has(object key)
         {
             var type = key as Type;
             if (type != null && type.IsSubclassOf(typeof(Component)))
                 return _gameObject.GetComponent(type) != null;
             return _dict.ContainsKey(key);
+        }
+
+        public unsafe void* GetPtr(object key)
+        {
+            throw new NotImplementedException();
         }
     }
 }

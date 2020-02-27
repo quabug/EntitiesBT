@@ -1,5 +1,6 @@
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
+using Unity.Entities;
 
 namespace EntitiesBT.Components
 {
@@ -8,7 +9,7 @@ namespace EntitiesBT.Components
         public float TimeInSeconds;
         public NodeState BreakReturnState;
 
-        protected override void Build(ref TimerNode data, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref TimerNode data, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.CountdownSeconds = TimeInSeconds;
             data.BreakReturnState = BreakReturnState;

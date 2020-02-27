@@ -9,8 +9,7 @@ namespace EntitiesBT.Nodes
     public struct WeightRandomSelectorNode : INodeData
     {
         public float Sum;
-        public SimpleBlobArray<float> Weights;
-        public static int Size(int count) => SimpleBlobArray<float>.Size(count) + sizeof(float);
+        public BlobArray<float> Weights;
         
         public static readonly ComponentType[] Types = { ComponentType.ReadWrite<BehaviorTreeRandom>() };
         

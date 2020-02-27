@@ -1,6 +1,7 @@
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using NUnit.Framework;
+using Unity.Entities;
 
 namespace EntitiesBT.Test
 {
@@ -34,12 +35,11 @@ namespace EntitiesBT.Test
     {
         public NodeState State;
 
-        public override unsafe void Build(void* dataPtr, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref TestNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
-            var ptr = (TestNode*) dataPtr;
-            ptr->DefaultState = State;
-            ptr->ResetTimes = 0;
-            ptr->TickTimes = 0;
+            data.DefaultState = State;
+            data.ResetTimes = 0;
+            data.TickTimes = 0;
         }
     }
 }
