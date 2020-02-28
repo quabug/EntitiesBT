@@ -19,58 +19,66 @@ namespace EntitiesBT.Entities
         {
             var dataSize = 0;
             var nodeDataList = new NativeArray<BlobAssetReference>(nodes.Length, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
-            for (var i = 0; i < nodes.Length; i++)
+            try
             {
-                var node = nodes[i];
-                var data = node.Value.Build(nodes);
-                nodeDataList[i] = data;
-                dataSize += data.Length;
-            }
-            
-            var size = NodeBlob.CalculateSize(nodes.Length, dataSize);
-            using (var blobBuilder = new BlobBuilder(Allocator.Temp, size))
-            {
-                ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();
-                var types = blobBuilder.Allocate(ref blob.Types, nodes.Length);
-                var offsets = blobBuilder.Allocate(ref blob.Offsets, nodes.Length + 1);
-                var unsafeDataPtr = (byte*)blobBuilder.Allocate(ref blob.DefaultDataBlob, dataSize).GetUnsafePtr();
-                var offset = 0;
                 for (var i = 0; i < nodes.Length; i++)
                 {
                     var node = nodes[i];
-                    types[i] = node.Value.NodeId;
-                    var nodeDataSize = nodeDataList[i].Length;
-                    offsets[i] = offset;
-                    
-                    var srcPtr = nodeDataList[i].Ptr;
-                    var destPtr = unsafeDataPtr + offsets[i];
-                    UnsafeUtility.MemCpy(destPtr, srcPtr, nodeDataSize);
+                    var data = node.Value.Build(nodes);
+                    nodeDataList[i] = data;
+                    dataSize += data.Length;
+                }
 
-                    offset += nodeDataSize;
-                }
-                offsets[nodes.Length] = offset;
-                
-                var endIndices = blobBuilder.Allocate(ref blob.EndIndices, nodes.Length);
-                // make sure the memory is clear to 0 (even it had been cleared on allocate)
-                UnsafeUtility.MemSet(endIndices.GetUnsafePtr(), 0, sizeof(int) * endIndices.Length);
-                for (var i = nodes.Length - 1; i >= 0; i--)
+                var size = NodeBlob.CalculateSize(nodes.Length, dataSize);
+                using (var blobBuilder = new BlobBuilder(Allocator.Temp, size))
                 {
-                    var endIndex = i + 1;
-                    var node = nodes[i];
-                    while (node != null && endIndices[node.Index] == 0)
+                    ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();
+                    var types = blobBuilder.Allocate(ref blob.Types, nodes.Length);
+                    var offsets = blobBuilder.Allocate(ref blob.Offsets, nodes.Length + 1);
+                    var unsafeDataPtr = (byte*) blobBuilder.Allocate(ref blob.DefaultDataBlob, dataSize).GetUnsafePtr();
+                    var offset = 0;
+                    for (var i = 0; i < nodes.Length; i++)
                     {
-                        endIndices[node.Index] = endIndex;
-                        node = node.Parent;
+                        var node = nodes[i];
+                        types[i] = node.Value.NodeId;
+                        var nodeDataSize = nodeDataList[i].Length;
+                        offsets[i] = offset;
+
+                        var srcPtr = nodeDataList[i].Ptr;
+                        var destPtr = unsafeDataPtr + offsets[i];
+                        UnsafeUtility.MemCpy(destPtr, srcPtr, nodeDataSize);
+
+                        offset += nodeDataSize;
                     }
+
+                    offsets[nodes.Length] = offset;
+
+                    var endIndices = blobBuilder.Allocate(ref blob.EndIndices, nodes.Length);
+                    // make sure the memory is clear to 0 (even it had been cleared on allocate)
+                    UnsafeUtility.MemSet(endIndices.GetUnsafePtr(), 0, sizeof(int) * endIndices.Length);
+                    for (var i = nodes.Length - 1; i >= 0; i--)
+                    {
+                        var endIndex = i + 1;
+                        var node = nodes[i];
+                        while (node != null && endIndices[node.Index] == 0)
+                        {
+                            endIndices[node.Index] = endIndex;
+                            node = node.Parent;
+                        }
+                    }
+
+                    var states = blobBuilder.Allocate(ref blob.States, nodes.Length);
+                    UnsafeUtility.MemClear(states.GetUnsafePtr(), sizeof(NodeState) * states.Length);
+
+                    var runtimeDataBlob = blobBuilder.Allocate(ref blob.RuntimeDataBlob, dataSize);
+                    UnsafeUtility.MemCpy(runtimeDataBlob.GetUnsafePtr(), unsafeDataPtr, dataSize);
+
+                    return blobBuilder.CreateBlobAssetReference<NodeBlob>(allocator);
                 }
-                
-                var states = blobBuilder.Allocate(ref blob.States, nodes.Length);
-                UnsafeUtility.MemClear(states.GetUnsafePtr(), sizeof(NodeState) * states.Length);
-                
-                var runtimeDataBlob = blobBuilder.Allocate(ref blob.RuntimeDataBlob, dataSize);
-                UnsafeUtility.MemCpy(runtimeDataBlob.GetUnsafePtr(), unsafeDataPtr, dataSize);
-                
-                return blobBuilder.CreateBlobAssetReference<NodeBlob>(allocator);
+            }
+            finally
+            {
+                nodeDataList.Dispose();
             }
         }
 
