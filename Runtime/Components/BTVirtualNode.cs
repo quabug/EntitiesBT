@@ -17,7 +17,7 @@ namespace EntitiesBT.Components
         public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
         {
             var minSize = UnsafeUtility.SizeOf<T>();
-            if (minSize == 0) return BlobAssetReference.Empty;
+            if (minSize == 0) return BlobAssetReference.Null;
             using (var blobBuilder = new BlobBuilder(Allocator.Temp, minSize))
             {
                 ref var data = ref blobBuilder.ConstructRoot<T>();
@@ -35,7 +35,7 @@ namespace EntitiesBT.Components
         private readonly INodeDataBuilder _self;
         public BehaviorNodeType BehaviorNodeType => _self.BehaviorNodeType;
         public int NodeId => _self.NodeId;
-        public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders) => BlobAssetReference.Empty;
+        public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders) => BlobAssetReference.Null;
         public INodeDataBuilder Self => _self;
         public IEnumerable<INodeDataBuilder> Children => _self.Children;
     }

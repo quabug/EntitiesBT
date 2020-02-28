@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using EntitiesBT.Core;
@@ -5,6 +6,7 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using Unity.Entities.Serialization;
+using UnityEngine;
 
 namespace EntitiesBT.Entities
 {
@@ -18,7 +20,7 @@ namespace EntitiesBT.Entities
         public static unsafe BlobAssetReference<NodeBlob> ToBlob(this ITreeNode<INodeDataBuilder>[] nodes, Allocator allocator)
         {
             var dataSize = 0;
-            var nodeDataList = new NativeArray<BlobAssetReference>(nodes.Length, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
+            var nodeDataList = new NativeArray<BlobAssetReference>(nodes.Length, Allocator.Temp);
             try
             {
                 for (var i = 0; i < nodes.Length; i++)
@@ -41,13 +43,13 @@ namespace EntitiesBT.Entities
                     {
                         var node = nodes[i];
                         types[i] = node.Value.NodeId;
-                        var nodeDataSize = nodeDataList[i].Length;
                         offsets[i] = offset;
-
-                        var srcPtr = nodeDataList[i].Ptr;
-                        var destPtr = unsafeDataPtr + offsets[i];
+                        
+                        var nodeDataSize = nodeDataList[i].Length;
+                        var srcPtr = nodeDataList[i].GetUnsafePtr();
+                        var destPtr = unsafeDataPtr + offset;
                         UnsafeUtility.MemCpy(destPtr, srcPtr, nodeDataSize);
-
+                        
                         offset += nodeDataSize;
                     }
 
@@ -76,8 +78,14 @@ namespace EntitiesBT.Entities
                     return blobBuilder.CreateBlobAssetReference<NodeBlob>(allocator);
                 }
             }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                throw;
+            }
             finally
             {
+                foreach (var data in nodeDataList.Where(data => data.IsCreated)) data.Dispose();
                 nodeDataList.Dispose();
             }
         }
