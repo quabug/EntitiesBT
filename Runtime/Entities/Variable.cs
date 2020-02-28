@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Assertions;
 using Hash128 = UnityEngine.Hash128;
 
 namespace EntitiesBT.Entities
@@ -45,11 +45,6 @@ namespace EntitiesBT.Entities
     [Serializable]
     public struct Variable<T> where T : struct
     {
-        // static Variable()
-        // {
-        //     Assert.IsFalse(typeof(T).IsZeroSizeStruct());
-        // }
-        
         public VariableValueSource ValueSource;
         public T ConstantValue;
         public string ComponentValue;
@@ -57,15 +52,35 @@ namespace EntitiesBT.Entities
         public string ScriptableObjectValueName;
     }
     
-    [StructLayout(LayoutKind.Explicit), MayOnlyLiveInBlobStorage, Serializable]
+    // HACK: generic struct with explicit layout would throw exception on `Assembly.GetTypes`???
+    // [StructLayout(LayoutKind.Explicit), MayOnlyLiveInBlobStorage, Serializable]
     public struct BlobVariable<T> where T : struct
     {
-        [FieldOffset(0)] public VariableValueSource Source;
-        [FieldOffset(4)] public BlobPtr<T> ConstantData;
-        [FieldOffset(4)] public BlobPtr<DynamicComponentData> ComponentData;
-        [FieldOffset(4)] public BlobPtr<DynamicScriptableObjectData> ScriptableObjectData;
-        [FieldOffset(4)] public BlobPtr<DynamicNodeData> NodeData;
+        public VariableValueSource Source;
+        public int OffsetPtr;
+    //     [FieldOffset(0)] public VariableValueSource Source;
+    //     [FieldOffset(4)] public BlobPtr<T> ConstantData;
+    //     [FieldOffset(4)] public BlobPtr<DynamicComponentData> ComponentData;
+    //     [FieldOffset(4)] public BlobPtr<DynamicScriptableObjectData> ScriptableObjectData;
+    //     [FieldOffset(4)] public BlobPtr<DynamicNodeData> NodeData;
 
+        public ref T ConstantData => ref Value<T>();
+        public ref DynamicComponentData ComponentData => ref Value<DynamicComponentData>();
+        public ref DynamicScriptableObjectData ScriptableObjectData => ref Value<DynamicScriptableObjectData>();
+        public ref DynamicNodeData NodeData => ref Value<DynamicNodeData>();
+        
+        private unsafe ref TValue Value<TValue>() where TValue : struct
+        {
+#if ENABLE_UNITY_COLLECTIONS_CHECKS
+            if(OffsetPtr == 0)
+                throw new InvalidOperationException("The accessed BlobPtr hasn't been allocated.");
+#endif
+            fixed (int* thisPtr = &OffsetPtr)
+            {
+                return ref UnsafeUtilityEx.AsRef<TValue>((byte*)thisPtr + OffsetPtr);
+            }
+        }
+        
         public T GetData(int index, INodeBlob blob, IBlackboard bb)
         {
             switch (Source)
@@ -74,9 +89,9 @@ namespace EntitiesBT.Entities
             case VariableValueSource.ConstantComponent:
             case VariableValueSource.ConstantScriptableObject:
             case VariableValueSource.ConstantNode:
-                return ConstantData.Value;
+                return ConstantData;
             case VariableValueSource.DynamicComponent:
-                return bb.GetData<T>(ComponentData.Value.StableHash, ComponentData.Value.Offset);
+                return bb.GetData<T>(ComponentData.StableHash, ComponentData.Offset);
             case VariableValueSource.DynamicScriptableObject:
                 throw new NotImplementedException();
             case VariableValueSource.DynamicNode:
@@ -94,9 +109,9 @@ namespace EntitiesBT.Entities
             case VariableValueSource.ConstantComponent:
             case VariableValueSource.ConstantScriptableObject:
             case VariableValueSource.ConstantNode:
-                return ref ConstantData.Value;
+                return ref ConstantData;
             case VariableValueSource.DynamicComponent:
-                return ref bb.GetDataRef<T>(ComponentData.Value.StableHash, ComponentData.Value.Offset);
+                return ref bb.GetDataRef<T>(ComponentData.StableHash, ComponentData.Offset);
             case VariableValueSource.DynamicScriptableObject:
                 throw new NotImplementedException();
             case VariableValueSource.DynamicNode:
@@ -166,10 +181,10 @@ namespace EntitiesBT.Entities
             case VariableValueSource.ConstantComponent:
             case VariableValueSource.ConstantScriptableObject:
             case VariableValueSource.ConstantNode:
-                variable.ConstantValue = blobVariable.ConstantData.Value;
+                variable.ConstantValue = blobVariable.ConstantData;
                 break;
             case VariableValueSource.DynamicComponent:
-                var component = blobVariable.ComponentData.Value;
+                var component = blobVariable.ComponentData;
                 var (componentType, fieldInfo) = GetComponentDataType(component.StableHash, component.Offset);
                 variable.ComponentValue = $"{componentType.Name}.{fieldInfo.Name}";
                 break;
