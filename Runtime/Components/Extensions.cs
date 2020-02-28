@@ -135,7 +135,7 @@ namespace EntitiesBT.Components
             {
             case VariableValueSource.Constant:
             {
-                blobVariable.OffsetPtr = Allocate(variable.ConstantValue);
+                Allocate(ref blobVariable, variable.ConstantValue);
                 break;
             }
             case VariableValueSource.ConstantScriptableObject:
@@ -151,7 +151,7 @@ namespace EntitiesBT.Components
                     else
                         Debug.LogError($"{variable.ScriptableObject.name}.{variable.ScriptableObjectValueName} is not valid, fallback to ConstantValue");
                 }
-                blobVariable.OffsetPtr = Allocate(value);
+                Allocate(ref blobVariable, value);
                 break;
             }
             case VariableValueSource.DynamicComponent:
@@ -160,10 +160,10 @@ namespace EntitiesBT.Components
                 if (valueType != typeof(T) || hash == 0)
                 {
                     Debug.LogError($"ComponentVariable({variable.ComponentValue}) is not valid, fallback to ConstantValue");
-                    blobVariable.OffsetPtr = Allocate(variable.ConstantValue);
+                    Allocate(ref blobVariable, variable.ConstantValue);
                     break;
                 }
-                blobVariable.OffsetPtr = Allocate(new DynamicComponentData{StableHash = hash, Offset = offset});
+                Allocate(ref blobVariable, new DynamicComponentData{StableHash = hash, Offset = offset});
                 break;
             }
             case VariableValueSource.ConstantComponent:
@@ -175,11 +175,11 @@ namespace EntitiesBT.Components
                 throw new ArgumentOutOfRangeException();
             }
 
-            unsafe int Allocate<TValue>(TValue value) where TValue : struct
+            void Allocate<TValue>(ref BlobVariable<T> blob, TValue value) where TValue : struct
             {
-                var blobPtr = new BlobPtr<TValue>();
-                builder.Allocate(ref blobPtr) = value;
-                return (int)((byte*) blobPtr.GetUnsafePtr() - (byte*)UnsafeUtility.AddressOf(ref blobPtr));
+                ref var blobPtr = ref UnsafeUtility.As<int, BlobPtr<TValue>>(ref blob.OffsetPtr);
+                ref var blobValue = ref builder.Allocate(ref blobPtr);
+                blobValue = value;
             }
         }
     }

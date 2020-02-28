@@ -56,13 +56,13 @@ namespace EntitiesBT.Entities
     // [StructLayout(LayoutKind.Explicit), MayOnlyLiveInBlobStorage, Serializable]
     public struct BlobVariable<T> where T : struct
     {
-        public VariableValueSource Source;
-        public int OffsetPtr;
     //     [FieldOffset(0)] public VariableValueSource Source;
     //     [FieldOffset(4)] public BlobPtr<T> ConstantData;
     //     [FieldOffset(4)] public BlobPtr<DynamicComponentData> ComponentData;
     //     [FieldOffset(4)] public BlobPtr<DynamicScriptableObjectData> ScriptableObjectData;
     //     [FieldOffset(4)] public BlobPtr<DynamicNodeData> NodeData;
+        public VariableValueSource Source;
+        public int OffsetPtr;
 
         public ref T ConstantData => ref Value<T>();
         public ref DynamicComponentData ComponentData => ref Value<DynamicComponentData>();

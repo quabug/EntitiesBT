@@ -153,23 +153,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LongVariable:
-    ValueSource: 3
-    ConstantValue: 0
+    ValueSource: 0
+    ConstantValue: 111111
     ComponentValue: 
     ScriptableObject: {fileID: 0}
     ScriptableObjectValueName: 
-  String: 
-  IntArray: 
-  IntVariable:
-    ValueSource: 0
+  String: aabbbcccc
+  IntArray: a00c0000020000002000000004000000b3150000
+  DestVariable:
+    ValueSource: 4
     ConstantValue: 0
-    ComponentValue: 
+    ComponentValue: ComponentVariableData.OutputValue
     ScriptableObject: {fileID: 0}
     ScriptableObjectValueName: 
-  FloatVariable:
-    ValueSource: 0
+  SrcVariable:
+    ValueSource: 4
     ConstantValue: 0
-    ComponentValue: 
+    ComponentValue: ComponentVariableData.InputValue
     ScriptableObject: {fileID: 0}
     ScriptableObjectValueName: 
 --- !u!4 &327906298

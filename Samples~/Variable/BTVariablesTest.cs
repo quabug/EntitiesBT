@@ -11,16 +11,16 @@ namespace EntitiesBT.Sample
         public Variable<long> LongVariable;
         public string String;
         public int[] IntArray;
-        public Variable<int> IntVariable;
-        public Variable<float> FloatVariable;
+        public Variable<int> DestVariable;
+        public Variable<float> SrcVariable;
 
         protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] builders)
         {
             builder.AllocateString(ref data.String, String);
             builder.AllocateArray(ref data.IntArray, IntArray);
             builder.AllocateVariable(ref data.LongVariable, LongVariable);
-            builder.AllocateVariable(ref data.IntVariable, IntVariable);
-            builder.AllocateVariable(ref data.FloatVariable, FloatVariable);
+            builder.AllocateVariable(ref data.DestVariable, DestVariable);
+            builder.AllocateVariable(ref data.SrcVariable, SrcVariable);
         }
     }
 
@@ -30,13 +30,13 @@ namespace EntitiesBT.Sample
         public BlobVariable<long> LongVariable;
         public BlobString String;
         public BlobArray<int> IntArray;
-        public BlobVariable<int> IntVariable;
-        public BlobVariable<float> FloatVariable;
+        public BlobVariable<int> DestVariable;
+        public BlobVariable<float> SrcVariable;
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<VariablesTestNode>(index);
-            data.IntVariable.SetData(index, blob, blackboard, (int)data.FloatVariable.GetData(index, blob, blackboard));
+            data.DestVariable.SetData(index, blob, blackboard, (int)data.SrcVariable.GetData(index, blob, blackboard));
             return NodeState.Success;
         }
     }
@@ -54,8 +54,8 @@ namespace EntitiesBT.Sample
         {
             ref var data = ref Blob.GetNodeData<VariablesTestNode>(Index);
             LongVariable = data.LongVariable.GetData(Index, Blob, Blackboard);
-            IntVariable = data.IntVariable.GetData(Index, Blob, Blackboard);
-            FloatVariable = data.FloatVariable.GetData(Index, Blob, Blackboard);
+            IntVariable = data.DestVariable.GetData(Index, Blob, Blackboard);
+            FloatVariable = data.SrcVariable.GetData(Index, Blob, Blackboard);
             String = data.String.ToString();
             IntArray = data.IntArray.ToArray();
         }
