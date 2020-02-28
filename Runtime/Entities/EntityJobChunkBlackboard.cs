@@ -56,27 +56,50 @@ namespace EntitiesBT.Entities
             return _HAS_COMPONENT_DATA(this, type);
         }
 
-        public unsafe void* GetPtr(object key)
+        public unsafe void* GetPtrRW(object key)
         {
             switch (key)
             {
             case Type type when type.IsComponentDataType():
-            {
-                var typeIndex = TypeManager.GetTypeIndex(type);
-                if (TypeManager.IsZeroSized(typeIndex))
-                    throw new ArgumentException($"GetComponentData<{type}> can not be called with a zero sized component.");
-                return Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion);
-            }
+                return GetPtrRW(TypeManager.GetTypeIndex(type));
             case ulong componentStableHash:
-            {
-                var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash);
-                if (TypeManager.IsZeroSized(typeIndex))
-                    throw new ArgumentException("GetComponentData can not be called with a zero sized component.");
-                return Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion);
-            }
+                return GetPtrRW(TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash));
             default:
                  throw new NotImplementedException();
             }
+        }
+        
+        public unsafe void* GetPtrRO(object key)
+        {
+            switch (key)
+            {
+            case Type type when type.IsComponentDataType():
+                return GetPtrRO(TypeManager.GetTypeIndex(type));
+            case ulong componentStableHash:
+                return GetPtrRO(TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash));
+            default:
+                 throw new NotImplementedException();
+            }
+        }
+
+        private unsafe void* GetPtrRW(int typeIndex)
+        {
+            // TODO: EntityComponentStore->AssertEntityHasComponent(entity, typeIndex);
+#if ENABLE_UNITY_COLLECTIONS_CHECKS
+            if (TypeManager.IsZeroSized(typeIndex))
+                throw new ArgumentException("GetComponentData can not be called with a zero sized component.");
+#endif
+            return Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion);
+        }
+        
+        private unsafe void* GetPtrRO(int typeIndex)
+        {
+            // TODO: EntityComponentStore->AssertEntityHasComponent(entity, typeIndex);
+#if ENABLE_UNITY_COLLECTIONS_CHECKS
+            if (TypeManager.IsZeroSized(typeIndex))
+                throw new ArgumentException("GetComponentData can not be called with a zero sized component.");
+#endif
+            return Chunk.GetComponentDataWithTypeRO(Index, typeIndex);
         }
 
         Type ValidateKey(object key)
@@ -88,19 +111,15 @@ namespace EntitiesBT.Entities
         [Preserve]
         public unsafe T GetComponentData<T>() where T : struct, IComponentData
         {
-            var typeIndex = TypeManager.GetTypeIndex<T>();
-            if (TypeManager.IsZeroSized(typeIndex))
-                throw new ArgumentException($"GetComponentData<{typeof(T)}> can not be called with a zero sized component.");
-            return UnsafeUtilityEx.AsRef<T>(Chunk.GetComponentDataWithTypeRO(Index, typeIndex));
+            var ptr = GetPtrRO(TypeManager.GetTypeIndex<T>());
+            return UnsafeUtilityEx.AsRef<T>(ptr);
         }
 
         [Preserve]
         public unsafe void SetComponentData<T>(T value) where T : struct, IComponentData
         {
-            var typeIndex = TypeManager.GetTypeIndex<T>();
-            if (TypeManager.IsZeroSized(typeIndex))
-                throw new ArgumentException($"SetComponentData<{typeof(T)}> can not be called with a zero sized component.");
-            UnsafeUtilityEx.AsRef<T>(Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion)) = value;
+            var ptr = GetPtrRW(TypeManager.GetTypeIndex<T>());
+            UnsafeUtilityEx.AsRef<T>(ptr) = value;
         }
         
         [Preserve]

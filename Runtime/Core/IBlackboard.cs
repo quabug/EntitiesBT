@@ -6,7 +6,8 @@ namespace EntitiesBT.Core
     {
         object this[object key] { get; set; }
         bool Has(object key);
-        unsafe void* GetPtr(object key);
+        unsafe void* GetPtrRW(object key);
+        unsafe void* GetPtrRO(object key);
     }
 
     public static class BlackboardExtensions
@@ -14,6 +15,15 @@ namespace EntitiesBT.Core
         public static T GetData<T>(this IBlackboard bb)
         {
             return (T) bb[typeof(T)];
+        }
+        
+        public static unsafe T GetData<T>(this IBlackboard bb, ulong componentStableHash, int componentDataOffset)
+            where T : struct
+        {
+            var componentPtr = (byte*)bb.GetPtrRO(componentStableHash);
+            // TODO: type safety check
+            var dataPtr = componentPtr + componentDataOffset;
+            return UnsafeUtilityEx.AsRef<T>(dataPtr);
         }
         
         public static void SetData<T>(this IBlackboard bb, T data)
@@ -28,13 +38,13 @@ namespace EntitiesBT.Core
         
         public static unsafe ref T GetDataRef<T>(this IBlackboard bb) where T : struct
         {
-            return ref UnsafeUtilityEx.AsRef<T>(bb.GetPtr(typeof(T)));
+            return ref UnsafeUtilityEx.AsRef<T>(bb.GetPtrRW(typeof(T)));
         }
         
         public static unsafe ref T GetDataRef<T>(this IBlackboard bb, ulong componentStableHash, int componentDataOffset)
             where T : struct
         {
-            var componentPtr = (byte*)bb.GetPtr(componentStableHash);
+            var componentPtr = (byte*)bb.GetPtrRW(componentStableHash);
             // TODO: type safety check
             var dataPtr = componentPtr + componentDataOffset;
             return ref UnsafeUtilityEx.AsRef<T>(dataPtr);

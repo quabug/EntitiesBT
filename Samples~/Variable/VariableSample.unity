@@ -153,25 +153,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LongVariable:
-    ValueSource: 0
-    CustomValue: 0
+    ValueSource: 3
+    ConstantValue: 0
     ComponentValue: 
-    ConfigSource: {fileID: 0}
-    ConfigValueName: 
+    ScriptableObject: {fileID: 0}
+    ScriptableObjectValueName: 
   String: 
   IntArray: 
   IntVariable:
     ValueSource: 0
-    CustomValue: 0
+    ConstantValue: 0
     ComponentValue: 
-    ConfigSource: {fileID: 0}
-    ConfigValueName: 
+    ScriptableObject: {fileID: 0}
+    ScriptableObjectValueName: 
   FloatVariable:
     ValueSource: 0
-    CustomValue: 0
+    ConstantValue: 0
     ComponentValue: 
-    ConfigSource: {fileID: 0}
-    ConfigValueName: 
+    ScriptableObject: {fileID: 0}
+    ScriptableObjectValueName: 
 --- !u!4 &327906298
 Transform:
   m_ObjectHideFlags: 0

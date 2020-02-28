@@ -130,43 +130,54 @@ namespace EntitiesBT.Components
 
         public static void AllocateVariable<T>(this BlobBuilder builder, ref BlobVariable<T> blobVariable, Variable<T> variable) where T : struct
         {
+            blobVariable.Source = variable.ValueSource;
             switch (variable.ValueSource)
             {
-            case VariableValueSource.CustomValue:
+            case VariableValueSource.Constant:
             {
-                builder.Allocate(ref blobVariable.CustomData) = variable.CustomValue;
+                Allocate(ref blobVariable.ConstantData, variable.ConstantValue);
                 break;
             }
-            case VariableValueSource.ComponentValue:
+            case VariableValueSource.ConstantScriptableObject:
+            {
+                var value = variable.ConstantValue;
+                if (variable.ScriptableObject != null)
+                {
+                    var field = variable.ScriptableObject.GetType().GetField(
+                        variable.ScriptableObjectValueName, BindingFlags.Public | BindingFlags.NonPublic
+                    );
+                    if (field != null && field.FieldType == typeof(T))
+                        value = (T)field.GetValue(variable.ScriptableObjectValueName);
+                    else
+                        Debug.LogError($"{variable.ScriptableObject.name}.{variable.ScriptableObjectValueName} is not valid, fallback to ConstantValue");
+                }
+                Allocate(ref blobVariable.ConstantData, value);
+                break;
+            }
+            case VariableValueSource.DynamicComponent:
             {
                 var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(variable.ComponentValue);
                 if (valueType != typeof(T) || hash == 0)
                 {
-                    Debug.LogError($"ComponentVariable({variable.ComponentValue}) is not valid, fallback to CustomVariable");
-                    builder.Allocate(ref blobVariable.CustomData) = variable.CustomValue;
+                    Debug.LogError($"ComponentVariable({variable.ComponentValue}) is not valid, fallback to ConstantValue");
+                    Allocate(ref blobVariable.ConstantData, variable.ConstantValue);
                     break;
                 }
-                blobVariable.IsCustomVariable = false;
-                blobVariable.ComponentDataOffset = offset;
-                blobVariable.ComponentStableHash = hash;
+                Allocate(ref blobVariable.ComponentData, new DynamicComponentData{StableHash = hash, Offset = offset});
                 break;
             }
-            case VariableValueSource.ScriptableObjectValue:
-            {
-                var value = variable.CustomValue;
-                if (variable.ConfigSource != null)
-                {
-                    var field = variable.ConfigSource.GetType().GetField(
-                        variable.ConfigValueName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    ;
-                    if (field != null && field.FieldType == typeof(T))
-                        value = (T)field.GetValue(variable.ConfigSource);
-                }
-                builder.Allocate(ref blobVariable.CustomData) = value;
-                break;
-            }
+            case VariableValueSource.ConstantComponent:
+            case VariableValueSource.ConstantNode:
+            case VariableValueSource.DynamicScriptableObject:
+            case VariableValueSource.DynamicNode:
+                throw new NotImplementedException();
             default:
                 throw new ArgumentOutOfRangeException();
+            }
+
+            void Allocate<U>(ref BlobPtr<U> blobPtr, U value) where U : struct
+            {
+                builder.Allocate(ref blobPtr) = value;
             }
         }
     }

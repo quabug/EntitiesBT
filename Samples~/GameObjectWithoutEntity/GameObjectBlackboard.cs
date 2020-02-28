@@ -41,7 +41,12 @@ namespace EntitiesBT.Sample
             return _dict.ContainsKey(key);
         }
 
-        public unsafe void* GetPtr(object key)
+        public unsafe void* GetPtrRW(object key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public unsafe void* GetPtrRO(object key)
         {
             throw new NotImplementedException();
         }

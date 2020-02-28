@@ -58,16 +58,14 @@ namespace EntitiesBT.Entities
             {
                 switch (key)
                 {
-                case Type type:
-                {
-                    if (type.IsComponentDataType()) return _GET_COMPONENT_DATA(this, type);
-                    if (type.IsSharedComponentDataType()) return _GET_SHARED_COMPONENT_DATA(this, type);
-                    if (type.IsManagedDataType()) return _GET_MANAGED_DATA(this, type);
-                    if (type.IsUnityComponentType()) return _GET_COMPONENT_OBJECT(this, type);
-                    throw new NotImplementedException();
-                }
-                // case int typeId:
-                //     break;
+                case Type type when type.IsComponentDataType():
+                    return _GET_COMPONENT_DATA(this, type);
+                case Type type when type.IsSharedComponentDataType():
+                    return _GET_SHARED_COMPONENT_DATA(this, type);
+                case Type type when type.IsManagedDataType():
+                    return _GET_MANAGED_DATA(this, type);
+                case Type type when type.IsUnityComponentType():
+                    return _GET_COMPONENT_OBJECT(this, type);
                 default:
                     throw new NotImplementedException();
                 }
@@ -87,26 +85,50 @@ namespace EntitiesBT.Entities
             }
         }
         
-        public unsafe void* GetPtr(object key)
+        public unsafe void* GetPtrRW(object key)
         {
             switch (key)
             {
             case Type type when type.IsComponentDataType():
-            {
-                var typeIndex = TypeManager.GetTypeIndex(type);
-                if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
-                    throw new ArgumentException($"SetComponentData<{type}> can not be called with a zero sized component.");
-                return Entity.GetComponentDataRawRW(EntityManager, typeIndex);
-            }
+                return GetPtr(TypeManager.GetTypeIndex(type));
             case ulong componentStableHash:
-            {
-                var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash);
-                if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
-                    throw new ArgumentException($"SetComponentData can not be called with a zero sized component.");
-                return Entity.GetComponentDataRawRW(EntityManager, typeIndex);
-            }
+                return GetPtr(TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash));
             default:
                 throw new NotImplementedException();
+            }
+
+            void* GetPtr(int typeIndex)
+            {
+                // TODO: EntityComponentStore->AssertEntityHasComponent(entity, typeIndex);
+#if ENABLE_UNITY_COLLECTIONS_CHECKS
+                if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
+                    throw new ArgumentException("SetComponentData can not be called with a zero sized component.");
+#endif
+                return Entity.GetComponentDataRawRW(EntityManager, typeIndex);
+            }
+        }
+        
+        public unsafe void* GetPtrRO(object key)
+        {
+            switch (key)
+            {
+            case Type type when type.IsComponentDataType():
+                return GetPtr(TypeManager.GetTypeIndex(type));
+            case ulong componentStableHash:
+                return GetPtr(TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash));
+            default:
+                throw new NotImplementedException();
+            }
+
+            void* GetPtr(int typeIndex)
+            {
+                // TODO: EntityComponentStore->AssertEntityHasComponent(entity, typeIndex);
+#if ENABLE_UNITY_COLLECTIONS_CHECKS
+                if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
+                    throw new ArgumentException("SetComponentData can not be called with a zero sized component.");
+#endif
+                // TODO: change to RO
+                return Entity.GetComponentDataRawRW(EntityManager, typeIndex);
             }
         }
 

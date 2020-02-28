@@ -16,14 +16,26 @@ namespace EntitiesBT.Editor
             var lines = 0;
             switch ((VariableValueSource) variableTypeProperty.enumValueIndex)
             {
-            case VariableValueSource.CustomValue:
+            case VariableValueSource.Constant:
                 lines = 3;
                 break;
-            case VariableValueSource.ComponentValue:
+            case VariableValueSource.ConstantComponent:
                 lines = 5;
                 break;
-            case VariableValueSource.ScriptableObjectValue:
-                lines = 6;
+            case VariableValueSource.ConstantScriptableObject:
+                lines = 7;
+                break;
+            case VariableValueSource.ConstantNode:
+                lines = 5;
+                break;
+            case VariableValueSource.DynamicComponent:
+                lines = 5;
+                break;
+            case VariableValueSource.DynamicScriptableObject:
+                lines = 7;
+                break;
+            case VariableValueSource.DynamicNode:
+                lines = 5;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -51,14 +63,14 @@ namespace EntitiesBT.Editor
 
             switch ((VariableValueSource) variableTypeProperty.enumValueIndex)
             {
-            case VariableValueSource.CustomValue:
+            case VariableValueSource.Constant:
             {
-                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("CustomValue"));
+                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("ConstantValue"));
                 break;
             }
-            case VariableValueSource.ComponentValue:
+            case VariableValueSource.DynamicComponent:
             {
-                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("CustomValue"), new GUIContent("Fallback"));
+                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("ConstantValue"), new GUIContent("Fallback"));
                 var componentValueProperty = property.FindPropertyRelative("ComponentValue");
                 var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(componentValueProperty.stringValue);
                 var color = GUI.color;
@@ -68,26 +80,29 @@ namespace EntitiesBT.Editor
                 GUI.color = color;
                 break;
             }
-            case VariableValueSource.ScriptableObjectValue:
+            case VariableValueSource.ConstantScriptableObject:
             {
-                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("CustomValue"), new GUIContent("Fallback"));
-                var configSourceProperty = property.FindPropertyRelative("ConfigSource");
-                var configValueNameProerpty = property.FindPropertyRelative("ConfigValueName");
+                EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("ConstantValue"), new GUIContent("Fallback"));
+                var scriptableObjectProperty = property.FindPropertyRelative("ScriptableObject");
+                var valueNameProperty = property.FindPropertyRelative("ScriptableObjectValueName");
                 var color = GUI.color;
-                var config = configSourceProperty.objectReferenceValue;
+                var config = scriptableObjectProperty.objectReferenceValue;
                 if (config == null) GUI.color = Color.red;
-                EditorGUI.PropertyField(LineRect(3), configSourceProperty);
+                EditorGUI.PropertyField(LineRect(3), scriptableObjectProperty);
                 GUI.color = color;
 
-                var valueName = configValueNameProerpty.stringValue;
-                var valueInfo = config.GetType().GetField(valueName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                var valueName = valueNameProperty.stringValue;
+                var valueInfo = config?.GetType().GetField(valueName, BindingFlags.Public | BindingFlags.NonPublic);
                 if (valueInfo == null || valueInfo.FieldType != property.GetGenericType()) GUI.color = Color.red;
-                EditorGUI.PropertyField(LineRect(4), configValueNameProerpty);
+                EditorGUI.PropertyField(LineRect(4), valueNameProperty);
                 GUI.color = color;
                 break;
             }
             default:
-                throw new ArgumentOutOfRangeException();
+            {
+                EditorGUI.TextArea(LineRect(2), "Not Implemented");
+                break;
+            }
             }
 
             EditorGUIUtility.labelWidth = labelWidth;
