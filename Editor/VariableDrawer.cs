@@ -1,40 +1,40 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using EntitiesBT.Entities;
+using EntitiesBT.Variable;
 using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    [CustomPropertyDrawer(typeof(Variable<>))]
+    [CustomPropertyDrawer(typeof(VariableProperty<>))]
     public class VariableDrawer : PropertyDrawer
     {
         public override float GetPropertyHeight( SerializedProperty property, GUIContent label )
         {
             var variableTypeProperty = property.FindPropertyRelative("ValueSource");
             var lines = 0;
-            switch ((VariableValueSource) variableTypeProperty.enumValueIndex)
+            switch ((ValueSource) variableTypeProperty.enumValueIndex)
             {
-            case VariableValueSource.Constant:
+            case ValueSource.Constant:
                 lines = 3;
                 break;
-            case VariableValueSource.ConstantComponent:
+            case ValueSource.ConstantComponent:
                 lines = 5;
                 break;
-            case VariableValueSource.ConstantScriptableObject:
+            case ValueSource.ConstantScriptableObject:
                 lines = 7;
                 break;
-            case VariableValueSource.ConstantNode:
+            case ValueSource.ConstantNode:
                 lines = 5;
                 break;
-            case VariableValueSource.DynamicComponent:
+            case ValueSource.DynamicComponent:
                 lines = 5;
                 break;
-            case VariableValueSource.DynamicScriptableObject:
+            case ValueSource.DynamicScriptableObject:
                 lines = 7;
                 break;
-            case VariableValueSource.DynamicNode:
+            case ValueSource.DynamicNode:
                 lines = 5;
                 break;
             default:
@@ -61,18 +61,18 @@ namespace EntitiesBT.Editor
             var variableTypeProperty = property.FindPropertyRelative("ValueSource");
             EditorGUI.PropertyField(LineRect(1), variableTypeProperty);
 
-            switch ((VariableValueSource) variableTypeProperty.enumValueIndex)
+            switch ((ValueSource) variableTypeProperty.enumValueIndex)
             {
-            case VariableValueSource.Constant:
+            case ValueSource.Constant:
             {
                 EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("ConstantValue"));
                 break;
             }
-            case VariableValueSource.DynamicComponent:
+            case ValueSource.DynamicComponent:
             {
                 EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("ConstantValue"), new GUIContent("Fallback"));
                 var componentValueProperty = property.FindPropertyRelative("ComponentValue");
-                var (hash, offset, valueType) = Variable.GetTypeHashAndFieldOffset(componentValueProperty.stringValue);
+                var (hash, offset, valueType) = Utility.GetTypeHashAndFieldOffset(componentValueProperty.stringValue);
                 var color = GUI.color;
                 if (hash == 0 || offset < 0 || valueType != property.GetGenericType())
                     GUI.color = Color.red;
@@ -80,7 +80,7 @@ namespace EntitiesBT.Editor
                 GUI.color = color;
                 break;
             }
-            case VariableValueSource.ConstantScriptableObject:
+            case ValueSource.ConstantScriptableObject:
             {
                 EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("ConstantValue"), new GUIContent("Fallback"));
                 var scriptableObjectProperty = property.FindPropertyRelative("ScriptableObject");

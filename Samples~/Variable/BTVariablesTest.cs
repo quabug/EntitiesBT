@@ -2,17 +2,18 @@ using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
+using EntitiesBT.Variable;
 using Unity.Entities;
 
 namespace EntitiesBT.Sample
 {
     public class BTVariablesTest : BTNode<VariablesTestNode>
     {
-        public Variable<long> LongVariable;
+        public VariableProperty<long> LongVariable;
         public string String;
         public int[] IntArray;
-        public Variable<int> DestVariable;
-        public Variable<float> SrcVariable;
+        public VariableProperty<int> DestVariable;
+        public VariableProperty<float> SrcVariable;
 
         protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] builders)
         {
