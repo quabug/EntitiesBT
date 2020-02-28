@@ -23,7 +23,7 @@ namespace EntitiesBT.Components
 
         public unsafe BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
         {
-            if (NodeType.IsZeroSizeStruct()) return BlobAssetReference.Empty;
+            if (NodeType.IsZeroSizeStruct()) return BlobAssetReference.Null;
             using (var blobBuilder = new BlobBuilder(Allocator.Temp, UnsafeUtility.SizeOf(NodeType)))
             {
                 var dataPtr = blobBuilder.ConstructRootPtrByType(NodeType);

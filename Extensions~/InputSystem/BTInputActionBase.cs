@@ -10,7 +10,7 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputActionBase<TNode> : BTNode<TNode> where TNode : struct, IInputActionNodeData
     {
-        [SerializeField] private InputActionReference InputAction;
+        public InputActionReference InputAction;
         
         protected override void Build(ref TNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
