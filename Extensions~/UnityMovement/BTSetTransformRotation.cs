@@ -18,7 +18,7 @@ namespace EntitiesBT.Extensions.UnityMovement
             Custom
         }
         
-        [SerializeField] private SourceType Source;
+        [SerializeField] private SourceType _source = default;
         
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.ShowIf("Source", SourceType.Custom)]
@@ -29,7 +29,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         {
             get
             {
-                switch (Source)
+                switch (_source)
                 {
                 case SourceType.Component:
                     return typeof(SetTransformRotationWithComponentRotationNode);
@@ -43,7 +43,7 @@ namespace EntitiesBT.Extensions.UnityMovement
 
         protected override unsafe void Build(void* dataPtr, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
         {
-            switch (Source)
+            switch (_source)
             {
             case SourceType.Component:
                 break;

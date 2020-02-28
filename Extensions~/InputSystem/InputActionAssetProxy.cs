@@ -11,11 +11,11 @@ namespace EntitiesBT.Extensions.InputSystem
     
     public class InputActionAssetProxy : MonoBehaviour, IConvertGameObjectToEntity
     {
-        [SerializeField] private InputActionAsset _inputActionAsset;
+        public InputActionAsset InputActionAsset;
         
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            dstManager.AddComponentData(entity, new InputActionAssetComponent {Value = _inputActionAsset});
+            dstManager.AddComponentData(entity, new InputActionAssetComponent {Value = InputActionAsset});
         }
     }
 }

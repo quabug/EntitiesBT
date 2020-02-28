@@ -123,10 +123,10 @@ namespace EntitiesBT.Components
             for (var i = 0; i < sourceArray.Count; i++) array[i] = sourceArray[i];
         }
 
-        public static unsafe BlobAssetReference CreateReference<T>(this BlobBuilder builder, Allocator allocator = Allocator.Temp) where T : struct
+        public static BlobAssetReference CreateReference<T>(this BlobBuilder builder, Allocator allocator = Allocator.Temp) where T : struct
         {
             var @ref = builder.CreateBlobAssetReference<T>(allocator);
-            return new BlobAssetReference(@ref.GetUnsafePtr(), @ref.GetLength());
+            return BlobAssetReference.Create(@ref);
         }
         
         public static BlobAssetReference CreateReferenceByType(this BlobBuilder builder, Type type, Allocator allocator = Allocator.Temp)
