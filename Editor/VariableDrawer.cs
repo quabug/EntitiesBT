@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using EntitiesBT.Components;
 using EntitiesBT.Variable;
 using UnityEditor;
 using UnityEngine;
@@ -16,29 +17,30 @@ namespace EntitiesBT.Editor
             var lines = 0;
             switch ((ValueSource) variableTypeProperty.enumValueIndex)
             {
-            case ValueSource.Constant:
+            case ValueSource.CustomConstant:
                 lines = 3;
                 break;
-            case ValueSource.ConstantComponent:
-                lines = 5;
-                break;
-            case ValueSource.ConstantScriptableObject:
-                lines = 7;
-                break;
-            case ValueSource.ConstantNode:
-                lines = 5;
-                break;
-            case ValueSource.DynamicComponent:
-                lines = 5;
-                break;
-            case ValueSource.DynamicScriptableObject:
-                lines = 7;
-                break;
-            case ValueSource.DynamicNode:
-                lines = 5;
-                break;
+            // case ValueSource.ConstantUnityComponent:
+            //     lines = 5;
+            //     break;
+            // case ValueSource.ConstantScriptableObject:
+            //     lines = 7;
+            //     break;
+            // case ValueSource.ConstantNode:
+            //     lines = 5;
+            //     break;
+            // case ValueSource.DynamicComponent:
+            //     lines = 5;
+            //     break;
+            // case ValueSource.DynamicScriptableObject:
+            //     lines = 7;
+            //     break;
+            // case ValueSource.DynamicNode:
+            //     lines = 5;
+            //     break;
             default:
-                throw new ArgumentOutOfRangeException();
+                lines = 8;
+                break;
             }
             return EditorGUIUtility.singleLineHeight * lines + 6;
         }
@@ -63,24 +65,28 @@ namespace EntitiesBT.Editor
 
             switch ((ValueSource) variableTypeProperty.enumValueIndex)
             {
-            case ValueSource.Constant:
+            case ValueSource.CustomConstant:
             {
                 EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("ConstantValue"));
                 break;
             }
-            case ValueSource.DynamicComponent:
+            case ValueSource.ComponentDynamic:
             {
                 EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("ConstantValue"), new GUIContent("Fallback"));
-                var componentValueProperty = property.FindPropertyRelative("ComponentValue");
-                var (hash, offset, valueType) = Utility.GetTypeHashAndFieldOffset(componentValueProperty.stringValue);
+                var componentTypeNameProperty = property.FindPropertyRelative("ComponentTypeName");
+                var componentValueNameProperty = property.FindPropertyRelative("ComponentValueName");
+                var (hash, offset, valueType) = Utility.GetTypeHashAndFieldOffset(
+                    componentTypeNameProperty.stringValue, componentValueNameProperty.stringValue
+                );
                 var color = GUI.color;
                 if (hash == 0 || offset < 0 || valueType != property.GetGenericType())
                     GUI.color = Color.red;
-                EditorGUI.PropertyField(LineRect(3), componentValueProperty);
+                EditorGUI.PropertyField(LineRect(3), componentTypeNameProperty);
+                EditorGUI.PropertyField(LineRect(4), componentValueNameProperty);
                 GUI.color = color;
                 break;
             }
-            case ValueSource.ConstantScriptableObject:
+            case ValueSource.ScriptableObjectConstant:
             {
                 EditorGUI.PropertyField(LineRect(2), property.FindPropertyRelative("ConstantValue"), new GUIContent("Fallback"));
                 var scriptableObjectProperty = property.FindPropertyRelative("ScriptableObject");
@@ -92,7 +98,7 @@ namespace EntitiesBT.Editor
                 GUI.color = color;
 
                 var valueName = valueNameProperty.stringValue;
-                var valueInfo = config?.GetType().GetField(valueName, BindingFlags.Public | BindingFlags.NonPublic);
+                var valueInfo = config?.GetType().GetField(valueName, VariableProperty.FIELD_BINDING_FLAGS);
                 if (valueInfo == null || valueInfo.FieldType != property.GetGenericType()) GUI.color = Color.red;
                 EditorGUI.PropertyField(LineRect(4), valueNameProperty);
                 GUI.color = color;

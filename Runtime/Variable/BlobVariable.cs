@@ -4,21 +4,33 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace EntitiesBT.Variable
 {
-    // HACK: generic struct with explicit layout would throw exception on `Assembly.GetTypes`???
-    // [StructLayout(LayoutKind.Explicit), MayOnlyLiveInBlobStorage, Serializable]
+    public struct DynamicComponentData
+    {
+        public ulong StableHash;
+        public int Offset;
+        public bool IsReadOnly;
+    }
+    //
+    // public struct DynamicScriptableObjectData
+    // {
+    //     public Hash128 Id;
+    //     public int Offset;
+    // }
+
+    public struct DynamicNodeData
+    {
+        public int Index;
+        public int Offset;
+    }
+    
     public struct BlobVariable<T> where T : struct
     {
-    //     [FieldOffset(0)] public VariableValueSource Source;
-    //     [FieldOffset(4)] public BlobPtr<T> ConstantData;
-    //     [FieldOffset(4)] public BlobPtr<DynamicComponentData> ComponentData;
-    //     [FieldOffset(4)] public BlobPtr<DynamicScriptableObjectData> ScriptableObjectData;
-    //     [FieldOffset(4)] public BlobPtr<DynamicNodeData> NodeData;
         public ValueSource Source;
         public int OffsetPtr;
 
         public ref T ConstantData => ref Value<T>();
         public ref DynamicComponentData ComponentData => ref Value<DynamicComponentData>();
-        public ref DynamicScriptableObjectData ScriptableObjectData => ref Value<DynamicScriptableObjectData>();
+        // public ref DynamicScriptableObjectData ScriptableObjectData => ref Value<DynamicScriptableObjectData>();
         public ref DynamicNodeData NodeData => ref Value<DynamicNodeData>();
         
         private unsafe ref TValue Value<TValue>() where TValue : struct
@@ -37,16 +49,14 @@ namespace EntitiesBT.Variable
         {
             switch (Source)
             {
-            case ValueSource.Constant:
-            case ValueSource.ConstantComponent:
-            case ValueSource.ConstantScriptableObject:
-            case ValueSource.ConstantNode:
+            case ValueSource.CustomConstant:
+            case ValueSource.ComponentConstant:
+            case ValueSource.ScriptableObjectConstant:
+            case ValueSource.NodeConstant:
                 return ConstantData;
-            case ValueSource.DynamicComponent:
+            case ValueSource.ComponentDynamic:
                 return bb.GetData<T>(ComponentData.StableHash, ComponentData.Offset);
-            case ValueSource.DynamicScriptableObject:
-                throw new NotImplementedException();
-            case ValueSource.DynamicNode:
+            case ValueSource.NodeDynamic:
                 throw new NotImplementedException();
             default:
                 throw new ArgumentOutOfRangeException();
@@ -57,16 +67,14 @@ namespace EntitiesBT.Variable
         {
             switch (Source)
             {
-            case ValueSource.Constant:
-            case ValueSource.ConstantComponent:
-            case ValueSource.ConstantScriptableObject:
-            case ValueSource.ConstantNode:
+            case ValueSource.CustomConstant:
+            case ValueSource.ComponentConstant:
+            case ValueSource.ScriptableObjectConstant:
+            case ValueSource.NodeConstant:
                 return ref ConstantData;
-            case ValueSource.DynamicComponent:
+            case ValueSource.ComponentDynamic:
                 return ref bb.GetDataRef<T>(ComponentData.StableHash, ComponentData.Offset);
-            case ValueSource.DynamicScriptableObject:
-                throw new NotImplementedException();
-            case ValueSource.DynamicNode:
+            case ValueSource.NodeDynamic:
                 throw new NotImplementedException();
             default:
                 throw new ArgumentOutOfRangeException();

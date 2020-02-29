@@ -39,9 +39,9 @@ namespace EntitiesBT.Variable
                 return _VALUES.Value.ToDictionary(t => (t.hash, t.offset), t => (t.componentType, t.field));
             });
 
-        public static (ulong hash, int offset, Type valueType) GetTypeHashAndFieldOffset(string componentDataName)
+        public static (ulong hash, int offset, Type valueType) GetTypeHashAndFieldOffset(string componentTypeName, string componentValueName)
         {
-            _NAME_VALUE_MAP.Value.TryGetValue(componentDataName, out var result);
+            _NAME_VALUE_MAP.Value.TryGetValue($"{componentTypeName}.{componentValueName}", out var result);
             return result;
         }
         
@@ -50,32 +50,32 @@ namespace EntitiesBT.Variable
             _VALUE_TYPE_MAP.Value.TryGetValue((hash, offset), out var result);
             return result;
         }
-
-        public static VariableProperty<T> ToVariable<T>(this BlobVariable<T> blobVariable) where T : struct
-        {
-            var variable = new VariableProperty<T>();
-            variable.ValueSource = blobVariable.Source;
-            switch (blobVariable.Source)
-            {
-            case ValueSource.Constant:
-            case ValueSource.ConstantComponent:
-            case ValueSource.ConstantScriptableObject:
-            case ValueSource.ConstantNode:
-                variable.ConstantValue = blobVariable.ConstantData;
-                break;
-            case ValueSource.DynamicComponent:
-                var component = blobVariable.ComponentData;
-                var (componentType, fieldInfo) = GetComponentDataType(component.StableHash, component.Offset);
-                variable.ComponentValue = $"{componentType.Name}.{fieldInfo.Name}";
-                break;
-            case ValueSource.DynamicScriptableObject:
-                throw new NotImplementedException();
-            case ValueSource.DynamicNode:
-                throw new NotImplementedException();
-            default:
-                throw new ArgumentOutOfRangeException();
-            }
-            return variable;
-        }
+        //
+        // public static VariableProperty<T> ToVariable<T>(this BlobVariable<T> blobVariable) where T : struct
+        // {
+        //     var variable = new VariableProperty<T>();
+        //     variable.ValueSource = blobVariable.Source;
+        //     switch (blobVariable.Source)
+        //     {
+        //     case ValueSource.Custom:
+        //     case ValueSource.ConstantUnityComponent:
+        //     case ValueSource.ConstantScriptableObject:
+        //     case ValueSource.ConstantNode:
+        //         variable.ConstantValue = blobVariable.ConstantData;
+        //         break;
+        //     case ValueSource.DynamicComponent:
+        //         var component = blobVariable.ComponentData;
+        //         var (componentType, fieldInfo) = GetComponentDataType(component.StableHash, component.Offset);
+        //         variable.ComponentValue = $"{componentType.Name}.{fieldInfo.Name}";
+        //         break;
+        //     case ValueSource.DynamicScriptableObject:
+        //         throw new NotImplementedException();
+        //     case ValueSource.DynamicNode:
+        //         throw new NotImplementedException();
+        //     default:
+        //         throw new ArgumentOutOfRangeException();
+        //     }
+        //     return variable;
+        // }
     }
 }
