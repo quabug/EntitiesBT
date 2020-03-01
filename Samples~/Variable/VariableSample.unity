@@ -152,20 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   String: aabbbcccc
   IntArray: a00c0000020000002000000004000000b3150000
-  DestVariable:
-    id: 0
-  Trees:
-  - id: 1
-  references:
-    version: 1
-    00000000:
-      type: {class: ComponentIntProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
-      data:
-        FallbackValue: 0
-        ComponentTypeName: 
-        ComponentValueName: 
-    00000001:
-      type: {class: , ns: , asm: }
 --- !u!4 &327906298
 Transform:
   m_ObjectHideFlags: 0
