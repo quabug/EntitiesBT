@@ -7,11 +7,11 @@ namespace EntitiesBT.Variable
     [Serializable]
     public class CustomVariableProperty<T> : VariableProperty<T> where T : struct
     {
+        public override int VariablePropertyTypeId => ID;
         public T CustomValue;
 
-        public override void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
+        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
         {
-            blobVariable.VariableId = ID;
             builder.Allocate(ref blobVariable, CustomValue);
         }
 

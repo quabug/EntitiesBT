@@ -18,9 +18,9 @@ namespace EntitiesBT.Sample
 
         protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] builders)
         {
+            LongVariable.Allocate(ref builder, ref data.LongVariable);
             builder.AllocateString(ref data.String, String);
             builder.AllocateArray(ref data.IntArray, IntArray);
-            LongVariable.Allocate(ref builder, ref data.LongVariable);
             DestVariable.Allocate(ref builder, ref data.DestVariable);
             SrcVariable.Allocate(ref builder, ref data.SrcVariable);
         }

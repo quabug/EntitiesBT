@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +118,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -157,18 +159,29 @@ MonoBehaviour:
   DestVariable:
     id: 1
   SrcVariable:
-    id: 1
+    id: 2
   references:
     version: 1
     00000000:
-      type: {class: Int64ComponentVariableProperty`1, ns: EntitiesBT.Variable.Sample,
+      type: {class: Int64CustomVariableProperty`1, ns: EntitiesBT.Variable.Sample,
         asm: VariableProperties}
       data:
-        FallbackValue: 111111
-        ComponentTypeName: 
-        ComponentValueName: 
+        CustomValue: 11112222
     00000001:
-      type: {class: , ns: , asm: }
+      type: {class: Int32ComponentVariableProperty`1, ns: EntitiesBT.Variable.Sample,
+        asm: VariableProperties}
+      data:
+        FallbackValue: 3322
+        ComponentTypeName: ComponentVariableData
+        ComponentValueName: OutputValue
+    00000002:
+      type: {class: SingleScriptableObjectVariableProperty`1, ns: EntitiesBT.Variable.Sample,
+        asm: VariableProperties}
+      data:
+        FallbackValue: 888.222
+        ScriptableObject: {fileID: 11400000, guid: cee16ca8c8b594efb867f66c8d699937,
+          type: 2}
+        ScriptableObjectValueName: FloatValue
 --- !u!4 &327906298
 Transform:
   m_ObjectHideFlags: 0
@@ -216,7 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
-  _rootNode: {fileID: 0}
+  _rootNode: {fileID: 327906297}
   _thread: 0
   _autoAddBehaviorTreeComponents: 1
 --- !u!114 &1392768647

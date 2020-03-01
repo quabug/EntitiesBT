@@ -12,21 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd078efebeb340edaa2b83df6eba9a83, type: 3}
   m_Name: Variables
   m_EditorClassIdentifier: 
-  Value: 0
-  m_Trees:
-  - id: 0
-  - id: 0
-  - id: 0
-  - id: 0
-  - id: 0
-  - id: 0
-  - id: 0
-  - id: 0
-  - id: 0
-  - id: 0
-  - id: 0
-  - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: , ns: , asm: }
+  IntValue: 3332222
+  FloatValue: 44221.223

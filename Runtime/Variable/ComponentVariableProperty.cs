@@ -15,13 +15,13 @@ namespace EntitiesBT.Variable
     [Serializable]
     public class ComponentVariableProperty<T> : VariableProperty<T> where T : struct
     {
+        public override int VariablePropertyTypeId => ID;
         public T FallbackValue;
         public string ComponentTypeName;
         public string ComponentValueName;
-
-        public override void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
+        
+        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
         {
-            blobVariable.VariableId = ID;
             var (hash, offset, valueType) = Utility.GetTypeHashAndFieldOffset(ComponentTypeName, ComponentValueName);
             if (valueType != typeof(T) || hash == 0)
             {
@@ -31,7 +31,7 @@ namespace EntitiesBT.Variable
             }
             builder.Allocate(ref blobVariable, new DynamicComponentData{StableHash = hash, Offset = offset});
         }
-        
+
         static ComponentVariableProperty()
         {
             VariableRegisters<T>.Register(ID, GetData, GetDataRef);
