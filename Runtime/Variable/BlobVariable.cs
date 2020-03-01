@@ -4,36 +4,12 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace EntitiesBT.Variable
 {
-    public struct DynamicComponentData
-    {
-        public ulong StableHash;
-        public int Offset;
-        public bool IsReadOnly;
-    }
-    //
-    // public struct DynamicScriptableObjectData
-    // {
-    //     public Hash128 Id;
-    //     public int Offset;
-    // }
-
-    public struct DynamicNodeData
-    {
-        public int Index;
-        public int Offset;
-    }
-    
     public struct BlobVariable<T> where T : struct
     {
-        public ValueSource Source;
+        public int VariableId;
         public int OffsetPtr;
-
-        public ref T ConstantData => ref Value<T>();
-        public ref DynamicComponentData ComponentData => ref Value<DynamicComponentData>();
-        // public ref DynamicScriptableObjectData ScriptableObjectData => ref Value<DynamicScriptableObjectData>();
-        public ref DynamicNodeData NodeData => ref Value<DynamicNodeData>();
         
-        private unsafe ref TValue Value<TValue>() where TValue : struct
+        public unsafe ref TValue Value<TValue>() where TValue : struct
         {
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
             if(OffsetPtr == 0)
@@ -47,43 +23,13 @@ namespace EntitiesBT.Variable
         
         public T GetData(int index, INodeBlob blob, IBlackboard bb)
         {
-            switch (Source)
-            {
-            case ValueSource.CustomConstant:
-            case ValueSource.ComponentConstant:
-            case ValueSource.ScriptableObjectConstant:
-            case ValueSource.NodeConstant:
-                return ConstantData;
-            case ValueSource.ComponentDynamic:
-                return bb.GetData<T>(ComponentData.StableHash, ComponentData.Offset);
-            case ValueSource.NodeDynamic:
-                throw new NotImplementedException();
-            default:
-                throw new ArgumentOutOfRangeException();
-            }
+            return VariableRegisters<T>.GET_DATA_FUNCS[VariableId](ref this, index, blob, bb);
         }
         
-        public ref T GetDataRef(int index, INodeBlob blob, IBlackboard bb)
+        public unsafe ref T GetDataRef(int index, INodeBlob blob, IBlackboard bb)
         {
-            switch (Source)
-            {
-            case ValueSource.CustomConstant:
-            case ValueSource.ComponentConstant:
-            case ValueSource.ScriptableObjectConstant:
-            case ValueSource.NodeConstant:
-                return ref ConstantData;
-            case ValueSource.ComponentDynamic:
-                return ref bb.GetDataRef<T>(ComponentData.StableHash, ComponentData.Offset);
-            case ValueSource.NodeDynamic:
-                throw new NotImplementedException();
-            default:
-                throw new ArgumentOutOfRangeException();
-            }
-        }
-        
-        public void SetData(int index, INodeBlob blob, IBlackboard bb, T value)
-        {
-            GetDataRef(index, blob, bb) = value;
+            var ptr = UnsafeUtility.AddressOf(ref VariableRegisters<T>.GET_DATA_REF_FUNCS[VariableId](ref this, index, blob, bb));
+            return ref UnsafeUtilityEx.AsRef<T>(ptr);
         }
     }
 }

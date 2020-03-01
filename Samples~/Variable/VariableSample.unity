@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,8 +118,6 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
-    maxJobWorkers: 0
-    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -152,26 +150,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LongVariable:
-    ValueSource: 0
-    ConstantValue: 111111
-    ComponentValue: 
-    ScriptableObject: {fileID: 0}
-    ScriptableObjectValueName: 
   String: aabbbcccc
   IntArray: a00c0000020000002000000004000000b3150000
   DestVariable:
-    ValueSource: 4
-    ConstantValue: 0
-    ComponentValue: ComponentVariableData.OutputValue
-    ScriptableObject: {fileID: 0}
-    ScriptableObjectValueName: 
-  SrcVariable:
-    ValueSource: 4
-    ConstantValue: 0
-    ComponentValue: ComponentVariableData.InputValue
-    ScriptableObject: {fileID: 0}
-    ScriptableObjectValueName: 
+    id: 0
+  Trees:
+  - id: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: ComponentIntProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      data:
+        FallbackValue: 0
+        ComponentTypeName: 
+        ComponentValueName: 
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!4 &327906298
 Transform:
   m_ObjectHideFlags: 0

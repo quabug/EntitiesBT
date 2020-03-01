@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
 namespace EntitiesBT.Variable
@@ -77,5 +78,13 @@ namespace EntitiesBT.Variable
         //     }
         //     return variable;
         // }
+        public static void Allocate<TValue, TFallback>(this BlobBuilder builder, ref BlobVariable<TFallback> blob, TValue value)
+            where TValue : struct
+            where TFallback : struct
+        {
+            ref var blobPtr = ref UnsafeUtilityEx.As<int, BlobPtr<TValue>>(ref blob.OffsetPtr);
+            ref var blobValue = ref builder.Allocate(ref blobPtr);
+            blobValue = value;
+        }
     }
 }

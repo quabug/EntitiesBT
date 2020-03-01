@@ -23,7 +23,7 @@ namespace EntitiesBT.Core
         public BehaviorNodeAttribute(string guid, BehaviorNodeType type = BehaviorNodeType.Action, string tickFunc = "Tick", string resetFunc = "Reset", string typesField = "Types")
         {
             Type = type;
-            Guid = new Guid(guid);
+            Guid = Guid.Parse(guid);
             Id = Guid.GetHashCode();
             TickFunc = tickFunc;
             ResetFunc = resetFunc;
