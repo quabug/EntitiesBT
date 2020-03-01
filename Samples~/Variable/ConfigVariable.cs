@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
-    [CreateAssetMenu(fileName = "Variables", menuName = "Test/Variables")]
+    [CreateAssetMenu(fileName = "TestVariables", menuName = "EntitiesBT/TestVariables")]
     public class ConfigVariable : ScriptableObject
     {
         public int Value;

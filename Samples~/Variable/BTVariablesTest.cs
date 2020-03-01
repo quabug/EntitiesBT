@@ -2,17 +2,19 @@ using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
 using EntitiesBT.Variable;
+using EntitiesBT.Variable.Sample;
 using Unity.Entities;
+using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
     public class BTVariablesTest : BTNode<VariablesTestNode>
     {
-        public VariableProperty<long> LongVariable;
+        [SerializeReferenceButton, SerializeReference] public Int64Property LongVariable;
         public string String;
         public int[] IntArray;
-        public VariableProperty<int> DestVariable;
-        public VariableProperty<float> SrcVariable;
+        [SerializeReferenceButton, SerializeReference] public Int32Property DestVariable;
+        [SerializeReferenceButton, SerializeReference] public SingleProperty SrcVariable;
 
         protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] builders)
         {
@@ -23,6 +25,7 @@ namespace EntitiesBT.Sample
             SrcVariable.Allocate(ref builder, ref data.SrcVariable);
         }
     }
+    
     [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
     public struct VariablesTestNode : INodeData
     {

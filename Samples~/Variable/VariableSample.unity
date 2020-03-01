@@ -150,8 +150,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LongVariable:
+    id: 0
   String: aabbbcccc
   IntArray: a00c0000020000002000000004000000b3150000
+  DestVariable:
+    id: 1
+  SrcVariable:
+    id: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: Int64ComponentVariableProperty`1, ns: EntitiesBT.Variable.Sample,
+        asm: VariableProperties}
+      data:
+        FallbackValue: 111111
+        ComponentTypeName: 
+        ComponentValueName: 
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!4 &327906298
 Transform:
   m_ObjectHideFlags: 0
@@ -199,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
-  _rootNode: {fileID: 327906297}
+  _rootNode: {fileID: 0}
   _thread: 0
   _autoAddBehaviorTreeComponents: 1
 --- !u!114 &1392768647
