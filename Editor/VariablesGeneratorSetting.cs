@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Variable;
@@ -16,26 +17,35 @@ using TypeAttributes = Mono.Cecil.TypeAttributes;
 namespace EntitiesBT.Editor
 {
     [CreateAssetMenu(fileName = "VariablesDllSetting", menuName = "EntitiesBT/VariableDllSetting")]
-    public class VariablesDllSetting : ScriptableObject
+    public class VariablesGeneratorSetting : ScriptableObject
     {
         public string[] Types;
         public string Filename = "VariableProperties";
+        public bool FilenameIncludeNamespace = true;
         public string Namespace = "EntitiesBT.Variable";
 
         [ContextMenu("CreateDll")]
-        public void Create()
+        public void CreateDll()
         {
-            var filePath = EditorUtility.SaveFilePanel("Save Dll", Application.dataPath, $"{Namespace}.{Filename}", "dll");
-            VariableDllGenerator.CreateDll(Filename, filePath, Namespace, Types);
+            var filename = FilenameIncludeNamespace ? $"{Namespace}.{Filename}" : Filename;
+            var filePath = EditorUtility.SaveFilePanel("Save Dll", Application.dataPath, filename, "dll");
+            VariableGenerator.CreateDll(Filename, filePath, Namespace, Types);
+        }
+        
+        [ContextMenu("CreateScript")]
+        public void CreateScript()
+        {
+            var filePath = EditorUtility.SaveFilePanel("Save Script", Application.dataPath, Filename, "cs");
+            VariableGenerator.CreateScript(filePath, Namespace, Types);
         }
     }
     
-    public static class VariableDllGenerator
+    public static class VariableGenerator
     {
-        public static void CreateDll(string filename, string filepath, string namespaceName, string[] types)
+        public static void CreateDll(string assemblyName, string filepath, string namespaceName, string[] types)
         {
             var dll = AssemblyDefinition.CreateAssembly(
-                new AssemblyNameDefinition(filename, new Version(0, 0, 0, 0)), filename, ModuleKind.Dll
+                new AssemblyNameDefinition(assemblyName, new Version(0, 0, 0, 0)), assemblyName, ModuleKind.Dll
             );
             var module = dll.MainModule;
             foreach (var type in _VALUE_TYPES.Value)
@@ -46,6 +56,54 @@ namespace EntitiesBT.Editor
             dll.Write(filepath);
         }
         
+        public static void CreateScript(string filepath, string @namespace, string[] types)
+        {
+            using (var writer = new StreamWriter(filepath))
+            {
+                writer.WriteLine(NamespaceBegin());
+                foreach (var type in _VALUE_TYPES.Value)
+                {
+                    if (types.Contains(type.FullName))
+                    {
+                        writer.WriteLine(CreateInterface(type));
+                        foreach (var propertyType in _PROPERTY_TYPES.Value)
+                            writer.WriteLine(CreateClass(type, propertyType));
+                    }
+                }
+                writer.WriteLine(NamespaceEnd());
+            }
+            AssetDatabase.Refresh();
+
+            string CreateInterface(Type type)
+            {
+                return $@"
+public interface {type.Name}Property
+{{
+    void Allocate(ref Unity.Entities.BlobBuilder builder, ref EntitiesBT.Variable.BlobVariable<{type.FullName}> blobVariable);
+}}
+";
+            }
+
+            string CreateClass(Type valueType, Type variablePropertyType)
+            {
+                return $@"
+public class {valueType.Name}{variablePropertyType.Name.Split('`')[0]} : {variablePropertyType.FullName.Split('`')[0]}<{valueType.FullName}>, {valueType.Name}Property
+{{
+}}
+";
+            }
+
+            string NamespaceBegin()
+            {
+                return $"namespace {@namespace}" + Environment.NewLine + "{" + Environment.NewLine;
+            }
+
+            string NamespaceEnd()
+            {
+                return Environment.NewLine + "}" + Environment.NewLine;
+            }
+        }
+
         private static void CreatePropertyInterface(this ModuleDefinition module, Type type, string namespaceName)
         {
 // public interface Int32Property
@@ -156,7 +214,7 @@ namespace EntitiesBT.Editor
         private static readonly Lazy<IEnumerable<Type>> _PROPERTY_TYPES = new Lazy<IEnumerable<Type>>(() => 
             AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => !type.IsAbstract && type.IsGenericType && type.IsSubclassOf(typeof(VariableProperty)))
+                .Where(type => !type.IsAbstract && type.IsGenericType && typeof(IVariableProperty).IsAssignableFrom(type))
         );
 
         private static bool HasSerializableAttribute(this Type type)

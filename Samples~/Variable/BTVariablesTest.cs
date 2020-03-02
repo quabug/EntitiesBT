@@ -10,11 +10,11 @@ namespace EntitiesBT.Sample
 {
     public class BTVariablesTest : BTNode<VariablesTestNode>
     {
-        [SerializeReferenceButton, SerializeReference] public Int64Property LongVariable;
+        [SerializeReference, SerializeReferenceButton] public Int64Property LongVariable;
         public string String;
         public int[] IntArray;
-        [SerializeReferenceButton, SerializeReference] public Int32Property DestVariable;
-        [SerializeReferenceButton, SerializeReference] public SingleProperty SrcVariable;
+        [SerializeReference, SerializeReferenceButton] public Int32Property DestVariable;
+        [SerializeReference, SerializeReferenceButton] public SingleProperty SrcVariable;
 
         protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] builders)
         {

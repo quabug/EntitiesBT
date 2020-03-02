@@ -163,25 +163,26 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: Int64CustomVariableProperty`1, ns: EntitiesBT.Variable.Sample,
-        asm: VariableProperties}
+      type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Variable.Sample,
+        asm: EntitiesBT.Sample.Variable}
       data:
-        CustomValue: 11112222
+        FallbackValue: 0
+        ComponentValueName: ComponentVariableData.LongValue
+        IsWritable: 0
     00000001:
-      type: {class: Int32ComponentVariableProperty`1, ns: EntitiesBT.Variable.Sample,
-        asm: VariableProperties}
+      type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Variable.Sample,
+        asm: EntitiesBT.Sample.Variable}
       data:
-        FallbackValue: 3322
-        ComponentTypeName: ComponentVariableData
-        ComponentValueName: OutputValue
+        FallbackValue: 0
+        ComponentValueName: ComponentVariableData.OutputValue
+        IsWritable: 0
     00000002:
-      type: {class: SingleScriptableObjectVariableProperty`1, ns: EntitiesBT.Variable.Sample,
-        asm: VariableProperties}
+      type: {class: SingleComponentVariableProperty, ns: EntitiesBT.Variable.Sample,
+        asm: EntitiesBT.Sample.Variable}
       data:
-        FallbackValue: 888.222
-        ScriptableObject: {fileID: 11400000, guid: cee16ca8c8b594efb867f66c8d699937,
-          type: 2}
-        ScriptableObjectValueName: FloatValue
+        FallbackValue: 0
+        ComponentValueName: SampleTimeDelayData.OneSecond
+        IsWritable: 0
 --- !u!4 &327906298
 Transform:
   m_ObjectHideFlags: 0
@@ -286,6 +287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputValue: 123.456
   OutputValue: 333
+  LongValue: 0
 --- !u!1 &1568700988
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using EntitiesBT.Components;
 using EntitiesBT.Entities;
 using UnityEditor;
 using UnityEditor.Experimental;
+using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
@@ -12,10 +13,10 @@ namespace EntitiesBT.Editor
     {
         static BehaviorTreePrefabFile()
         {
-            // not work
-            // PrefabStage.prefabSaved += OnPrefabSaved;
-            PrefabUtility.prefabInstanceUpdated -= OnPrefabSaved;
-            PrefabUtility.prefabInstanceUpdated += OnPrefabSaved;
+            PrefabStage.prefabSaved -= OnPrefabSaved;
+            PrefabStage.prefabSaved += OnPrefabSaved;
+            // PrefabUtility.prefabInstanceUpdated -= OnPrefabSaved;
+            // PrefabUtility.prefabInstanceUpdated += OnPrefabSaved;
         }
 
         static void OnPrefabSaved(GameObject prefab)

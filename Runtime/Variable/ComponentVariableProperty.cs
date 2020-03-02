@@ -9,7 +9,6 @@ namespace EntitiesBT.Variable
     {
         public ulong StableHash;
         public int Offset;
-        public bool IsReadOnly;
     }
     
     [Serializable]
@@ -17,19 +16,19 @@ namespace EntitiesBT.Variable
     {
         public override int VariablePropertyTypeId => ID;
         public T FallbackValue;
-        public string ComponentTypeName;
-        public string ComponentValueName;
+        [VariableComponentData] public string ComponentValueName;
+        public bool IsWritable = false;
         
         protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
         {
-            var (hash, offset, valueType) = Utility.GetTypeHashAndFieldOffset(ComponentTypeName, ComponentValueName);
-            if (valueType != typeof(T) || hash == 0)
+            var data = Utility.GetTypeHashAndFieldOffset(ComponentValueName);
+            if (data.Type != typeof(T) || data.Hash == 0)
             {
-                Debug.LogError($"ComponentVariable({ComponentTypeName}.{ComponentValueName}) is not valid, fallback to ConstantValue");
+                Debug.LogError($"ComponentVariable({ComponentValueName}) is not valid, fallback to ConstantValue");
                 builder.Allocate(ref blobVariable, FallbackValue);
                 return;
             }
-            builder.Allocate(ref blobVariable, new DynamicComponentData{StableHash = hash, Offset = offset});
+            builder.Allocate(ref blobVariable, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
         }
 
         static ComponentVariableProperty()
@@ -37,7 +36,7 @@ namespace EntitiesBT.Variable
             VariableRegisters<T>.Register(ID, GetData, GetDataRef);
         }
 
-        public static int ID = new Guid("4137908F-E81F-4D9C-8302-451421527330").GetHashCode();
+        public static readonly int ID = new Guid("4137908F-E81F-4D9C-8302-451421527330").GetHashCode();
         
         private static T GetData(ref BlobVariable<T> blobVariable, int index, INodeBlob blob, IBlackboard bb)
         {

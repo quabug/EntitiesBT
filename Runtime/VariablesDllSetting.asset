@@ -11,11 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f90e02d7d6784323bd6696496977dabc, type: 3}
   m_Name: VariablesDllSetting
-  m_EditorClassIdentifier: EntitiesBT.Editor:EntitiesBT.Editor:VariablesDllSetting
-  Types:
-  - System.Int32
-  - System.Int64
-  - System.Single
+  m_EditorClassIdentifier: 
+  Types: []
   Filename: VariableProperties
-  FilenameIncludeNamespace: 1
-  Namespace: EntitiesBT.Variable.Sample
+  Namespace: EntitiesBT.Variable

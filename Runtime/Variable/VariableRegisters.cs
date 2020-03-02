@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
+using UnityEngine;
 
 namespace EntitiesBT.Variable
 {
@@ -15,7 +16,11 @@ namespace EntitiesBT.Variable
 
         public static void Register(int id, GetDataFunc getter, GetDataRefFunc refGetter)
         {
-            if (GET_DATA_FUNCS.ContainsKey(id) || GET_DATA_REF_FUNCS.ContainsKey(id)) throw new DuplicateIdException();
+            if (GET_DATA_FUNCS.ContainsKey(id) || GET_DATA_REF_FUNCS.ContainsKey(id))
+            {
+                Debug.LogError($"");
+                throw new DuplicateIdException();
+            }
             GET_DATA_FUNCS[id] = getter ?? throw new InvalidGetDataFuncException();
             GET_DATA_REF_FUNCS[id] = refGetter ?? throw new InvalidGetDataRefFuncException();
         }

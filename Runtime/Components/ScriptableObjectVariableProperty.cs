@@ -13,6 +13,7 @@ namespace EntitiesBT.Components
         public override int VariablePropertyTypeId => ID;
         public T FallbackValue;
         public ScriptableObject ScriptableObject;
+        [VariableScriptableObjectValue("ScriptableObject")]
         public string ScriptableObjectValueName;
 
         protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)

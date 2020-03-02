@@ -7,5 +7,6 @@ namespace EntitiesBT.Sample
     {
         public float InputValue;
         public int OutputValue;
+        public long LongValue;
     }
 }
