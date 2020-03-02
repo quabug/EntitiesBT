@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Variable;
 using UnityEditor;
+using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
@@ -18,11 +20,65 @@ namespace EntitiesBT.Editor
              _PROPERTY_SET_VALUE_METHOD = typeof(SerializedProperty).GetMethod("SetManagedReferenceValueInternal", flags);
          }
          
-         public static FieldInfo GetFieldInfo(this SerializedProperty property)
+         public static (object field, FieldInfo fieldInfo) GetTargetField(this SerializedProperty property)
+         {
+             return property.GetFieldsByPath().ElementAt(1);
+         }
+         
+         public static (object field, FieldInfo fieldInfo) GetPropertyField(this SerializedProperty property)
+         {
+             return property.GetFieldsByPath().Last();
+         }
+         
+         public static FieldInfo GetTargetFieldInfo(this SerializedProperty property)
+         {
+             return property.GetFieldsByPath().ElementAt(1).fi;
+         }
+
+         public static IEnumerable<(object field, FieldInfo fi)> GetFieldsByPath(this SerializedProperty property)
+         {
+             var obj = (object)property.serializedObject.targetObject;
+             yield return (obj, null);
+             foreach (var fieldName in property.propertyPath.Split('.'))
+             {
+                 var t = Field(obj, fieldName);
+                 obj = t.field;
+                 yield return t;
+             }
+
+             (object field, FieldInfo fi) Field(object @object, string fieldName)
+             {
+                 var fieldInfo = @object.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                 var fieldValue = fieldInfo.GetValue(@object);
+                 return (fieldValue, fieldInfo);
+             }
+         }
+         
+         public static Type GetGenericType(this SerializedProperty property)
+         {
+             var fieldInfo = property.GetTargetFieldInfo();
+             var fieldValue = fieldInfo.GetValue(property.serializedObject.targetObject);
+             return fieldValue.GetType().GetGenericType();
+         }
+         
+         public static T GetCustomAttribute<T>(this SerializedProperty property) where T : Attribute
+         {
+             var (_, fieldInfo) = property.GetPropertyField();
+             return fieldInfo.GetCustomAttribute<T>();
+         }
+         
+         public static FieldInfo GetTargetFieldInfo(this SerializedProperty property, string fieldName)
          {
              const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-             var fieldName = property.propertyPath.Split('.')[0];
              return property.serializedObject.targetObject.GetType().GetField(fieldName, flags);
+         }
+
+         public static object GetSiblingFieldValue(this SerializedProperty property, string fieldName)
+         {
+             var pathCount = property.propertyPath.Split('.').Length;
+             var obj = property.GetFieldsByPath().ElementAt(pathCount - 1).field;
+             var fieldInfo = obj.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+             return fieldInfo.GetValue(obj);
          }
 
          public static Type GetGenericType(this Type type)
@@ -34,24 +90,17 @@ namespace EntitiesBT.Editor
              }
              return null;
          }
-         //
-         // public static VariableProperty<> GetVariable(this SerializedProperty property, FieldInfo fieldInfo)
-         // {
-         //     return (VariableProperty)fieldInfo.GetValue(property.serializedObject.targetObject);
-         // }
-         
-         // public static void SetVariable(this SerializedProperty property, FieldInfo fieldInfo, object variable)
-         // {
-         //     fieldInfo.SetValue(property.serializedObject.targetObject, variable);
-         //     // SerializedProperty.VerifyFlags.IteratorNotAtEnd == 2
-         //     // _PROPERTY_VERIFY_METHOD.Invoke(property, new object[] { 2 });
-         //     // _PROPERTY_SET_VALUE_METHOD.Invoke(property, new[] { variable });
-         // }
-         //
-         // public static object CreateVariable(this FieldInfo fieldInfo, Type variablePropertyType)
-         // {
-         //     var type = variablePropertyType.MakeGenericType(fieldInfo.GetGenericType());
-         //     return Activator.CreateInstance(type);
-         // }
+
+         public static Func<Rect, string, string[], int> PopupFunc(this SerializedProperty property)
+         {
+             return (position, label, options) =>
+             {
+                 var optionIndex = Array.IndexOf(options, property.stringValue);
+                 if (optionIndex < 0) optionIndex = 0;
+                 optionIndex = EditorGUI.Popup(position, label, optionIndex, options);
+                 property.stringValue = optionIndex < options.Length ? options[optionIndex] : "";
+                 return optionIndex;
+             };
+         }
     }
 }

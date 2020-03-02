@@ -14,10 +14,17 @@ namespace EntitiesBT.Variable
     [Serializable]
     public class ComponentVariableProperty<T> : VariableProperty<T> where T : struct
     {
+        public enum AccessMode
+        {
+            ReadOnly,
+            ReadWrite,
+            Optional
+        }
+        
         public override int VariablePropertyTypeId => ID;
         public T FallbackValue;
         [VariableComponentData] public string ComponentValueName;
-        public bool IsWritable = false;
+        public AccessMode Mode;
         
         protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
         {

@@ -168,21 +168,22 @@ MonoBehaviour:
       data:
         FallbackValue: 0
         ComponentValueName: ComponentVariableData.LongValue
-        IsWritable: 0
+        Mode: 2
     00000001:
       type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Variable.Sample,
         asm: EntitiesBT.Sample.Variable}
       data:
         FallbackValue: 0
         ComponentValueName: ComponentVariableData.OutputValue
-        IsWritable: 0
+        Mode: 1
     00000002:
-      type: {class: SingleComponentVariableProperty, ns: EntitiesBT.Variable.Sample,
+      type: {class: SingleScriptableObjectVariableProperty, ns: EntitiesBT.Variable.Sample,
         asm: EntitiesBT.Sample.Variable}
       data:
         FallbackValue: 0
-        ComponentValueName: SampleTimeDelayData.OneSecond
-        IsWritable: 0
+        ScriptableObject: {fileID: 11400000, guid: cee16ca8c8b594efb867f66c8d699937,
+          type: 2}
+        ScriptableObjectValueName: FloatValue
 --- !u!4 &327906298
 Transform:
   m_ObjectHideFlags: 0
