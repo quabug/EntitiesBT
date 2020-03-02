@@ -13,7 +13,7 @@ namespace EntitiesBT.DebugView
 
         static DebugComponentLookUp()
         {
-            List<(int nodeTypeId, Type debugViewType)> debugViews = new List<(int nodeTypeId, Type debugViewType)>();
+            var debugViews = new List<(int nodeTypeId, Type debugViewType)>();
             
             foreach (var type in AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes()))

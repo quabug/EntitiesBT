@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Entities;
 
 namespace EntitiesBT.Variable
 {
@@ -20,15 +22,17 @@ namespace EntitiesBT.Variable
                 return ref UnsafeUtilityEx.AsRef<TValue>((byte*)thisPtr + OffsetPtr);
             }
         }
+
+        public IEnumerable<ComponentType> ComponentAccessList => VariableRegisters<T>.GetComponentAccess(VariableId)(ref this);
         
         public T GetData(int index, INodeBlob blob, IBlackboard bb)
         {
-            return VariableRegisters<T>.GET_DATA_FUNCS[VariableId](ref this, index, blob, bb);
+            return VariableRegisters<T>.GetData(VariableId)(ref this, index, blob, bb);
         }
         
         public unsafe ref T GetDataRef(int index, INodeBlob blob, IBlackboard bb)
         {
-            var ptr = UnsafeUtility.AddressOf(ref VariableRegisters<T>.GET_DATA_REF_FUNCS[VariableId](ref this, index, blob, bb));
+            var ptr = UnsafeUtility.AddressOf(ref VariableRegisters<T>.GetDataRef(VariableId)(ref this, index, blob, bb));
             return ref UnsafeUtilityEx.AsRef<T>(ptr);
         }
     }
