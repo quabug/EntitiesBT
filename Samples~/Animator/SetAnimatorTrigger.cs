@@ -1,4 +1,5 @@
-﻿using EntitiesBT.Components;
+﻿using System.Collections.Generic;
+using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using Unity.Entities;
@@ -20,8 +21,11 @@ namespace EntitiesBT.Sample
     public struct SetAnimatorTriggerNode : INodeData
     {
         public int Value;
-        
-        public static readonly ComponentType[] Types = {ComponentType.ReadWrite<Animator>()};
+
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadWrite<Animator>();
+        }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {

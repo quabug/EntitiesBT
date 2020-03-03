@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
@@ -34,6 +36,15 @@ namespace EntitiesBT.Sample
         public BlobArray<int> IntArray;
         public BlobVariable<int> DestVariable;
         public BlobVariable<float> SrcVariable;
+
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            ref var data = ref blob.GetNodeData<VariablesTestNode>(index);
+            return data.LongVariable.ComponentAccessList
+                .Concat(data.DestVariable.ComponentAccessList)
+                .Concat(data.SrcVariable.ComponentAccessList)
+            ;
+        }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {

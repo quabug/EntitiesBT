@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
@@ -24,11 +25,11 @@ namespace EntitiesBT.Extensions.InputSystem
 #endif
         public Guid ActionId { get; set; }
         
-        public static readonly ComponentType[] Types =
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
-            ComponentType.ReadWrite<BTInputMoveData>()
-          , ComponentType.ReadOnly<InputActionAssetComponent>()
-        };
+            yield return ComponentType.ReadWrite<BTInputMoveData>();
+            yield return ComponentType.ReadOnly<InputActionAssetComponent>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

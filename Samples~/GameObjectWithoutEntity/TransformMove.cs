@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
 using EntitiesBT.Entities;
@@ -22,10 +24,11 @@ namespace EntitiesBT.Sample
     {
         public Vector3 Velocity;
         
-        public static readonly ComponentType[] Types = {
-            ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()
-          , ComponentType.ReadWrite<Transform>()
-        };
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
+            yield return ComponentType.ReadWrite<Transform>();
+        }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

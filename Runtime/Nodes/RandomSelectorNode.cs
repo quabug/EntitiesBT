@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
@@ -10,7 +11,10 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("BA0106CA-618F-409A-903A-973B89F1470A", BehaviorNodeType.Composite)]
     public struct RandomSelectorNode : INodeData
     {
-        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<BehaviorTreeRandom>() };
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadWrite<BehaviorTreeRandom>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {

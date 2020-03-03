@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
@@ -9,6 +10,8 @@ namespace EntitiesBT.Nodes
     public struct PrioritySelectorNode : INodeData
     {
         public BlobArray<int> Weights;
+        
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {

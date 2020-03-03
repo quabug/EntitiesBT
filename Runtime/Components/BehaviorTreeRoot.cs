@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using EntitiesBT.Entities;
 using Unity.Entities;
@@ -8,17 +9,30 @@ namespace EntitiesBT.Components
     [DisallowMultipleComponent]
     public class BehaviorTreeRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
+        [Flags]
+        private enum AutoCreateType
+        {
+            BehaviorTreeComponent = 1 << 0
+          , ReadOnly = 1 << 1
+          , ReadWrite = 1 << 2
+        }
+        
         [Header("Order: File > RootNode")]
         [SerializeField] private TextAsset _file = default;
         [SerializeField] private BTNode _rootNode;
         [SerializeField] private BehaviorTreeThread _thread = BehaviorTreeThread.ForceRunOnMainThread;
         
         [Tooltip("add queried components of behavior tree into entity automatically")]
-        [SerializeField] private bool _autoAddBehaviorTreeComponents = true;
+        [SerializeField] private AutoCreateType _autoCreateTypes = AutoCreateType.BehaviorTreeComponent;
         
         private void Reset()
         {
             _rootNode = GetComponentInChildren<BTNode>();
+        }
+
+        private bool HasFlag(AutoCreateType flag)
+        {
+            return (_autoCreateTypes & flag) == flag;
         }
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
@@ -27,22 +41,25 @@ namespace EntitiesBT.Components
                 _rootNode.gameObject.AddComponent<StopConvertToEntity>();
             
             var blob = _file != null ? _file.ToBlob() : _rootNode.ToBlob();
-            entity.AddBehaviorTree(dstManager, blob, _thread);
+            var blobRef = new NodeBlobRef {BlobRef = blob};
+            entity.AddBehaviorTree(dstManager, blobRef, _thread);
 
-            if (_autoAddBehaviorTreeComponents)
+            if (_autoCreateTypes > 0)
             {
                 var accessTypes = dstManager.HasComponent<BlackboardDataQuery>(entity)
                     ? dstManager.GetSharedComponentData<BlackboardDataQuery>(entity).Value
-                    : blob.GetAccessTypes()
+                    : blobRef.GetAccessTypes()
                 ;
 
                 foreach (var componentType in accessTypes)
                 {
                     if (dstManager.HasComponent(entity, componentType)) continue;
-                    var type = TypeManager.GetType(componentType.TypeIndex);
-                    var attribute = type?.GetCustomAttribute<BehaviorTreeComponentAttribute>();
-                    if (attribute == null) continue;
-                    dstManager.AddComponent(entity, componentType);
+                    var shouldCreate =
+                        HasFlag(AutoCreateType.ReadOnly) && componentType.AccessModeType == ComponentType.AccessMode.ReadOnly
+                        || HasFlag(AutoCreateType.ReadWrite) && componentType.AccessModeType == ComponentType.AccessMode.ReadWrite
+                        || HasFlag(AutoCreateType.BehaviorTreeComponent) && TypeManager.GetType(componentType.TypeIndex)?.GetCustomAttribute<BehaviorTreeComponentAttribute>() != null
+                    ;
+                    if (shouldCreate) dstManager.AddComponent(entity, componentType);
                 }
             }
         }

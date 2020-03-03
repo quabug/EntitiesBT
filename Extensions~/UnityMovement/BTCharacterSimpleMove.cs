@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
@@ -70,11 +72,11 @@ namespace EntitiesBT.Extensions.UnityMovement
     [StructLayout(LayoutKind.Explicit), BehaviorNode("F372737E-7671-4F64-B994-253EE3191392")]
     public struct CharacterSimpleMoveWithComponentVelocityNode : INodeData
     {
-        public static readonly ComponentType[] Types =
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blobs)
         {
-            ComponentType.ReadWrite<CharacterController>()
-          , ComponentType.ReadOnly<BTCharacterSimpleMoveVelocity>()
-        };
+            yield return ComponentType.ReadWrite<CharacterController>();
+            yield return ComponentType.ReadOnly<BTCharacterSimpleMoveVelocity>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
@@ -89,12 +91,15 @@ namespace EntitiesBT.Extensions.UnityMovement
     public struct CharacterSimpleMoveWithCustomGlobalVelocityNode : INodeData
     {
         public Vector3 Velocity;
-        
-        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<CharacterController>() };
+
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadWrite<CharacterController>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var controller = bb.GetData<UnityEngine.CharacterController>();
+            var controller = bb.GetData<CharacterController>();
             if (controller == null) return NodeState.Failure;
             controller.SimpleMove(blob.GetNodeData<CharacterSimpleMoveWithCustomGlobalVelocityNode>(index).Velocity);
             return NodeState.Success;
@@ -105,8 +110,11 @@ namespace EntitiesBT.Extensions.UnityMovement
     public struct CharacterSimpleMoveWithCustomLocalVelocityNode : INodeData
     {
         public Vector3 Velocity;
-        
-        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<CharacterController>() };
+
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadWrite<CharacterController>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

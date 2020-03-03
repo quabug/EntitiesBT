@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
@@ -24,11 +26,11 @@ namespace EntitiesBT.Samples
     [StructLayout(LayoutKind.Explicit), BehaviorNode("7896AD37-C525-4D4F-8ECC-BF375F34FF9A")]
     public struct InputLookToRotationNode : INodeData
     {
-        public static readonly ComponentType[] Types =
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
-            ComponentType.ReadOnly<BTInputLookData>()
-            , ComponentType.ReadWrite<BTTransformRotationData>()
-        };
+            yield return ComponentType.ReadOnly<BTInputLookData>();
+            yield return ComponentType.ReadWrite<BTTransformRotationData>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

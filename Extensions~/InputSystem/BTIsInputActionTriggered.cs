@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using EntitiesBT.Core;
 using Unity.Entities;
 
@@ -10,8 +11,11 @@ namespace EntitiesBT.Extensions.InputSystem
     public struct IsInputActionTriggeredNode : IInputActionNodeData
     {
         public Guid ActionId { get; set; }
-        
-        public static readonly ComponentType[] Types = { ComponentType.ReadOnly<InputActionAssetComponent>() };
+
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadOnly<InputActionAssetComponent>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

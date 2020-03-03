@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
@@ -10,8 +11,11 @@ namespace EntitiesBT.Nodes
     {
         public float Sum;
         public BlobArray<float> Weights;
-        
-        public static readonly ComponentType[] Types = { ComponentType.ReadWrite<BehaviorTreeRandom>() };
+
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadWrite<BehaviorTreeRandom>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {

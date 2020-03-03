@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Extensions.InputSystem;
@@ -25,11 +26,11 @@ namespace EntitiesBT.Samples
     {
         public float Speed;
         
-        public static readonly ComponentType[] Types =
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
-            ComponentType.ReadOnly<BTInputMoveData>()
-            , ComponentType.ReadWrite<BTCharacterSimpleMoveVelocity>()
-        };
+            yield return ComponentType.ReadOnly<BTInputMoveData>();
+            yield return ComponentType.ReadWrite<BTCharacterSimpleMoveVelocity>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

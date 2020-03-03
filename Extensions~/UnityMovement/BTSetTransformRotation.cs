@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
@@ -68,11 +69,11 @@ namespace EntitiesBT.Extensions.UnityMovement
     [StructLayout(LayoutKind.Explicit), BehaviorNode("7FCFF548-4D65-402A-B885-20633923DC22")]
     public struct SetTransformRotationWithComponentRotationNode : INodeData
     {
-        public static readonly ComponentType[] Types =
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
-            ComponentType.ReadWrite<Transform>()
-          , ComponentType.ReadOnly<BTTransformRotationData>()
-        };
+            yield return ComponentType.ReadWrite<Transform>();
+            yield return ComponentType.ReadOnly<BTTransformRotationData>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
@@ -89,11 +90,11 @@ namespace EntitiesBT.Extensions.UnityMovement
     {
         public quaternion Rotation;
         
-        public static readonly ComponentType[] Types =
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
-            ComponentType.ReadWrite<Transform>()
-          , ComponentType.ReadOnly<BTTransformRotationData>()
-        };
+            yield return ComponentType.ReadWrite<Transform>();
+            yield return ComponentType.ReadOnly<BTTransformRotationData>();
+        }
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

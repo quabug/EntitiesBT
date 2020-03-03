@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
+using Unity.Entities;
 using UnityEngine.UIElements;
 
 namespace EntitiesBT.Nodes
@@ -11,6 +13,8 @@ namespace EntitiesBT.Nodes
     {
         public int TickTimes;
         public NodeState BreakStates;
+        
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {

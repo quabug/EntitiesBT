@@ -8,6 +8,8 @@ namespace EntitiesBT.Core
 
     public interface INodeBlob
     {
+        int Count { get; }
+        
         int GetTypeId(int nodeIndex);
         int GetEndIndex(int nodeIndex);
         int GetNodeDataSize(int startNodeIndex, int count = 1);

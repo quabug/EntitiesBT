@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
 using EntitiesBT.DebugView;
@@ -26,10 +28,11 @@ namespace EntitiesBT.Sample
     {
         public float3 Velocity;
         
-        public static readonly ComponentType[] Types = {
-            ComponentType.ReadWrite<Translation>()
-          , ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()
-        };
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadWrite<Translation>();
+            yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
+        }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
