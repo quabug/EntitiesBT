@@ -61,18 +61,6 @@ namespace EntitiesBT.Variable
             new Lazy<ILookup<Type, ComponentFieldData>>(
                 () => _COMPONENT_FIELDS.Value.ToLookup(t => t.Type, t => t)
             );
-        //
-        // private static readonly Lazy<Dictionary<(ulong hash, int offset), (Type componentType, FieldInfo componentDataField)>> _VALUE_TYPE_MAP =
-        //     new Lazy<Dictionary<(ulong hash, int offset), (Type componentType, FieldInfo componentDataField)>>(() =>
-        //     {
-        //         return _VALUES.Value.ToDictionary(t => (t.hash, t.offset), t => (t.componentType, t.field));
-        //     });
-        //
-        // private static readonly Lazy<ILookup<Type, >> _VALUE_TYPE_MAP =
-        //     new Lazy<Dictionary<(ulong hash, int offset), (Type componentType, FieldInfo componentDataField)>>(() =>
-        //     {
-        //         return _VALUES.Value.ToDictionary(t => (t.hash, t.offset), t => (t.componentType, t.field));
-        //     });
 
         public static ComponentFieldData GetTypeHashAndFieldOffset(string componentValue)
         {

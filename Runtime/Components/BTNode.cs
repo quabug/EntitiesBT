@@ -89,11 +89,11 @@ namespace EntitiesBT.Components
     {
         protected override Type NodeType => typeof(T);
 
-        protected override unsafe void Build(void* dataPtr, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders)
+        protected override unsafe void Build(void* dataPtr, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            Build(ref UnsafeUtilityEx.AsRef<T>(dataPtr), blobBuilder, builders);
+            Build(ref UnsafeUtilityEx.AsRef<T>(dataPtr), builder, tree);
         }
         
-        protected virtual void Build(ref T data, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders) {}
+        protected virtual void Build(ref T data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree) {}
     }
 }

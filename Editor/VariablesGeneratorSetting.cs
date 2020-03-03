@@ -16,7 +16,7 @@ using TypeAttributes = Mono.Cecil.TypeAttributes;
 
 namespace EntitiesBT.Editor
 {
-    [CreateAssetMenu(fileName = "VariablesDllSetting", menuName = "EntitiesBT/VariableDllSetting")]
+    [CreateAssetMenu(fileName = "VariablesGeneratorSetting", menuName = "EntitiesBT/VariableGeneratorSetting")]
     public class VariablesGeneratorSetting : ScriptableObject
     {
         public string[] Types;
@@ -24,20 +24,22 @@ namespace EntitiesBT.Editor
         public bool FilenameIncludeNamespace = true;
         public string Namespace = "EntitiesBT.Variable";
 
-        [ContextMenu("CreateDll")]
+        // [ContextMenu("CreateDll")]
         public void CreateDll()
         {
             var filename = FilenameIncludeNamespace ? $"{Namespace}.{Filename}" : Filename;
-            var filePath = EditorUtility.SaveFilePanel("Save Dll", Application.dataPath, filename, "dll");
+            var filePath = EditorUtility.SaveFilePanel("Save Dll", Directory, filename, "dll");
             VariableGenerator.CreateDll(Filename, filePath, Namespace, Types);
         }
         
         [ContextMenu("CreateScript")]
         public void CreateScript()
         {
-            var filePath = EditorUtility.SaveFilePanel("Save Script", Application.dataPath, Filename, "cs");
+            var filePath = EditorUtility.SaveFilePanel("Save Script", Directory, Filename, "cs");
             VariableGenerator.CreateScript(filePath, Namespace, Types);
         }
+
+        public string Directory => Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
     }
     
     public static class VariableGenerator
@@ -68,6 +70,7 @@ namespace EntitiesBT.Editor
                         writer.WriteLine(CreateInterface(type));
                         foreach (var propertyType in _PROPERTY_TYPES.Value)
                             writer.WriteLine(CreateClass(type, propertyType));
+                        writer.WriteLine();
                     }
                 }
                 writer.WriteLine(NamespaceEnd());
@@ -76,21 +79,12 @@ namespace EntitiesBT.Editor
 
             string CreateInterface(Type type)
             {
-                return $@"
-public interface {type.Name}Property
-{{
-    void Allocate(ref Unity.Entities.BlobBuilder builder, ref EntitiesBT.Variable.BlobVariable<{type.FullName}> blobVariable);
-}}
-";
+                return $"public interface {type.Name}Property {{ void Allocate(ref Unity.Entities.BlobBuilder builder, ref EntitiesBT.Variable.BlobVariable<{type.FullName}> blobVariable); }}";
             }
 
             string CreateClass(Type valueType, Type variablePropertyType)
             {
-                return $@"
-public class {valueType.Name}{variablePropertyType.Name.Split('`')[0]} : {variablePropertyType.FullName.Split('`')[0]}<{valueType.FullName}>, {valueType.Name}Property
-{{
-}}
-";
+                return $"public class {valueType.Name}{variablePropertyType.Name.Split('`')[0]} : {variablePropertyType.FullName.Split('`')[0]}<{valueType.FullName}>, {valueType.Name}Property {{ }}";
             }
 
             string NamespaceBegin()
@@ -214,7 +208,10 @@ public class {valueType.Name}{variablePropertyType.Name.Split('`')[0]} : {variab
         private static readonly Lazy<IEnumerable<Type>> _PROPERTY_TYPES = new Lazy<IEnumerable<Type>>(() => 
             AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly => assembly.GetTypes())
-                .Where(type => !type.IsAbstract && type.IsGenericType && typeof(IVariableProperty).IsAssignableFrom(type))
+                .Where(type => !type.IsAbstract
+                               && type.IsGenericType
+                               && typeof(IVariableProperty).IsAssignableFrom(type)
+                               && type != typeof(VariableProperty<>))
         );
 
         private static bool HasSerializableAttribute(this Type type)

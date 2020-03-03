@@ -1,15 +1,12 @@
 {
-    "name": "EntitiesBT.Extensions.InputSystem",
+    "name": "EntitiesBT.Variable",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c",
         "GUID:c7babe7561eb244059259745ef27b866",
-        "GUID:d3630359ae08047918d5cd6cddd51767",
         "GUID:734d92eba21c94caba915361bd5ac177",
-        "GUID:d8b63aba1907145bea998dd612889d6b",
-        "GUID:b7637dfa67a9e47fcbbcbbd1d2845de3",
         "GUID:8819f35a0fc84499b990e90a4ca1911f",
-        "GUID:73106583b323919458c1e05166706ce3",
-        "GUID:6bb8ec50deb7643aaab740da2b40065c"
+        "GUID:e0cd26848372d4e5c891c569017e11f1",
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:d3630359ae08047918d5cd6cddd51767"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -4,7 +4,6 @@ using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
 using EntitiesBT.Variable;
-using EntitiesBT.Variable.Sample;
 using Unity.Entities;
 using UnityEngine;
 
@@ -39,7 +38,7 @@ namespace EntitiesBT.Sample
 
         public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
-            ref var data = ref blob.GetNodeData<VariablesTestNode>(index);
+            ref var data = ref blob.GetNodeDefaultData<VariablesTestNode>(index);
             return data.LongVariable.ComponentAccessList
                 .Concat(data.DestVariable.ComponentAccessList)
                 .Concat(data.SrcVariable.ComponentAccessList)
