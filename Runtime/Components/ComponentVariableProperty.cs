@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
+using EntitiesBT.Variable;
 using Unity.Entities;
 using UnityEngine;
 
-namespace EntitiesBT.Variable
+namespace EntitiesBT.Components
 {
     public struct DynamicComponentData
     {

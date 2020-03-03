@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace EntitiesBT.Variable
+namespace EntitiesBT.Components
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class VariableComponentDataAttribute : PropertyAttribute {}
