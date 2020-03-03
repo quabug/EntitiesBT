@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+#if UNITY_EDITOR
+
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Entities;
@@ -38,3 +39,5 @@ namespace EntitiesBT.Test
         }
     }
 }
+
+#endif

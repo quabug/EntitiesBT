@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Entities;
@@ -30,3 +32,5 @@ namespace EntitiesBT.Test
         protected override void Build(ref NodeA data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __) => data.A = A;
     }
 }
+
+#endif

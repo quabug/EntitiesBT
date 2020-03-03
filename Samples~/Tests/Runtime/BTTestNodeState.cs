@@ -1,7 +1,9 @@
+#if UNITY_EDITOR
+
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using NUnit.Framework;
 using Unity.Entities;
+using UnityEngine.Assertions;
 
 namespace EntitiesBT.Test
 {
@@ -43,3 +45,5 @@ namespace EntitiesBT.Test
         }
     }
 }
+
+#endif
