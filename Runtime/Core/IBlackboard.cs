@@ -1,4 +1,6 @@
+using System;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Entities;
 
 namespace EntitiesBT.Core
 {
@@ -48,6 +50,21 @@ namespace EntitiesBT.Core
             // TODO: type safety check
             var dataPtr = componentPtr + componentDataOffset;
             return ref UnsafeUtilityEx.AsRef<T>(dataPtr);
+        }
+
+        public static int FetchTypeIndex(this object key)
+        {
+            switch (key)
+            {
+            case Type type:
+                return TypeManager.GetTypeIndex(type);
+            case ulong hash:
+                return TypeManager.GetTypeIndexFromStableTypeHash(hash);
+            case int typeIndex:
+                return typeIndex;
+            default:
+                throw new NotImplementedException();
+            }
         }
     }
 }

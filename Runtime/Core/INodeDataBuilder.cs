@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using EntitiesBT.Entities;
 using Unity.Entities;
 
 namespace EntitiesBT.Core

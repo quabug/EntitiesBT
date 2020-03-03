@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using EntitiesBT.Core;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
@@ -12,43 +11,13 @@ namespace EntitiesBT.Entities
         public EntityManager EntityManager;
         public Entity Entity;
         
-        private static readonly GetDataDelegate _GET_COMPONENT_DATA;
-        private static readonly GetDataDelegate _GET_SHARED_COMPONENT_DATA;
-        private static readonly GetDataDelegate _GET_MANAGED_DATA;
-        private static readonly GetDataDelegate _GET_COMPONENT_OBJECT;
         private static readonly SetDataDelegate _SET_COMPONENT_DATA;
-        private static readonly HasDataDelegate _HAS_COMPONENT;
-
+        
         static EntityBlackboard()
         {
             {
-                var getter = typeof(EntityBlackboard).GetMethod("GetComponentData", BindingFlags.Public | BindingFlags.Instance);
-                _GET_COMPONENT_DATA = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
-            }
-            
-            {
-                var getter = typeof(EntityBlackboard).GetMethod("GetSharedComponentData", BindingFlags.Public | BindingFlags.Instance);
-                _GET_SHARED_COMPONENT_DATA = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
-            }
-
-            {
-                var getter = typeof(EntityBlackboard).GetMethod("GetManagedData", BindingFlags.Public | BindingFlags.Instance);
-                _GET_MANAGED_DATA = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
-            }
-
-            {
-                var getter = typeof(EntityBlackboard).GetMethod("GetUnityComponent", BindingFlags.Public | BindingFlags.Instance);
-                _GET_COMPONENT_OBJECT = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
-            }
-            
-            {
                 var setter = typeof(EntityBlackboard).GetMethod("SetComponentData", BindingFlags.Public | BindingFlags.Instance);
                 _SET_COMPONENT_DATA = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new [] { value });
-            }
-            
-            {
-                var predicate = typeof(EntityBlackboard).GetMethod("HasComponent", BindingFlags.Public | BindingFlags.Instance);
-                _HAS_COMPONENT = (caller, type) => (bool)predicate.MakeGenericMethod(type).Invoke(caller, new object[0]);
             }
         }
 
@@ -58,14 +27,8 @@ namespace EntitiesBT.Entities
             {
                 switch (key)
                 {
-                case Type type when type.IsComponentDataType():
-                    return _GET_COMPONENT_DATA(this, type);
-                case Type type when type.IsSharedComponentDataType():
-                    return _GET_SHARED_COMPONENT_DATA(this, type);
-                case Type type when type.IsManagedDataType():
-                    return _GET_MANAGED_DATA(this, type);
-                case Type type when type.IsUnityComponentType():
-                    return _GET_COMPONENT_OBJECT(this, type);
+                case Type type:
+                    return EntityManager.Debug.GetComponentBoxed(Entity, type);
                 default:
                     throw new NotImplementedException();
                 }
@@ -87,93 +50,23 @@ namespace EntitiesBT.Entities
         
         public unsafe void* GetPtrRW(object key)
         {
-            switch (key)
-            {
-            case Type type when type.IsComponentDataType():
-                return GetPtr(TypeManager.GetTypeIndex(type));
-            case ulong componentStableHash:
-                return GetPtr(TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash));
-            default:
-                throw new NotImplementedException();
-            }
-
-            void* GetPtr(int typeIndex)
-            {
-                // TODO: EntityComponentStore->AssertEntityHasComponent(entity, typeIndex);
-#if ENABLE_UNITY_COLLECTIONS_CHECKS
-                if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
-                    throw new ArgumentException("SetComponentData can not be called with a zero sized component.");
-#endif
-                return Entity.GetComponentDataRawRW(EntityManager, typeIndex);
-            }
+            return Entity.GetComponentDataRawRW(EntityManager, key.FetchTypeIndex());
         }
         
         public unsafe void* GetPtrRO(object key)
         {
-            switch (key)
-            {
-            case Type type when type.IsComponentDataType():
-                return GetPtr(TypeManager.GetTypeIndex(type));
-            case ulong componentStableHash:
-                return GetPtr(TypeManager.GetTypeIndexFromStableTypeHash(componentStableHash));
-            default:
-                throw new NotImplementedException();
-            }
-
-            void* GetPtr(int typeIndex)
-            {
-                // TODO: EntityComponentStore->AssertEntityHasComponent(entity, typeIndex);
-#if ENABLE_UNITY_COLLECTIONS_CHECKS
-                if (ComponentType.FromTypeIndex(typeIndex).IsZeroSized)
-                    throw new ArgumentException("SetComponentData can not be called with a zero sized component.");
-#endif
-                // TODO: change to RO
-                return Entity.GetComponentDataRawRW(EntityManager, typeIndex);
-            }
+            return Entity.GetComponentDataRawRO(EntityManager, key.FetchTypeIndex());
         }
 
         public bool Has(object key)
         {
-            var type = key as Type;
-            if (type.IsUnityComponentType() || type.IsComponentDataType() || type.IsManagedDataType())
-                return _HAS_COMPONENT(this, type);
-            return false;
-        }
-
-        [Preserve]
-        public T GetComponentData<T>() where T : struct, IComponentData
-        {
-            return EntityManager.GetComponentData<T>(Entity);
-        }
-        
-        [Preserve]
-        public T GetSharedComponentData<T>() where T : struct, ISharedComponentData
-        {
-            return EntityManager.GetSharedComponentData<T>(Entity);
-        }
-        
-        [Preserve]
-        public T GetManagedData<T>() where T : class, IComponentData
-        {
-            return EntityManager.GetComponentData<T>(Entity);
-        }
-        
-        [Preserve]
-        public T GetUnityComponent<T>()
-        {
-            return EntityManager.GetComponentObject<T>(Entity);
+            return EntityManager.HasComponent(Entity, ComponentType.FromTypeIndex(key.FetchTypeIndex()));
         }
         
         [Preserve]
         public void SetComponentData<T>(T value) where T : struct, IComponentData
         {
             EntityManager.SetComponentData(Entity, value);
-        }
-        
-        [Preserve]
-        public bool HasComponent<T>() where T : struct, IComponentData
-        {
-            return EntityManager.HasComponent<T>(Entity);
         }
     }
 }
