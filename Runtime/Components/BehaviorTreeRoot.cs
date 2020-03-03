@@ -44,7 +44,7 @@ namespace EntitiesBT.Components
             var blobRef = new NodeBlobRef {BlobRef = blob};
             entity.AddBehaviorTree(dstManager, blobRef, _thread);
 
-            if (_autoCreateTypes > 0)
+            if (_autoCreateTypes != 0)
             {
                 var accessTypes = dstManager.HasComponent<BlackboardDataQuery>(entity)
                     ? dstManager.GetSharedComponentData<BlackboardDataQuery>(entity).Value

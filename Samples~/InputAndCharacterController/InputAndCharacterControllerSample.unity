@@ -169,13 +169,32 @@ MonoBehaviour:
   SpeedProperty:
     id: 0
   InputMoveProperty:
-    id: 0
+    id: 1
   OutputVelocityProperty:
-    id: 0
+    id: 2
   references:
     version: 1
     00000000:
-      type: {class: , ns: , asm: }
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      data:
+        CustomValue: 2
+    00000001:
+      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+        ComponentValueName: BTInputMoveComponent.Value
+        _accessMode: 0
+    00000002:
+      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+          z: 0
+        ComponentValueName: BTCharacterVelocityComponent.Value
+        _accessMode: 1
 --- !u!1 &9309917
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,7 +624,14 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: , ns: , asm: }
+      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+          z: 0
+        ComponentValueName: BTCharacterVelocityComponent.Value
+        _accessMode: 0
 --- !u!1 &551306013
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,13 +760,32 @@ MonoBehaviour:
   SpeedProperty:
     id: 0
   InputMoveProperty:
-    id: 0
+    id: 1
   OutputVelocityProperty:
-    id: 0
+    id: 2
   references:
     version: 1
     00000000:
-      type: {class: , ns: , asm: }
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      data:
+        CustomValue: 5
+    00000001:
+      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+        ComponentValueName: BTInputMoveComponent.Value
+        _accessMode: 0
+    00000002:
+      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+          z: 0
+        ComponentValueName: BTCharacterVelocityComponent.Value
+        _accessMode: 1
 --- !u!1 &866069044
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,13 +880,16 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      type: {class: quaternionComponentVariableProperty, ns: EntitiesBT.Variable,
+        asm: EntitiesBT.Variable}
       data:
         FallbackValue:
-          x: 0
-          y: 0
-          z: 0
-        ComponentValueName: RotationEulerXYZ.Value
+          value:
+            x: 0
+            y: 0
+            z: 0
+            w: 0
+        ComponentValueName: Rotation.Value
         _accessMode: 0
 --- !u!1 &1000532614
 GameObject:
@@ -1411,13 +1459,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsLocal: 0
+  IsLocal: 1
   VelocityProperty:
     id: 0
   references:
     version: 1
     00000000:
-      type: {class: , ns: , asm: }
+      type: {class: float3CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      data:
+        CustomValue:
+          x: 0
+          y: 0
+          z: 10
 --- !u!1 &1454846012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1708,7 +1761,14 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: , ns: , asm: }
+      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+          z: 0
+        ComponentValueName: BTCharacterVelocityComponent.Value
+        _accessMode: 0
 --- !u!1 &1736258349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,9 +1815,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
-  _rootNode: {fileID: 1195197541}
+  _rootNode: {fileID: 1454846013}
   _thread: 0
-  _autoCreateTypes: 1
+  _autoCreateTypes: -1
 --- !u!114 &1736258352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1770,7 +1830,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6089bab929de94db4adb53b970d1a84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputActionAsset: {fileID: 0}
+  InputActionAsset: {fileID: -944628639613478452, guid: e11489ceb77624896bddc0c72ce3be71,
+    type: 3}
 --- !u!114 &1736258357
 MonoBehaviour:
   m_ObjectHideFlags: 0

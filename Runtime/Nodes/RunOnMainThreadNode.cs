@@ -11,10 +11,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("64E0DAFB-20E2-4DF4-910E-ADFA831DB8A9", BehaviorNodeType.Decorate)]
     public struct RunOnMainThreadNode : INodeData
     {
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadWrite<IsRunOnMainThread>();
-        }
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

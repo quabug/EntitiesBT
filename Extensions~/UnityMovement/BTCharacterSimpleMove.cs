@@ -38,9 +38,8 @@ namespace EntitiesBT.Extensions.UnityMovement
             var controller = bb.GetData<CharacterController>();
             if (controller == null) return NodeState.Failure;
             ref var data = ref blob.GetNodeData<CharacterSimpleMoveNode>(index);
-            var velocity = data.Velocity.GetData(index, blob, bb);
-            if (data.IsLocal) velocity = controller.transform.localToWorldMatrix.MultiplyVector(velocity);
-            controller.SimpleMove(velocity);
+            Vector3 velocity = data.Velocity.GetData(index, blob, bb);
+            controller.SimpleMove(data.IsLocal ? controller.transform.localToWorldMatrix.MultiplyVector(velocity) : velocity);
             return NodeState.Success;
         }
     }
