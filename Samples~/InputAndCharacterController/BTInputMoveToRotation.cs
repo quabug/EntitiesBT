@@ -19,8 +19,8 @@ namespace EntitiesBT.Samples
 
         protected override void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            InputMoveProperty.Allocate(ref builder, ref data.InputMove);
-            OutputDirectionProperty.Allocate(ref builder, ref data.OutputDirection);
+            InputMoveProperty.Allocate(ref builder, ref data.InputMove, this, tree);
+            OutputDirectionProperty.Allocate(ref builder, ref data.OutputDirection, this, tree);
         }
     }
 

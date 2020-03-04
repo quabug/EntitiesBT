@@ -125,7 +125,7 @@ namespace EntitiesBT.Editor
         
         static string CreateInterface(Type type)
         {
-            return $"public interface {type.Name}Property {{ void Allocate(ref Unity.Entities.BlobBuilder builder, ref EntitiesBT.Variable.BlobVariable<{type.FullName}> blobVariable); }}";
+            return $"public interface {type.Name}Property {{ void Allocate(ref Unity.Entities.BlobBuilder builder, ref EntitiesBT.Variable.BlobVariable<{type.FullName}> blobVariable, EntitiesBT.Core.INodeDataBuilder self, EntitiesBT.Core.ITreeNode<EntitiesBT.Core.INodeDataBuilder>[] tree); }}";
         }
 
         static string CreateClass(Type valueType, Type variablePropertyType)

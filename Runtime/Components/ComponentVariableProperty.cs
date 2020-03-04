@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace EntitiesBT.Components
 {
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    public class VariableComponentDataAttribute : PropertyAttribute {}
+    
     public struct DynamicComponentData
     {
         public ulong StableHash;
@@ -45,7 +48,7 @@ namespace EntitiesBT.Components
         [VariableComponentData] public string ComponentValueName;
         [SerializeField] private AccessMode _accessMode;
         
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
+        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             var data = Utility.GetTypeHashAndFieldOffset(ComponentValueName);
             if (data.Type != typeof(T) || data.Hash == 0)

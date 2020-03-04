@@ -22,9 +22,9 @@ namespace EntitiesBT.Samples
 
         protected override void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            SpeedProperty.Allocate(ref builder, ref data.Speed);
-            InputMoveProperty.Allocate(ref builder, ref data.InputMove);
-            OutputVelocityProperty.Allocate(ref builder, ref data.OutputVelocity);
+            SpeedProperty.Allocate(ref builder, ref data.Speed, this, tree);
+            InputMoveProperty.Allocate(ref builder, ref data.InputMove, this, tree);
+            OutputVelocityProperty.Allocate(ref builder, ref data.OutputVelocity, this, tree);
         }
     }
 

@@ -19,7 +19,7 @@ namespace EntitiesBT.Extensions.InputSystem
         protected override void Build(ref InputLookNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             base.Build(ref data, builder, tree);
-            Output.Allocate(ref builder, ref data.Output);
+            Output.Allocate(ref builder, ref data.Output, this, tree);
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Reflection;
+using EntitiesBT.Core;
 using Unity.Entities;
 
 namespace EntitiesBT.Variable
@@ -12,12 +13,12 @@ namespace EntitiesBT.Variable
     {
         public const BindingFlags FIELD_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         
-        public virtual void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
+        public virtual void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             blobVariable.VariableId = VariablePropertyTypeId;
-            AllocateData(ref builder, ref blobVariable);
+            AllocateData(ref builder, ref blobVariable, self, tree);
         }
-        protected virtual void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable) {}
+        protected virtual void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree) {}
         public virtual int VariablePropertyTypeId => 0;
     }
 }
