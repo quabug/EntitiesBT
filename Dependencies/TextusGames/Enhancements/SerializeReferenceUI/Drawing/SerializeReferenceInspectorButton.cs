@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ public static class SerializeReferenceInspectorButton
         var names = SerializeReferenceTypeNameUtility.GetSplitNamesFromTypename(property.managedReferenceFullTypename);
         var className = string.IsNullOrEmpty(names.ClassName) ? "Null (Assign)" : names.ClassName;
         var assemblyName = names.AssemblyName;
-        if (GUI.Button(buttonPosition, new GUIContent(className, className + "  ( "+ assemblyName +" )" )))
+        if (GUI.Button(buttonPosition, new GUIContent(className.Split('.').Last(), className + "  ( "+ assemblyName +" )" )))
             property.ShowContextMenuForManagedReference(filters);
         
         GUI.backgroundColor = storedColor;
