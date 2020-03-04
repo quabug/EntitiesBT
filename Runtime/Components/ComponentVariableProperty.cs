@@ -44,7 +44,6 @@ namespace EntitiesBT.Components
             }
         }
 
-        public T FallbackValue;
         [VariableComponentData] public string ComponentValueName;
         [SerializeField] private AccessMode _accessMode;
         
@@ -53,9 +52,8 @@ namespace EntitiesBT.Components
             var data = Utility.GetTypeHashAndFieldOffset(ComponentValueName);
             if (data.Type != typeof(T) || data.Hash == 0)
             {
-                Debug.LogError($"ComponentVariable({ComponentValueName}) is not valid, fallback to ConstantValue");
-                builder.Allocate(ref blobVariable, FallbackValue);
-                return;
+                Debug.LogError($"ComponentVariable({ComponentValueName}) is not valid, fallback to ConstantValue", (UnityEngine.Object)self);
+                throw new ArgumentException();
             }
             builder.Allocate(ref blobVariable, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
         }

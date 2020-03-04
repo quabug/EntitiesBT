@@ -28,7 +28,6 @@ namespace EntitiesBT.Components
     {
         public override int VariablePropertyTypeId => AccessRuntimeData ? _ID_RUNTIME_NODE : _ID_DEFAULT_NODE;
         
-        public T FallbackValue;
         public BTNode NodeObject;
         [VariableNodeObject("NodeObject")]
         public string ValueFieldName;
@@ -40,8 +39,7 @@ namespace EntitiesBT.Components
             if (!NodeObject || index < 0)
             {
                 Debug.LogError($"Invalid `NodeObject` {NodeObject}", (UnityEngine.Object)self);
-                builder.Allocate(ref blobVariable, FallbackValue);
-                return;
+                throw new ArgumentException();
             }
             
             var nodeType = VirtualMachine.GetNodeType(NodeObject.NodeId);
@@ -54,9 +52,8 @@ namespace EntitiesBT.Components
             var fieldInfo = nodeType.GetField(ValueFieldName);
             if (fieldInfo == null)
             {
-                UnityEngine.Debug.LogError($"Invalid `ValueFieldName` {ValueFieldName}", (UnityEngine.Object)self);
-                builder.Allocate(ref blobVariable, FallbackValue);
-                return;
+                Debug.LogError($"Invalid `ValueFieldName` {ValueFieldName}", (UnityEngine.Object)self);
+                throw new ArgumentException();
             }
 
             var fieldOffset = Marshal.OffsetOf(nodeType, ValueFieldName).ToInt32();

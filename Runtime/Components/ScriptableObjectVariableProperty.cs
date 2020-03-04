@@ -22,7 +22,6 @@ namespace EntitiesBT.Components
     public class ScriptableObjectVariableProperty<T> : VariableProperty<T> where T : struct
     {
         public override int VariablePropertyTypeId => ID;
-        public T FallbackValue;
         public ScriptableObject ScriptableObject;
         [VariableScriptableObjectValue("ScriptableObject")]
         public string ScriptableObjectValueName;
@@ -36,8 +35,7 @@ namespace EntitiesBT.Components
             if (fieldInfo == null || fieldInfo.FieldType != typeof(T))
             {
                 Debug.LogError($"{ScriptableObject.name}.{ScriptableObjectValueName} is not valid, fallback to ConstantValue");
-                builder.Allocate(ref blobVariable, FallbackValue);
-                return;
+                throw new ArgumentException();
             }
 
             builder.Allocate(ref blobVariable, (T) fieldInfo.GetValue(ScriptableObject));
