@@ -16,7 +16,7 @@ namespace EntitiesBT.Extensions.UnityMovement
 
         protected override void Build(ref SetTransformRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            RotationProperty.Allocate(ref builder, ref data.RotationProperty);
+            RotationProperty.Allocate(ref builder, ref data.RotationProperty, this, tree);
         }
     }
     

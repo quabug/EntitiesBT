@@ -57,7 +57,7 @@ public static class SerializeReferenceGenericSelectionMenu
             void AddContextMenu(Type type, GenericMenu genericMenuContext)
             {
                 var assemblyName =  type.Assembly.ToString().Split('(', ',')[0];
-                var entryName = type + "  ( " + assemblyName + " )";
+                var entryName = type.Name + "  ( " + assemblyName + " )";
                 genericMenuContext.AddItem(new GUIContent(entryName), false, AssignNewInstanceOfType, type);
             }
             

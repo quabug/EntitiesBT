@@ -10,7 +10,7 @@ namespace EntitiesBT.Variable
         public override int VariablePropertyTypeId => ID;
         public T CustomValue;
 
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
+        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             builder.Allocate(ref blobVariable, CustomValue);
         }

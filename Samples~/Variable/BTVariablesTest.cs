@@ -16,14 +16,16 @@ namespace EntitiesBT.Sample
         public int[] IntArray;
         [SerializeReference, SerializeReferenceButton] public Int32Property DestVariable;
         [SerializeReference, SerializeReferenceButton] public SingleProperty SrcVariable;
+        public long LongValue;
 
-        protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            LongVariable.Allocate(ref builder, ref data.LongVariable);
+            LongVariable.Allocate(ref builder, ref data.LongVariable, this, tree);
             builder.AllocateString(ref data.String, String);
             builder.AllocateArray(ref data.IntArray, IntArray);
-            DestVariable.Allocate(ref builder, ref data.DestVariable);
-            SrcVariable.Allocate(ref builder, ref data.SrcVariable);
+            DestVariable.Allocate(ref builder, ref data.DestVariable, this, tree);
+            SrcVariable.Allocate(ref builder, ref data.SrcVariable, this, tree);
+            data.Long = LongValue;
         }
     }
     
@@ -35,6 +37,7 @@ namespace EntitiesBT.Sample
         public BlobArray<int> IntArray;
         public BlobVariable<int> DestVariable;
         public BlobVariable<float> SrcVariable;
+        public long Long;
 
         public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
@@ -61,6 +64,7 @@ namespace EntitiesBT.Sample
         public int[] IntArray;
         public int IntVariable;
         public float FloatVariable;
+        public long LongValue;
 
         public override void Tick()
         {
@@ -70,6 +74,7 @@ namespace EntitiesBT.Sample
             FloatVariable = data.SrcVariable.GetData(Index, Blob, Blackboard);
             String = data.String.ToString();
             IntArray = data.IntArray.ToArray();
+            LongValue = data.Long;
         }
     }
 }

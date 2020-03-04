@@ -18,7 +18,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         protected override void Build(ref CharacterSimpleMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             data.IsLocal = IsLocal;
-            VelocityProperty.Allocate(ref builder, ref data.Velocity);
+            VelocityProperty.Allocate(ref builder, ref data.Velocity, this, tree);
         }
     }
 

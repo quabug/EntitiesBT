@@ -7,6 +7,17 @@ using UnityEngine;
 
 namespace EntitiesBT.Components
 {
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    public class VariableScriptableObjectValueAttribute : PropertyAttribute
+    {
+        public string ScriptableObjectFieldName;
+
+        public VariableScriptableObjectValueAttribute(string scriptableObjectFieldName)
+        {
+            ScriptableObjectFieldName = scriptableObjectFieldName;
+        }
+    }
+    
     [Serializable]
     public class ScriptableObjectVariableProperty<T> : VariableProperty<T> where T : struct
     {
@@ -16,7 +27,7 @@ namespace EntitiesBT.Components
         [VariableScriptableObjectValue("ScriptableObject")]
         public string ScriptableObjectValueName;
 
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable)
+        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             FieldInfo fieldInfo = null;
             if (ScriptableObject != null)
