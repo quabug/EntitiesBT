@@ -162,20 +162,20 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: Int64CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      type: {class: Int64NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        CustomValue: 12384783921
+        NodeObject: {fileID: 1667038669}
+        ValueFieldName: Long
+        AccessRuntimeData: 1
     00000001:
       type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue: 0
         ComponentValueName: ComponentVariableData.OutputValue
         _accessMode: 1
     00000002:
       type: {class: SingleScriptableObjectVariableProperty, ns: EntitiesBT.Variable,
         asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue: 0
         ScriptableObject: {fileID: 11400000, guid: cee16ca8c8b594efb867f66c8d699937,
           type: 2}
         ScriptableObjectValueName: FloatValue
@@ -424,9 +424,8 @@ MonoBehaviour:
     00000000:
       type: {class: Int64NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue: 0
         NodeObject: {fileID: 327906297}
-        ValueFieldName: Long
+        ValueFieldName: LongVariable
         AccessRuntimeData: 1
     00000001:
       type: {class: Int32CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}

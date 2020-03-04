@@ -10,15 +10,15 @@ namespace EntitiesBT.Components
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class VariableComponentDataAttribute : PropertyAttribute {}
     
-    public struct DynamicComponentData
-    {
-        public ulong StableHash;
-        public int Offset;
-    }
-    
     [Serializable]
     public class ComponentVariableProperty<T> : VariableProperty<T> where T : struct
     {
+        private struct DynamicComponentData
+        {
+            public ulong StableHash;
+            public int Offset;
+        }
+    
         private enum AccessMode
         {
             ReadOnly,

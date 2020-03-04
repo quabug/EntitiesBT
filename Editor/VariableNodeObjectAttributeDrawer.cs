@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
+using EntitiesBT.Variable;
 using UnityEditor;
 using UnityEngine;
 
@@ -30,7 +31,7 @@ namespace EntitiesBT.Editor
                         ? new string[0]
                         : VirtualMachine.GetNodeType(nodeObject.NodeId)
                             .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                            .Where(fi => fi.FieldType == _genericType)
+                            .Where(fi => fi.FieldType == _genericType || fi.FieldType == typeof(BlobVariable<>).MakeGenericType(_genericType))
                             .Select(fi => fi.Name)
                             .ToArray()
                     ;
