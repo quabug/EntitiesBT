@@ -26,6 +26,9 @@ namespace EntitiesBT.Editor
 
                 if (type.GetMethod(behaviorNodeAttribute.TickFunc) == null)
                     Debug.LogWarning($"behavior node {type.Name} have no tick function \"{behaviorNodeAttribute.TickFunc}\".");
+                
+                if (type.GetMethod(behaviorNodeAttribute.AccessTypesFunc) == null)
+                    Debug.LogWarning($"behavior node {type.Name} have no access types function \"{behaviorNodeAttribute.AccessTypesFunc}\".");
             }
         }
     }

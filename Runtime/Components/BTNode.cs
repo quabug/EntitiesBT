@@ -24,11 +24,16 @@ namespace EntitiesBT.Components
         public unsafe BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
         {
             if (NodeType.IsZeroSizeStruct()) return BlobAssetReference.Null;
-            using (var blobBuilder = new BlobBuilder(Allocator.Temp, UnsafeUtility.SizeOf(NodeType)))
+            var blobBuilder = new BlobBuilder(Allocator.Temp, UnsafeUtility.SizeOf(NodeType));
+            try
             {
                 var dataPtr = blobBuilder.ConstructRootPtrByType(NodeType);
                 Build(dataPtr, blobBuilder, builders);
                 return blobBuilder.CreateReferenceByType(NodeType);
+            }
+            finally
+            {
+                blobBuilder.Dispose();
             }
         }
 
@@ -84,11 +89,11 @@ namespace EntitiesBT.Components
     {
         protected override Type NodeType => typeof(T);
 
-        protected override unsafe void Build(void* dataPtr, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders)
+        protected override unsafe void Build(void* dataPtr, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            Build(ref UnsafeUtilityEx.AsRef<T>(dataPtr), blobBuilder, builders);
+            Build(ref UnsafeUtilityEx.AsRef<T>(dataPtr), builder, tree);
         }
         
-        protected virtual void Build(ref T data, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders) {}
+        protected virtual void Build(ref T data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree) {}
     }
 }

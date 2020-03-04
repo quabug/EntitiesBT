@@ -1,0 +1,22 @@
+{
+    "name": "EntitiesBT.Sample.Variable",
+    "references": [
+        "GUID:c7babe7561eb244059259745ef27b866",
+        "GUID:d3630359ae08047918d5cd6cddd51767",
+        "GUID:734d92eba21c94caba915361bd5ac177",
+        "GUID:b7637dfa67a9e47fcbbcbbd1d2845de3",
+        "GUID:73106583b323919458c1e05166706ce3",
+        "GUID:529abc307853b4af7a25785b297d9c83"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "EntitiesBT.Variable.Sample.VariableProperties.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
@@ -24,8 +25,11 @@ namespace EntitiesBT.Sample
     public struct IsEntityPositionInBoxNode : INodeData
     {
         public Bounds Bounds;
-        
-        public static readonly ComponentType[] Types = { ComponentType.ReadOnly<Translation>() };
+
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadOnly<Translation>();
+        }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

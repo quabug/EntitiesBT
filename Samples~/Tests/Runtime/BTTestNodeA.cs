@@ -1,3 +1,7 @@
+#if UNITY_EDITOR
+
+using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Entities;
@@ -9,6 +13,8 @@ namespace EntitiesBT.Test
     public struct NodeA : INodeData
     {
         public int A;
+        
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
 
         public static void Reset(int index, INodeBlob _, IBlackboard __)
         {
@@ -30,3 +36,5 @@ namespace EntitiesBT.Test
         protected override void Build(ref NodeA data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __) => data.A = A;
     }
 }
+
+#endif

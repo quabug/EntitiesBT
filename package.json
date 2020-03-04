@@ -1,7 +1,7 @@
 {
   "name": "entities-bt",
   "description": "Behavior Tree for Unity Entities",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "unity": "2019.3",
   "displayName": "Entities Behavior Tree",
   "dependencies": {
@@ -27,6 +27,11 @@
       "displayName": "[Sample] input system & movement",
       "description": "sample of input system and unity movement extensions.",
       "path": "Samples~/InputAndCharacterController"
+    },
+    {
+      "displayName": "[Sample] variable",
+      "description": "variable value from variant source",
+      "path": "Samples~/Variable"
     },
     {
       "displayName": "[Extension] input system",

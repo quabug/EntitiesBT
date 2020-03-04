@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,8 +118,6 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
-    maxJobWorkers: 0
-    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -166,7 +164,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe11e62dd054dd5a7b238f1de6db4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 1
+  SpeedProperty:
+    id: 0
+  InputMoveProperty:
+    id: 1
+  OutputVelocityProperty:
+    id: 2
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        CustomValue: 2
+    00000001:
+      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+        ComponentValueName: BTInputMoveComponent.Value
+        _accessMode: 0
+    00000002:
+      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+          z: 0
+        ComponentValueName: BTCharacterVelocityComponent.Value
+        _accessMode: 1
 --- !u!1 &9309917
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,51 +459,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!1 &338196956
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 338196957}
-  - component: {fileID: 338196958}
-  m_Layer: 0
-  m_Name: BTInputLook
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &338196957
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 338196956}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1174442161}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &338196958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 338196956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d672c9de3a0b42bdaabde96a851bcb8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InputAction: {fileID: 3781609303079548650, guid: e11489ceb77624896bddc0c72ce3be71,
-    type: 3}
 --- !u!1 &447731368
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,8 +616,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Source: 0
-  CustomVelocity: {x: 0, y: 0, z: 0}
+  IsLocal: 0
+  VelocityProperty:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+          z: 0
+        ComponentValueName: BTCharacterVelocityComponent.Value
+        _accessMode: 0
 --- !u!1 &551306013
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +682,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -762,7 +754,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe11e62dd054dd5a7b238f1de6db4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 3
+  SpeedProperty:
+    id: 0
+  InputMoveProperty:
+    id: 1
+  OutputVelocityProperty:
+    id: 2
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        CustomValue: 5
+    00000001:
+      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+        ComponentValueName: BTInputMoveComponent.Value
+        _accessMode: 0
+    00000002:
+      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+          z: 0
+        ComponentValueName: BTCharacterVelocityComponent.Value
+        _accessMode: 1
 --- !u!1 &866069044
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,7 +858,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1174442161}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &945633984
 MonoBehaviour:
@@ -852,11 +872,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c415565511944df690f9499120783f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Source: 0
-  CustomRotation:
-    x: 0
-    y: 0
-    z: 0
+  RotationProperty:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: quaternionComponentVariableProperty, ns: EntitiesBT.Variable,
+        asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          value:
+            x: 0
+            y: 0
+            z: 0
+            w: 0
+        ComponentValueName: Rotation.Value
+        _accessMode: 0
 --- !u!1 &1000532614
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,7 +936,6 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -930,7 +960,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1000532617
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1060,7 +1089,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1174442161}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1160618947
 MonoBehaviour:
@@ -1074,6 +1103,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9262fcbd9912476da18353a7aa96fb58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InputMoveProperty:
+    id: 0
+  OutputDirectionProperty:
+    id: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+        ComponentValueName: BTInputMoveComponent.Value
+        _accessMode: 0
+    00000001:
+      type: {class: quaternionComponentVariableProperty, ns: EntitiesBT.Variable,
+        asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          value:
+            x: 0
+            y: 0
+            z: 0
+            w: 0
+        ComponentValueName: Rotation.Value
+        _accessMode: 1
 --- !u!1 &1164989512
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,7 +1176,6 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1146,7 +1200,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1164989515
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1183,7 +1236,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 338196957}
   - {fileID: 1332110028}
   - {fileID: 1160618946}
   - {fileID: 945633983}
@@ -1281,7 +1333,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1174442161}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1332110029
 MonoBehaviour:
@@ -1297,6 +1349,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputAction: {fileID: -1215874993465502569, guid: e11489ceb77624896bddc0c72ce3be71,
     type: 3}
+  Output:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+        ComponentValueName: BTInputMoveComponent.Value
+        _accessMode: 1
 --- !u!1 &1401883810
 GameObject:
   m_ObjectHideFlags: 0
@@ -1340,8 +1404,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Source: 2
-  CustomVelocity: {x: 0, y: 0, z: 10}
+  IsLocal: 1
+  VelocityProperty:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: float3CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        CustomValue:
+          x: 0
+          y: 0
+          z: 10
 --- !u!1 &1454846012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1516,7 +1590,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -1535,7 +1609,6 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1560,7 +1633,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1497155328
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1626,8 +1698,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Source: 0
-  CustomVelocity: {x: 0, y: 0, z: 0}
+  IsLocal: 0
+  VelocityProperty:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      data:
+        FallbackValue:
+          x: 0
+          y: 0
+          z: 0
+        ComponentValueName: BTCharacterVelocityComponent.Value
+        _accessMode: 0
 --- !u!1 &1736258349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,7 +1760,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 1454846013}
   _thread: 0
-  _autoAddBehaviorTreeComponents: 1
+  _autoCreateTypes: -1
 --- !u!114 &1736258352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1689,7 +1773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6089bab929de94db4adb53b970d1a84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputActionAsset: {fileID: -944628639613478452, guid: e11489ceb77624896bddc0c72ce3be71,
+  InputActionAsset: {fileID: -944628639613478452, guid: e11489ceb77624896bddc0c72ce3be71,
     type: 3}
 --- !u!114 &1736258357
 MonoBehaviour:
@@ -1770,7 +1854,7 @@ Transform:
   - {fileID: 9309918}
   - {fileID: 866069045}
   m_Father: {fileID: 1174442161}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1821151458
 MonoBehaviour:

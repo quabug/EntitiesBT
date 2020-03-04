@@ -11,12 +11,17 @@ namespace EntitiesBT.Core
     {
         public delegate void ResetFunc(int nodeIndex, INodeBlob blob, IBlackboard bb);
         public delegate NodeState TickFunc(int nodeIndex, INodeBlob blob, IBlackboard bb);
+        public delegate IEnumerable<ComponentType> AccessTypesFunc(int nodeIndex, INodeBlob blob);
         
         private static readonly Dictionary<int, ResetFunc> _RESETS = new Dictionary<int, ResetFunc>();
         private static readonly Dictionary<int, TickFunc> _TICKS = new Dictionary<int, TickFunc>();
-        private static readonly Dictionary<int, ComponentType[]> _ACCESS_TYPES = new Dictionary<int, ComponentType[]>();
+        private static readonly Dictionary<int, AccessTypesFunc> _ACCESS_TYPES = new Dictionary<int, AccessTypesFunc>();
 
-        public static ComponentType[] GetAccessTypes(int nodeId) => _ACCESS_TYPES[nodeId];
+        public static IEnumerable<ComponentType> GetAccessTypes(int index, INodeBlob blob)
+        {
+            var typeId = blob.GetTypeId(index);
+            return _ACCESS_TYPES[typeId](index, blob);
+        }
 
         static VirtualMachine()
         {
@@ -27,7 +32,7 @@ namespace EntitiesBT.Core
                 if (attribute == null) continue;
                 var resetFunc = GetResetFunc(type.GetMethod(attribute.ResetFunc));
                 var tickFunc = GetTickFunc(type.GetMethod(attribute.TickFunc));
-                var accessTypes = GetAccessTypes(type.GetField(attribute.TypesField));
+                var accessTypes = GetAccessTypes(type.GetMethod(attribute.AccessTypesFunc));
                 Register(attribute.Id, resetFunc, tickFunc, accessTypes);
             }
 
@@ -47,15 +52,15 @@ namespace EntitiesBT.Core
                 ;
             }
             
-            ComponentType[] GetAccessTypes(FieldInfo fieldInfo)
+            AccessTypesFunc GetAccessTypes(MethodInfo methodInfo)
             {
-                return fieldInfo == null
-                    ? new ComponentType[0]
-                    : (ComponentType[])fieldInfo.GetValue(null)
+                return methodInfo == null
+                    ? (index, blob) => Enumerable.Empty<ComponentType>()
+                    : (AccessTypesFunc)methodInfo.CreateDelegate(typeof(AccessTypesFunc))
                 ;
             }
 
-            void Register(int id, ResetFunc reset, TickFunc tick, ComponentType[] types)
+            void Register(int id, ResetFunc reset, TickFunc tick, AccessTypesFunc types)
             {
                 if (_RESETS.ContainsKey(id)) throw new DuplicateNameException($"Reset function {id} already registered");
                 if (_TICKS.ContainsKey(id)) throw new DuplicateNameException($"Tick function {id} already registered");

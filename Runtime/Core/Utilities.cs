@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -75,6 +77,16 @@ namespace EntitiesBT.Core
             var sum = weights.Where(w => w > 0).Sum();
             if (sum <= math.FLT_MIN_NORMAL) sum = 1;
             return weights.Select(w => math.max(w, 0) / sum);
+        }
+        
+        // https://stackoverflow.com/a/27851610
+        public static bool IsZeroSizeStruct(this Type t)
+        {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            return t.IsValueType
+                   && !t.IsPrimitive
+                   && t.GetFields(flags).All(fi => IsZeroSizeStruct(fi.FieldType))
+            ;
         }
     }
 }

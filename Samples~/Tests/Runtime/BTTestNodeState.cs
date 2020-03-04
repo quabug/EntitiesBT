@@ -1,7 +1,11 @@
+#if UNITY_EDITOR
+
+using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using NUnit.Framework;
 using Unity.Entities;
+using UnityEngine.Assertions;
 
 namespace EntitiesBT.Test
 {
@@ -13,6 +17,8 @@ namespace EntitiesBT.Test
         public int Index;
         public int ResetTimes;
         public int TickTimes;
+        
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
 
         public static void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
@@ -43,3 +49,5 @@ namespace EntitiesBT.Test
         }
     }
 }
+
+#endif

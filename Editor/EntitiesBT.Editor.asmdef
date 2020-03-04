@@ -3,13 +3,14 @@
     "references": [
         "GUID:c7babe7561eb244059259745ef27b866",
         "GUID:734d92eba21c94caba915361bd5ac177",
-        "GUID:d3630359ae08047918d5cd6cddd51767"
+        "GUID:d3630359ae08047918d5cd6cddd51767",
+        "GUID:529abc307853b4af7a25785b297d9c83"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": true,
     "precompiledReferences": [
         "Mono.Cecil.dll",

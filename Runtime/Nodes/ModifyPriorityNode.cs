@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Core;
+using Unity.Entities;
 
 namespace EntitiesBT.Nodes
 {
@@ -10,6 +13,8 @@ namespace EntitiesBT.Nodes
         public int PrioritySelectorIndex;
         public int WeightIndex;
         public int AddWeight;
+        
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
         
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard _)
         {

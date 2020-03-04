@@ -1,4 +1,7 @@
+#if UNITY_EDITOR
+
 using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Entities;
@@ -12,6 +15,8 @@ namespace EntitiesBT.Test
         public int B;
         public int BB;
 
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
+        
         public static void Reset(int index, INodeBlob _, IBlackboard __)
         {
             Debug.Log($"[B]: reset {index}");
@@ -38,3 +43,5 @@ namespace EntitiesBT.Test
         }
     }
 }
+
+#endif

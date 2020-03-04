@@ -28,24 +28,20 @@ namespace EntitiesBT.Components
             return blobRef;
         }
 
-        public static ISet<ComponentType> GetAccessTypes(this BlobAssetReference<NodeBlob> blob)
+        public static ISet<ComponentType> GetAccessTypes(this INodeBlob blob)
         {
-            return new HashSet<ComponentType>(Enumerable
-                .Range(0, blob.Value.Types.Length)
-                .Select(i => blob.Value.Types[i])
-                .SelectMany(VirtualMachine.GetAccessTypes)
+            return new HashSet<ComponentType>(Enumerable.Range(0, blob.Count)
+                .SelectMany(index => VirtualMachine.GetAccessTypes(index, blob))
             );
         }
 
         public static void AddBehaviorTree(
             this Entity entity
           , EntityManager dstManager
-          , BlobAssetReference<NodeBlob> blobRef
+          , NodeBlobRef blob
           , BehaviorTreeThread thread = BehaviorTreeThread.ForceRunOnMainThread
         )
         {
-            var blob = new NodeBlobRef { BlobRef = blobRef };
-            
             switch (thread)
             {
             case BehaviorTreeThread.ForceRunOnMainThread:
@@ -74,19 +70,12 @@ namespace EntitiesBT.Components
 
             void AddJobComponents()
             {
-                var dataQuery = new BlackboardDataQuery {Value = blobRef.GetAccessTypes()};
+                var dataQuery = new BlackboardDataQuery {Value = blob.GetAccessTypes()};
                 var bb = new EntityBlackboard();
                 VirtualMachine.Reset(blob, bb);
                 dstManager.AddComponentData(entity, new IsRunOnMainThread { Value = false });
                 dstManager.AddSharedComponentData(entity, dataQuery);
             }
-        }
-        
-        // https://stackoverflow.com/a/27851610
-        public static bool IsZeroSizeStruct(this Type t)
-        {
-            return t.IsValueType && !t.IsPrimitive && 
-                   t.GetFields((BindingFlags)0x34).All(fi => IsZeroSizeStruct(fi.FieldType));
         }
     }
 
@@ -117,7 +106,7 @@ namespace EntitiesBT.Components
             return Pointer.Unbox(ptr);
         }
 
-        public static void AllocateArray<T>(this BlobBuilder builder, ref BlobArray<T> blobArray, IList<T> sourceArray) where T : struct
+        public static void AllocateArray<T>(ref this BlobBuilder builder, ref BlobArray<T> blobArray, IList<T> sourceArray) where T : struct
         {
             var array = builder.Allocate(ref blobArray, sourceArray.Count);
             for (var i = 0; i < sourceArray.Count; i++) array[i] = sourceArray[i];

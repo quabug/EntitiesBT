@@ -47,12 +47,12 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Not easy to modify tree structure at runtime.
 
 ## HowTo
-### Install
-Requirement: Unity >= 2019.3 and entities package >= 0.4.0-preview.10
+### Installation
+Requirement: Unity >= 2020.1 and entities package >= 0.4.0-preview.10
 
 Install the package either by
 
-[UMP](https://docs.unity3d.com/2019.3/Documentation/Manual/upm-ui-giturl.html): `https://github.com/quabug/EntitiesBT.git` 
+[UMP](https://docs.unity3d.com/Manual/upm-ui-giturl.html): `https://github.com/quabug/EntitiesBT.git` 
 
 or 
 

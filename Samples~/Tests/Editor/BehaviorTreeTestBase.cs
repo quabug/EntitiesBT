@@ -39,7 +39,12 @@ namespace EntitiesBT.Test
                 throw new NotImplementedException();
             }
 
-            public unsafe void* GetPtr(object key)
+            public unsafe void* GetPtrRW(object key)
+            {
+                throw new NotImplementedException();
+            }
+
+            public unsafe void* GetPtrRO(object key)
             {
                 throw new NotImplementedException();
             }

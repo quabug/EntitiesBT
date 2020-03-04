@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Entities;
@@ -10,8 +11,11 @@ namespace EntitiesBT.Nodes
     public struct DelayTimerNode : INodeData
     {
         public float TimerSeconds;
-        
-        public static readonly ComponentType[] Types = {ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()};
+
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
+        }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
