@@ -11,7 +11,7 @@ namespace EntitiesBT.Editor
     public class VariableScriptableObjectValueAttributeDrawer : PropertyDrawer
     {
         private object _scriptableObject;
-        private string[] _options;
+        private string[] _options = new string[0];
         private Type _genericType;
         private VariableScriptableObjectValueAttribute _attribute;
         
