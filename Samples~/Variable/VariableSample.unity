@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,8 +118,6 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
-    maxJobWorkers: 0
-    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -163,22 +161,18 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Variable.Sample,
-        asm: EntitiesBT.Sample.Variable}
+      type: {class: Int64CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue: 0
-        ComponentValueName: ComponentVariableData.LongValue
-        Mode: 2
+        CustomValue: 12384783921
     00000001:
-      type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Variable.Sample,
-        asm: EntitiesBT.Sample.Variable}
+      type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
         FallbackValue: 0
         ComponentValueName: ComponentVariableData.OutputValue
-        Mode: 1
+        _accessMode: 1
     00000002:
-      type: {class: SingleScriptableObjectVariableProperty, ns: EntitiesBT.Variable.Sample,
-        asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleScriptableObjectVariableProperty, ns: EntitiesBT.Variable,
+        asm: EntitiesBT.Variable.GenCode}
       data:
         FallbackValue: 0
         ScriptableObject: {fileID: 11400000, guid: cee16ca8c8b594efb867f66c8d699937,
@@ -233,7 +227,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 327906297}
   _thread: 0
-  _autoAddBehaviorTreeComponents: 1
+  _autoCreateTypes: 1
 --- !u!114 &1392768647
 MonoBehaviour:
   m_ObjectHideFlags: 0
