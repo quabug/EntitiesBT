@@ -13,6 +13,7 @@
 >       - [Attach behavior tree onto Entity](#attach-behavior-tree-onto-entity)
 >       - [Serialization](#serialization)
 >       - [Thread control](#thread-control)
+>       - [Variables](#variable-property)
 >     - [Debug](#debug)
 >     - [Custom behavior node](#custom-behavior-node)
 >       - [Action](#action)
@@ -75,6 +76,52 @@ or
 - Force Run on Job: running on job threads only, will not use main thread to tick behavior tree. Not safe to call `UnityEngine` method.
 - Controlled by Behavior Tree: Running on job threads by default, but will switch to main thread once meet decorator of [`RunOnMainThread`](Runtime/Nodes/RunOnMainThreadNode.cs)
 <img width="300" alt="" src="https://user-images.githubusercontent.com/683655/72407836-cdc63900-379b-11ea-8979-605e725ab0f7.png" />
+
+#### Variable Property
+Fetch data from different sources.
+##### Code Example
+``` c#
+    public class BTVariableNode : BTNode<VariableNode>
+    {
+        [SerializeReference, SerializeReferenceButton] // neccessary for editor
+        public Int32Property IntVariable; // a `int` variable property
+
+        protected override void Build(ref VariableNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        {
+            // save `Int32Property` as `BlobVariable<int>` of `VariableNode`
+            IntVariable.Allocate(ref builder, ref data.Variable, this, tree);
+        }
+    }
+    
+    [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
+    public struct VariableNode : INodeData
+    {
+        public BlobVariable<int> Variable;
+
+        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        {
+            ref var data = ref blob.GetNodeDefaultData<VariableNode>(index);
+            return data.Variable.ComponentAccessList; // will return right access type of node, see `NodeVariableProperty` below.
+        }
+
+        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        {
+            ref var data = ref blob.GetNodeData<VariableNode>(index);
+            var intVariable = data.Variable.GetData(index, blob, blackboard); // get variable value
+            ref var intVariable = ref data.Variable.GetDataRef(index, blob, blackboard); // get variable ref value
+            return NodeState.Success;
+        }
+    }
+```
+
+- [`CustomVariableProperty`](Runtime/Variable/CustomVariableProperty.cs): regular variable, custom value will save into `NodeData`.
+- [`ComponentVariableProperty`](Runtime/Components/ComponentVariableProperty.cs): fetch data from `Component` on `Entity`
+  - _Fallback Value_: fallback value if component variable is not available.
+  - _Component Value Name_: which value should be access from component
+  - _Access Mode_: will add chosen query type for behavior tree ([Entity Query](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_entity_query.html))
+    - _ReadOnly_: add `ComponentType.ReadOnly` of _Component_ into behavior tree
+    - _ReadWrite_: add `ComponentType.ReadWrite` of _Component_ into behavior tree
+    - _Optional_: nothing changed
 
 ### Debug
 <img width="600" alt="debug" src="https://user-images.githubusercontent.com/683655/72407368-517f2600-379a-11ea-8aa9-c72754abce9f.gif" />
