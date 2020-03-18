@@ -177,20 +177,14 @@ MonoBehaviour:
       data:
         CustomValue: 2
     00000001:
-      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      type: {class: float2NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          x: 0
-          y: 0
-        ComponentValueName: BTInputMoveComponent.Value
-        _accessMode: 0
+        NodeObject: {fileID: 1332110029}
+        ValueFieldName: Output
+        AccessRuntimeData: 1
     00000002:
       type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          x: 0
-          y: 0
-          z: 0
         ComponentValueName: BTCharacterVelocityComponent.Value
         _accessMode: 1
 --- !u!1 &9309917
@@ -622,14 +616,11 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      type: {class: float3NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          x: 0
-          y: 0
-          z: 0
-        ComponentValueName: BTCharacterVelocityComponent.Value
-        _accessMode: 0
+        NodeObject: {fileID: 775125229}
+        ValueFieldName: OutputVelocity
+        AccessRuntimeData: 1
 --- !u!1 &551306013
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,8 +655,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -214, y: -211}
-  m_SizeDelta: {x: 289.3, y: 195.67}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &551306015
 MonoBehaviour:
@@ -767,20 +758,14 @@ MonoBehaviour:
       data:
         CustomValue: 5
     00000001:
-      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      type: {class: float2NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          x: 0
-          y: 0
-        ComponentValueName: BTInputMoveComponent.Value
-        _accessMode: 0
+        NodeObject: {fileID: 1332110029}
+        ValueFieldName: Output
+        AccessRuntimeData: 1
     00000002:
       type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          x: 0
-          y: 0
-          z: 0
         ComponentValueName: BTCharacterVelocityComponent.Value
         _accessMode: 1
 --- !u!1 &866069044
@@ -877,17 +862,11 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: quaternionComponentVariableProperty, ns: EntitiesBT.Variable,
-        asm: EntitiesBT.Variable.GenCode}
+      type: {class: quaternionNodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          value:
-            x: 0
-            y: 0
-            z: 0
-            w: 0
-        ComponentValueName: Rotation.Value
-        _accessMode: 0
+        NodeObject: {fileID: 1160618947}
+        ValueFieldName: OutputDirection
+        AccessRuntimeData: 1
 --- !u!1 &1000532614
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,23 +1089,15 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      type: {class: float2NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          x: 0
-          y: 0
-        ComponentValueName: BTInputMoveComponent.Value
-        _accessMode: 0
+        NodeObject: {fileID: 1332110029}
+        ValueFieldName: Output
+        AccessRuntimeData: 1
     00000001:
       type: {class: quaternionComponentVariableProperty, ns: EntitiesBT.Variable,
         asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          value:
-            x: 0
-            y: 0
-            z: 0
-            w: 0
         ComponentValueName: Rotation.Value
         _accessMode: 1
 --- !u!1 &1164989512
@@ -1356,9 +1327,6 @@ MonoBehaviour:
     00000000:
       type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          x: 0
-          y: 0
         ComponentValueName: BTInputMoveComponent.Value
         _accessMode: 1
 --- !u!1 &1401883810
@@ -1704,14 +1672,11 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      type: {class: float3NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
       data:
-        FallbackValue:
-          x: 0
-          y: 0
-          z: 0
-        ComponentValueName: BTCharacterVelocityComponent.Value
-        _accessMode: 0
+        NodeObject: {fileID: 2282878}
+        ValueFieldName: OutputVelocity
+        AccessRuntimeData: 1
 --- !u!1 &1736258349
 GameObject:
   m_ObjectHideFlags: 0
