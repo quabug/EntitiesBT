@@ -141,10 +141,12 @@ Because generic type of `VariableProperty<T>` cannot be serialized in Unity, sin
 A specific type of `VariableProperty<T>` must be declared before use.
 - First create a _Scriptable Object_ of _VariableGeneratorSetting_
 <img width="800" alt="Snipaste_2020-03-18_18-57-30" src="https://user-images.githubusercontent.com/683655/76953861-6159e880-694a-11ea-8fbc-33a83b181ebf.png">
+
 - Fill which _Types_ you want to use as variable property.
 - Fill _Filename_, _Namespace_, etc.
 - Create script from this setting and save it in _Assets_
 <img width="600" alt="Snipaste_2020-03-18_18-57-36" src="https://user-images.githubusercontent.com/683655/76953872-63bc4280-694a-11ea-8f03-73af3fa2fec2.png">
+
 - And now you are free to use specific type properties, like `float2Property` etc.
 
 
