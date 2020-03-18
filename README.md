@@ -93,7 +93,7 @@ Fetch data from different sources.
 - [`NodeVariableProperty`](Runtime/Components/NodeVariableProperty.cs): fetch data from blob of another node
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950091-7cc1f500-6944-11ea-994b-5307f08169a2.gif">
 
-  - _Node Object_: another node should be access by this variable, must be in the same behavior tree as the node of variable property.
+  - _Node Object_: another node should be access by this variable, must be in the same behavior tree.
   - _Value Field Name_: the name of data field in another node.
   - _Access Runtime Data_:
     - false: will copy data to local blob node while building, value change of _Node Object_ won't effect variable once build.
