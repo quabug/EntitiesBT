@@ -45,7 +45,7 @@ namespace EntitiesBT.Components
         }
 
         [VariableComponentData] public string ComponentValueName;
-        [SerializeField] private AccessMode _accessMode;
+        [SerializeField] private AccessMode _accessMode = default;
         
         protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {

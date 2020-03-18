@@ -1,7 +1,10 @@
 using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using UnityEngine.Scripting;
 
 namespace EntitiesBT.Entities
 {
@@ -11,22 +14,31 @@ namespace EntitiesBT.Entities
         public ArchetypeChunk Chunk;
         public int Index;
         
-        public unsafe object this[object key]
+
+        private static readonly GetDataDelegate _GET_COMPONENT_DATA;
+        private static readonly SetDataDelegate _SET_COMPONENT_DATA;
+
+        static EntityJobChunkBlackboard()
+        {
+            {
+                var getter = typeof(EntityJobChunkBlackboard).GetMethod("GetComponentData", BindingFlags.Public | BindingFlags.Instance);
+                _GET_COMPONENT_DATA = (caller, type) => getter.MakeGenericMethod(type).Invoke(caller, new object[0]);
+            }
+
+            {
+                var setter = typeof(EntityJobChunkBlackboard).GetMethod("SetComponentData", BindingFlags.Public | BindingFlags.Instance);
+                _SET_COMPONENT_DATA = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new[] { value });
+            }
+        }
+        
+        public object this[object key]
         {
             get
             {
                 switch (key)
                 {
                 case Type type when type.IsComponentDataType():
-                    var obj = Activator.CreateInstance(type);
-                    var typeInfo = TypeManager.GetTypeInfo(key.FetchTypeIndex());
-                    if (typeInfo.IsZeroSized) return obj;
-                    
-                    var src = GetPtrRO(typeInfo.TypeIndex);
-                    var dest = UnsafeUtility.PinGCObjectAndGetAddress(obj, out var handle);
-                    UnsafeUtility.MemCpy(dest, src, typeInfo.SizeInChunk);
-                    UnsafeUtility.ReleaseGCObject(handle);
-                    return obj;
+                    return _GET_COMPONENT_DATA(this, type);
                 default:
                     throw new NotImplementedException();
                 }
@@ -36,13 +48,7 @@ namespace EntitiesBT.Entities
                 switch (key)
                 {
                 case Type type when type.IsComponentDataType():
-                    var typeInfo = TypeManager.GetTypeInfo(key.FetchTypeIndex());
-                    if (typeInfo.IsZeroSized) return;
-                    
-                    var dest = GetPtrRW(typeInfo.TypeIndex);
-                    var src = UnsafeUtility.PinGCObjectAndGetAddress(value, out var handle);
-                    UnsafeUtility.MemCpy(dest, src, typeInfo.SizeInChunk);
-                    UnsafeUtility.ReleaseGCObject(handle);
+                    _SET_COMPONENT_DATA(this, type, value);
                     return;
                 default:
                     throw new NotImplementedException();
@@ -78,6 +84,24 @@ namespace EntitiesBT.Entities
                 throw new ArgumentException("GetComponentData can not be called with a zero sized component.");
 #endif
             return Chunk.GetComponentDataWithTypeRO(Index, typeIndex);
+        }
+
+        [Preserve]
+        public unsafe T GetComponentData<T>() where T : struct, IComponentData
+        {
+            var typeIndex = TypeManager.GetTypeIndex<T>();
+            if (TypeManager.IsZeroSized(typeIndex))
+                throw new ArgumentException($"GetComponentData<{typeof(T)}> can not be called with a zero sized component.");
+            return UnsafeUtilityEx.AsRef<T>(Chunk.GetComponentDataWithTypeRO(Index, typeIndex));
+        }
+        
+        [Preserve]
+        public unsafe void SetComponentData<T>(T value) where T : struct, IComponentData
+        {
+            var typeIndex = TypeManager.GetTypeIndex<T>();
+            if (TypeManager.IsZeroSized(typeIndex))
+                throw new ArgumentException($"SetComponentData<{typeof(T)}> can not be called with a zero sized component.");
+            UnsafeUtilityEx.AsRef<T>(Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion)) = value;
         }
     }
 }
