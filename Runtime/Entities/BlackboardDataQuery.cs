@@ -8,6 +8,7 @@ namespace EntitiesBT.Entities
     public struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
     {
         public ISet<ComponentType> Value;
+        public EntityQuery EntityQuery { get; set; }
 
         public bool Equals(BlackboardDataQuery other)
         {

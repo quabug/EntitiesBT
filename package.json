@@ -1,11 +1,11 @@
 {
   "name": "entities-bt",
   "description": "Behavior Tree for Unity Entities",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "unity": "2019.3",
   "displayName": "Entities Behavior Tree",
   "dependencies": {
-    "com.unity.entities": "0.5.1-preview.11"
+    "com.unity.entities": "0.6.0-preview.24"
   },
   "samples": [
     {
