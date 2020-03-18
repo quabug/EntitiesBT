@@ -13,7 +13,7 @@
 >       - [Attach behavior tree onto Entity](#attach-behavior-tree-onto-entity)
 >       - [Serialization](#serialization)
 >       - [Thread control](#thread-control)
->       - [Variables](#variable-property)
+>       - [Variable Property](#variable-property)
 >     - [Debug](#debug)
 >     - [Custom behavior node](#custom-behavior-node)
 >       - [Action](#action)
@@ -81,8 +81,10 @@ or
 Fetch data from different sources.
 - [`CustomVariableProperty`](Runtime/Variable/CustomVariableProperty.cs): regular variable, custom value will save into `NodeData`.
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950074-7764aa80-6944-11ea-9ea7-0697ad5a6da5.gif">
+
 - [`ComponentVariableProperty`](Runtime/Components/ComponentVariableProperty.cs): fetch data from `Component` on `Entity`
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950083-79c70480-6944-11ea-9b42-558bc2429f74.gif">
+
   - _Component Value Name_: which value should be access from component
   - _Access Mode_: will add chosen query type for behavior tree ([Entity Query](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_entity_query.html))
     - _ReadOnly_: add `ComponentType.ReadOnly` of _Component_ into queries of behavior tree
@@ -90,6 +92,7 @@ Fetch data from different sources.
     - _Optional_: nothing will be added into queries of behavior tree
 - [`NodeVariableProperty`](Runtime/Components/NodeVariableProperty.cs): fetch data from blob of another node
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950091-7cc1f500-6944-11ea-994b-5307f08169a2.gif">
+
   - _Node Object_: another node should be access by this variable, must be in the same behavior tree as the node of variable property.
   - _Value Field Name_: the name of data field in another node.
   - _Access Runtime Data_:
@@ -97,6 +100,7 @@ Fetch data from different sources.
     - true: will access data field of _Node Object_ at runtime, something like reference value of _Node Object_.
 - [`ScriptableObjectVariableProperty`](Runtime/Components/ScriptableObjectVariableProperty.cs): fetch data from field of `ScriptableObject`.
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950097-7df32200-6944-11ea-8902-650987d58827.gif">
+
   - _Scriptable Object_: target SO.
   - _Scriptable Object Value_: target field.
 ``` c#
