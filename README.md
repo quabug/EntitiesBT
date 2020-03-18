@@ -7,7 +7,7 @@
 >   * [Features](#features)
 >   * [Disadvantages](#disadvantages)
 >   * [HowTo](#howto)
->     - [Install](#install)
+>     - [Installation](#installation)
 >     - [Usage](#usage)
 >       - [Create behavior tree](#create-behavior-tree)
 >       - [Attach behavior tree onto Entity](#attach-behavior-tree-onto-entity)
@@ -49,7 +49,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 
 ## HowTo
 ### Installation
-Requirement: Unity >= 2019.3 and entities package >= 0.4.0-preview.10
+Requirement: Unity >= 2019.3 and entities package >= 0.6.0-preview.24
 
 Install the package either by
 
