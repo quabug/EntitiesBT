@@ -103,6 +103,7 @@ Fetch data from different sources.
 
   - _Scriptable Object_: target SO.
   - _Scriptable Object Value_: target field.
+##### Code Example
 ``` c#
     public class BTVariableNode : BTNode<VariableNode>
     {
@@ -124,7 +125,7 @@ Fetch data from different sources.
         public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             ref var data = ref blob.GetNodeDefaultData<VariableNode>(index);
-            return data.IntBlobVariable.ComponentAccessList; // will return right access type of node, see `NodeVariableProperty` below.
+            return data.IntBlobVariable.ComponentAccessList; // will return right access type of node, see `NodeVariableProperty`.
         }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
@@ -137,7 +138,7 @@ Fetch data from different sources.
     }
 ```
 ##### Generate specific types of `VariableProperty<T>`
-Because generic type of `VariableProperty<T>` cannot be serialized in Unity, since `[SerializeReference]` is not allowed for a generic type.
+Generic `VariableProperty<T>` cannot be serialized in Unity, since `[SerializeReference]` is not allowed for a generic type.
 A specific type of `VariableProperty<T>` must be declared before use.
 - First create a _Scriptable Object_ of _VariableGeneratorSetting_
 <img width="800" alt="Snipaste_2020-03-18_18-57-30" src="https://user-images.githubusercontent.com/683655/76953861-6159e880-694a-11ea-8fbc-33a83b181ebf.png">
