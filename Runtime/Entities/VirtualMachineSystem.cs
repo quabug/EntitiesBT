@@ -7,121 +7,117 @@ using Unity.Jobs;
 
 namespace EntitiesBT.Entities
 {
-    public class VirtualMachineSystem : ComponentSystemGroup
+    public class VirtualMachineSystem : SystemBase
     {
+        private EntityCommandBufferSystem _entityCommandBufferSystem;
+        private readonly EntityBlackboard _blackboard = new EntityBlackboard();
+        private readonly List<BlackboardDataQuery> _blackboardDataQueryList = new List<BlackboardDataQuery>();
+
         protected override void OnCreate()
         {
-            m_systemsToUpdate.Add(World.CreateSystem<MainThreadSystem>());
-            m_systemsToUpdate.Add(World.CreateSystem<JobSystem>());
-            m_systemsToUpdate.Add(World.CreateSystem<ChangeThreadSystem>());
+            _entityCommandBufferSystem = World.GetOrCreateSystem<EntityCommandBufferSystem>();
         }
 
-        // sort is not allowed
-        public override void SortSystemUpdateList() {}
-        
-        [DisableAutoCreation]
-        private class ChangeThreadSystem : ComponentSystem
+        protected override void OnUpdate()
         {
-            protected override void OnUpdate()
-            {
-                Entities.WithAll<RunOnMainThreadTag>()
-                    .WithNone<ForceRunOnMainThreadTag>()
-                    .ForEach((Entity entity, ref IsRunOnMainThread isRunOnMainThread) =>
-                    {
-                        if (!isRunOnMainThread.Value) EntityManager.RemoveComponent<RunOnMainThreadTag>(entity);
-                    });
-                
-                Entities.WithNone<RunOnMainThreadTag, ForceRunOnMainThreadTag, ForceRunOnJobTag>()
-                    .ForEach((Entity entity, ref IsRunOnMainThread isRunOnMainThread) =>
-                    {
-                        if (isRunOnMainThread.Value) EntityManager.AddComponent<RunOnMainThreadTag>(entity);
-                    });
-            }
-        }
-
-        [DisableAutoCreation]
-        private class MainThreadSystem : ComponentSystem
-        {
-            private EntityBlackboard _blackboard = new EntityBlackboard();
-
-            protected override void OnUpdate()
-            {
-                _blackboard.EntityManager = EntityManager;
-                Entities.WithAny<RunOnMainThreadTag, ForceRunOnMainThreadTag>().ForEach((Entity entity, ref NodeBlobRef blob) =>
-                {
-                    _blackboard.Entity = entity;
-                    VirtualMachine.Tick(blob, _blackboard);
-                });
-            }
+            RunOnMainThread();
+            RunOnJob();
+            ChangeThread();
         }
         
-        [DisableAutoCreation]
-        private class JobSystem : JobComponentSystem
+        private void RunOnMainThread()
         {
-            private readonly List<BlackboardDataQuery> _blackboardDataQueryList = new List<BlackboardDataQuery>();
-            private readonly List<int> _blackboardDataQueryIndices = new List<int>();
+            _blackboard.EntityManager = EntityManager;
+            Entities.WithoutBurst().WithAny<RunOnMainThreadTag, ForceRunOnMainThreadTag>().ForEach((Entity entity, ref NodeBlobRef blob) =>
+            {
+                _blackboard.Entity = entity;
+                VirtualMachine.Tick(blob, _blackboard);
+            }).Run();
+        }
+        
+        struct TickJob : IJobParallelFor
+        {
+            [DeallocateOnJobCompletion] public NativeArray<ArchetypeChunk> Chunks;
+            public EntityJobChunkBlackboard Blackboard;
+            [ReadOnly] public ArchetypeChunkComponentType<NodeBlobRef> NodeBlobRefType;
+            // [ReadOnly] public ArchetypeChunkEntityType EntityType;
             
-            struct TickJob : IJobChunk
+            public void Execute(int index)
             {
-                public EntityJobChunkBlackboard Blackboard;
-                public int BlackboardDataQueryIndex;
-                
-                [ReadOnly] public ArchetypeChunkSharedComponentType<BlackboardDataQuery> BlackboardDataQueryType;
-                [ReadOnly] public ArchetypeChunkComponentType<NodeBlobRef> NodeBlobRefType;
-                // [ReadOnly] public ArchetypeChunkEntityType EntityType;
-                
-                public void Execute(ArchetypeChunk chunk, int chunkIndex, int firstEntityIndex)
+                var chunk = Chunks[index];
+                // var entities = chunk.GetNativeArray(EntityType);
+                var nodeBlobs = chunk.GetNativeArray(NodeBlobRefType);
+                for (var i = 0; i < chunk.Count; i++)
                 {
-                    var index = chunk.GetSharedComponentIndex(BlackboardDataQueryType);
-                    if (index != BlackboardDataQueryIndex) return;
-
-                    // var entities = chunk.GetNativeArray(EntityType);
-                    var nodeBlobs = chunk.GetNativeArray(NodeBlobRefType);
-                    for (var i = 0; i < chunk.Count; i++)
-                    {
-                        Blackboard.Chunk = chunk;
-                        Blackboard.Index = i;
-                        // Blackboard.Entity = entities[i];
-                        VirtualMachine.Tick(nodeBlobs[i], Blackboard);
-                    }
+                    Blackboard.Chunk = chunk;
+                    Blackboard.Index = i;
+                    // Blackboard.Entity = entities[i];
+                    VirtualMachine.Tick(nodeBlobs[i], Blackboard);
                 }
             }
+        }
 
-            protected override JobHandle OnUpdate(JobHandle inputDeps)
+        protected void RunOnJob()
+        {
+            _blackboardDataQueryList.Clear();
+            EntityManager.GetAllUniqueSharedComponentData(_blackboardDataQueryList);
+
+            var jobHandler = new JobHandle();
+            for (var i = 0; i < _blackboardDataQueryList.Count; i++)
             {
-                _blackboardDataQueryList.Clear();
-                _blackboardDataQueryIndices.Clear();
-                EntityManager.GetAllUniqueSharedComponentData(_blackboardDataQueryList, _blackboardDataQueryIndices);
+                var query = _blackboardDataQueryList[i];
+                if (query.Value == null) continue;
 
-                var jobHandler = new JobHandle();
-                for (var i = 0; i < _blackboardDataQueryList.Count; i++)
+                if (query.EntityQuery == null)
                 {
-                    var query = _blackboardDataQueryList[i];
-                    if (query.Value == null) continue;
-                    
-                    var sharedIndex = _blackboardDataQueryIndices[i];
-                    
-                    // TODO: avoid GC? use NativeArray?
-                    var jobQuery = GetEntityQuery(query.Value
+                    query.EntityQuery = GetEntityQuery(query.Value
                         .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
                         .Append(ComponentType.ReadOnly<NodeBlobRef>())
                         .Append(ComponentType.Exclude<RunOnMainThreadTag>())
                         .Append(ComponentType.Exclude<ForceRunOnMainThreadTag>())
                         .ToArray()
                     );
-                    
-                    var job = new TickJob {
-                        BlackboardDataQueryIndex = sharedIndex
-                      , Blackboard = new EntityJobChunkBlackboard { GlobalSystemVersion = EntityManager.GlobalSystemVersion }
-                      , BlackboardDataQueryType = GetArchetypeChunkSharedComponentType<BlackboardDataQuery>()
-                      , NodeBlobRefType = GetArchetypeChunkComponentType<NodeBlobRef>()
-                      // , EntityType = GetArchetypeChunkEntityType()
-                    };
-                    
-                    jobHandler = JobHandle.CombineDependencies(job.Schedule(jobQuery, inputDeps), jobHandler);
+                    query.EntityQuery.SetSharedComponentFilter(query);
                 }
-                return jobHandler;
+
+                var chunks = query.EntityQuery.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
+                
+                var job = new TickJob {
+                    Chunks = chunks
+                  , Blackboard = new EntityJobChunkBlackboard { GlobalSystemVersion = EntityManager.GlobalSystemVersion }
+                  , NodeBlobRefType = GetArchetypeChunkComponentType<NodeBlobRef>()
+                  // , EntityType = GetArchetypeChunkEntityType()
+                };
+
+                deps = JobHandle.CombineDependencies(deps, Dependency);
+                deps = job.Schedule(chunks.Length, 8, deps);
+                jobHandler = JobHandle.CombineDependencies(deps, jobHandler);
             }
+
+            Dependency = jobHandler;
+        }
+        
+        private void ChangeThread()
+        {
+            var ecb = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
+            
+            var deps = Entities.WithAll<RunOnMainThreadTag>()
+                .WithNone<ForceRunOnMainThreadTag>()
+                .ForEach((Entity entity, int entityInQueryIndex, ref IsRunOnMainThread isRunOnMainThread) =>
+                {
+                    if (!isRunOnMainThread.Value) ecb.RemoveComponent<RunOnMainThreadTag>(entityInQueryIndex, entity);
+                }).ScheduleParallel(Dependency);
+            
+            deps = Entities.WithNone<RunOnMainThreadTag, ForceRunOnMainThreadTag, ForceRunOnJobTag>()
+                .ForEach((Entity entity, int entityInQueryIndex, ref IsRunOnMainThread isRunOnMainThread) =>
+                {
+                    if (isRunOnMainThread.Value) ecb.AddComponent<RunOnMainThreadTag>(entityInQueryIndex, entity);
+                }).ScheduleParallel(deps);
+            
+            Dependency = deps;
+            
+            // Make sure that the ECB system knows about our job
+            _entityCommandBufferSystem.AddJobHandleForProducer(Dependency);
         }
     }
 }
