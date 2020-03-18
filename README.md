@@ -79,12 +79,31 @@ or
 
 #### Variable Property
 Fetch data from different sources.
-##### Code Example
+- [`CustomVariableProperty`](Runtime/Variable/CustomVariableProperty.cs): regular variable, custom value will save into `NodeData`.
+<img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950074-7764aa80-6944-11ea-9ea7-0697ad5a6da5.gif">
+- [`ComponentVariableProperty`](Runtime/Components/ComponentVariableProperty.cs): fetch data from `Component` on `Entity`
+<img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950083-79c70480-6944-11ea-9b42-558bc2429f74.gif">
+  - _Component Value Name_: which value should be access from component
+  - _Access Mode_: will add chosen query type for behavior tree ([Entity Query](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_entity_query.html))
+    - _ReadOnly_: add `ComponentType.ReadOnly` of _Component_ into queries of behavior tree
+    - _ReadWrite_: add `ComponentType.ReadWrite` of _Component_ into queries of behavior tree
+    - _Optional_: nothing will be added into queries of behavior tree
+- [`NodeVariableProperty`](Runtime/Components/NodeVariableProperty.cs): fetch data from blob of another node
+<img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950091-7cc1f500-6944-11ea-994b-5307f08169a2.gif">
+  - _Node Object_: another node should be access by this variable, must be in the same behavior tree as the node of variable property.
+  - _Value Field Name_: the name of data field in another node.
+  - _Access Runtime Data_:
+    - false: will copy data to local blob node while building, value change of _Node Object_ won't effect variable once build.
+    - true: will access data field of _Node Object_ at runtime, something like reference value of _Node Object_.
+- [`ScriptableObjectVariableProperty`](Runtime/Components/ScriptableObjectVariableProperty.cs): fetch data from field of `ScriptableObject`.
+<img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950097-7df32200-6944-11ea-8902-650987d58827.gif">
+  - _Scriptable Object_: target SO.
+  - _Scriptable Object Value_: target field.
 ``` c#
     public class BTVariableNode : BTNode<VariableNode>
     {
         [SerializeReference, SerializeReferenceButton] // neccessary for editor
-        public Int32Property IntVariable; // a `int` variable property
+        public Int32Property IntVariable; // an `int` variable property
 
         protected override void Build(ref VariableNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
@@ -96,32 +115,34 @@ Fetch data from different sources.
     [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
     public struct VariableNode : INodeData
     {
-        public BlobVariable<int> Variable;
+        public BlobVariable<int> IntBlobVariable;
 
         public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             ref var data = ref blob.GetNodeDefaultData<VariableNode>(index);
-            return data.Variable.ComponentAccessList; // will return right access type of node, see `NodeVariableProperty` below.
+            return data.IntBlobVariable.ComponentAccessList; // will return right access type of node, see `NodeVariableProperty` below.
         }
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<VariableNode>(index);
-            var intVariable = data.Variable.GetData(index, blob, blackboard); // get variable value
-            ref var intVariable = ref data.Variable.GetDataRef(index, blob, blackboard); // get variable ref value
+            var intVariable = data.IntBlobVariable.GetData(index, blob, blackboard); // get variable value
+            ref var intVariable = ref data.IntBlobVariable.GetDataRef(index, blob, blackboard); // get variable ref value
             return NodeState.Success;
         }
     }
 ```
+##### Generate specific types of `VariableProperty<T>`
+Because generic type of `VariableProperty<T>` cannot be serialized in Unity, since `[SerializeReference]` is not allowed for a generic type.
+A specific type of `VariableProperty<T>` must be declared before use.
+- First create a _Scriptable Object_ of _VariableGeneratorSetting_
+<img width="800" alt="Snipaste_2020-03-18_18-57-30" src="https://user-images.githubusercontent.com/683655/76953861-6159e880-694a-11ea-8fbc-33a83b181ebf.png">
+- Fill which _Types_ you want to use as variable property.
+- Fill _Filename_, _Namespace_, etc.
+- Create script from this setting and save it in _Assets_
+<img width="600" alt="Snipaste_2020-03-18_18-57-36" src="https://user-images.githubusercontent.com/683655/76953872-63bc4280-694a-11ea-8f03-73af3fa2fec2.png">
+- And now you are free to use specific type properties, like `float2Property` etc.
 
-- [`CustomVariableProperty`](Runtime/Variable/CustomVariableProperty.cs): regular variable, custom value will save into `NodeData`.
-- [`ComponentVariableProperty`](Runtime/Components/ComponentVariableProperty.cs): fetch data from `Component` on `Entity`
-  - _Fallback Value_: fallback value if component variable is not available.
-  - _Component Value Name_: which value should be access from component
-  - _Access Mode_: will add chosen query type for behavior tree ([Entity Query](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_entity_query.html))
-    - _ReadOnly_: add `ComponentType.ReadOnly` of _Component_ into behavior tree
-    - _ReadWrite_: add `ComponentType.ReadWrite` of _Component_ into behavior tree
-    - _Optional_: nothing changed
 
 ### Debug
 <img width="600" alt="debug" src="https://user-images.githubusercontent.com/683655/72407368-517f2600-379a-11ea-8aa9-c72754abce9f.gif" />
