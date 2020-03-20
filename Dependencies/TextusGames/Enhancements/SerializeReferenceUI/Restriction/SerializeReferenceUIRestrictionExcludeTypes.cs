@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+
+using System;
 using UnityEngine;
 
 /// None of this types are valid.
@@ -8,3 +10,5 @@ public class SerializeReferenceUIRestrictionExcludeTypes : PropertyAttribute
     public readonly Type[] Types;
     public SerializeReferenceUIRestrictionExcludeTypes(params Type[] types) => Types = types;
 }
+
+#endif
