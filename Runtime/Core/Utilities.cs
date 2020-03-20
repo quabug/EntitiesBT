@@ -51,6 +51,7 @@ namespace EntitiesBT.Core
 
         private static IEnumerable<TreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, ITreeNode<T> parent)
         {
+            if (node == null) return Enumerable.Empty<TreeNode<T>>();
             var treeNode = new TreeNode<T>(node, parent);
             return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => child.Flatten(childrenFunc, treeNode)));
         }
@@ -62,6 +63,7 @@ namespace EntitiesBT.Core
 
         private static IEnumerable<TreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, ITreeNode<T> parent, SelfFunc<T> selfFunc)
         {
+            if (node == null) return Enumerable.Empty<TreeNode<T>>();
             var treeNode = new TreeNode<T>(node, parent);
             return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => selfFunc(child).Flatten(childrenFunc, treeNode, selfFunc)));
         }
