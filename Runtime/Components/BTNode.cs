@@ -43,6 +43,7 @@ namespace EntitiesBT.Components
 
         protected virtual void Update()
         {
+#if UNITY_EDITOR
             int maxChildCount;
             switch (BehaviorNodeType)
             {
@@ -65,6 +66,7 @@ namespace EntitiesBT.Components
                 Debug.LogError($"{BehaviorNodeType} node {name} is not allowed to have more than {maxChildCount} children", gameObject);
                 for (var i = childCount - 1; i >= maxChildCount; i--) DestroyImmediate(transform.GetChild(i).gameObject);
             }
+#endif
         }
 
         protected virtual void OnValidate() {}
