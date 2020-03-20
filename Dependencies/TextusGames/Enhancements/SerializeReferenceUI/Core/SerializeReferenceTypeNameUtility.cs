@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+
+using System;
 
 /// This utility exists, because serialize reference managed reference typename returns combined string
 /// and not data class that contains separate strings for assembly name and for class name (and possibly namespace name)
@@ -21,3 +23,5 @@ public static class SerializeReferenceTypeNameUtility
         return (typeAssemblyName,  typeClassName);
     }  
 }
+
+#endif
