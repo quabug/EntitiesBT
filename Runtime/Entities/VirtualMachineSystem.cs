@@ -7,6 +7,7 @@ using Unity.Jobs;
 
 namespace EntitiesBT.Entities
 {
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
     public class VirtualMachineSystem : SystemBase
     {
         private EntityCommandBufferSystem _entityCommandBufferSystem;
@@ -16,6 +17,9 @@ namespace EntitiesBT.Entities
         protected override void OnCreate()
         {
             _entityCommandBufferSystem = World.GetOrCreateSystem<EntityCommandBufferSystem>();
+            // HACK: make system keep running if there's any entity with `BlackboardDataQuery`.
+            //       otherwise, this system will be disabled if there's only `Force Run On Job` entities in the scene.
+            var __hack__ = GetEntityQuery(ComponentType.ReadOnly<BlackboardDataQuery>());
         }
 
         protected override void OnUpdate()
