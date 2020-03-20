@@ -402,6 +402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 108759893}
   - component: {fileID: 108759892}
+  - component: {fileID: 108759894}
   m_Layer: 0
   m_Name: BTRepeat
   m_TagString: Untagged
@@ -440,6 +441,18 @@ Transform:
   m_Father: {fileID: 1027940153}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &108759894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108759891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac9e180769c4e749aa9d96d2f996aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &113567595
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,7 +696,7 @@ GameObject:
   - component: {fileID: 170017255}
   - component: {fileID: 170017254}
   m_Layer: 0
-  m_Name: ForceJobEntity (6)
+  m_Name: ForceMainThread
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -704,7 +717,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 7154796706415700006, guid: 446c81f12e25b45bdad4d0d6471cf973,
     type: 3}
-  _thread: 1
+  _thread: 0
   _autoCreateTypes: 1
 --- !u!114 &170017255
 MonoBehaviour:
@@ -1205,6 +1218,7 @@ GameObject:
   - component: {fileID: 346271340}
   - component: {fileID: 346271339}
   - component: {fileID: 2006228433}
+  - component: {fileID: 346271343}
   m_Layer: 0
   m_Name: NonJobMoveEntity
   m_TagString: Untagged
@@ -1287,6 +1301,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &346271343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346271338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &350012259
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,7 +1730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &507750024
 Transform:
   m_ObjectHideFlags: 0
@@ -1964,7 +1990,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &648552812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2064,6 +2090,7 @@ GameObject:
   m_Component:
   - component: {fileID: 662140731}
   - component: {fileID: 662140730}
+  - component: {fileID: 662140732}
   m_Layer: 0
   m_Name: BTRepeat
   m_TagString: Untagged
@@ -2102,6 +2129,18 @@ Transform:
   m_Father: {fileID: 1637547556}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &662140732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662140729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac9e180769c4e749aa9d96d2f996aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &679181697
 GameObject:
   m_ObjectHideFlags: 0
@@ -2118,7 +2157,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &679181698
 Transform:
   m_ObjectHideFlags: 0
@@ -2485,7 +2524,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
   _rootNode: {fileID: 950849821}
-  _thread: 0
+  _thread: 2
   _autoCreateTypes: 1
 --- !u!114 &766789314
 MonoBehaviour:
@@ -2877,6 +2916,7 @@ GameObject:
   m_Component:
   - component: {fileID: 873378152}
   - component: {fileID: 873378153}
+  - component: {fileID: 873378154}
   m_Layer: 0
   m_Name: BTSubTree
   m_TagString: Untagged
@@ -2911,6 +2951,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tree: {fileID: 662140730}
+--- !u!114 &873378154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873378151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac9e180769c4e749aa9d96d2f996aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &885071143
 GameObject:
   m_ObjectHideFlags: 0
@@ -3099,6 +3151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 950849822}
   - component: {fileID: 950849821}
+  - component: {fileID: 950849823}
   m_Layer: 0
   m_Name: BTRepeat
   m_TagString: Untagged
@@ -3137,6 +3190,18 @@ Transform:
   m_Father: {fileID: 766789318}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &950849823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950849820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac9e180769c4e749aa9d96d2f996aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -3403,7 +3468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
   _rootNode: {fileID: 108759892}
-  _thread: 0
+  _thread: 2
   _autoCreateTypes: 1
 --- !u!114 &1027940149
 MonoBehaviour:
@@ -3983,7 +4048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
   _rootNode: {fileID: 1659773008}
-  _thread: 0
+  _thread: 2
   _autoCreateTypes: 1
 --- !u!114 &1197847203
 MonoBehaviour:
@@ -4340,7 +4405,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1251689018
 Transform:
   m_ObjectHideFlags: 0
@@ -4498,7 +4563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
   _rootNode: {fileID: 271263580}
-  _thread: 0
+  _thread: 2
   _autoCreateTypes: 1
 --- !u!114 &1314860103
 MonoBehaviour:
@@ -4591,7 +4656,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1352951057
 Transform:
   m_ObjectHideFlags: 0
@@ -5117,7 +5182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
   _rootNode: {fileID: 662140730}
-  _thread: 0
+  _thread: 2
   _autoCreateTypes: 1
 --- !u!114 &1637547552
 MonoBehaviour:
@@ -5306,6 +5371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1659773007}
   - component: {fileID: 1659773008}
+  - component: {fileID: 1659773009}
   m_Layer: 0
   m_Name: BTSequence
   m_TagString: Untagged
@@ -5342,6 +5408,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _recursiveResetStatesBeforeTick: 0
+--- !u!114 &1659773009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659773006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac9e180769c4e749aa9d96d2f996aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1665454168
 GameObject:
   m_ObjectHideFlags: 0
@@ -5425,7 +5503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
   _rootNode: {fileID: 2048944608}
-  _thread: 0
+  _thread: 2
   _autoCreateTypes: 1
 --- !u!114 &1674485428
 MonoBehaviour:
@@ -5693,7 +5771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1723956083
 Transform:
   m_ObjectHideFlags: 0
@@ -5825,7 +5903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1839689588
 Transform:
   m_ObjectHideFlags: 0
@@ -5952,7 +6030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
   _rootNode: {fileID: 873378153}
-  _thread: 0
+  _thread: 2
   _autoCreateTypes: 1
 --- !u!114 &1850289277
 MonoBehaviour:
@@ -5995,7 +6073,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1909685621
 Transform:
   m_ObjectHideFlags: 0
@@ -6224,6 +6302,7 @@ GameObject:
   - component: {fileID: 2006228428}
   - component: {fileID: 2006228426}
   - component: {fileID: 2006228427}
+  - component: {fileID: 2006228431}
   m_Layer: 0
   m_Name: ForceJobEntity
   m_TagString: Untagged
@@ -6322,6 +6401,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2006228431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006228425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2006228433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6336,7 +6427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _file: {fileID: 0}
   _rootNode: {fileID: 648552812}
-  _thread: 0
+  _thread: 2
   _autoCreateTypes: 1
 --- !u!1 &2021017348
 GameObject:
@@ -6535,6 +6626,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2048944609}
   - component: {fileID: 2048944608}
+  - component: {fileID: 2048944610}
   m_Layer: 0
   m_Name: BTRepeat
   m_TagString: Untagged
@@ -6573,6 +6665,18 @@ Transform:
   m_Father: {fileID: 1674485432}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2048944610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048944607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac9e180769c4e749aa9d96d2f996aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2059253279
 GameObject:
   m_ObjectHideFlags: 0

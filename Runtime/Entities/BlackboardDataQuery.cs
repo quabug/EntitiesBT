@@ -18,10 +18,9 @@ namespace EntitiesBT.Entities
 
         bool Equals(ISet<ComponentType> lhs, ISet<ComponentType> rhs)
         {
-            var lhsCount = lhs?.Count ?? 0;
-            var rhsCount = rhs?.Count ?? 0;
-            if (lhsCount == 0 && rhsCount == 0) return true;
-            if (lhsCount != rhsCount) return false;
+            if (lhs == null && rhs == null) return true;
+            if (lhs == null || rhs == null) return false;
+            if (lhs.Count != rhs.Count) return false;
             return !lhs.Except(rhs).Any();
         }
 

@@ -9,9 +9,9 @@ namespace EntitiesBT.Components
         [Tooltip("Enable this will re-evaluate node state from first child instead of skip to running node directly.")]
         [SerializeField] private bool _recursiveResetStatesBeforeTick = default;
 
-        public override INodeDataBuilder Self => _recursiveResetStatesBeforeTick
+        protected override INodeDataBuilder SelfImpl => _recursiveResetStatesBeforeTick
             ? new BTVirtualDecorator<RecursiveResetStateNode>(this)
-            : base.Self
+            : base.SelfImpl
         ;
     }
 }
