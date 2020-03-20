@@ -14,7 +14,7 @@ namespace EntitiesBT.Sample
         protected override unsafe void Build(void* dataPtr, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __) =>
             ((SetAnimatorTriggerNode*) dataPtr)->Value = Animator.StringToHash(TriggerName);
 
-        public override INodeDataBuilder Self => new BTVirtualDecorator<RunOnMainThreadNode>(this);
+        protected override INodeDataBuilder SelfImpl => new BTVirtualDecorator<RunOnMainThreadNode>(this);
     }
     
     [BehaviorNode("EF8A0D43-DEA1-4D31-953C-77CD0BD8E26C")]

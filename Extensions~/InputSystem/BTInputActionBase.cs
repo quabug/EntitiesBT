@@ -17,7 +17,7 @@ namespace EntitiesBT.Extensions.InputSystem
             data.ActionId = InputAction.action.id;
         }
 
-        public override INodeDataBuilder Self => new BTVirtualDecorator<RunOnMainThreadNode>(this);
+        protected override INodeDataBuilder SelfImpl => new BTVirtualDecorator<RunOnMainThreadNode>(this);
     }
 
     public interface IInputActionNodeData : INodeData

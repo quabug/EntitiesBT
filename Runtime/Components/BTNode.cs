@@ -19,7 +19,9 @@ namespace EntitiesBT.Components
         protected virtual Type NodeType { get; } = typeof(ZeroNode);
         
         public virtual IEnumerable<INodeDataBuilder> Children => this.Children();
-        public virtual INodeDataBuilder Self => this;
+        public INodeDataBuilder Self => gameObject.activeSelf ? SelfImpl : null;
+
+        protected virtual INodeDataBuilder SelfImpl => this;
 
         public unsafe BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
         {
