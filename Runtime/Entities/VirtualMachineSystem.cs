@@ -10,16 +10,16 @@ namespace EntitiesBT.Entities
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     public class VirtualMachineSystem : SystemBase
     {
-        private EntityCommandBufferSystem _entityCommandBufferSystem;
+        private EndSimulationEntityCommandBufferSystem _endSimulationEntityCommandBufferSystem;
         private readonly EntityBlackboard _blackboard = new EntityBlackboard();
         private readonly List<BlackboardDataQuery> _blackboardDataQueryList = new List<BlackboardDataQuery>();
 
         protected override void OnCreate()
         {
-            _entityCommandBufferSystem = World.GetOrCreateSystem<EntityCommandBufferSystem>();
+            _endSimulationEntityCommandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
             // HACK: make system keep running if there's any entity with `BlackboardDataQuery`.
             //       otherwise, this system will be disabled if there's only `Force Run On Job` entities in the scene.
-            var __hack__ = GetEntityQuery(ComponentType.ReadOnly<BlackboardDataQuery>());
+            GetEntityQuery(ComponentType.ReadOnly<BlackboardDataQuery>());
         }
 
         protected override void OnUpdate()
@@ -72,19 +72,21 @@ namespace EntitiesBT.Entities
                 var query = _blackboardDataQueryList[i];
                 if (query.Value == null) continue;
 
-                if (query.EntityQuery == null)
-                {
-                    query.EntityQuery = GetEntityQuery(query.Value
+                // TODO: https://forum.unity.com/threads/entityquery-cannot-be-used-in-isharedcomponentdata.850255/
+                // if (query.EntityQuery == null)
+                // {
+                    // query.EntityQuery = GetEntityQuery(query.Value
+                    var entityQuery = GetEntityQuery(query.Value
                         .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
                         .Append(ComponentType.ReadOnly<NodeBlobRef>())
                         .Append(ComponentType.Exclude<RunOnMainThreadTag>())
                         .Append(ComponentType.Exclude<ForceRunOnMainThreadTag>())
                         .ToArray()
                     );
-                    query.EntityQuery.SetSharedComponentFilter(query);
-                }
+                    entityQuery.SetSharedComponentFilter(query);
+                // }
 
-                var chunks = query.EntityQuery.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
+                var chunks = entityQuery.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
                 
                 var job = new TickJob {
                     Chunks = chunks
@@ -103,7 +105,7 @@ namespace EntitiesBT.Entities
         
         private void ChangeThread()
         {
-            var ecb = _entityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
+            var ecb = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
             
             var deps = Entities.WithAll<RunOnMainThreadTag>()
                 .WithNone<ForceRunOnMainThreadTag>()
@@ -121,7 +123,7 @@ namespace EntitiesBT.Entities
             Dependency = deps;
             
             // Make sure that the ECB system knows about our job
-            _entityCommandBufferSystem.AddJobHandleForProducer(Dependency);
+            _endSimulationEntityCommandBufferSystem.AddJobHandleForProducer(Dependency);
         }
     }
 }
