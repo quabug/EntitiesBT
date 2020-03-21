@@ -19,8 +19,8 @@ namespace EntitiesBT.Editor
         {
             if (property.propertyType == SerializedPropertyType.String)
             {
-                if (_genericType == null) _genericType = property.GetGenericType();
-                if (_attribute == null) _attribute = property.GetCustomAttribute<VariableScriptableObjectValueAttribute>();
+                if (_genericType == null) _genericType = this.GetGenericType();
+                if (_attribute == null) _attribute = (VariableScriptableObjectValueAttribute)attribute;
                 var scriptableObject = property.GetSiblingFieldValue(_attribute.ScriptableObjectFieldName);
                 if (!Equals(scriptableObject, _scriptableObject))
                 {

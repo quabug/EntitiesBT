@@ -21,8 +21,8 @@ namespace EntitiesBT.Editor
         {
             if (property.propertyType == SerializedPropertyType.String)
             {
-                if (_genericType == null) _genericType = property.GetGenericType();
-                if (_attribute == null) _attribute = property.GetCustomAttribute<VariableNodeObjectAttribute>();
+                if (_genericType == null) _genericType = this.GetGenericType();
+                if (_attribute == null) _attribute = (VariableNodeObjectAttribute)attribute;
                 var nodeObject = (BTNode)property.GetSiblingFieldValue(_attribute.NodeObjectFieldName);
                 if (!Equals(nodeObject, _nodeObject))
                 {
