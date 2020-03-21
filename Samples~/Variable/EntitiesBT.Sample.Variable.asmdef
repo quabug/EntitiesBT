@@ -11,7 +11,7 @@
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": true,
+    "overrideReferences": false,
     "precompiledReferences": [
         "EntitiesBT.Variable.Sample.VariableProperties.dll"
     ],

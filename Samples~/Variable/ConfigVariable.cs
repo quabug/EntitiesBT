@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace EntitiesBT.Sample
@@ -8,5 +9,8 @@ namespace EntitiesBT.Sample
         public int IntValue;
         public float FloatValue;
         public float AnotherFloatValue;
+        
+        [field: SerializeField]
+        public float FloatProperty { get; set; }
     }
 }

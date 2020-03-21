@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
@@ -22,23 +24,57 @@ namespace EntitiesBT.Components
     public class ScriptableObjectVariableProperty<T> : VariableProperty<T> where T : struct
     {
         public override int VariablePropertyTypeId => ID;
+        
         public ScriptableObject ScriptableObject;
-        [VariableScriptableObjectValue("ScriptableObject")]
-        public string ScriptableObjectValueName;
+        
+#if ODIN_INSPECTOR
+        IEnumerable<string> _validValueNames
+        {
+            get
+            {
+                if (ScriptableObject == null) return Enumerable.Empty<string>();
 
+                var type = ScriptableObject.GetType();
+                var validFields = type
+                    .GetFields(FIELD_BINDING_FLAGS)
+                    .Where(fi => fi.FieldType == typeof(T))
+                    .Select(fi => fi.Name)
+                ;
+                var validProperties = type
+                    .GetProperties(FIELD_BINDING_FLAGS)
+                    .Where(pi => pi.CanRead && pi.PropertyType == typeof(T))
+                    .Select(pi => pi.Name)
+                ;
+                
+                return validFields.Concat(validProperties);
+            }
+        }
+        
+        [Sirenix.OdinInspector.ValueDropdown("_validValueNames")]
+#else
+        [VariableScriptableObjectValue("ScriptableObject")]
+#endif
+        public string ScriptableObjectValueName;
+        
         protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
+            var type = ScriptableObject.GetType();
             FieldInfo fieldInfo = null;
+            PropertyInfo propertyInfo = null;
             if (ScriptableObject != null)
-                fieldInfo = ScriptableObject.GetType().GetField(ScriptableObjectValueName, FIELD_BINDING_FLAGS);
+                fieldInfo = type.GetField(ScriptableObjectValueName, FIELD_BINDING_FLAGS);
+            if (fieldInfo == null)
+                propertyInfo = type.GetProperty(ScriptableObjectValueName, FIELD_BINDING_FLAGS);
 
-            if (fieldInfo == null || fieldInfo.FieldType != typeof(T))
+            if ((fieldInfo == null || fieldInfo.FieldType != typeof(T))
+                && (propertyInfo == null || !propertyInfo.CanRead || propertyInfo.PropertyType != typeof(T)))
             {
-                Debug.LogError($"{ScriptableObject.name}.{ScriptableObjectValueName} is not valid, fallback to ConstantValue");
+                Debug.LogError($"{ScriptableObject.name}.{ScriptableObjectValueName} is not valid");
                 throw new ArgumentException();
             }
 
-            builder.Allocate(ref blobVariable, (T) fieldInfo.GetValue(ScriptableObject));
+            var value = fieldInfo?.GetValue(ScriptableObject) ?? propertyInfo?.GetValue(ScriptableObject);
+            builder.Allocate(ref blobVariable, (T) value);
         }
 
         static ScriptableObjectVariableProperty()
