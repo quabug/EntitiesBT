@@ -21,5 +21,4 @@ MonoBehaviour:
   - Unity.Mathematics.quaternion
   - UnityEngine.Quaternion
   Filename: VariableProperties
-  FilenameIncludeNamespace: 1
-  Namespace: EntitiesBT.Variable
+  Namespace: EntitiesBT.Sample

@@ -1,21 +1,22 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
+using Sirenix.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace EntitiesBT.Samples
 {
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
-        [SerializeReference, SerializeReferenceButton]
-        public float2Property InputMoveProperty;
+        [OdinSerialize, NonSerialized]
+        public VariableProperty<float2> InputMoveProperty;
         
-        [SerializeReference, SerializeReferenceButton]
-        public quaternionProperty OutputDirectionProperty;
+        [OdinSerialize, NonSerialized]
+        public VariableProperty<quaternion> OutputDirectionProperty;
 
         protected override void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

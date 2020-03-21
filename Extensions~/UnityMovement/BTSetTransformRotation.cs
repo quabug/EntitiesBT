@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
+using Sirenix.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -11,8 +13,8 @@ namespace EntitiesBT.Extensions.UnityMovement
 {
     public class BTSetTransformRotation : BTNode<SetTransformRotationNode>
     {
-        [SerializeReference, SerializeReferenceButton]
-        public quaternionProperty RotationProperty;
+        [OdinSerialize, NonSerialized]
+        public VariableProperty<quaternion> RotationProperty;
 
         protected override void Build(ref SetTransformRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

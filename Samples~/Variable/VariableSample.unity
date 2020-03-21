@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +118,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -150,6 +152,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   LongVariable:
     id: 0
   String: aabbbcccc
@@ -162,23 +173,20 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: Int64NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      type: {class: Int64CustomVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        NodeObject: {fileID: 1667038669}
-        ValueFieldName: Long
-        AccessRuntimeData: 1
+        CustomValue: 0
     00000001:
-      type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
+      type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.OutputValue
-        _accessMode: 1
+        ComponentValueName: ExternalEntityRefInfo.SubSectionIndex
+        _accessMode: 0
     00000002:
-      type: {class: SingleScriptableObjectVariableProperty, ns: EntitiesBT.Variable,
-        asm: EntitiesBT.Variable.GenCode}
+      type: {class: SingleNodeVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ScriptableObject: {fileID: 11400000, guid: cee16ca8c8b594efb867f66c8d699937,
-          type: 2}
-        ScriptableObjectValueName: FloatValue
+        NodeObject: {fileID: 0}
+        ValueFieldName: 
+        AccessRuntimeData: 1
 --- !u!4 &327906298
 Transform:
   m_ObjectHideFlags: 0
@@ -410,31 +418,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   LongVariable:
     id: 0
   String: 
   IntArray: 
   DestVariable:
-    id: 1
+    id: 0
   SrcVariable:
-    id: 2
+    id: 0
   LongValue: 44332
   references:
     version: 1
     00000000:
-      type: {class: Int64NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        NodeObject: {fileID: 327906297}
-        ValueFieldName: LongVariable
-        AccessRuntimeData: 1
-    00000001:
-      type: {class: Int32CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        CustomValue: 111222
-    00000002:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        CustomValue: 33333.11
+      type: {class: , ns: , asm: }
 --- !u!1 &1723425236
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,6 +485,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!1 &1917070851
 GameObject:

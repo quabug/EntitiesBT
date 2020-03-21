@@ -5,6 +5,7 @@ using EntitiesBT.Core;
 using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
 using EntitiesBT.Variable;
+using Sirenix.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -13,8 +14,8 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputMove : BTInputActionBase<InputMoveNode>
     {
-        [SerializeReference, SerializeReferenceButton]
-        public float2Property Output;
+        [OdinSerialize, NonSerialized]
+        public VariableProperty<float2> Output;
 
         protected override void Build(ref InputMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

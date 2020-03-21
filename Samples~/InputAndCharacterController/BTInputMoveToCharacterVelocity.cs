@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
+using Sirenix.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -11,14 +13,14 @@ namespace EntitiesBT.Samples
 {
     public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
     {
-        [SerializeReference, SerializeReferenceButton]
-        public SingleProperty SpeedProperty;
+        [OdinSerialize, NonSerialized]
+        public VariableProperty<float> SpeedProperty;
         
-        [SerializeReference, SerializeReferenceButton]
-        public float2Property InputMoveProperty;
+        [OdinSerialize, NonSerialized]
+        public VariableProperty<float2> InputMoveProperty;
         
-        [SerializeReference, SerializeReferenceButton]
-        public float3Property OutputVelocityProperty;
+        [OdinSerialize, NonSerialized]
+        public VariableProperty<float3> OutputVelocityProperty;
 
         protected override void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

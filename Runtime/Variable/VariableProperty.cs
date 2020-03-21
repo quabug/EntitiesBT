@@ -9,7 +9,7 @@ namespace EntitiesBT.Variable
         int VariablePropertyTypeId { get; }
     }
 
-    public class VariableProperty<T> : IVariableProperty where T : struct
+    public abstract class VariableProperty<T> : IVariableProperty where T : struct
     {
         public const BindingFlags FIELD_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public;
         

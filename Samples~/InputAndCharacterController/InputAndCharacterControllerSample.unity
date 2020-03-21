@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +118,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -164,29 +166,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe11e62dd054dd5a7b238f1de6db4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedProperty:
-    id: 0
-  InputMoveProperty:
-    id: 1
-  OutputVelocityProperty:
-    id: 2
-  references:
-    version: 1
-    00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        CustomValue: 2
-    00000001:
-      type: {class: float2NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        NodeObject: {fileID: 1332110029}
-        ValueFieldName: Output
-        AccessRuntimeData: 1
-    00000002:
-      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        ComponentValueName: BTCharacterVelocityComponent.Value
-        _accessMode: 1
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: SpeedProperty
+      Entry: 7
+      Data: 0|EntitiesBT.Variable.CustomVariableProperty`1[[System.Single, mscorlib]],
+        EntitiesBT.Runtime
+    - Name: CustomValue
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: InputMoveProperty
+      Entry: 7
+      Data: 1|EntitiesBT.Components.ComponentVariableProperty`1[[Unity.Mathematics.float2,
+        Unity.Mathematics]], EntitiesBT.Components
+    - Name: ComponentValueName
+      Entry: 1
+      Data: BTInputMoveComponent.Value
+    - Name: _accessMode
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OutputVelocityProperty
+      Entry: 7
+      Data: 2|EntitiesBT.Variable.CustomVariableProperty`1[[Unity.Mathematics.float3,
+        Unity.Mathematics]], EntitiesBT.Runtime
+    - Name: CustomValue
+      Entry: 7
+      Data: Unity.Mathematics.float3, Unity.Mathematics
+    - Name: x
+      Entry: 4
+      Data: 0
+    - Name: y
+      Entry: 4
+      Data: 0
+    - Name: z
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
 --- !u!1 &9309917
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +266,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!1 &72413650
 GameObject:
@@ -277,6 +319,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 969631693c5b4a45b9fa479183204cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _enable: 1
 --- !u!1 &83713278
 GameObject:
@@ -323,6 +374,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!1 &119268659
 GameObject:
@@ -367,6 +427,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c99708fe15b495f9094f9e55dcd2904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   InputAction: {fileID: 2764200464262716241, guid: e11489ceb77624896bddc0c72ce3be71,
     type: 3}
   Phase: 2
@@ -451,7 +520,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &447731368
 GameObject:
@@ -497,6 +566,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3013650591734b2cbe7111fcc10341ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   Type: 0
   BreakStates: 0
   RepeatTimes: 0
@@ -565,7 +643,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &525316152
 GameObject:
@@ -610,17 +688,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 775125229}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: VelocityProperty
+      Entry: 7
+      Data: 0|EntitiesBT.Components.NodeVariableProperty`1[[Unity.Mathematics.float3,
+        Unity.Mathematics]], EntitiesBT.Components
+    - Name: NodeObject
+      Entry: 10
+      Data: 0
+    - Name: ValueFieldName
+      Entry: 1
+      Data: OutputVelocity
+    - Name: AccessRuntimeData
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
   IsLocal: 0
-  VelocityProperty:
-    id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: float3NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        NodeObject: {fileID: 775125229}
-        ValueFieldName: OutputVelocity
-        AccessRuntimeData: 1
 --- !u!1 &551306013
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,6 +767,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -745,29 +840,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe11e62dd054dd5a7b238f1de6db4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedProperty:
-    id: 0
-  InputMoveProperty:
-    id: 1
-  OutputVelocityProperty:
-    id: 2
-  references:
-    version: 1
-    00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        CustomValue: 5
-    00000001:
-      type: {class: float2NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        NodeObject: {fileID: 1332110029}
-        ValueFieldName: Output
-        AccessRuntimeData: 1
-    00000002:
-      type: {class: float3ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        ComponentValueName: BTCharacterVelocityComponent.Value
-        _accessMode: 1
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: SpeedProperty
+      Entry: 7
+      Data: 0|EntitiesBT.Variable.CustomVariableProperty`1[[System.Single, mscorlib]],
+        EntitiesBT.Runtime
+    - Name: CustomValue
+      Entry: 4
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: InputMoveProperty
+      Entry: 7
+      Data: 1|EntitiesBT.Components.ComponentVariableProperty`1[[Unity.Mathematics.float2,
+        Unity.Mathematics]], EntitiesBT.Components
+    - Name: ComponentValueName
+      Entry: 1
+      Data: BTInputMoveComponent.Value
+    - Name: _accessMode
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OutputVelocityProperty
+      Entry: 7
+      Data: 2|EntitiesBT.Variable.CustomVariableProperty`1[[Unity.Mathematics.float3,
+        Unity.Mathematics]], EntitiesBT.Runtime
+    - Name: CustomValue
+      Entry: 7
+      Data: Unity.Mathematics.float3, Unity.Mathematics
+    - Name: x
+      Entry: 4
+      Data: 0
+    - Name: y
+      Entry: 4
+      Data: 0
+    - Name: z
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
 --- !u!1 &866069044
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,6 +939,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!1 &945633982
 GameObject:
@@ -857,16 +992,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c415565511944df690f9499120783f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationProperty:
-    id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: quaternionNodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        NodeObject: {fileID: 1160618947}
-        ValueFieldName: OutputDirection
-        AccessRuntimeData: 1
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 1160618947}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: RotationProperty
+      Entry: 7
+      Data: 0|EntitiesBT.Components.NodeVariableProperty`1[[Unity.Mathematics.quaternion,
+        Unity.Mathematics]], EntitiesBT.Components
+    - Name: NodeObject
+      Entry: 10
+      Data: 0
+    - Name: ValueFieldName
+      Entry: 1
+      Data: OutputDirection
+    - Name: AccessRuntimeData
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
 --- !u!1 &1000532614
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,6 +1066,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -939,6 +1091,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1000532617
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1037,7 +1190,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1160618945
 GameObject:
@@ -1082,24 +1235,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9262fcbd9912476da18353a7aa96fb58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputMoveProperty:
-    id: 0
-  OutputDirectionProperty:
-    id: 1
-  references:
-    version: 1
-    00000000:
-      type: {class: float2NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        NodeObject: {fileID: 1332110029}
-        ValueFieldName: Output
-        AccessRuntimeData: 1
-    00000001:
-      type: {class: quaternionComponentVariableProperty, ns: EntitiesBT.Variable,
-        asm: EntitiesBT.Variable.GenCode}
-      data:
-        ComponentValueName: Rotation.Value
-        _accessMode: 1
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: InputMoveProperty
+      Entry: 7
+      Data: 0|EntitiesBT.Components.ComponentVariableProperty`1[[Unity.Mathematics.float2,
+        Unity.Mathematics]], EntitiesBT.Components
+    - Name: ComponentValueName
+      Entry: 1
+      Data: BTInputMoveComponent.Value
+    - Name: _accessMode
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: OutputDirectionProperty
+      Entry: 7
+      Data: 1|EntitiesBT.Variable.CustomVariableProperty`1[[Unity.Mathematics.quaternion,
+        Unity.Mathematics]], EntitiesBT.Runtime
+    - Name: CustomValue
+      Entry: 7
+      Data: Unity.Mathematics.quaternion, Unity.Mathematics
+    - Name: value
+      Entry: 7
+      Data: Unity.Mathematics.float4, Unity.Mathematics
+    - Name: x
+      Entry: 4
+      Data: 0
+    - Name: y
+      Entry: 4
+      Data: 0
+    - Name: z
+      Entry: 4
+      Data: 0
+    - Name: w
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
 --- !u!1 &1164989512
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,6 +1335,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1171,6 +1360,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1164989515
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1226,6 +1416,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!1 &1273432696
 GameObject:
@@ -1271,6 +1470,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3013650591734b2cbe7111fcc10341ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   Type: 2
   BreakStates: 0
   RepeatTimes: 10
@@ -1318,17 +1526,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6e4272953848828585238a7109ee00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Output
+      Entry: 7
+      Data: 0|EntitiesBT.Components.ComponentVariableProperty`1[[Unity.Mathematics.float2,
+        Unity.Mathematics]], EntitiesBT.Components
+    - Name: ComponentValueName
+      Entry: 1
+      Data: BTInputMoveComponent.Value
+    - Name: _accessMode
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
   InputAction: {fileID: -1215874993465502569, guid: e11489ceb77624896bddc0c72ce3be71,
     type: 3}
-  Output:
-    id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: float2ComponentVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        ComponentValueName: BTInputMoveComponent.Value
-        _accessMode: 1
 --- !u!1 &1348624634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1374,7 +1595,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1401883810
 GameObject:
@@ -1419,18 +1640,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: VelocityProperty
+      Entry: 7
+      Data: 0|EntitiesBT.Variable.CustomVariableProperty`1[[Unity.Mathematics.float3,
+        Unity.Mathematics]], EntitiesBT.Runtime
+    - Name: CustomValue
+      Entry: 7
+      Data: Unity.Mathematics.float3, Unity.Mathematics
+    - Name: x
+      Entry: 4
+      Data: 0
+    - Name: y
+      Entry: 4
+      Data: 0
+    - Name: z
+      Entry: 4
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   IsLocal: 1
-  VelocityProperty:
-    id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: float3CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        CustomValue:
-          x: 0
-          y: 0
-          z: 10
 --- !u!1 &1454846012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1460,6 +1701,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!4 &1454846014
 Transform:
@@ -1477,6 +1727,84 @@ Transform:
   m_Father: {fileID: 1736258359}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1468733831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1468733832}
+  - component: {fileID: 1468733834}
+  - component: {fileID: 1468733833}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1468733832
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468733831}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1472767152}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 100}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &1468733833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468733831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 32
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: OdinSerializer + InputSystem + UnityMovement
+--- !u!222 &1468733834
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468733831}
+  m_CullTransparentMesh: 0
 --- !u!1 &1472767148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,7 +1840,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294954807
+    m_Bits: 55
 --- !u!114 &1472767150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1568,8 +1896,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 551306014}
+  - {fileID: 1468733832}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1605,7 +1934,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -1624,6 +1953,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1648,6 +1978,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1497155328
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1668,7 +1999,7 @@ Transform:
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1632375396
 GameObject:
@@ -1713,17 +2044,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 2282878}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: VelocityProperty
+      Entry: 7
+      Data: 0|EntitiesBT.Components.NodeVariableProperty`1[[Unity.Mathematics.float3,
+        Unity.Mathematics]], EntitiesBT.Components
+    - Name: NodeObject
+      Entry: 10
+      Data: 0
+    - Name: ValueFieldName
+      Entry: 1
+      Data: OutputVelocity
+    - Name: AccessRuntimeData
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
   IsLocal: 0
-  VelocityProperty:
-    id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: float3NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Variable.GenCode}
-      data:
-        NodeObject: {fileID: 2282878}
-        ValueFieldName: OutputVelocity
-        AccessRuntimeData: 1
 --- !u!1 &1736258349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1832,7 +2179,37 @@ Transform:
   - {fileID: 1000532615}
   - {fileID: 1454846014}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1755148519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1755148520}
+  m_Layer: 0
+  m_Name: OdinSerializer + InputSystem + UnityMovement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1755148520
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755148519}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1821151456
 GameObject:
@@ -1880,7 +2257,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2c67364c4d49bd9dae2ca6344e3292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
+--- !u!1 &1891447500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1891447501}
+  m_Layer: 0
+  m_Name: ----------------
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1891447501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891447500}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1928177375
 GameObject:
   m_ObjectHideFlags: 0
@@ -1924,5 +2340,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11456381507f4399b74a4d80532d8d44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   InputAction: {fileID: 7435767463111511155, guid: e11489ceb77624896bddc0c72ce3be71,
     type: 3}
