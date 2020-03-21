@@ -6,13 +6,17 @@ using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using UnityEngine;
+using Unity.Entities;
 
 namespace EntitiesBT.Components
 {
     [DisallowMultipleComponent, ExecuteInEditMode]
+#if ODIN_INSPECTOR
+    public abstract class BTNode : Sirenix.OdinInspector.SerializedMonoBehaviour, INodeDataBuilder
+#else
     public abstract class BTNode : MonoBehaviour, INodeDataBuilder
+#endif
     {
         public BehaviorNodeType BehaviorNodeType => NodeType.GetBehaviorNodeAttribute().Type;
         public int NodeId => NodeType.GetBehaviorNodeAttribute().Id;

@@ -54,11 +54,9 @@ namespace EntitiesBT.Editor
              }
          }
          
-         public static Type GetGenericType(this SerializedProperty property)
+         public static Type GetGenericType(this PropertyDrawer propertyDrawer)
          {
-             var fieldInfo = property.GetTargetFieldInfo();
-             var fieldValue = fieldInfo.GetValue(property.serializedObject.targetObject);
-             return fieldValue.GetType().GetGenericType();
+             return propertyDrawer.fieldInfo.DeclaringType.GetGenericType();
          }
          
          public static T GetCustomAttribute<T>(this SerializedProperty property) where T : Attribute
@@ -101,6 +99,38 @@ namespace EntitiesBT.Editor
                  property.stringValue = optionIndex < options.Length ? options[optionIndex] : "";
                  return optionIndex;
              };
+         }
+
+         private static IDictionary<Type, Type[]> _variableSubclasses = new Dictionary<Type, Type[]>();
+
+         public static Type[] GetVariableSubclasses(this Type variableType)
+         {
+             if (!_variableSubclasses.TryGetValue(variableType, out var subclasses))
+             {
+                 subclasses =
+                 (
+                     from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                     from type in assembly.GetTypes()
+                     where type.IsGenericType
+                         ? IsSubclassOfRawGeneric(variableType.GetGenericTypeDefinition(), type)
+                         : type.IsSubclassOf(variableType)
+                     select type
+                 ).ToArray();
+                 _variableSubclasses[variableType] = subclasses;
+             }
+             return subclasses;
+         }
+         
+         // https://stackoverflow.com/a/457708
+         private static bool IsSubclassOfRawGeneric(Type generic, Type toCheck) {
+             while (toCheck != null && toCheck != typeof(object)) {
+                 var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+                 if (generic == cur) {
+                     return true;
+                 }
+                 toCheck = toCheck.BaseType;
+             }
+             return false;
          }
     }
 }

@@ -107,8 +107,18 @@ Fetch data from different sources.
 ``` c#
     public class BTVariableNode : BTNode<VariableNode>
     {
+#if ODIN_INSPECTOR // use Odin to make it possible to serialize generic type of `VariableProperty`
+
+        [OdinSerialize, NonSerialized] // make this variable serialized by odin serializer instead of unity
+        public VariableProperty<int> IntVariable; // an `int` variable property
+
+#else // without Odin, have to generate an interface of `Int32Property` to make it possible to serialize and display in Unity.
+      // see "Generate specific types` below
+
         [SerializeReference, SerializeReferenceButton] // neccessary for editor
         public Int32Property IntVariable; // an `int` variable property
+
+#endif
 
         protected override void Build(ref VariableNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

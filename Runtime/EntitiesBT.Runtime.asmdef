@@ -13,7 +13,7 @@
     "precompiledReferences": [
         "Mono.Cecil.dll",
         "Mono.Cecil.Rocks.dll",
-        "InternalMethods.dll"
+        "EntitiesInternalMethods.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

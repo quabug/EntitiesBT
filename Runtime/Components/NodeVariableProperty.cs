@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
@@ -28,7 +30,19 @@ namespace EntitiesBT.Components
         }
         
         public BTNode NodeObject;
+#if ODIN_INSPECTOR
+        IEnumerable<string> _validValueNames => NodeObject == null
+            ? Enumerable.Empty<string>()
+            : VirtualMachine.GetNodeType(NodeObject.NodeId)
+                .GetFields(FIELD_BINDING_FLAGS)
+                .Where(fi => fi.FieldType == typeof(T) || fi.FieldType == typeof(BlobVariable<>).MakeGenericType(typeof(T)))
+                .Select(fi => fi.Name)
+        ;
+
+        [Sirenix.OdinInspector.ValueDropdown("_validValueNames")]
+#else
         [VariableNodeObject("NodeObject")]
+#endif
         public string ValueFieldName;
         public bool AccessRuntimeData = true;
         
@@ -48,7 +62,7 @@ namespace EntitiesBT.Components
                 return;
             }
 
-            var fieldInfo = nodeType.GetField(ValueFieldName);
+            var fieldInfo = nodeType.GetField(ValueFieldName, FIELD_BINDING_FLAGS);
             if (fieldInfo == null)
             {
                 Debug.LogError($"Invalid `ValueFieldName` {ValueFieldName}", (UnityEngine.Object)self);

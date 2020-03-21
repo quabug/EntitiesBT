@@ -9,9 +9,9 @@ namespace EntitiesBT.Variable
         int VariablePropertyTypeId { get; }
     }
 
-    public class VariableProperty<T> : IVariableProperty where T : struct
+    public abstract class VariableProperty<T> : IVariableProperty where T : struct
     {
-        public const BindingFlags FIELD_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+        public const BindingFlags FIELD_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public;
         
         public virtual void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
+using Sirenix.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -12,8 +14,8 @@ namespace EntitiesBT.Extensions.UnityMovement
     {
         public bool IsLocal;
         
-        [SerializeReference, SerializeReferenceButton]
-        public float3Property VelocityProperty;
+        [OdinSerialize, NonSerialized]
+        public VariableProperty<float3> VelocityProperty;
 
         protected override void Build(ref CharacterSimpleMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

@@ -1,7 +1,7 @@
 {
   "name": "entities-bt",
   "description": "Behavior Tree for Unity Entities",
-  "version": "0.10.2",
+  "version": "0.11.0",
   "unity": "2019.3",
   "displayName": "Entities Behavior Tree",
   "dependencies": {
@@ -24,7 +24,7 @@
       "path": "Samples~/Entity"
     },
     {
-      "displayName": "[Sample] input system & movement",
+      "displayName": "[Sample] input system & movement (NEED Odin Serializer)",
       "description": "sample of input system and unity movement extensions.",
       "path": "Samples~/InputAndCharacterController"
     },
@@ -34,12 +34,12 @@
       "path": "Samples~/Variable"
     },
     {
-      "displayName": "[Extension] input system",
+      "displayName": "[Extension] input system (NEED Odin Serializer)",
       "description": "extension of unity new input system",
       "path": "Extensions~/InputSystem"
     },
     {
-      "displayName": "[Extension] unity movement",
+      "displayName": "[Extension] unity movement (NEED Odin Serializer)",
       "description": "extension of simple movement for UnityEngine components",
       "path": "Extensions~/UnityMovement"
     },
