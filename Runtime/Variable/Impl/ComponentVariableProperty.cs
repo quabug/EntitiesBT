@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
 using Unity.Entities;
 using UnityEngine;
 
-namespace EntitiesBT.Components
+namespace EntitiesBT.Variable
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class VariableComponentDataAttribute : PropertyAttribute {}

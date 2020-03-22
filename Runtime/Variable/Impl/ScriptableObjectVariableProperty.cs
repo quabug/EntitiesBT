@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
 using Unity.Entities;
 using UnityEngine;
 
-namespace EntitiesBT.Components
+namespace EntitiesBT.Variable
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class VariableScriptableObjectValueAttribute : PropertyAttribute

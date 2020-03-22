@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
 
-namespace EntitiesBT.Components
+namespace EntitiesBT.Variable
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class VariableNodeObjectAttribute : PropertyAttribute
