@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Components;
+using EntitiesBT.Variable;
 using UnityEditor;
 using UnityEngine;
 
