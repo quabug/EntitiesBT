@@ -49,21 +49,9 @@ namespace EntitiesBT.Entities
 
             JobHandle RunOnJob(in BlackboardDataQuery query)
             {
-                // TODO: https://forum.unity.com/threads/entityquery-cannot-be-used-in-isharedcomponentdata.850255/
-                // if (query.EntityQuery == null)
-                // {
-                    // query.EntityQuery = GetEntityQuery(query.Value
-                    var jobQuery = EntityManager.CreateEntityQuery(query.Value
-                        .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
-                        .Append(ComponentType.ReadOnly<NodeBlobRef>())
-                        .Append(ComponentType.Exclude<RunOnMainThreadTag>())
-                        .Append(ComponentType.Exclude<ForceRunOnMainThreadTag>())
-                        .ToArray()
-                    );
-                    jobQuery.SetSharedComponentFilter(query);
-                // }
+                query.QueryJob.SetSharedComponentFilter(query);
 
-                var chunks = jobQuery.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
+                var chunks = query.QueryJob.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
                 var ecb = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
                 var job = new TickVirtualMachine {
                     Chunks = chunks
@@ -77,18 +65,11 @@ namespace EntitiesBT.Entities
                 return job.Schedule(chunks.Length, 8, deps);
             }
         
-            void RunOnMainThread(in BlackboardDataQuery sharedQuery)
+            void RunOnMainThread(in BlackboardDataQuery query)
             {
-                var query = EntityManager.CreateEntityQuery(sharedQuery.Value
-                    .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
-                    .Append(ComponentType.ReadOnly<NodeBlobRef>())
-                    .Append(ComponentType.ReadOnly<RunOnMainThreadTag>())
-                    .Append(ComponentType.Exclude<ForceRunOnJobTag>())
-                    .ToArray()
-                );
-                query.SetSharedComponentFilter(sharedQuery);
+                query.QueryMainThread.SetSharedComponentFilter(query);
                 
-                using (var chunks = query.CreateArchetypeChunkArray(Allocator.TempJob))
+                using (var chunks = query.QueryMainThread.CreateArchetypeChunkArray(Allocator.TempJob))
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);

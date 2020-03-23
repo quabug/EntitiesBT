@@ -7,9 +7,9 @@ namespace EntitiesBT.Entities
 {
     public struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
     {
-        public ISet<ComponentType> Value;
-        // TODO: https://forum.unity.com/threads/entityquery-cannot-be-used-in-isharedcomponentdata.850255/
-        // public EntityQuery EntityQuery { get; set; }
+        public ISet<ComponentType> Value { get; set; }
+        public EntityQuery QueryJob { get; set; }
+        public EntityQuery QueryMainThread { get; set; }
 
         public bool Equals(BlackboardDataQuery other)
         {
