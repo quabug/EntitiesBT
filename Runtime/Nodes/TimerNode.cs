@@ -14,18 +14,21 @@ namespace EntitiesBT.Nodes
         public float CountdownSeconds;
         public NodeState BreakReturnState;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             var childState = blob.TickChildren(index, blackboard, state => state.IsCompleted()).FirstOrDefault();
-            ref var data = ref blob.GetNodeData<TimerNode>(index);
-            data.CountdownSeconds -= blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
-            if (data.CountdownSeconds <= 0f) return childState.IsCompleted() ? childState : data.BreakReturnState;
+            CountdownSeconds -= blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
+            if (CountdownSeconds <= 0f) return childState.IsCompleted() ? childState : BreakReturnState;
             return NodeState.Running;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

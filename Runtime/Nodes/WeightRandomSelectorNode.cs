@@ -12,12 +12,12 @@ namespace EntitiesBT.Nodes
         public float Sum;
         public BlobArray<float> Weights;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
-            yield return ComponentType.ReadWrite<BehaviorTreeRandom>();
+            return ComponentType.ReadWrite<BehaviorTreeRandom>().Yield();
         }
         
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             if (blob.GetState(index) == NodeState.Running)
             {
@@ -36,6 +36,10 @@ namespace EntitiesBT.Nodes
                 weightIndex++;
             }
             return 0;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

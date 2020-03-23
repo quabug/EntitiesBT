@@ -3,16 +3,40 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using UnityEngine.Scripting;
 
 namespace EntitiesBT.Core
 {
     public static class VirtualMachine
     {
-        public delegate void ResetFunc(int nodeIndex, INodeBlob blob, IBlackboard bb);
-        public delegate NodeState TickFunc(int nodeIndex, INodeBlob blob, IBlackboard bb);
-        public delegate IEnumerable<ComponentType> AccessTypesFunc(int nodeIndex, INodeBlob blob);
 
+        delegate NodeState TickFunc(IntPtr ptr, int index, INodeBlob blob, IBlackboard bb);
+        delegate void ResetFunc(IntPtr ptr, int index, INodeBlob blob, IBlackboard bb);
+        delegate IEnumerable<ComponentType> AccessTypesFunc(IntPtr ptr, int index, INodeBlob blob);
+        
+        static unsafe class NodeMethodDispatcher<T> where T : struct, INodeData
+        {
+            [Preserve]
+            public static NodeState Tick(IntPtr ptr, int index, INodeBlob blob, IBlackboard bb)
+            {
+                return UnsafeUtilityEx.AsRef<T>((void*)ptr).Tick(index, blob, bb);
+            }
+            
+            [Preserve]
+            public static void Reset(IntPtr ptr, int index, INodeBlob blob, IBlackboard bb)
+            {
+                UnsafeUtilityEx.AsRef<T>((void*)ptr).Reset(index, blob, bb);
+            }
+
+            [Preserve]
+            public static IEnumerable<ComponentType> AccessTypes(IntPtr ptr, int index, INodeBlob blob)
+            {
+                return UnsafeUtilityEx.AsRef<T>((void*)ptr).AccessTypes(index, blob);
+            }
+        }
+        
         readonly struct Node
         {
             public readonly Type Type;
@@ -29,13 +53,13 @@ namespace EntitiesBT.Core
             }
         }
         
-        
         private static readonly Dictionary<int, Node> _NODES = new Dictionary<int, Node>();
 
         public static IEnumerable<ComponentType> GetAccessTypes(int index, INodeBlob blob)
         {
             var typeId = blob.GetTypeId(index);
-            return _NODES[typeId].AccessTypes(index, blob);
+            var ptr = blob.GetRuntimeDataPtr(index);
+            return _NODES[typeId].AccessTypes.Invoke(ptr, index, blob);
         }
         
         public static Type GetNodeType(int nodeId)
@@ -50,40 +74,21 @@ namespace EntitiesBT.Core
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 if (attribute == null) continue;
-                var resetFunc = GetResetFunc(type.GetMethod(attribute.ResetFunc));
-                var tickFunc = GetTickFunc(type.GetMethod(attribute.TickFunc));
-                var accessTypes = GetAccessTypes(type.GetMethod(attribute.AccessTypesFunc));
-                Register(attribute.Id, type, resetFunc, tickFunc, accessTypes);
-            }
+                var resetFunc = CreateDelegate<ResetFunc>("Reset");
+                var tickFunc = CreateDelegate<TickFunc>("Tick");
+                var accessTypes = CreateDelegate<AccessTypesFunc>("AccessTypes");
 
-            ResetFunc GetResetFunc(MethodInfo methodInfo)
-            {
-                return methodInfo == null
-                    ? (index, blob, bb) => {}
-                    : (ResetFunc)methodInfo.CreateDelegate(typeof(ResetFunc))
-                ;
-            }
-
-            TickFunc GetTickFunc(MethodInfo methodInfo)
-            {
-                return methodInfo == null
-                    ? (index, blob, bb) => NodeState.Running
-                    : (TickFunc)methodInfo.CreateDelegate(typeof(TickFunc))
-                ;
-            }
-            
-            AccessTypesFunc GetAccessTypes(MethodInfo methodInfo)
-            {
-                return methodInfo == null
-                    ? (index, blob) => Enumerable.Empty<ComponentType>()
-                    : (AccessTypesFunc)methodInfo.CreateDelegate(typeof(AccessTypesFunc))
-                ;
-            }
-
-            void Register(int id, Type type, ResetFunc reset, TickFunc tick, AccessTypesFunc types)
-            {
-                if (_NODES.ContainsKey(id)) throw new DuplicateNameException($"Node {id} already registered");
-                _NODES[id] = new Node(type, reset, tick, types);
+                T CreateDelegate<T>(string methodName) where T : Delegate
+                {
+                    return (T) typeof(NodeMethodDispatcher<>)
+                        .MakeGenericType(type)
+                        .GetMethod(methodName, BindingFlags.Public | BindingFlags.Static)
+                        .CreateDelegate(typeof(T))
+                    ;
+                }
+                
+                if (_NODES.ContainsKey(attribute.Id)) throw new DuplicateNameException($"Node {type}[{attribute.Id}] already registered");
+                _NODES[attribute.Id] = new Node(type, resetFunc, tickFunc, accessTypes);
             }
         }
         
@@ -95,7 +100,8 @@ namespace EntitiesBT.Core
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var typeId = blob.GetTypeId(index);
-            var state = _NODES[typeId].Tick(index, blob, bb);
+            var ptr = blob.GetRuntimeDataPtr(index);
+            var state = _NODES[typeId].Tick.Invoke(ptr, index, blob, bb);
             blob.SetState(index, state);
             return state;
         }
@@ -107,7 +113,8 @@ namespace EntitiesBT.Core
             for (var i = fromIndex; i < fromIndex + count; i++)
             {
                 var typeId = blob.GetTypeId(i);
-                _NODES[typeId].Reset(i, blob, bb);
+                var ptr = blob.GetRuntimeDataPtr(i);
+                _NODES[typeId].Reset.Invoke(ptr, i, blob, bb);
             }
         }
 

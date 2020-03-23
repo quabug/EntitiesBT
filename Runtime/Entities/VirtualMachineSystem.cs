@@ -17,9 +17,6 @@ namespace EntitiesBT.Entities
         protected override void OnCreate()
         {
             _endSimulationEntityCommandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-            // HACK: make system keep running if there's any entity with `BlackboardDataQuery`.
-            //       otherwise, this system will be disabled if there's only `Force Run On Job` entities in the scene.
-            GetEntityQuery(ComponentType.ReadOnly<BlackboardDataQuery>());
         }
 
         protected override void OnUpdate()

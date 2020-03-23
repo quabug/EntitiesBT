@@ -5,7 +5,6 @@ using EntitiesBT.Core;
 using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
 using EntitiesBT.Variable;
-using Sirenix.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -14,7 +13,9 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputLook : BTInputActionBase<InputLookNode>
     {
-        [OdinSerialize, NonSerialized]
+#if ODIN_INSPECTOR
+        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+#endif
         public VariableProperty<float2> Output;
 
         protected override void Build(ref InputLookNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
@@ -30,20 +31,23 @@ namespace EntitiesBT.Extensions.InputSystem
         public Guid ActionId { get; set; }
         public BlobVariable<float2> Output;
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             return blob.GetNodeDefaultData<InputLookNode>(index).Output.ComponentAccessList
                 .Append(ComponentType.ReadOnly<InputActionAssetComponent>())
             ;
         }
         
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var inputValue = bb.ReadInputActionValue<InputLookNode, Vector2>(index, blob);
             if (!inputValue.HasValue) return NodeState.Failure;
-            ref var data = ref blob.GetNodeData<InputLookNode>(index);
-            data.Output.GetDataRef(index, blob, bb) = inputValue.Value;
+            Output.GetDataRef(index, blob, bb) = inputValue.Value;
             return NodeState.Success;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

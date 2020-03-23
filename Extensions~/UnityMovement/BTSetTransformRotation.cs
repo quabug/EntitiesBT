@@ -4,7 +4,6 @@ using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
-using Sirenix.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -13,7 +12,9 @@ namespace EntitiesBT.Extensions.UnityMovement
 {
     public class BTSetTransformRotation : BTNode<SetTransformRotationNode>
     {
-        [OdinSerialize, NonSerialized]
+#if ODIN_INSPECTOR
+        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+#endif
         public VariableProperty<quaternion> RotationProperty;
 
         protected override void Build(ref SetTransformRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
@@ -27,7 +28,7 @@ namespace EntitiesBT.Extensions.UnityMovement
     {
         public BlobVariable<quaternion> RotationProperty;
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             ref var data = ref blob.GetNodeDefaultData<SetTransformRotationNode>(index);
             return data.RotationProperty.ComponentAccessList
@@ -35,13 +36,17 @@ namespace EntitiesBT.Extensions.UnityMovement
             );
         }
         
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var transform = bb.GetData<Transform>();
             if (transform == null) return NodeState.Failure;
-            var rotation = blob.GetNodeData<SetTransformRotationNode>(index).RotationProperty.GetData(index, blob, bb);
+            var rotation = RotationProperty.GetData(index, blob, bb);
             transform.rotation = rotation;
             return NodeState.Success;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

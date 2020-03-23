@@ -14,14 +14,14 @@ namespace EntitiesBT.Test
     {
         public int A;
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
 
-        public static void Reset(int index, INodeBlob _, IBlackboard __)
+        public void Reset(int index, INodeBlob _, IBlackboard __)
         {
             Debug.Log($"[A]: reset {index}");
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard __)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard __)
         {
             var data = blob.GetNodeData<NodeA>(index);
             var state = data.A == 0 ? NodeState.Failure : NodeState.Success;

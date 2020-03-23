@@ -26,17 +26,20 @@ namespace EntitiesBT.Sample
     {
         public float3 Position;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             yield return ComponentType.ReadWrite<Translation>();
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            ref var data = ref blob.GetNodeData<EntityTranslateNode>(index);
             ref var translation = ref bb.GetDataRef<Translation>();
-            translation.Value = data.Position;
+            translation.Value = Position;
             return NodeState.Success;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 

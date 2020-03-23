@@ -31,22 +31,25 @@ namespace EntitiesBT.Sample
         public float3 Axis;
         public float RadianPerSecond;
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             yield return ComponentType.ReadWrite<Rotation>();
             yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            ref var data = ref blob.GetNodeData<EntityRotateNode>(index);
             ref var rotation = ref bb.GetDataRef<Rotation>();
             var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>();
             rotation.Value = math.mul(
                 math.normalize(rotation.Value)
-              , quaternion.AxisAngle(data.Axis, data.RadianPerSecond * deltaTime.Value)
+              , quaternion.AxisAngle(Axis, RadianPerSecond * deltaTime.Value)
             );
             return NodeState.Running;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
     

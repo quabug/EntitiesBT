@@ -22,16 +22,20 @@ namespace EntitiesBT.Sample
     {
         public int Value;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             yield return ComponentType.ReadWrite<Animator>();
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             var animator = blackboard.GetData<Animator>();
-            animator.SetTrigger(blob.GetNodeData<SetAnimatorTriggerNode>(index).Value);
+            animator.SetTrigger(Value);
             return NodeState.Success;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

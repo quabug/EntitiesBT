@@ -109,9 +109,9 @@ namespace EntitiesBT.Test
 
             var types = new[] {typeof(SequenceNode), typeof(TestNode), typeof(TestNode), typeof(NodeB), typeof(NodeA), typeof(TestNode)};
             Assert.AreEqual(blobRef.Value.Types.ToArray(), types.Select(t => t.GetBehaviorNodeAttribute().Id));
-            Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 0, 20, 40, 48, 52, 72 });
+            Assert.AreEqual(blobRef.Value.Offsets.ToArray(), new [] { 0, 0, 16, 32, 40, 44, 60 });
             Assert.AreEqual(blobRef.Value.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
-            Assert.AreEqual(blobRef.Value.DefaultDataBlob.Length, 72);
+            Assert.AreEqual(blobRef.Value.DefaultDataBlob.Length, 60);
             Assert.AreEqual(GetDefaultData<NodeB>(3), new NodeB {B = 1, BB = 1});
             Assert.AreEqual(GetDefaultData<NodeA>(4), new NodeA {A = 111});
             

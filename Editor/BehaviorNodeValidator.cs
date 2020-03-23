@@ -23,12 +23,6 @@ namespace EntitiesBT.Editor
                 if (dictionary.TryGetValue(behaviorNodeAttribute.Id, out var other))
                     throw new Exception($"{other.type.FullName} has same id {behaviorNodeAttribute.Id} with {type.FullName}");
                 dictionary.Add(behaviorNodeAttribute.Id, (type, behaviorNodeAttribute));
-
-                if (type.GetMethod(behaviorNodeAttribute.TickFunc) == null)
-                    Debug.LogWarning($"behavior node {type.Name} have no tick function \"{behaviorNodeAttribute.TickFunc}\".");
-                
-                if (type.GetMethod(behaviorNodeAttribute.AccessTypesFunc) == null)
-                    Debug.LogWarning($"behavior node {type.Name} have no access types function \"{behaviorNodeAttribute.AccessTypesFunc}\".");
             }
         }
     }

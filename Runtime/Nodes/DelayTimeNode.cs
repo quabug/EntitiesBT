@@ -12,16 +12,19 @@ namespace EntitiesBT.Nodes
     {
         public float TimerSeconds;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            ref var data = ref blob.GetNodeData<DelayTimerNode>(index);
-            data.TimerSeconds -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;
-            return data.TimerSeconds <= 0 ? NodeState.Success : NodeState.Running;
+            TimerSeconds -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;
+            return TimerSeconds <= 0 ? NodeState.Success : NodeState.Running;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

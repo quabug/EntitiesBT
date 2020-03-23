@@ -28,19 +28,22 @@ namespace EntitiesBT.Sample
     {
         public float3 Velocity;
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             yield return ComponentType.ReadWrite<Translation>();
             yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            ref var data = ref blob.GetNodeData<EntityMoveNode>(index);
             ref var translation = ref bb.GetDataRef<Translation>();
             var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>();
-            translation.Value += data.Velocity * deltaTime.Value;
+            translation.Value += Velocity * deltaTime.Value;
             return NodeState.Running;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 

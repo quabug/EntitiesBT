@@ -26,16 +26,19 @@ namespace EntitiesBT.Sample
     {
         public Bounds Bounds;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             yield return ComponentType.ReadOnly<Translation>();
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            ref var data = ref blob.GetNodeData<IsEntityPositionInBoxNode>(index);
             var translation = bb.GetData<Translation>();
-            return data.Bounds.Contains(translation.Value) ? NodeState.Success : NodeState.Failure;
+            return Bounds.Contains(translation.Value) ? NodeState.Success : NodeState.Failure;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
     

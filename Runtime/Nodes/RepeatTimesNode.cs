@@ -14,9 +14,9 @@ namespace EntitiesBT.Nodes
         public int TickTimes;
         public NodeState BreakStates;
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             var childState = blob.TickChildren(index, blackboard).FirstOrDefault();
             if (childState == 0)
@@ -24,11 +24,14 @@ namespace EntitiesBT.Nodes
                 blob.ResetChildren(index, blackboard);
                 childState = blob.TickChildren(index, blackboard).FirstOrDefault();
             }
-            ref var data = ref blob.GetNodeData<RepeatTimesNode>(index);
-            if (data.BreakStates.HasFlag(childState)) return childState;
+            if (BreakStates.HasFlag(childState)) return childState;
 
-            data.TickTimes--;
-            return data.TickTimes <= 0 ? NodeState.Success : NodeState.Running;
+            TickTimes--;
+            return TickTimes <= 0 ? NodeState.Success : NodeState.Running;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

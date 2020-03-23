@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
-using Sirenix.Serialization;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
@@ -13,13 +12,15 @@ namespace EntitiesBT.Extensions.InputSystem
         where T : struct
         where U : struct, IReadInputValueNode
     {
-        [OdinSerialize, NonSerialized]
+#if ODIN_INSPECTOR
+        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+#endif
         public VariableProperty<T> Output;
 
         protected override unsafe void Build(ref U data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             base.Build(ref data, builder, tree);
-            ref var output = ref UnsafeUtility.AsRef<BlobVariable<T>>(data.OutputPtr);
+            ref var output = ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(data.OutputPtr);
             Output.Allocate(ref builder, ref output, this, tree);
         }
     }
@@ -29,25 +30,24 @@ namespace EntitiesBT.Extensions.InputSystem
         unsafe void* OutputPtr { get; }
     }
     
-    public struct ReadInputValueNode<T> : IReadInputValueNode where T : struct
+    public struct ReadInputValueNode<TNodeData, TValue>
+        where TNodeData : struct, IReadInputValueNode
+        where TValue : struct
     {
-        public Guid ActionId { get; set; }
-        public BlobVariable<T> Output;
-        public unsafe void* OutputPtr => UnsafeUtility.AddressOf(ref Output);
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public static unsafe IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
-            return blob.GetNodeDefaultData<ReadInputValueNode<T>>(index).Output.ComponentAccessList
-                .Append(ComponentType.ReadOnly<InputActionAssetComponent>())
-            ;
+            ref var output = ref UnsafeUtilityEx.AsRef<BlobVariable<TValue>>(blob.GetNodeDefaultData<TNodeData>(index).OutputPtr);
+            return output.ComponentAccessList.Append(ComponentType.ReadOnly<InputActionAssetComponent>());
         }
         
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public static unsafe NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var inputValue = bb.ReadInputActionValue<ReadInputValueNode<T>, T>(index, blob);
+            var inputValue = bb.ReadInputActionValue<TNodeData, TValue>(index, blob);
             if (!inputValue.HasValue) return NodeState.Failure;
-            ref var data = ref blob.GetNodeData<ReadInputValueNode<T>>(index);
-            data.Output.GetDataRef(index, blob, bb) = inputValue.Value;
+            ref var data = ref blob.GetNodeData<TNodeData>(index);
+            ref var output = ref UnsafeUtilityEx.AsRef<BlobVariable<TValue>>(data.OutputPtr);
+            output.GetDataRef(index, blob, bb) = inputValue.Value;
             return NodeState.Success;
         }
     }

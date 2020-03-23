@@ -39,7 +39,7 @@ namespace EntitiesBT.Sample
         public BlobVariable<float> SrcVariable;
         public long Long;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             ref var data = ref blob.GetNodeDefaultData<VariablesTestNode>(index);
             return data.LongVariable.ComponentAccessList
@@ -48,11 +48,14 @@ namespace EntitiesBT.Sample
             ;
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref blob.GetNodeData<VariablesTestNode>(index);
-            data.DestVariable.GetDataRef(index, blob, blackboard) = (int)data.SrcVariable.GetData(index, blob, blackboard);
+            DestVariable.GetDataRef(index, blob, blackboard) = (int)SrcVariable.GetData(index, blob, blackboard);
             return NodeState.Success;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 

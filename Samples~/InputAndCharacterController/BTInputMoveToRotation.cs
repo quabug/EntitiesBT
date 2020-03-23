@@ -4,7 +4,6 @@ using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
-using Sirenix.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
 
@@ -12,10 +11,14 @@ namespace EntitiesBT.Samples
 {
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
-        [OdinSerialize, NonSerialized]
+#if ODIN_INSPECTOR
+        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+#endif
         public VariableProperty<float2> InputMoveProperty;
         
-        [OdinSerialize, NonSerialized]
+#if ODIN_INSPECTOR
+        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+#endif
         public VariableProperty<quaternion> OutputDirectionProperty;
 
         protected override void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
@@ -31,7 +34,7 @@ namespace EntitiesBT.Samples
         public BlobVariable<float2> InputMove;
         public BlobVariable<quaternion> OutputDirection;
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
         {
             ref var data = ref blob.GetNodeDefaultData<InputMoveToRotationNode>(index);
             return data.InputMove.ComponentAccessList
@@ -39,15 +42,18 @@ namespace EntitiesBT.Samples
             ;
         }
         
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            ref var data = ref blob.GetNodeData<InputMoveToRotationNode>(index);
-            var move = data.InputMove.GetData(index, blob, bb);
+            var move = InputMove.GetData(index, blob, bb);
             if (math.lengthsq(move) <= math.FLT_MIN_NORMAL) return NodeState.Success;
             
             var direction = quaternion.LookRotationSafe(new float3(move.x, 0, move.y), math.up());
-            data.OutputDirection.GetDataRef(index, blob, bb) = direction;
+            OutputDirection.GetDataRef(index, blob, bb) = direction;
             return NodeState.Success;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }
