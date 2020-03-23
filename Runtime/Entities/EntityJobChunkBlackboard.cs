@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
+using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
@@ -12,16 +13,24 @@ namespace EntitiesBT.Entities
     {
         public uint GlobalSystemVersion;
         public ArchetypeChunk Chunk;
-        public int Index;
+        public int EntityIndex;
+        public EntityCommandJob EntityCommandJob;
         
         public unsafe object this[object key]
         {
             get
             {
-                var typeIndex = key.FetchTypeIndex();
-                var type = TypeManager.GetType(typeIndex);
-                var ptr = GetPtrRO(key);
-                return Marshal.PtrToStructure(new IntPtr(ptr), type);
+                {
+                    if (key is Type type && type == typeof(IEntityCommand))
+                        return EntityCommandJob;
+                }
+
+                {
+                    var typeIndex = key.FetchTypeIndex();
+                    var type = TypeManager.GetType(typeIndex);
+                    var ptr = GetPtrRO(key);
+                    return Marshal.PtrToStructure(new IntPtr(ptr), type);
+                }
             }
             set
             {
@@ -48,7 +57,7 @@ namespace EntitiesBT.Entities
 
         private unsafe void* GetPtrByTypeIndexRW(int typeIndex)
         {
-            return Chunk.GetComponentDataWithTypeRW(Index, typeIndex, GlobalSystemVersion);
+            return Chunk.GetComponentDataWithTypeRW(EntityIndex, typeIndex, GlobalSystemVersion);
         }
         
         private unsafe void* GetPtrByTypeIndexRO(int typeIndex)
@@ -58,7 +67,7 @@ namespace EntitiesBT.Entities
             if (TypeManager.IsZeroSized(typeIndex))
                 throw new ArgumentException("GetComponentData can not be called with a zero sized component.");
 #endif
-            return Chunk.GetComponentDataWithTypeRO(Index, typeIndex);
+            return Chunk.GetComponentDataWithTypeRO(EntityIndex, typeIndex);
         }
     }
 }

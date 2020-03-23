@@ -42,39 +42,26 @@ namespace EntitiesBT.Components
           , BehaviorTreeThread thread = BehaviorTreeThread.ForceRunOnMainThread
         )
         {
+            var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
+            VirtualMachine.Reset(blob, bb);
+            dstManager.AddComponentData(entity, blob);
+            
+            var dataQuery = new BlackboardDataQuery {Value = blob.GetAccessTypes()};
+            dstManager.AddSharedComponentData(entity, dataQuery);
+            
             switch (thread)
             {
             case BehaviorTreeThread.ForceRunOnMainThread:
-            {
-                var bb = new EntityBlackboard { EntityManager = dstManager, Entity = entity };
-                VirtualMachine.Reset(blob, bb);
+                dstManager.AddComponentData(entity, new RunOnMainThreadTag());
                 dstManager.AddComponentData(entity, new ForceRunOnMainThreadTag());
                 break;
-            }
             case BehaviorTreeThread.ForceRunOnJob:
-            {
-                AddJobComponents();
                 dstManager.AddComponentData(entity, new ForceRunOnJobTag());
                 break;
-            }
             case BehaviorTreeThread.ControlledByBehaviorTree:
-            {
-                AddJobComponents();
                 break;
-            }
             default:
                 throw new ArgumentOutOfRangeException(nameof(thread), thread, null);
-            }
-            
-            dstManager.AddComponentData(entity, blob);
-
-            void AddJobComponents()
-            {
-                var dataQuery = new BlackboardDataQuery {Value = blob.GetAccessTypes()};
-                var bb = new EntityBlackboard();
-                VirtualMachine.Reset(blob, bb);
-                dstManager.AddComponentData(entity, new IsRunOnMainThread { Value = false });
-                dstManager.AddSharedComponentData(entity, dataQuery);
             }
         }
     }

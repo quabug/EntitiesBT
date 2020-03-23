@@ -15,17 +15,17 @@ namespace EntitiesBT.Nodes
 
         public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            if (!bb.HasData<IsRunOnMainThread>())
+            if (bb.HasData<ForceRunOnMainThreadTag>() || bb.HasData<ForceRunOnJobTag>())
                 return blob.TickChildren(index, bb).FirstOrDefault();
             
-            ref var isRunOnMainThread = ref bb.GetDataRef<IsRunOnMainThread>();
-            if (!isRunOnMainThread.Value)
+            var isRunOnMainThread = bb.HasData<RunOnMainThreadTag>();
+            if (!isRunOnMainThread)
             {
-                isRunOnMainThread.Value = true;
+                bb.GetData<IEntityCommand>().AddComponent<RunOnMainThreadTag>();
                 return NodeState.Running;
             }
             var state = blob.TickChildren(index, bb).FirstOrDefault();
-            if (state != NodeState.Running) isRunOnMainThread.Value = false;
+            if (state != NodeState.Running) bb.GetData<IEntityCommand>().RemoveComponent<RunOnMainThreadTag>();
             return state;
         }
     }
