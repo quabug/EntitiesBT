@@ -1,3 +1,4 @@
+using EntitiesBT.Core;
 using Unity.Entities;
 
 namespace EntitiesBT.Entities

@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-namespace EntitiesBT.Entities
+namespace EntitiesBT.Core
 {
     public interface IEntityCommand
     {
