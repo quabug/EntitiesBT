@@ -62,11 +62,6 @@ namespace EntitiesBT.Entities
         
         private unsafe void* GetPtrByTypeIndexRO(int typeIndex)
         {
-            // TODO: EntityComponentStore->AssertEntityHasComponent(entity, typeIndex);
-#if ENABLE_UNITY_COLLECTIONS_CHECKS
-            if (TypeManager.IsZeroSized(typeIndex))
-                throw new ArgumentException("GetComponentData can not be called with a zero sized component.");
-#endif
             return Chunk.GetComponentDataWithTypeRO(EntityIndex, typeIndex);
         }
     }
