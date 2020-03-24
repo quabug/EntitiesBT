@@ -133,19 +133,15 @@ Fetch data from different sources.
     {
         public BlobVariable<int> IntBlobVariable;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            ref var data = ref blob.GetNodeDefaultData<VariableNode>(index);
-            return data.IntBlobVariable.ComponentAccessList; // will return right access type of node, see `NodeVariableProperty`.
-        }
-
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             ref var data = ref blob.GetNodeData<VariableNode>(index);
             var intVariable = data.IntBlobVariable.GetData(index, blob, blackboard); // get variable value
             ref var intVariable = ref data.IntBlobVariable.GetDataRef(index, blob, blackboard); // get variable ref value
             return NodeState.Success;
         }
+        
+        public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
     }
 ```
 ##### Generate specific types of `VariableProperty<T>`
