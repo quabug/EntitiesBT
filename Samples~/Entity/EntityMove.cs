@@ -27,13 +27,9 @@ namespace EntitiesBT.Sample
     public struct EntityMoveNode : INodeData
     {
         public float3 Velocity;
-        
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadWrite<Translation>();
-            yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
-        }
 
+        [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
+        [ReadWrite(typeof(Translation))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             ref var translation = ref bb.GetDataRef<Translation>();

@@ -31,12 +31,8 @@ namespace EntitiesBT.Sample
         public float3 Axis;
         public float RadianPerSecond;
         
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadWrite<Rotation>();
-            yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
-        }
-
+        [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
+        [ReadWrite(typeof(Rotation))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             ref var rotation = ref bb.GetDataRef<Rotation>();

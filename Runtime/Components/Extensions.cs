@@ -28,10 +28,10 @@ namespace EntitiesBT.Components
             return blobRef;
         }
 
-        public static ISet<ComponentType> GetAccessTypes(this INodeBlob blob)
+        public static ComponentTypeSet GetAccessTypes(this INodeBlob blob)
         {
-            return new HashSet<ComponentType>(Enumerable.Range(0, blob.Count)
-                .SelectMany(index => VirtualMachine.GetAccessTypes(index, blob))
+            return new ComponentTypeSet(
+                Enumerable.Range(0, blob.Count).SelectMany(i => VirtualMachine.GetAccessTypes(i, blob))
             );
         }
 
@@ -67,6 +67,7 @@ namespace EntitiesBT.Components
                 Value = query
               , QueryJob = queryJob
               , QueryMainThread = queryMainThread
+              , Random = Environment.TickCount
             };
             
             dstManager.AddSharedComponentData(entity, dataQuery);

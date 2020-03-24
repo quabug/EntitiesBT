@@ -83,8 +83,8 @@ namespace EntitiesBT.Entities
         
         struct TickVirtualMachine : IJobParallelFor
         {
-            [ReadOnly] public ArchetypeChunkComponentType<NodeBlobRef> NodeBlobRefType;
-            [ReadOnly] public ArchetypeChunkEntityType EntityType;
+            [Unity.Collections.ReadOnly] public ArchetypeChunkComponentType<NodeBlobRef> NodeBlobRefType;
+            [Unity.Collections.ReadOnly] public ArchetypeChunkEntityType EntityType;
             [DeallocateOnJobCompletion] public NativeArray<ArchetypeChunk> Chunks;
             public EntityJobChunkBlackboard Blackboard;
             public EntityCommandBuffer.Concurrent ECB;
