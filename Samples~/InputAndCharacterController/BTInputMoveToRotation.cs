@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
@@ -31,16 +28,8 @@ namespace EntitiesBT.Samples
     [BehaviorNode("2164B3CA-C12E-4C86-9F80-F45A99124FAD")]
     public struct InputMoveToRotationNode : INodeData
     {
-        public BlobVariable<float2> InputMove;
+        [ReadOnly] public BlobVariable<float2> InputMove;
         public BlobVariable<quaternion> OutputDirection;
-        
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            ref var data = ref blob.GetNodeDefaultData<InputMoveToRotationNode>(index);
-            return data.InputMove.ComponentAccessList
-                .Concat(data.OutputDirection.ComponentAccessList)
-            ;
-        }
         
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

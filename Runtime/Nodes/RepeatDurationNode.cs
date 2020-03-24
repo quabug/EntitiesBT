@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using Unity.Entities;
 
 namespace EntitiesBT.Nodes
 {
@@ -14,11 +12,7 @@ namespace EntitiesBT.Nodes
         public float CountdownSeconds;
         public NodeState BreakStates;
 
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
-        }
-        
+        [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var childState = blob.TickChildren(index, bb).FirstOrDefault();

@@ -34,13 +34,6 @@ namespace EntitiesBT.Extensions.InputSystem
         where TNodeData : struct, IReadInputValueNode
         where TValue : struct
     {
-        
-        public static unsafe IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            ref var output = ref UnsafeUtilityEx.AsRef<BlobVariable<TValue>>(blob.GetNodeDefaultData<TNodeData>(index).OutputPtr);
-            return output.ComponentAccessList.Append(ComponentType.ReadOnly<InputActionAssetComponent>());
-        }
-        
         public static unsafe NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var inputValue = bb.ReadInputActionValue<TNodeData, TValue>(index, blob);

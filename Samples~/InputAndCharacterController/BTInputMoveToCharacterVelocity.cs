@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
@@ -38,18 +35,9 @@ namespace EntitiesBT.Samples
     [BehaviorNode("B4559A1E-392B-4B8C-A074-B323AB31EEA7")]
     public struct InputMoveToCharacterVelocityNode : INodeData
     {
-        public BlobVariable<float> Speed;
-        public BlobVariable<float2> InputMove;
+        [ReadOnly] public BlobVariable<float> Speed;
+        [ReadOnly] public BlobVariable<float2> InputMove;
         public BlobVariable<float3> OutputVelocity;
-        
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            ref var data = ref blob.GetNodeDefaultData<InputMoveToCharacterVelocityNode>(index);
-            return data.Speed.ComponentAccessList
-                .Concat(data.InputMove.ComponentAccessList)
-                .Concat(data.OutputVelocity.ComponentAccessList)
-            ;
-        }
         
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {

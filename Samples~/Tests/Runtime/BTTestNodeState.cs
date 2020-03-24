@@ -1,7 +1,5 @@
 #if UNITY_EDITOR
 
-using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Entities;
@@ -17,8 +15,6 @@ namespace EntitiesBT.Test
         public int ResetTimes;
         public int TickTimes;
         
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
-
         public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
             Index = index;

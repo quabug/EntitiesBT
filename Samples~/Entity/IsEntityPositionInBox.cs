@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
@@ -26,11 +25,7 @@ namespace EntitiesBT.Sample
     {
         public Bounds Bounds;
 
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadOnly<Translation>();
-        }
-
+        [ReadOnly(typeof(Translation))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var translation = bb.GetData<Translation>();

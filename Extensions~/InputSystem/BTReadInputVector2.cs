@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
 using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Extensions.InputSystem
@@ -17,9 +15,7 @@ namespace EntitiesBT.Extensions.InputSystem
         public BlobVariable<Vector2> Output;
         public unsafe void* OutputPtr => UnsafeUtility.AddressOf(ref Output);
 
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) =>
-            ReadInputValueNode<ReadInputVector2Node, Vector2>.AccessTypes(index, blob);
-
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb) =>
             ReadInputValueNode<ReadInputVector2Node, Vector2>.Tick(index, blob, bb);
 

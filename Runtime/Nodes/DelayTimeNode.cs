@@ -12,11 +12,7 @@ namespace EntitiesBT.Nodes
     {
         public float TimerSeconds;
 
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
-        }
-
+        [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             TimerSeconds -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;

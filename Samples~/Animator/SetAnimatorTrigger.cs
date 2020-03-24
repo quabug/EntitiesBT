@@ -22,11 +22,7 @@ namespace EntitiesBT.Sample
     {
         public int Value;
 
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadWrite<Animator>();
-        }
-
+        [ReadWrite(typeof(Animator))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             var animator = blackboard.GetData<Animator>();

@@ -31,11 +31,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         public bool IsLocal;
         public BlobVariable<float3> Velocity;
 
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadWrite<CharacterController>();
-        }
-        
+        [ReadWrite(typeof(CharacterController))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var controller = bb.GetData<CharacterController>();

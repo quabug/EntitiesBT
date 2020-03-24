@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Core;
-using EntitiesBT.DebugView;
-using EntitiesBT.Entities;
 using EntitiesBT.Variable;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -31,12 +27,7 @@ namespace EntitiesBT.Extensions.InputSystem
         public Guid ActionId { get; set; }
         public BlobVariable<float2> Output;
         
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            ref var data = ref blob.GetNodeDefaultData<InputMoveNode>(index);
-            return data.Output.ComponentAccessList.Append(ComponentType.ReadOnly<InputActionAssetComponent>());
-        }
-        
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var inputValue = bb.ReadInputActionValue<InputMoveNode, Vector2>(index, blob);

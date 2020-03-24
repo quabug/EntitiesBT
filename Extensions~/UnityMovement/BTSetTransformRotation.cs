@@ -26,16 +26,9 @@ namespace EntitiesBT.Extensions.UnityMovement
     [BehaviorNode("7FCFF548-4D65-402A-B885-20633923DC22")]
     public struct SetTransformRotationNode : INodeData
     {
-        public BlobVariable<quaternion> RotationProperty;
+        [ReadOnly] public BlobVariable<quaternion> RotationProperty;
         
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            ref var data = ref blob.GetNodeDefaultData<SetTransformRotationNode>(index);
-            return data.RotationProperty.ComponentAccessList
-                .Append(ComponentType.ReadWrite<Transform>()
-            );
-        }
-        
+        [ReadWrite(typeof(Transform))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var transform = bb.GetData<Transform>();

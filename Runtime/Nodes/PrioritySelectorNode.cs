@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
-using EntitiesBT.Entities;
 using Unity.Entities;
 
 namespace EntitiesBT.Nodes
@@ -11,8 +9,6 @@ namespace EntitiesBT.Nodes
     {
         public BlobArray<int> Weights;
         
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
-
         public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             if (blob.GetState(index) == NodeState.Running)

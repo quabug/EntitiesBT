@@ -25,12 +25,8 @@ namespace EntitiesBT.Extensions.InputSystem
 #endif
         public Guid ActionId { get; set; }
         
-        public IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadWrite<BTInputAimPositionData>();
-            yield return ComponentType.ReadOnly<InputActionAssetComponent>();
-        }
-        
+        [ReadWrite(typeof(BTInputAimPositionData))]
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var inputValue = bb.ReadInputActionValue<InputAimPositionNode, Vector2>(index, blob);
