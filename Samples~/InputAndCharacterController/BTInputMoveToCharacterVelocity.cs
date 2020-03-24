@@ -10,17 +10,17 @@ namespace EntitiesBT.Samples
     public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
     {
 #if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
 #endif
         public VariableProperty<float> SpeedProperty;
         
 #if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
 #endif
         public VariableProperty<float2> InputMoveProperty;
         
 #if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
 #endif
         public VariableProperty<float3> OutputVelocityProperty;
 

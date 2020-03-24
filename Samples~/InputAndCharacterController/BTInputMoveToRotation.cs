@@ -9,12 +9,12 @@ namespace EntitiesBT.Samples
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
 #if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
 #endif
         public VariableProperty<float2> InputMoveProperty;
         
 #if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
 #endif
         public VariableProperty<quaternion> OutputDirectionProperty;
 
