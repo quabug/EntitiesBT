@@ -19,6 +19,7 @@
 >       - [Action](#action)
 >       - [Decorator](#decorator)
 >       - [Composite](#composite)
+>       - [Entity Query](#entityquery)
 >       - [Advanced: customize debug view](#advanced-customize-debug-view)
 >       - [Advanced: access other node data](#advanced-access-other-node-data)
 >       - [Advanced: behavior tree component](#advanced-behavior-tree-component)
@@ -86,10 +87,6 @@ Fetch data from different sources.
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950083-79c70480-6944-11ea-9b42-558bc2429f74.gif">
 
   - _Component Value Name_: which value should be access from component
-  - _Access Mode_: will add chosen query type for behavior tree ([Entity Query](https://docs.unity3d.com/Packages/com.unity.entities@0.1/manual/ecs_entity_query.html))
-    - _ReadOnly_: add `ComponentType.ReadOnly` of _Component_ into queries of behavior tree
-    - _ReadWrite_: add `ComponentType.ReadWrite` of _Component_ into queries of behavior tree
-    - _Optional_: nothing will be added into queries of behavior tree
 - [`NodeVariableProperty`](Runtime/Components/NodeVariableProperty.cs): fetch data from blob of another node
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950091-7cc1f500-6944-11ea-994b-5307f08169a2.gif">
 
@@ -112,7 +109,7 @@ Fetch data from different sources.
         [OdinSerialize, NonSerialized] // make this variable serialized by odin serializer instead of unity
         public VariableProperty<int> IntVariable; // an `int` variable property
 
-#else // without Odin, have to generate an interface of `Int32Property` to make it possible to serialize and display in Unity.
+#else // without Odin, have to generate an interface of `Int32Property` to make it possible to serialize and display by Unity.
       // see "Generate specific types` below
 
         [SerializeReference, SerializeReferenceButton] // neccessary for editor
@@ -160,7 +157,6 @@ A specific type of `VariableProperty<T>` must be declared before use.
 
 - And now you are free to use specific type properties, like `float2Property` etc.
 
-
 ### Debug
 <img width="600" alt="debug" src="https://user-images.githubusercontent.com/683655/72407368-517f2600-379a-11ea-8aa9-c72754abce9f.gif" />
 
@@ -175,21 +171,18 @@ public struct EntityMoveNode : INodeData
 {
     public float3 Velocity; // node data saved in `INodeBlob`
     
-    // declare access of each component data.
-    public static readonly ComponentType[] Types = {
-        ComponentType.ReadWrite<Translation>()
-      , ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>()
-    };
-
-    // access and modify node data
-    public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
-    {
+    [EntitiesBT.Core.ReadWrite(typeof(Translation))] // declare readwrite access of `Translation` component
+    [EntitiesBT.Core.ReadOnly(typeof(BehaviorTreeTickDeltaTime))] // declare readonly access of `BehaviorTreeTickDeltaTime` component
+    public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+    { // access and modify node data
         ref var data = ref blob.GetNodeData<EntityMoveNode>(index);
         ref var translation = ref bb.GetDataRef<Translation>(); // get blackboard data by ref (read/write)
         var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>(); // get blackboard data by value (readonly)
         translation.Value += data.Velocity * deltaTime.Value;
         return NodeState.Running;
     }
+
+    public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
 }
 
 // builder and editor part of node
@@ -217,7 +210,7 @@ public struct RepeatForeverNode : INodeData
 {
     public NodeState BreakStates;
     
-    public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+    public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
     {
         // short-cut to tick first only children
         var childState = blob.TickChildren(index, blackboard).FirstOrDefault();
@@ -232,6 +225,8 @@ public struct RepeatForeverNode : INodeData
         
         return NodeState.Running;
     }
+
+    public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
 }
 
 // builder and editor
@@ -256,11 +251,13 @@ public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode> {}
 [BehaviorNode("BD4C1D8F-BA8E-4D74-9039-7D1E6010B058", BehaviorNodeType.Composite/*composite must explicit declared*/)]
 public struct SelectorNode : INodeData
 {
-    public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+    public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
     {
         // tick children and break if child state is running or success.
         return blob.TickChildren(index, blackboard, breakCheck: state => state.IsRunningOrSuccess()).LastOrDefault();
     }
+
+    public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
 }
 
 // builder and editor
@@ -268,6 +265,39 @@ public class BTSelector : BTNode<SelectorNode> {}
 
 // avoid debug view since there's nothing need to be debug for `Selector`
 ```
+
+#### `EntityQuery`
+Behavior tree need some extra information for generating `EntityQuery`.
+
+``` c#
+public struct SomeNode : INodeData
+{
+    // add an `optional`, `readonly` or `readwrite` attribute to mark an access type of `BlobVariable`
+    // `readwrite` by default.
+    [EntitiesBT.Core.Optional] BlobVariable<int> IntVariable;
+    [EntitiesBT.Core.ReadOnly] BlobVariable<float> FloatVariable;
+    [EntitiesBT.Core.ReadWrite] BlobVariable<double> FloatVariable;
+
+    // declare right access types for `Tick` method
+    [EntitiesBT.Core.ReadWrite(typeof(ReadWriteComponentData))]
+    [EntitiesBT.Core.ReadOnly(typeof(ReadOnlyComponentData))]
+    public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+    {
+        // access `ComponentData`s by variables or directly from `blackboard`
+        // ...
+        return NodeState.Success;
+    }
+
+    // also declare right access types for `Reset` method if there's any
+    [EntitiesBT.Core.ReadWrite(typeof(ReadWriteComponentData))]
+    public void Reset(int index, INodeBlob blob, IBlackboard bb)
+    {
+        // access `ComponentData`s by variables or directly from `blackboard`
+        // ...
+    }
+}
+```
+
 
 #### Advanced: customize debug view
 - Behavior Node example: [PrioritySelectorNode.cs](Runtime/Nodes/PrioritySelectorNode.cs)
