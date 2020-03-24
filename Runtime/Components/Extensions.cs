@@ -47,29 +47,7 @@ namespace EntitiesBT.Components
             dstManager.AddComponentData(entity, blob);
 
             var query = blob.GetAccessTypes();
-            var queryJob = dstManager.CreateEntityQuery(query
-                .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
-                .Append(ComponentType.ReadOnly<NodeBlobRef>())
-                .Append(ComponentType.Exclude<RunOnMainThreadTag>())
-                .Append(ComponentType.Exclude<ForceRunOnMainThreadTag>())
-                .ToArray()
-            );
-            var queryMainThread = dstManager.CreateEntityQuery(query
-                .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
-                .Append(ComponentType.ReadOnly<NodeBlobRef>())
-                .Append(ComponentType.ReadOnly<RunOnMainThreadTag>())
-                .Append(ComponentType.Exclude<ForceRunOnJobTag>())
-                .ToArray()
-            );
-
-            var dataQuery = new BlackboardDataQuery
-            {
-                Value = query
-              , QueryJob = queryJob
-              , QueryMainThread = queryMainThread
-              , Random = Environment.TickCount
-            };
-            
+            var dataQuery = new BlackboardDataQuery(query);
             dstManager.AddSharedComponentData(entity, dataQuery);
             
             switch (thread)

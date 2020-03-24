@@ -34,7 +34,7 @@ namespace EntitiesBT.Entities
             for (var i = 0; i < _blackboardDataQueryList.Count; i++)
             {
                 var query = _blackboardDataQueryList[i];
-                if (query.Value == null) continue;
+                if (query.Set == null) continue;
                 
                 RunOnMainThread(query);
                 var deps = RunOnJob(query);
@@ -44,11 +44,12 @@ namespace EntitiesBT.Entities
             Dependency = jobHandler;
             _endSimulationEntityCommandBufferSystem.AddJobHandleForProducer(Dependency);
 
-            JobHandle RunOnJob(in BlackboardDataQuery query)
+            JobHandle RunOnJob(in BlackboardDataQuery sharedQuery)
             {
-                query.QueryJob.SetSharedComponentFilter(query);
+                var query = EntityManager.CreateEntityQuery(sharedQuery.QueryJob);
+                query.SetSharedComponentFilter(sharedQuery);
 
-                var chunks = query.QueryJob.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
+                var chunks = query.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
                 var ecb = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
                 var job = new TickVirtualMachine {
                     Chunks = chunks
@@ -62,11 +63,12 @@ namespace EntitiesBT.Entities
                 return job.Schedule(chunks.Length, 8, deps);
             }
         
-            void RunOnMainThread(in BlackboardDataQuery query)
+            void RunOnMainThread(in BlackboardDataQuery sharedQuery)
             {
-                query.QueryMainThread.SetSharedComponentFilter(query);
+                var query = EntityManager.CreateEntityQuery(sharedQuery.QueryMainThread);
+                query.SetSharedComponentFilter(sharedQuery);
                 
-                using (var chunks = query.QueryMainThread.CreateArchetypeChunkArray(Allocator.TempJob))
+                using (var chunks = query.CreateArchetypeChunkArray(Allocator.TempJob))
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);

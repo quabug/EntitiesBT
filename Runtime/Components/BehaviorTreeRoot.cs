@@ -47,7 +47,7 @@ namespace EntitiesBT.Components
             if (_autoCreateTypes != 0)
             {
                 var accessTypes = dstManager.HasComponent<BlackboardDataQuery>(entity)
-                    ? dstManager.GetSharedComponentData<BlackboardDataQuery>(entity).Value
+                    ? dstManager.GetSharedComponentData<BlackboardDataQuery>(entity).Set
                     : blobRef.GetAccessTypes()
                 ;
 

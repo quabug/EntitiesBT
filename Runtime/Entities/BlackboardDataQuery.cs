@@ -8,15 +8,38 @@ namespace EntitiesBT.Entities
 {
     public struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
     {
-        public ComponentTypeSet Value { get; set; }
-        public EntityQuery QueryJob { get; set; }
-        public EntityQuery QueryMainThread { get; set; }
+        public ComponentTypeSet Set { get; }
+        public ComponentType[] QueryJob { get; }
+        public ComponentType[] QueryMainThread { get; }
+        
+        // TODO: solve exception in standalone build
+        // https://forum.unity.com/threads/entityquery-cannot-be-used-in-isharedcomponentdata.850255/
+        // public EntityQuery QueryJob { get; set; }
+        // public EntityQuery QueryMainThread { get; set; }
 
-        public int Random;
+        public BlackboardDataQuery(ComponentTypeSet set)
+        {
+            Set = set;
+            QueryJob = Set
+                .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
+                .Append(ComponentType.ReadOnly<NodeBlobRef>())
+                .Append(ComponentType.Exclude<RunOnMainThreadTag>())
+                .Append(ComponentType.Exclude<ForceRunOnMainThreadTag>())
+                .ToArray()
+            ;
+
+            QueryMainThread = Set
+                .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
+                .Append(ComponentType.ReadOnly<NodeBlobRef>())
+                .Append(ComponentType.ReadOnly<RunOnMainThreadTag>())
+                .Append(ComponentType.Exclude<ForceRunOnJobTag>())
+                .ToArray()
+            ;
+        }
 
         public bool Equals(BlackboardDataQuery other)
         {
-            return Equals(Value, other.Value);
+            return Equals(Set, other.Set);
         }
 
         public override bool Equals(object obj)
@@ -26,7 +49,7 @@ namespace EntitiesBT.Entities
 
         public override int GetHashCode()
         {
-            return Value?.GetHashCode() ?? 0;
+            return Set?.GetHashCode() ?? 0;
         }
     }
 
