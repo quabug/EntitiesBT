@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using Unity.Entities;
 
 namespace EntitiesBT.Nodes
 {
@@ -14,12 +12,8 @@ namespace EntitiesBT.Nodes
         public float CountdownSeconds;
         public NodeState BreakStates;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
-        }
-        
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var childState = blob.TickChildren(index, bb).FirstOrDefault();
             if (childState == 0)
@@ -27,11 +21,14 @@ namespace EntitiesBT.Nodes
                 blob.ResetChildren(index, bb);
                 childState = blob.TickChildren(index, bb).FirstOrDefault();
             }
-            ref var data = ref blob.GetNodeData<RepeatDurationNode>(index);
-            if (data.BreakStates.HasFlag(childState)) return childState;
+            if (BreakStates.HasFlag(childState)) return childState;
 
-            data.CountdownSeconds -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;
-            return data.CountdownSeconds <= 0 ? NodeState.Success : NodeState.Running;
+            CountdownSeconds -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;
+            return CountdownSeconds <= 0 ? NodeState.Success : NodeState.Running;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

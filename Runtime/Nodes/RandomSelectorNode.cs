@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using Unity.Entities;
 
 namespace EntitiesBT.Nodes
 {
@@ -11,12 +9,8 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("BA0106CA-618F-409A-903A-973B89F1470A", BehaviorNodeType.Composite)]
     public struct RandomSelectorNode : INodeData
     {
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadWrite<BehaviorTreeRandom>();
-        }
-        
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        [ReadWrite(typeof(BehaviorTreeRandom))]
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             if (blob.GetState(index) == NodeState.Running)
             {
@@ -39,5 +33,7 @@ namespace EntitiesBT.Nodes
 
             return VirtualMachine.Tick(chosenIndex, blob, blackboard);
         }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
     }
 }

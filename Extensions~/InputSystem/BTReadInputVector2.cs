@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Core;
-using Unity.Entities;
+using EntitiesBT.Variable;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace EntitiesBT.Extensions.InputSystem
@@ -11,20 +11,14 @@ namespace EntitiesBT.Extensions.InputSystem
     [BehaviorNode("4B15B481-966C-4F73-96E7-EB26261DF498")]
     public struct ReadInputVector2Node : IReadInputValueNode
     {
-        public ReadInputValueNode<Vector2> Data;
+        public Guid ActionId { get; set; }
+        public BlobVariable<Vector2> Output;
+        public unsafe void* OutputPtr => UnsafeUtility.AddressOf(ref Output);
 
-        public Guid ActionId
-        {
-            get => Data.ActionId;
-            set => Data.ActionId = value;
-        }
+        [ReadOnly(typeof(InputActionAssetComponent))]
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb) =>
+            ReadInputValueNode<ReadInputVector2Node, Vector2>.Tick(index, blob, bb);
 
-        public unsafe void* OutputPtr => Data.OutputPtr;
-
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) =>
-            ReadInputValueNode<Vector2>.AccessTypes(index, blob);
-
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb) =>
-            ReadInputValueNode<Vector2>.Tick(index, blob, bb);
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
     }
 }

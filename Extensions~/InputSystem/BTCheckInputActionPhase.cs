@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Core;
 using Unity.Entities;
 using UnityEngine.InputSystem;
@@ -23,17 +22,16 @@ namespace EntitiesBT.Extensions.InputSystem
         public Guid ActionId { get; set; }
         public InputActionPhase Phase;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadOnly<InputActionAssetComponent>();
-        }
-        
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        [ReadOnly(typeof(InputActionAssetComponent))]
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var input = bb.GetData<InputActionAssetComponent>().Value;
-            var data = blob.GetNodeData<CheckInputActionPhaseNode>(index);
-            var action = input.FindAction(data.ActionId);
-            return action != null && action.phase == data.Phase ? NodeState.Success : NodeState.Failure;
+            var action = input.FindAction(ActionId);
+            return action != null && action.phase == Phase ? NodeState.Success : NodeState.Failure;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

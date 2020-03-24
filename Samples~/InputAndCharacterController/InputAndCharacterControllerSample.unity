@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,8 +118,6 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
-    maxJobWorkers: 0
-    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -169,7 +167,8 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 1332110029}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -178,7 +177,7 @@ MonoBehaviour:
     - Name: SpeedProperty
       Entry: 7
       Data: 0|EntitiesBT.Variable.CustomVariableProperty`1[[System.Single, mscorlib]],
-        EntitiesBT.Runtime
+        EntitiesBT.Variable.Impl
     - Name: CustomValue
       Entry: 4
       Data: 2
@@ -187,21 +186,24 @@ MonoBehaviour:
       Data: 
     - Name: InputMoveProperty
       Entry: 7
-      Data: 1|EntitiesBT.Components.ComponentVariableProperty`1[[Unity.Mathematics.float2,
-        Unity.Mathematics]], EntitiesBT.Components
-    - Name: ComponentValueName
-      Entry: 1
-      Data: BTInputMoveComponent.Value
-    - Name: _accessMode
-      Entry: 3
+      Data: 1|EntitiesBT.Variable.NodeVariableProperty`1[[Unity.Mathematics.float2,
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
+    - Name: NodeObject
+      Entry: 10
       Data: 0
+    - Name: ValueFieldName
+      Entry: 1
+      Data: Output
+    - Name: AccessRuntimeData
+      Entry: 5
+      Data: true
     - Name: 
       Entry: 8
       Data: 
     - Name: OutputVelocityProperty
       Entry: 7
       Data: 2|EntitiesBT.Variable.CustomVariableProperty`1[[Unity.Mathematics.float3,
-        Unity.Mathematics]], EntitiesBT.Runtime
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
     - Name: CustomValue
       Entry: 7
       Data: Unity.Mathematics.float3, Unity.Mathematics
@@ -700,8 +702,8 @@ MonoBehaviour:
     SerializationNodes:
     - Name: VelocityProperty
       Entry: 7
-      Data: 0|EntitiesBT.Components.NodeVariableProperty`1[[Unity.Mathematics.float3,
-        Unity.Mathematics]], EntitiesBT.Components
+      Data: 0|EntitiesBT.Variable.NodeVariableProperty`1[[Unity.Mathematics.float3,
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
     - Name: NodeObject
       Entry: 10
       Data: 0
@@ -767,7 +769,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -843,7 +844,8 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 1332110029}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -852,7 +854,7 @@ MonoBehaviour:
     - Name: SpeedProperty
       Entry: 7
       Data: 0|EntitiesBT.Variable.CustomVariableProperty`1[[System.Single, mscorlib]],
-        EntitiesBT.Runtime
+        EntitiesBT.Variable.Impl
     - Name: CustomValue
       Entry: 4
       Data: 5
@@ -861,21 +863,24 @@ MonoBehaviour:
       Data: 
     - Name: InputMoveProperty
       Entry: 7
-      Data: 1|EntitiesBT.Components.ComponentVariableProperty`1[[Unity.Mathematics.float2,
-        Unity.Mathematics]], EntitiesBT.Components
-    - Name: ComponentValueName
-      Entry: 1
-      Data: BTInputMoveComponent.Value
-    - Name: _accessMode
-      Entry: 3
+      Data: 1|EntitiesBT.Variable.NodeVariableProperty`1[[Unity.Mathematics.float2,
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
+    - Name: NodeObject
+      Entry: 10
       Data: 0
+    - Name: ValueFieldName
+      Entry: 1
+      Data: Output
+    - Name: AccessRuntimeData
+      Entry: 5
+      Data: true
     - Name: 
       Entry: 8
       Data: 
     - Name: OutputVelocityProperty
       Entry: 7
       Data: 2|EntitiesBT.Variable.CustomVariableProperty`1[[Unity.Mathematics.float3,
-        Unity.Mathematics]], EntitiesBT.Runtime
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
     - Name: CustomValue
       Entry: 7
       Data: Unity.Mathematics.float3, Unity.Mathematics
@@ -1004,8 +1009,8 @@ MonoBehaviour:
     SerializationNodes:
     - Name: RotationProperty
       Entry: 7
-      Data: 0|EntitiesBT.Components.NodeVariableProperty`1[[Unity.Mathematics.quaternion,
-        Unity.Mathematics]], EntitiesBT.Components
+      Data: 0|EntitiesBT.Variable.NodeVariableProperty`1[[Unity.Mathematics.quaternion,
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
     - Name: NodeObject
       Entry: 10
       Data: 0
@@ -1066,7 +1071,6 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1091,7 +1095,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1000532617
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1238,7 +1241,8 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 1332110029}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -1246,21 +1250,24 @@ MonoBehaviour:
     SerializationNodes:
     - Name: InputMoveProperty
       Entry: 7
-      Data: 0|EntitiesBT.Components.ComponentVariableProperty`1[[Unity.Mathematics.float2,
-        Unity.Mathematics]], EntitiesBT.Components
-    - Name: ComponentValueName
-      Entry: 1
-      Data: BTInputMoveComponent.Value
-    - Name: _accessMode
-      Entry: 3
+      Data: 0|EntitiesBT.Variable.NodeVariableProperty`1[[Unity.Mathematics.float2,
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
+    - Name: NodeObject
+      Entry: 10
       Data: 0
+    - Name: ValueFieldName
+      Entry: 1
+      Data: Output
+    - Name: AccessRuntimeData
+      Entry: 5
+      Data: true
     - Name: 
       Entry: 8
       Data: 
     - Name: OutputDirectionProperty
       Entry: 7
       Data: 1|EntitiesBT.Variable.CustomVariableProperty`1[[Unity.Mathematics.quaternion,
-        Unity.Mathematics]], EntitiesBT.Runtime
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
     - Name: CustomValue
       Entry: 7
       Data: Unity.Mathematics.quaternion, Unity.Mathematics
@@ -1335,7 +1342,6 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1360,7 +1366,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1164989515
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1537,14 +1542,20 @@ MonoBehaviour:
     SerializationNodes:
     - Name: Output
       Entry: 7
-      Data: 0|EntitiesBT.Components.ComponentVariableProperty`1[[Unity.Mathematics.float2,
-        Unity.Mathematics]], EntitiesBT.Components
-    - Name: ComponentValueName
-      Entry: 1
-      Data: BTInputMoveComponent.Value
-    - Name: _accessMode
-      Entry: 3
-      Data: 1
+      Data: 0|EntitiesBT.Variable.CustomVariableProperty`1[[Unity.Mathematics.float2,
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
+    - Name: CustomValue
+      Entry: 7
+      Data: Unity.Mathematics.float2, Unity.Mathematics
+    - Name: x
+      Entry: 4
+      Data: 0
+    - Name: y
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -1652,7 +1663,7 @@ MonoBehaviour:
     - Name: VelocityProperty
       Entry: 7
       Data: 0|EntitiesBT.Variable.CustomVariableProperty`1[[Unity.Mathematics.float3,
-        Unity.Mathematics]], EntitiesBT.Runtime
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
     - Name: CustomValue
       Entry: 7
       Data: Unity.Mathematics.float3, Unity.Mathematics
@@ -1779,7 +1790,6 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1934,7 +1944,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -1953,7 +1963,6 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1978,7 +1987,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1497155328
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2056,8 +2064,8 @@ MonoBehaviour:
     SerializationNodes:
     - Name: VelocityProperty
       Entry: 7
-      Data: 0|EntitiesBT.Components.NodeVariableProperty`1[[Unity.Mathematics.float3,
-        Unity.Mathematics]], EntitiesBT.Components
+      Data: 0|EntitiesBT.Variable.NodeVariableProperty`1[[Unity.Mathematics.float3,
+        Unity.Mathematics]], EntitiesBT.Variable.Impl
     - Name: NodeObject
       Entry: 10
       Data: 0
@@ -2119,7 +2127,7 @@ MonoBehaviour:
   _file: {fileID: 0}
   _rootNode: {fileID: 1454846013}
   _thread: 0
-  _autoCreateTypes: -1
+  _autoCreateTypes: 7
 --- !u!114 &1736258352
 MonoBehaviour:
   m_ObjectHideFlags: 0

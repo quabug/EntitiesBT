@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Core;
-using Unity.Entities;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
@@ -12,15 +10,15 @@ namespace EntitiesBT.Extensions.InputSystem
     {
         public Guid ActionId { get; set; }
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadOnly<InputActionAssetComponent>();
-        }
-        
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        [ReadOnly(typeof(InputActionAssetComponent))]
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var isTriggered = bb.IsInputActionTriggered<IsInputActionTriggeredNode>(index, blob);
             return isTriggered ? NodeState.Success : NodeState.Failure;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

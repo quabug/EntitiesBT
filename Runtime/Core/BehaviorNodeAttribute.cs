@@ -16,18 +16,12 @@ namespace EntitiesBT.Core
         public Guid Guid { get; } 
         public int Id { get; }
         public BehaviorNodeType Type { get; }
-        public string ResetFunc { get; }
-        public string TickFunc { get; }
-        public string AccessTypesFunc { get; }
         
-        public BehaviorNodeAttribute(string guid, BehaviorNodeType type = BehaviorNodeType.Action, string tickFunc = "Tick", string resetFunc = "Reset", string accessTypesFunc = "AccessTypes")
+        public BehaviorNodeAttribute(string guid, BehaviorNodeType type = BehaviorNodeType.Action)
         {
             Type = type;
             Guid = Guid.Parse(guid);
             Id = Guid.GetHashCode();
-            TickFunc = tickFunc;
-            ResetFunc = resetFunc;
-            AccessTypesFunc = accessTypesFunc;
         }
     }
 

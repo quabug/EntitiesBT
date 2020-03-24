@@ -32,28 +32,20 @@ namespace EntitiesBT.Sample
     [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
     public struct VariablesTestNode : INodeData
     {
-        public BlobVariable<long> LongVariable;
+        [Optional] public BlobVariable<long> LongVariable;
         public BlobString String;
         public BlobArray<int> IntArray;
-        public BlobVariable<int> DestVariable;
-        public BlobVariable<float> SrcVariable;
+        [ReadWrite] public BlobVariable<int> DestVariable;
+        [ReadOnly] public BlobVariable<float> SrcVariable;
         public long Long;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            ref var data = ref blob.GetNodeDefaultData<VariablesTestNode>(index);
-            return data.LongVariable.ComponentAccessList
-                .Concat(data.DestVariable.ComponentAccessList)
-                .Concat(data.SrcVariable.ComponentAccessList)
-            ;
-        }
-
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
-        {
-            ref var data = ref blob.GetNodeData<VariablesTestNode>(index);
-            data.DestVariable.GetDataRef(index, blob, blackboard) = (int)data.SrcVariable.GetData(index, blob, blackboard);
+            DestVariable.GetDataRef(index, blob, bb) = (int)SrcVariable.GetData(index, blob, bb);
             return NodeState.Success;
         }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
     }
 
     [BehaviorTreeDebugView(typeof(VariablesTestNode))]

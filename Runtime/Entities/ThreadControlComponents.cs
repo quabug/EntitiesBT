@@ -11,9 +11,4 @@ namespace EntitiesBT.Entities
     
     [StructLayout(LayoutKind.Explicit)]
     public struct RunOnMainThreadTag : IComponentData {}
-
-    public struct IsRunOnMainThread : IComponentData
-    {
-        public bool Value;
-    }
 }

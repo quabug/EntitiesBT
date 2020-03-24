@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
@@ -7,21 +8,38 @@ namespace EntitiesBT.Entities
 {
     public struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
     {
-        public ISet<ComponentType> Value;
-        // TODO: https://forum.unity.com/threads/entityquery-cannot-be-used-in-isharedcomponentdata.850255/
-        // public EntityQuery EntityQuery { get; set; }
+        public ComponentTypeSet Set { get; }
+        public ComponentType[] QueryJob { get; }
+        public ComponentType[] QueryMainThread { get; }
+        
+        // TODO: solve exception in standalone build
+        // https://forum.unity.com/threads/entityquery-cannot-be-used-in-isharedcomponentdata.850255/
+        // public EntityQuery QueryJob { get; set; }
+        // public EntityQuery QueryMainThread { get; set; }
+
+        public BlackboardDataQuery(ComponentTypeSet set)
+        {
+            Set = set;
+            QueryJob = Set
+                .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
+                .Append(ComponentType.ReadOnly<NodeBlobRef>())
+                .Append(ComponentType.Exclude<RunOnMainThreadTag>())
+                .Append(ComponentType.Exclude<ForceRunOnMainThreadTag>())
+                .ToArray()
+            ;
+
+            QueryMainThread = Set
+                .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
+                .Append(ComponentType.ReadOnly<NodeBlobRef>())
+                .Append(ComponentType.ReadOnly<RunOnMainThreadTag>())
+                .Append(ComponentType.Exclude<ForceRunOnJobTag>())
+                .ToArray()
+            ;
+        }
 
         public bool Equals(BlackboardDataQuery other)
         {
-            return Equals(Value, other.Value);
-        }
-
-        bool Equals(ISet<ComponentType> lhs, ISet<ComponentType> rhs)
-        {
-            if (lhs == null && rhs == null) return true;
-            if (lhs == null || rhs == null) return false;
-            if (lhs.Count != rhs.Count) return false;
-            return !lhs.Except(rhs).Any();
+            return Equals(Set, other.Set);
         }
 
         public override bool Equals(object obj)
@@ -31,7 +49,93 @@ namespace EntitiesBT.Entities
 
         public override int GetHashCode()
         {
-            return Value?.Aggregate(0, (hash, type) => hash ^ (type.GetHashCode() * 397)) ?? 0;
+            return Set?.GetHashCode() ?? 0;
+        }
+    }
+
+    public class ComponentTypeSet : IEnumerable<ComponentType>, IEquatable<ComponentTypeSet>
+    {
+        class ComponentTypeComparer : IEqualityComparer<ComponentType>
+        {
+            public bool Equals(ComponentType x, ComponentType y)
+            {
+                return x.TypeIndex == y.TypeIndex && x.AccessModeType == y.AccessModeType;
+            }
+
+            public int GetHashCode(ComponentType obj)
+            {
+                return HashCode(obj);
+            }
+        }
+
+        private static int HashCode(ComponentType obj)
+        {
+            return obj.GetHashCode() ^ ((int) obj.AccessModeType * 39);
+        }
+
+        private readonly HashSet<ComponentType> _types;
+        private readonly int _hashCode;
+        
+        public IEnumerator<ComponentType> GetEnumerator()
+        {
+            return _types.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public ComponentTypeSet(IEnumerable<ComponentType> types)
+        {
+            _types = new HashSet<ComponentType>(new ComponentTypeComparer());
+            foreach (var type in types) Add(type);
+            _hashCode = _types.Aggregate(0, (hash, type) => hash ^ HashCode(type));
+        }
+        
+        private void Add(ComponentType type)
+        {
+            if (_types.Contains(type)) return;
+            
+            switch (type.AccessModeType)
+            {
+            case ComponentType.AccessMode.ReadWrite:
+                _types.Add(type);
+                var @readonly = ComponentType.ReadOnly(type.TypeIndex);
+                if (_types.Contains(@readonly)) _types.Remove(@readonly);
+                break;
+            case ComponentType.AccessMode.ReadOnly:
+                var readwrite = ComponentType.FromTypeIndex(type.TypeIndex);
+                if (!_types.Contains(readwrite)) _types.Add(type);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        public bool Equals(ComponentTypeSet other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            if (_types.Count != other._types.Count) return false;
+            return !_types.Except(other._types, new ComponentTypeComparer()).Any();
+        }
+        
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is ComponentTypeSet other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return _hashCode;
+        }
+
+        public override string ToString()
+        {
+            return string.Join(",", _types.ToArray());
         }
     }
 }

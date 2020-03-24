@@ -21,30 +21,30 @@ namespace EntitiesBT.Extensions.InputSystem
     [BehaviorNode("3B46A529-3BAF-40E8-B249-CB1D35FACCF0"), StructLayout(LayoutKind.Explicit)]
     public struct InputEnableNode : INodeData
     {
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadWrite<InputActionAssetComponent>();
-        }
-        
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        [ReadWrite(typeof(InputActionAssetComponent))]
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             bb.GetData<InputActionAssetComponent>().Value.Enable();
             return NodeState.Success;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
     
     [BehaviorNode("03D959C3-D9F6-478D-A5E5-DCA4ADBD6C3D"), StructLayout(LayoutKind.Explicit)]
     public struct InputDisableNode : INodeData
     {
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadWrite<InputActionAssetComponent>();
-        }
-        
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        [ReadWrite(typeof(InputActionAssetComponent))]
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             bb.GetData<InputActionAssetComponent>().Value.Enable();
             return NodeState.Success;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

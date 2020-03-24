@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
-using Unity.Entities;
 
 namespace EntitiesBT.Nodes
 {
@@ -10,9 +8,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("7656C8CB-EBC9-4C82-A374-511D4CB4D7FA", BehaviorNodeType.Decorate)]
     public struct RecursiveResetStateNode : INodeData
     {
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
-        
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var endIndex = blob.GetEndIndex(index);
             var childIndex = index + 1;
@@ -28,6 +24,10 @@ namespace EntitiesBT.Nodes
             // count will be 0 if there's no child
             blob.ResetStates(childIndex, count);
             return blob.TickChildren(index, bb).FirstOrDefault();
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

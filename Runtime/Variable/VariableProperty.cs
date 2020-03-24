@@ -33,7 +33,7 @@ namespace EntitiesBT.Variable
           , ITreeNode<INodeDataBuilder>[] tree
         ) where T : struct
         {
-            variable.Allocate(ref builder, ref UnsafeUtility.AsRef<BlobVariable<T>>(blobVariablePtr), self, tree);
+            variable.Allocate(ref builder, ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(blobVariablePtr), self, tree);
         }
     }
 }

@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
-using EntitiesBT.Entities;
 using Unity.Entities;
 
 namespace EntitiesBT.Nodes
@@ -11,9 +9,7 @@ namespace EntitiesBT.Nodes
     {
         public BlobArray<int> Weights;
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob) => Enumerable.Empty<ComponentType>();
-
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
             if (blob.GetState(index) == NodeState.Running)
             {
@@ -21,13 +17,12 @@ namespace EntitiesBT.Nodes
                 return childIndex != default ? VirtualMachine.Tick(childIndex, blob, blackboard) : 0;
             }
 
-            ref var data = ref blob.GetNodeData<PrioritySelectorNode>(index);
             var weightIndex = 0;
             var currentMaxWeight = int.MinValue;
             var maxChildIndex = 0;
             foreach (var childIndex in blob.GetChildrenIndices(index))
             {
-                var weight = data.Weights[weightIndex];
+                var weight = Weights[weightIndex];
                 if (weight > currentMaxWeight)
                 {
                     maxChildIndex = childIndex;
@@ -38,6 +33,10 @@ namespace EntitiesBT.Nodes
             }
 
             return VirtualMachine.Tick(maxChildIndex, blob, blackboard);
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }

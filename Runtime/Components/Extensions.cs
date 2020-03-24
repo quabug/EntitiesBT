@@ -28,10 +28,10 @@ namespace EntitiesBT.Components
             return blobRef;
         }
 
-        public static ISet<ComponentType> GetAccessTypes(this INodeBlob blob)
+        public static ComponentTypeSet GetAccessTypes(this INodeBlob blob)
         {
-            return new HashSet<ComponentType>(Enumerable.Range(0, blob.Count)
-                .SelectMany(index => VirtualMachine.GetAccessTypes(index, blob))
+            return new ComponentTypeSet(
+                Enumerable.Range(0, blob.Count).SelectMany(i => VirtualMachine.GetAccessTypes(i, blob))
             );
         }
 
@@ -42,39 +42,27 @@ namespace EntitiesBT.Components
           , BehaviorTreeThread thread = BehaviorTreeThread.ForceRunOnMainThread
         )
         {
+            var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
+            VirtualMachine.Reset(blob, bb);
+            dstManager.AddComponentData(entity, blob);
+
+            var query = blob.GetAccessTypes();
+            var dataQuery = new BlackboardDataQuery(query);
+            dstManager.AddSharedComponentData(entity, dataQuery);
+            
             switch (thread)
             {
             case BehaviorTreeThread.ForceRunOnMainThread:
-            {
-                var bb = new EntityBlackboard { EntityManager = dstManager, Entity = entity };
-                VirtualMachine.Reset(blob, bb);
+                dstManager.AddComponentData(entity, new RunOnMainThreadTag());
                 dstManager.AddComponentData(entity, new ForceRunOnMainThreadTag());
                 break;
-            }
             case BehaviorTreeThread.ForceRunOnJob:
-            {
-                AddJobComponents();
                 dstManager.AddComponentData(entity, new ForceRunOnJobTag());
                 break;
-            }
             case BehaviorTreeThread.ControlledByBehaviorTree:
-            {
-                AddJobComponents();
                 break;
-            }
             default:
                 throw new ArgumentOutOfRangeException(nameof(thread), thread, null);
-            }
-            
-            dstManager.AddComponentData(entity, blob);
-
-            void AddJobComponents()
-            {
-                var dataQuery = new BlackboardDataQuery {Value = blob.GetAccessTypes()};
-                var bb = new EntityBlackboard();
-                VirtualMachine.Reset(blob, bb);
-                dstManager.AddComponentData(entity, new IsRunOnMainThread { Value = false });
-                dstManager.AddSharedComponentData(entity, dataQuery);
             }
         }
     }

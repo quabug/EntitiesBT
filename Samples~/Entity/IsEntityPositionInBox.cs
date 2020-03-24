@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
@@ -26,16 +25,15 @@ namespace EntitiesBT.Sample
     {
         public Bounds Bounds;
 
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
+        [ReadOnly(typeof(Translation))]
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            yield return ComponentType.ReadOnly<Translation>();
+            var translation = bb.GetData<Translation>();
+            return Bounds.Contains(translation.Value) ? NodeState.Success : NodeState.Failure;
         }
 
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref blob.GetNodeData<IsEntityPositionInBoxNode>(index);
-            var translation = bb.GetData<Translation>();
-            return data.Bounds.Contains(translation.Value) ? NodeState.Success : NodeState.Failure;
         }
     }
     

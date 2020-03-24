@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using Unity.Entities;
 using UnityEngine.Scripting;
@@ -10,23 +11,16 @@ namespace EntitiesBT.Entities
     {
         public EntityManager EntityManager;
         public Entity Entity;
+        public EntityCommandMainThread EntityCommandMainThread = new EntityCommandMainThread();
         
-        private static readonly SetDataDelegate _SET_COMPONENT_DATA;
-        
-        static EntityBlackboard()
-        {
-            {
-                var setter = typeof(EntityBlackboard).GetMethod("SetComponentData", BindingFlags.Public | BindingFlags.Instance);
-                _SET_COMPONENT_DATA = (caller, type, value) => setter.MakeGenericMethod(type).Invoke(caller, new [] { value });
-            }
-        }
-
-        public object this[object key]
+        public unsafe object this[object key]
         {
             get
             {
                 switch (key)
                 {
+                case Type type when type == typeof(IEntityCommand):
+                    return EntityCommandMainThread;
                 case Type type:
                     return EntityManager.Debug.GetComponentBoxed(Entity, type);
                 default:
@@ -38,7 +32,8 @@ namespace EntitiesBT.Entities
                 var type = key as Type;
                 if (type.IsComponentDataType())
                 {
-                    _SET_COMPONENT_DATA(this, type, value);
+                    var ptr = GetPtrRW(key);
+                    Marshal.StructureToPtr(value, new IntPtr(ptr), false);
                     return;
                 }
                 
@@ -61,12 +56,6 @@ namespace EntitiesBT.Entities
         public bool Has(object key)
         {
             return EntityManager.HasComponent(Entity, ComponentType.FromTypeIndex(key.FetchTypeIndex()));
-        }
-        
-        [Preserve]
-        public void SetComponentData<T>(T value) where T : struct, IComponentData
-        {
-            EntityManager.SetComponentData(Entity, value);
         }
     }
 }

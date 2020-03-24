@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
 using EntitiesBT.Entities;
@@ -24,20 +23,19 @@ namespace EntitiesBT.Sample
     {
         public Vector3 Velocity;
         
-        public static IEnumerable<ComponentType> AccessTypes(int index, INodeBlob blob)
-        {
-            yield return ComponentType.ReadOnly<BehaviorTreeTickDeltaTime>();
-            yield return ComponentType.ReadWrite<Transform>();
-        }
-
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        [Core.ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
+        [ReadWrite(typeof(Transform))]
+        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
             var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>().Value;
-            ref var data = ref blob.GetNodeData<TransformMoveNode>(index);
             var transform = bb.GetData<Transform>();
-            var deltaMove = data.Velocity * deltaTime;
+            var deltaMove = Velocity * deltaTime;
             transform.position += deltaMove;
             return NodeState.Running;
+        }
+
+        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        {
         }
     }
 }
