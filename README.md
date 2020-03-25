@@ -47,6 +47,8 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Incompatible with burst (Won't support this in the foreseen future)
 - Lack of action nodes. (Will add some actions as extension if I personally need them)
 - Not easy to modify tree structure at runtime.
+- Node data must be compatible with `Blob` and created by [`BlobBuilder`](https://docs.unity3d.com/Packages/com.unity.entities@0.8/api/Unity.Entities.BlobBuilder.html)
+- GC allocate for each frames. (should be optimized soon)
 
 ## HowTo
 ### Installation
