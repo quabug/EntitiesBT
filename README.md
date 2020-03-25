@@ -135,9 +135,8 @@ Fetch data from different sources.
 
         public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            ref var data = ref blob.GetNodeData<VariableNode>(index);
-            var intVariable = data.IntBlobVariable.GetData(index, blob, blackboard); // get variable value
-            ref var intVariable = ref data.IntBlobVariable.GetDataRef(index, blob, blackboard); // get variable ref value
+            var intVariable = IntBlobVariable.GetData(index, blob, blackboard); // get variable value
+            ref var intVariable = ref IntBlobVariable.GetDataRef(index, blob, blackboard); // get variable ref value
             return NodeState.Success;
         }
         
@@ -175,10 +174,9 @@ public struct EntityMoveNode : INodeData
     [EntitiesBT.Core.ReadOnly(typeof(BehaviorTreeTickDeltaTime))] // declare readonly access of `BehaviorTreeTickDeltaTime` component
     public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
     { // access and modify node data
-        ref var data = ref blob.GetNodeData<EntityMoveNode>(index);
         ref var translation = ref bb.GetDataRef<Translation>(); // get blackboard data by ref (read/write)
         var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>(); // get blackboard data by value (readonly)
-        translation.Value += data.Velocity * deltaTime.Value;
+        translation.Value += Velocity * deltaTime.Value;
         return NodeState.Running;
     }
 
@@ -220,8 +218,7 @@ public struct RepeatForeverNode : INodeData
             blob.ResetChildren(index, blackboard);
             childState = blob.TickChildren(index, blackboard).FirstOrDefault();
         }
-        ref var data = ref blob.GetNodeData<RepeatForeverNode>(index);
-        if (data.BreakStates.HasFlag(childState)) return childState;
+        if (BreakStates.HasFlag(childState)) return childState;
         
         return NodeState.Running;
     }
