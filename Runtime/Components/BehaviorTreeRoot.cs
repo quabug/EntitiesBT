@@ -24,7 +24,9 @@ namespace EntitiesBT.Components
         
         [Tooltip("add queried components of behavior tree into entity automatically")]
         [SerializeField] private AutoCreateType _autoCreateTypes = AutoCreateType.BehaviorTreeComponent;
-        
+
+        private void OnEnable() {}
+
         private void Reset()
         {
             _rootNode = GetComponentInChildren<BTNode>();
@@ -37,6 +39,8 @@ namespace EntitiesBT.Components
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
+            if (!enabled) return;
+            
             if (_rootNode != null && _rootNode.GetComponent<StopConvertToEntity>() == null)
                 _rootNode.gameObject.AddComponent<StopConvertToEntity>();
             

@@ -39,7 +39,7 @@ namespace EntitiesBT.Core
         [Preserve]
         private static unsafe IEnumerable<ComponentType> ReadWriteTypes<T>(IntPtr ptr) where T : struct, IRuntimeComponentAccessor
         {
-            return UnsafeUtilityEx.AsRef<T>((void*)ptr).ComponentAccessList.Select(t => ComponentType.FromTypeIndex(t.TypeIndex));
+            return UnsafeUtilityEx.AsRef<T>((void*)ptr).ComponentAccessList;
         }
 
         internal readonly struct RuntimeTypeAccessor
