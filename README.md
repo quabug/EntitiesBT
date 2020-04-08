@@ -88,6 +88,7 @@ Fetch data from different sources.
 
 - [`ComponentVariableProperty`](Runtime/Components/ComponentVariableProperty.cs): fetch data from `Component` on `Entity`
   - _Component Value Name_: which value should be access from component
+  - _Copy To Local Node_: Will read component data into local node and never write back into component data. (Force `ReadOnly` access)
 
 <img width="600" src="https://user-images.githubusercontent.com/683655/77412835-69f26900-6df9-11ea-95d8-13fef4f1142d.gif">
 
