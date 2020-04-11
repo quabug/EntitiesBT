@@ -7,6 +7,7 @@ using EntitiesBT.Entities;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using Unity.Entities.Serialization;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -21,11 +22,21 @@ namespace EntitiesBT.Components
     
     public static class BehaviorTreeExtensions
     {
-        public static BlobAssetReference<NodeBlob> ToBlob(this TextAsset file)
+        public static unsafe BlobAssetReference<NodeBlob> ToBlob(this TextAsset file)
         {
-            var result = BlobAssetReference<NodeBlob>.TryRead(file.bytes, NodeBlob.VERSION, out var blobRef);
-            if (!result) throw new FormatException("Version is not match.");
-            return blobRef;
+            var dataPtr = UnsafeUtility.PinGCArrayAndGetDataAddress(file.bytes, out var gcHandle);
+            var reader = new MemoryBinaryReader((byte*)dataPtr);
+            try
+            {
+                var storedVersion = reader.ReadInt();
+                if (storedVersion != NodeBlob.VERSION) throw new FormatException("Version is not match.");
+                return reader.Read<NodeBlob>();
+            }
+            finally
+            {
+                reader.Dispose();
+                UnsafeUtility.ReleaseGCObject(gcHandle);
+            }
         }
 
         public static ComponentTypeSet GetAccessTypes(this INodeBlob blob)
@@ -47,7 +58,7 @@ namespace EntitiesBT.Components
             dstManager.AddComponentData(entity, blob);
 
             var query = blob.GetAccessTypes();
-            var dataQuery = new BlackboardDataQuery(query);
+            var dataQuery = new BlackboardDataQuery(query, components => dstManager.CreateEntityQuery(components.ToArray()));
             dstManager.AddSharedComponentData(entity, dataQuery);
             
             switch (thread)

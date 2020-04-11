@@ -1,4 +1,3 @@
-using System.Linq;
 using EntitiesBT.Core;
 using Unity.Entities;
 
@@ -13,7 +12,7 @@ namespace EntitiesBT.Nodes
         {
             if (blob.GetState(index) == NodeState.Running)
             {
-                var childIndex = blob.GetChildrenIndices(index, state => state == NodeState.Running).FirstOrDefault();
+                var childIndex = blob.FirstOrDefaultChildIndex(index, state => state == NodeState.Running);
                 return childIndex != default ? VirtualMachine.Tick(childIndex, blob, blackboard) : 0;
             }
 

@@ -1,11 +1,7 @@
 using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
-using UnityEngine.Scripting;
 
 namespace EntitiesBT.Entities
 {
@@ -42,6 +38,7 @@ namespace EntitiesBT.Entities
 
         public bool Has(object key)
         {
+            
             return Chunk.GetIndexInTypeArray(key.FetchTypeIndex()) != -1;
         }
 
