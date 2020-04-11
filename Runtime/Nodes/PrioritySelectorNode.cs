@@ -19,7 +19,7 @@ namespace EntitiesBT.Nodes
             var weightIndex = 0;
             var currentMaxWeight = int.MinValue;
             var maxChildIndex = 0;
-            blob.ForEachChildrenIndices(index, childIndex =>
+            foreach (var childIndex in blob.GetChildrenIndices(index))
             {
                 var weight = Weights[weightIndex];
                 if (weight > currentMaxWeight)
@@ -29,7 +29,7 @@ namespace EntitiesBT.Nodes
                 }
 
                 weightIndex++;
-            });
+            }
 
             return VirtualMachine.Tick(maxChildIndex, blob, blackboard);
         }

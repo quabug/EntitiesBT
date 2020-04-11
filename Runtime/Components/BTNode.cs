@@ -50,6 +50,8 @@ namespace EntitiesBT.Components
         protected virtual void Update()
         {
 #if UNITY_EDITOR
+            if (UnityEditor.EditorApplication.isPlaying) return;
+            
             int maxChildCount;
             switch (BehaviorNodeType)
             {
