@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
@@ -49,6 +50,18 @@ namespace EntitiesBT.Nodes
                 yield return currentState;
                 if (breakCheck(currentState == 0 ? prevState : currentState)) yield break;
             }
+        }
+
+        public static T FirstOrDefault<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.SingleOrDefault();
+        }
+
+        public static T LastOrDefault<T>(this IEnumerable<T> enumerable)
+        {
+            var result = default(T);
+            foreach (var item in enumerable) result = item;
+            return result;
         }
     }
 }

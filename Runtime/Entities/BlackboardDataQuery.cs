@@ -9,32 +9,26 @@ namespace EntitiesBT.Entities
     public struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
     {
         public ComponentTypeSet Set { get; }
-        public ComponentType[] QueryJob { get; }
-        public ComponentType[] QueryMainThread { get; }
-        
-        // TODO: solve exception in standalone build
-        // https://forum.unity.com/threads/entityquery-cannot-be-used-in-isharedcomponentdata.850255/
-        // public EntityQuery QueryJob { get; set; }
-        // public EntityQuery QueryMainThread { get; set; }
+        public EntityQuery QueryJob { get; }
+        public EntityQuery QueryMainThread { get; }
 
-        public BlackboardDataQuery(ComponentTypeSet set)
+        public BlackboardDataQuery(ComponentTypeSet set, Func<IEnumerable<ComponentType>, EntityQuery> createEntityQuery)
         {
             Set = set;
-            QueryJob = Set
+            QueryJob = createEntityQuery(Set
                 .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
                 .Append(ComponentType.ReadOnly<NodeBlobRef>())
                 .Append(ComponentType.Exclude<RunOnMainThreadTag>())
                 .Append(ComponentType.Exclude<ForceRunOnMainThreadTag>())
-                .ToArray()
-            ;
-
-            QueryMainThread = Set
+            );
+            QueryMainThread = createEntityQuery(Set
                 .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
                 .Append(ComponentType.ReadOnly<NodeBlobRef>())
                 .Append(ComponentType.ReadOnly<RunOnMainThreadTag>())
                 .Append(ComponentType.Exclude<ForceRunOnJobTag>())
-                .ToArray()
-            ;
+            );
+            QueryJob.SetSharedComponentFilter(this);
+            QueryMainThread.SetSharedComponentFilter(this);
         }
 
         public bool Equals(BlackboardDataQuery other)

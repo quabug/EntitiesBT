@@ -37,7 +37,30 @@ namespace EntitiesBT.Core
         
         public static IEnumerable<int> GetChildrenIndices(this INodeBlob blob, int parentIndex, Predicate<NodeState> predicate)
         {
-            return blob.GetChildrenIndices(parentIndex).Where(child => predicate(blob.GetState(child)));
+            return blob.GetChildrenIndices(parentIndex).Where(childIndex => predicate(blob.GetState(childIndex)));
+        }
+        
+        public static void ForEachChildrenIndices(this INodeBlob blob, int parentIndex, Action<int> action)
+        {
+            var endIndex = blob.GetEndIndex(parentIndex);
+            var childIndex = parentIndex + 1;
+            while (childIndex < endIndex)
+            {
+                action(childIndex);
+                childIndex = blob.GetEndIndex(childIndex);
+            }
+        }
+        
+        public static int FirstOrDefaultChildIndex(this INodeBlob blob, int parentIndex, Predicate<NodeState> predicate)
+        {
+            var endIndex = blob.GetEndIndex(parentIndex);
+            var childIndex = parentIndex + 1;
+            while (childIndex < endIndex)
+            {
+                if (predicate(blob.GetState(childIndex))) return childIndex;
+                childIndex = blob.GetEndIndex(childIndex);
+            }
+            return default;
         }
 
         public static int ParentIndex(this INodeBlob blob, int childIndex)

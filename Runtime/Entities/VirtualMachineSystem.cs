@@ -46,10 +46,7 @@ namespace EntitiesBT.Entities
 
             JobHandle RunOnJob(in BlackboardDataQuery sharedQuery)
             {
-                var query = EntityManager.CreateEntityQuery(sharedQuery.QueryJob);
-                query.SetSharedComponentFilter(sharedQuery);
-
-                var chunks = query.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
+                var chunks = sharedQuery.QueryJob.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
                 var ecb = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
                 var job = new TickVirtualMachine {
                     Chunks = chunks
@@ -65,10 +62,8 @@ namespace EntitiesBT.Entities
         
             void RunOnMainThread(in BlackboardDataQuery sharedQuery)
             {
-                var query = EntityManager.CreateEntityQuery(sharedQuery.QueryMainThread);
-                query.SetSharedComponentFilter(sharedQuery);
-                
-                using (var chunks = query.CreateArchetypeChunkArray(Allocator.TempJob))
+                using (var chunks = sharedQuery.QueryMainThread.CreateArchetypeChunkArray(Allocator.TempJob))
+                {
                     foreach (var chunk in chunks)
                     {
                         var entities = chunk.GetNativeArray(entityType);
@@ -80,6 +75,7 @@ namespace EntitiesBT.Entities
                             VirtualMachine.Tick(nodeBlobs[i], _mainThreadBlackboard);
                         }
                     }
+                }
             }
         }
         

@@ -58,7 +58,7 @@ namespace EntitiesBT.Components
             dstManager.AddComponentData(entity, blob);
 
             var query = blob.GetAccessTypes();
-            var dataQuery = new BlackboardDataQuery(query);
+            var dataQuery = new BlackboardDataQuery(query, components => dstManager.CreateEntityQuery(components.ToArray()));
             dstManager.AddSharedComponentData(entity, dataQuery);
             
             switch (thread)

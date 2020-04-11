@@ -1,4 +1,3 @@
-using System.Linq;
 using EntitiesBT.Core;
 using Unity.Entities;
 
@@ -13,14 +12,14 @@ namespace EntitiesBT.Nodes
         {
             if (blob.GetState(index) == NodeState.Running)
             {
-                var childIndex = blob.GetChildrenIndices(index, state => state == NodeState.Running).FirstOrDefault();
+                var childIndex = blob.FirstOrDefaultChildIndex(index, state => state == NodeState.Running);
                 return childIndex != default ? VirtualMachine.Tick(childIndex, blob, blackboard) : 0;
             }
 
             var weightIndex = 0;
             var currentMaxWeight = int.MinValue;
             var maxChildIndex = 0;
-            foreach (var childIndex in blob.GetChildrenIndices(index))
+            blob.ForEachChildrenIndices(index, childIndex =>
             {
                 var weight = Weights[weightIndex];
                 if (weight > currentMaxWeight)
@@ -30,7 +29,7 @@ namespace EntitiesBT.Nodes
                 }
 
                 weightIndex++;
-            }
+            });
 
             return VirtualMachine.Tick(maxChildIndex, blob, blackboard);
         }
