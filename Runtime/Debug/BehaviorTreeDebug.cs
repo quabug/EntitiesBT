@@ -54,14 +54,14 @@ namespace EntitiesBT.DebugView
 
         private void Update()
         {
-            if (EntityManager == null) return;
-            if (!EntityManager.HasComponent<NodeBlobRef>(Entity)) return;
-            if (_blackboard == null) _blackboard = new EntityBlackboard {EntityManager = EntityManager, Entity = Entity};
-            
-            var blob = EntityManager.GetComponentData<NodeBlobRef>(Entity);
-            if (Views == null) CreateViews(blob);
-
-            foreach (var view in Views.SelectMany(t => t.GetComponents<BTDebugView>())) view.Tick();
+            // if (EntityManager == default) return;
+            // if (!EntityManager.HasComponent<NodeBlobRef>(Entity)) return;
+            // if (_blackboard == null) _blackboard = new EntityBlackboard {EntityManager = EntityManager, Entity = Entity};
+            //
+            // var blob = EntityManager.GetComponentData<NodeBlobRef>(Entity);
+            // if (Views == null) CreateViews(blob);
+            //
+            // foreach (var view in Views.SelectMany(t => t.GetComponents<BTDebugView>())) view.Tick();
         }
 
         private void CreateViews(NodeBlobRef blob)

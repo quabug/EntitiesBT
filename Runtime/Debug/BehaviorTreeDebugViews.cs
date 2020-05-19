@@ -9,7 +9,7 @@ namespace EntitiesBT.DebugView
     [AddComponentMenu("")] // hide from component menu
     public class BTDebugView : MonoBehaviour
     {
-        public bool IsValid => EntityManager != null && Blackboard != null && Blob.BlobRef.IsCreated;
+        public bool IsValid => EntityManager != default && Blackboard != null && Blob.BlobRef.IsCreated;
         
         [NonSerialized] public EntityManager EntityManager;
         [NonSerialized] public Entity Entity;
