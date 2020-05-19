@@ -37,6 +37,7 @@ namespace EntitiesBT.Entities
                     {
                         _mainThreadBlackboard.EntityCommandMainThread.Entity = entity;
                         _mainThreadBlackboard.Entity = entity;
+                        _mainThreadBlackboard.BehaviorTreeIndex = i;
                         VirtualMachine.Tick(buffers[i].NodeBlob, _mainThreadBlackboard);
                     }
                 }
