@@ -107,12 +107,6 @@ Fetch data from different sources.
 
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950097-7df32200-6944-11ea-8902-650987d58827.gif">
 
-#### Multiple Trees
-Add multiple `BehaviorTreeRoot` onto a single entity gameobject will create multiple behavior tree to control this single entity.
-Behavior tree sorted by `Order` of `BehaviorTreeRoot`.
-
-<img width="400" alt="" src="https://user-images.githubusercontent.com/683655/82422698-5db32100-9ab5-11ea-8bc6-eb3c67ac7676.png">
-
 ##### Code Example
 ``` c#
     public class BTVariableNode : BTNode<VariableNode>
@@ -164,6 +158,12 @@ A specific type of `VariableProperty<T>` must be declared before use.
 <img width="600" alt="Snipaste_2020-03-18_18-57-36" src="https://user-images.githubusercontent.com/683655/76953872-63bc4280-694a-11ea-8f03-73af3fa2fec2.png">
 
 - And now you are free to use specific type properties, like `float2Property` etc.
+
+#### Multiple Trees
+Add multiple `BehaviorTreeRoot` onto a single entity gameobject will create multiple behavior tree to control this single entity.
+Behavior tree sorted by `Order` of `BehaviorTreeRoot`.
+
+<img width="400" alt="" src="https://user-images.githubusercontent.com/683655/82422698-5db32100-9ab5-11ea-8bc6-eb3c67ac7676.png">
 
 ### Debug
 <img width="600" alt="debug" src="https://user-images.githubusercontent.com/683655/72407368-517f2600-379a-11ea-8aa9-c72754abce9f.gif" />
