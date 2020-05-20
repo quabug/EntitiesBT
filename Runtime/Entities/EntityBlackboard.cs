@@ -1,9 +1,8 @@
 using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
-using UnityEngine.Scripting;
 
 namespace EntitiesBT.Entities
 {
@@ -12,6 +11,7 @@ namespace EntitiesBT.Entities
         public EntityManager EntityManager;
         public Entity Entity;
         public EntityCommandMainThread EntityCommandMainThread = new EntityCommandMainThread();
+        public int BehaviorTreeIndex;
         
         public unsafe object this[object key]
         {
@@ -21,6 +21,8 @@ namespace EntitiesBT.Entities
                 {
                 case Type type when type == typeof(IEntityCommand):
                     return EntityCommandMainThread;
+                case Type type when type == typeof(BehaviorTreeBufferElement):
+                    return EntityManager.GetBuffer<BehaviorTreeBufferElement>(Entity)[BehaviorTreeIndex];
                 case Type type:
                     return EntityManager.Debug.GetComponentBoxed(Entity, type);
                 default:
@@ -45,6 +47,11 @@ namespace EntitiesBT.Entities
         
         public unsafe void* GetPtrRW(object key)
         {
+            if (key is Type type && type == typeof(BehaviorTreeBufferElement))
+            {
+                var offset = (long) BehaviorTreeIndex * UnsafeUtility.SizeOf<BehaviorTreeBufferElement>();
+                return (byte*)EntityManager.GetBuffer<BehaviorTreeBufferElement>(Entity).GetUnsafePtr() + offset;
+            }
             return Entity.GetComponentDataRawRW(EntityManager, key.FetchTypeIndex());
         }
         

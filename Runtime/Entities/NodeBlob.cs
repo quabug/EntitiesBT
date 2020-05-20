@@ -33,7 +33,7 @@ namespace EntitiesBT.Entities
             CalculateDefaultSize(count, dataSize) + CalculateRuntimeSize(count, dataSize);
     }
 
-    public struct NodeBlobRef : IComponentData, INodeBlob
+    public struct NodeBlobRef : INodeBlob, IEquatable<NodeBlobRef>
     {
         private ref NodeBlob _blob => ref BlobRef.Value;
         public BlobAssetReference<NodeBlob> BlobRef;
@@ -61,5 +61,30 @@ namespace EntitiesBT.Entities
 
         public NodeState GetState(int nodeIndex) => _blob.States[nodeIndex];
         public void SetState(int nodeIndex, NodeState state) => _blob.States[nodeIndex] = state;
+
+        public bool Equals(NodeBlobRef other)
+        {
+            return BlobRef.Equals(other.BlobRef);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is NodeBlobRef other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return BlobRef.GetHashCode();
+        }
+        
+        public static bool operator==(NodeBlobRef lhs, NodeBlobRef rhs)
+        {
+            return lhs.BlobRef == rhs.BlobRef;
+        }
+
+        public static bool operator !=(NodeBlobRef lhs, NodeBlobRef rhs)
+        {
+            return !(lhs == rhs);
+        }
     }
 }

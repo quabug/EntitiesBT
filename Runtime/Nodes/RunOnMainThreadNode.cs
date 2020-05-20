@@ -10,17 +10,18 @@ namespace EntitiesBT.Nodes
     {
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            if (bb.HasData<ForceRunOnMainThreadTag>() || bb.HasData<ForceRunOnJobTag>())
+            ref var behaviorTreeElement = ref bb.GetDataRef<BehaviorTreeBufferElement>();
+            if (behaviorTreeElement.RuntimeThread == BehaviorTreeRuntimeThread.ForceJobThread
+                || behaviorTreeElement.RuntimeThread == BehaviorTreeRuntimeThread.ForceMainThread)
                 return blob.TickChildren(index, bb).FirstOrDefault();
             
-            var isRunOnMainThread = bb.HasData<RunOnMainThreadTag>();
-            if (!isRunOnMainThread)
+            if (behaviorTreeElement.RuntimeThread == BehaviorTreeRuntimeThread.JobThread)
             {
-                bb.GetData<IEntityCommand>().AddComponent<RunOnMainThreadTag>();
+                behaviorTreeElement.RuntimeThread = BehaviorTreeRuntimeThread.MainThread;
                 return NodeState.Running;
             }
             var state = blob.TickChildren(index, bb).FirstOrDefault();
-            if (state != NodeState.Running) bb.GetData<IEntityCommand>().RemoveComponent<RunOnMainThreadTag>();
+            if (state != NodeState.Running) behaviorTreeElement.RuntimeThread = BehaviorTreeRuntimeThread.JobThread;
             return state;
         }
 

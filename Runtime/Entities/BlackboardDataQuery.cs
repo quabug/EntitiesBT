@@ -9,26 +9,12 @@ namespace EntitiesBT.Entities
     public struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
     {
         public ComponentTypeSet Set { get; }
-        public EntityQuery QueryJob { get; }
-        public EntityQuery QueryMainThread { get; }
+        public EntityQuery Query { get; }
 
         public BlackboardDataQuery(ComponentTypeSet set, Func<IEnumerable<ComponentType>, EntityQuery> createEntityQuery)
         {
             Set = set;
-            QueryJob = createEntityQuery(Set
-                .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
-                .Append(ComponentType.ReadOnly<NodeBlobRef>())
-                .Append(ComponentType.Exclude<RunOnMainThreadTag>())
-                .Append(ComponentType.Exclude<ForceRunOnMainThreadTag>())
-            );
-            QueryMainThread = createEntityQuery(Set
-                .Append(ComponentType.ReadOnly<BlackboardDataQuery>())
-                .Append(ComponentType.ReadOnly<NodeBlobRef>())
-                .Append(ComponentType.ReadOnly<RunOnMainThreadTag>())
-                .Append(ComponentType.Exclude<ForceRunOnJobTag>())
-            );
-            QueryJob.SetSharedComponentFilter(this);
-            QueryMainThread.SetSharedComponentFilter(this);
+            Query = createEntityQuery(Set);
         }
 
         public bool Equals(BlackboardDataQuery other)

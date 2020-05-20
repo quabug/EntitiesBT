@@ -13,13 +13,6 @@ using UnityEngine.Assertions;
 
 namespace EntitiesBT.Components
 {
-    public enum BehaviorTreeThread
-    {
-        ForceRunOnMainThread
-      , ForceRunOnJob
-      , ControlledByBehaviorTree
-    }
-    
     public static class BehaviorTreeExtensions
     {
         public static unsafe BlobAssetReference<NodeBlob> ToBlob(this TextAsset file)
@@ -50,31 +43,33 @@ namespace EntitiesBT.Components
             this Entity entity
           , EntityManager dstManager
           , NodeBlobRef blob
+          , int order = 0
+          , AutoCreateType autoCreateType = AutoCreateType.None
           , BehaviorTreeThread thread = BehaviorTreeThread.ForceRunOnMainThread
+          , string debugName = default
         )
         {
             var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
             VirtualMachine.Reset(blob, bb);
-            dstManager.AddComponentData(entity, blob);
 
-            var query = blob.GetAccessTypes();
-            var dataQuery = new BlackboardDataQuery(query, components => dstManager.CreateEntityQuery(components.ToArray()));
-            dstManager.AddSharedComponentData(entity, dataQuery);
+            dstManager.AddBuffer<BehaviorTreeBufferElement>(entity);
+
+            var behaviorTreeEntity = dstManager.CreateEntity();
             
-            switch (thread)
+#if UNITY_EDITOR
+            dstManager.SetName(behaviorTreeEntity, $"[BT]{dstManager.GetName(entity)}:{order}.{debugName}");
+#endif
+            var query = blob.GetAccessTypes();
+            var dataQuery = new BlackboardDataQuery(query, components =>
+                dstManager.CreateEntityQuery(components.ToArray()));
+            dstManager.AddSharedComponentData(behaviorTreeEntity, dataQuery);
+            
+            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeComponent
             {
-            case BehaviorTreeThread.ForceRunOnMainThread:
-                dstManager.AddComponentData(entity, new RunOnMainThreadTag());
-                dstManager.AddComponentData(entity, new ForceRunOnMainThreadTag());
-                break;
-            case BehaviorTreeThread.ForceRunOnJob:
-                dstManager.AddComponentData(entity, new ForceRunOnJobTag());
-                break;
-            case BehaviorTreeThread.ControlledByBehaviorTree:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(thread), thread, null);
-            }
+                Blob = blob, Thread = thread, AutoCreation = autoCreateType
+            });
+            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeTargetComponent {Value = entity});
+            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeOrderComponent {Value = order});
         }
     }
 
