@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Core;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -17,7 +15,7 @@ namespace EntitiesBT.Entities
 
         protected override void OnCreate()
         {
-            _jobQuery = EntityManager.CreateEntityQuery(typeof(BehaviorTreeBufferElement));
+            _jobQuery = GetEntityQuery(typeof(BehaviorTreeBufferElement));
             _endSimulationEntityCommandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
         
@@ -26,38 +24,47 @@ namespace EntitiesBT.Entities
             _mainThreadBlackboard.EntityCommandMainThread.EntityCommandBuffer = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer();
             _mainThreadBlackboard.EntityManager = EntityManager;
             
+            var behaviorTreeDeps = new JobHandle();
             Entities.WithoutBurst().ForEach((Entity entity, DynamicBuffer<BehaviorTreeBufferElement> buffers) =>
             {
                 for (var i = 0; i < buffers.Length; i++)
                 {
-                    if ((buffers[i].RuntimeThread == BehaviorTreeRuntimeThread.MainThread
-                         || buffers[i].RuntimeThread == BehaviorTreeRuntimeThread.ForceMainThread)
-                         && buffers[i].QueryMask.Matches(entity)
-                    )
+                    if (buffers[i].RuntimeThread == BehaviorTreeRuntimeThread.MainThread
+                        || buffers[i].RuntimeThread == BehaviorTreeRuntimeThread.ForceMainThread)
                     {
-                        _mainThreadBlackboard.EntityCommandMainThread.Entity = entity;
-                        _mainThreadBlackboard.Entity = entity;
-                        _mainThreadBlackboard.BehaviorTreeIndex = i;
-                        VirtualMachine.Tick(buffers[i].NodeBlob, _mainThreadBlackboard);
+                        if (buffers[i].QueryMask.Matches(entity))
+                        {
+                            _mainThreadBlackboard.EntityCommandMainThread.Entity = entity;
+                            _mainThreadBlackboard.Entity = entity;
+                            _mainThreadBlackboard.BehaviorTreeIndex = i;
+                            VirtualMachine.Tick(buffers[i].NodeBlob, _mainThreadBlackboard);
+                        }
+                    }
+                    else
+                    {
+                        // TODO: is this right way to do this? seems not optimize?
+                        behaviorTreeDeps = JobHandle.CombineDependencies(behaviorTreeDeps, buffers[i].Dependency);
                     }
                 }
             }).Run();
             
-            var behaviorTreeBufferType = EntityManager.GetArchetypeChunkBufferType<BehaviorTreeBufferElement>(false);
-            var entityType = EntityManager.GetArchetypeChunkEntityType();
+            Dependency = JobHandle.CombineDependencies(Dependency, behaviorTreeDeps);
+            
+            var behaviorTreeBufferType = GetArchetypeChunkBufferType<BehaviorTreeBufferElement>();
+            var entityType = GetArchetypeChunkEntityType();
             var chunks = _jobQuery.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
             var ecb = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
             var job = new TickVirtualMachine {
                 Chunks = chunks
-              , Blackboard = new EntityJobChunkBlackboard { GlobalSystemVersion = EntityManager.GlobalSystemVersion }
+              , Blackboard = new EntityJobChunkBlackboard { GlobalSystemVersion = GlobalSystemVersion }
               , BehaviorTreeBufferType = behaviorTreeBufferType
               , EntityType = entityType
               , ECB = ecb
             };
             
-            deps = JobHandle.CombineDependencies(deps, Dependency);
-            deps = job.Schedule(chunks.Length, 8, deps);
-            _endSimulationEntityCommandBufferSystem.AddJobHandleForProducer(deps);
+            Dependency = JobHandle.CombineDependencies(deps, Dependency);
+            Dependency = job.Schedule(chunks.Length, 8, Dependency);
+            _endSimulationEntityCommandBufferSystem.AddJobHandleForProducer(Dependency);
         }
         
         struct TickVirtualMachine : IJobParallelFor

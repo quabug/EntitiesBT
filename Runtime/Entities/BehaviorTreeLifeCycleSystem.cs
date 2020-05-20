@@ -84,6 +84,7 @@ namespace EntitiesBT.Entities
               , QueryMask = EntityManager.GetEntityQueryMask(query.Query)
               , RuntimeThread = bt.Thread.ToRuntimeThread()
               , BehaviorTree = entity
+              , Dependency = query.Query.GetDependency()
             };
             buffers.Insert(orderedIndex, element);
         }

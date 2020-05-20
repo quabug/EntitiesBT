@@ -1,6 +1,7 @@
 ﻿using System;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 
 namespace EntitiesBT.Entities
 {
@@ -62,6 +63,7 @@ namespace EntitiesBT.Entities
         public NodeBlobRef NodeBlob;
         public EntityQueryMask QueryMask;
         public Entity BehaviorTree;
+        public JobHandle Dependency;
     }
 
     public struct BehaviorTreeTargetComponent : IComponentData
