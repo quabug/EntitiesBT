@@ -20,7 +20,7 @@ namespace EntitiesBT.DebugView
             if (!enabled) return;
             
             var debugView = new GameObject();
-            var root = debugView.AddComponent<BTDebugViewRoot>();
+            var root = debugView.AddComponent<BTDebugViewTreesManager>();
             root.EntityManager = dstManager;
             root.Entity = entity;
             if (GetComponentInParent<ConvertToEntity>().ConversionMode == ConvertToEntity.Mode.ConvertAndInjectGameObject)
@@ -42,38 +42,84 @@ namespace EntitiesBT.DebugView
             return obj ? obj : new GameObject(name);
         }
     }
-    
-    public class BTDebugViewRoot : MonoBehaviour
+
+    [AddComponentMenu("")] // hide in component menu
+    public class BTDebugViewTreesManager : MonoBehaviour
     {
-        [NonSerialized] public List<GameObject> Views;
         [NonSerialized] public Entity Entity;
         [NonSerialized] public EntityManager EntityManager;
-        private EntityBlackboard _blackboard;
 
-        private void OnEnable() {}
+        private IDictionary<NodeBlobRef, GameObject> _trees = new Dictionary<NodeBlobRef, GameObject>();
 
         private void Update()
         {
-            // if (EntityManager == default) return;
-            // if (!EntityManager.HasComponent<NodeBlobRef>(Entity)) return;
-            // if (_blackboard == null) _blackboard = new EntityBlackboard {EntityManager = EntityManager, Entity = Entity};
-            //
-            // var blob = EntityManager.GetComponentData<NodeBlobRef>(Entity);
-            // if (Views == null) CreateViews(blob);
-            //
-            // foreach (var view in Views.SelectMany(t => t.GetComponents<BTDebugView>())) view.Tick();
+            if (EntityManager == default
+                || !EntityManager.Exists(Entity)
+                || !EntityManager.HasComponent<BehaviorTreeBufferElement>(Entity))
+            {
+                for (var i = transform.childCount - 1; i >= 0; i--)
+                    Destroy(transform.GetChild(i).gameObject);
+            }
+            else
+            {
+                var buffer = EntityManager.GetBuffer<BehaviorTreeBufferElement>(Entity);
+                var trees = new Dictionary<NodeBlobRef, GameObject>(buffer.Length * 2);
+                for (var i = 0; i < buffer.Length; i++)
+                {
+                    _trees.TryGetValue(buffer[i].NodeBlob, out var tree);
+                    if (tree == null)
+                    {
+                        tree = new GameObject(EntityManager.GetName(buffer[i].BehaviorTree));
+                        tree.transform.SetParent(transform);
+                        var root = tree.AddComponent<BTDebugViewRoot>();
+                        root.Blackboard = new EntityBlackboard
+                        {
+                            EntityManager = EntityManager, Entity = Entity, BehaviorTreeIndex = i
+                        };
+                    }
+                    tree.transform.SetAsLastSibling();
+                    trees[buffer[i].NodeBlob] = tree;
+                }
+
+                for (var i = transform.childCount - buffer.Length - 1; i >= 0; i--)
+                    Destroy(transform.GetChild(i).gameObject);
+
+                _trees = trees;
+            }
+        }
+    }
+    
+    [AddComponentMenu("")] // hide in component menu
+    public class BTDebugViewRoot : MonoBehaviour
+    {
+        [NonSerialized] public EntityBlackboard Blackboard;
+        private List<BTDebugView> _views = new List<BTDebugView>();
+
+        private void OnEnable() {}
+
+        private void Start()
+        {
+            var blob = Blackboard.GetDataRef<BehaviorTreeBufferElement>().NodeBlob;
+            CreateViews(blob);
+        }
+
+        private void Update()
+        {
+            if (!enabled) return;
+            GetComponentsInChildren(_views);
+            foreach (var view in _views) view.Tick();
         }
 
         private void CreateViews(NodeBlobRef blob)
         {
-            Views = new List<GameObject>(blob.Count);
+            var views = new List<GameObject>(blob.Count);
             for (var i = 0; i < blob.Count; i++)
             {
                 var nodeTypeId = blob.GetTypeId(i);
                 var debugViewTypeList = DebugComponentLookUp.NODE_COMPONENTS_MAP[nodeTypeId];
                 
                 var nodeGameObject = new GameObject();
-                Views.Add(nodeGameObject);
+                views.Add(nodeGameObject);
                 nodeGameObject.name = $"{DebugComponentLookUp.BEHAVIOR_NODE_ID_TYPE_MAP[nodeTypeId].Name}";
                 if (debugViewTypeList.Any())
                 {
@@ -87,19 +133,16 @@ namespace EntitiesBT.DebugView
                 }
                 
                 var parentIndex = blob.ParentIndex(i);
-                var parent = parentIndex >= 0 ? Views[parentIndex].transform : transform;
+                var parent = parentIndex >= 0 ? views[parentIndex].transform : transform;
                 nodeGameObject.transform.SetParent(parent);
             }
             
-            for (var i = 0; i < Views.Count; i++)
+            for (var i = 0; i < views.Count; i++)
             {
-                foreach (var view in Views[i].GetComponents<BTDebugView>())
+                foreach (var view in views[i].GetComponents<BTDebugView>())
                 {
                     view.Index = i;
-                    view.Blackboard = _blackboard;
-                    view.Blob = blob;
-                    view.Entity = Entity;
-                    view.EntityManager = EntityManager;
+                    view.Blackboard = Blackboard;
                     view.Init();
                 }
             }

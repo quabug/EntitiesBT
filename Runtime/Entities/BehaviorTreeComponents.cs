@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace EntitiesBT.Entities
@@ -60,6 +61,7 @@ namespace EntitiesBT.Entities
         public BehaviorTreeRuntimeThread RuntimeThread;
         public NodeBlobRef NodeBlob;
         public EntityQueryMask QueryMask;
+        public Entity BehaviorTree;
     }
 
     public struct BehaviorTreeTargetComponent : IComponentData

@@ -29,7 +29,7 @@ namespace EntitiesBT.Entities
                 .ForEach((Entity entity, in BlackboardDataQuery query, in BehaviorTreeComponent bt, in BehaviorTreeTargetComponent target, in BehaviorTreeOrderComponent order) =>
                 {
                     ecb.AddComponent(entity, new LastTargetComponent {Target = target.Value, Blob = bt.Blob});
-                    BindBehaviorTree(ecb, bt, query, target.Value, order.Value);
+                    BindBehaviorTree(ecb, entity, bt, query, target.Value, order.Value);
                 }).Run();
             
             Entities
@@ -40,7 +40,7 @@ namespace EntitiesBT.Entities
                     if (lastTarget.Target != target.Value)
                     {
                         UnbindBehaviorTree(lastTarget.Target, lastTarget.Blob);
-                        BindBehaviorTree(ecb, bt, query, target.Value, order.Value);
+                        BindBehaviorTree(ecb, entity, bt, query, target.Value, order.Value);
                         lastTarget.Target = target.Value;
                     }
                 }).Run();
@@ -57,7 +57,7 @@ namespace EntitiesBT.Entities
             _entityCommandBufferSystem.AddJobHandleForProducer(Dependency);
         }
 
-        void BindBehaviorTree(EntityCommandBuffer ecb, in BehaviorTreeComponent bt, in BlackboardDataQuery query, in Entity target, in int order)
+        void BindBehaviorTree(EntityCommandBuffer ecb, in Entity entity, in BehaviorTreeComponent bt, in BlackboardDataQuery query, in Entity target, in int order)
         {
             if (bt.AutoCreation != AutoCreateType.None)
             {
@@ -83,6 +83,7 @@ namespace EntitiesBT.Entities
               , NodeBlob = bt.Blob
               , QueryMask = EntityManager.GetEntityQueryMask(query.Query)
               , RuntimeThread = bt.Thread.ToRuntimeThread()
+              , BehaviorTree = entity
             };
             buffers.Insert(orderedIndex, element);
         }
