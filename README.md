@@ -14,6 +14,7 @@
 >       - [Serialization](#serialization)
 >       - [Thread control](#thread-control)
 >       - [Variable Property](#variable-property)
+>       - [Multiple trees](#multiple-trees)
 >     - [Debug](#debug)
 >     - [Custom behavior node](#custom-behavior-node)
 >       - [Action](#action)
@@ -105,6 +106,12 @@ Fetch data from different sources.
   - _Scriptable Object Value_: target field.
 
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950097-7df32200-6944-11ea-8902-650987d58827.gif">
+
+#### Multiple Trees
+Add multiple `BehaviorTreeRoot` onto a single entity gameobject will create multiple behavior tree to control this single entity.
+Behavior tree sorted by `Order` of `BehaviorTreeRoot`.
+
+<img width="400" alt="" src="https://user-images.githubusercontent.com/683655/82422698-5db32100-9ab5-11ea-8bc6-eb3c67ac7676.png">
 
 ##### Code Example
 ``` c#
