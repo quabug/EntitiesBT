@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
@@ -14,9 +15,16 @@ namespace EntitiesBT.Core
 
     public static class BlackboardExtensions
     {
-        public static T GetData<T>(this IBlackboard bb)
+        public static unsafe T GetData<T>(this IBlackboard bb)
         {
-            return (T) bb[typeof(T)];
+            var type = typeof(T);
+            if (type.IsValueType && typeof(IComponentData).IsAssignableFrom(type))
+            {
+                var ptr = new IntPtr(bb.GetPtrRO(type));
+                // GC free
+                return Marshal.PtrToStructure<T>(ptr);
+            }
+            return (T) bb[type];
         }
         
         public static unsafe T GetData<T>(this IBlackboard bb, ulong componentStableHash, int componentDataOffset)

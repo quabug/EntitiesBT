@@ -12,11 +12,11 @@ namespace EntitiesBT.Nodes
         
         public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            var childState = blob.TickChildren(index, blackboard).FirstOrDefault();
+            var childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
             if (childState == 0)
             {
                 blob.ResetChildren(index, blackboard);
-                childState = blob.TickChildren(index, blackboard).FirstOrDefault();
+                childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
             }
             if (BreakStates.HasFlag(childState)) return childState;
 

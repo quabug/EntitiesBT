@@ -17,30 +17,35 @@ namespace EntitiesBT.Entities
         {
             get
             {
-                switch (key)
+                if (key is Type type)
                 {
-                case Type type when type == typeof(IEntityCommand):
-                    return EntityCommandMainThread;
-                case Type type when type == typeof(BehaviorTreeBufferElement):
-                    return EntityManager.GetBuffer<BehaviorTreeBufferElement>(Entity)[BehaviorTreeIndex];
-                case Type type:
+                    if (type == typeof(IEntityCommand))
+                        return EntityCommandMainThread;
+                    if (type == typeof(BehaviorTreeBufferElement))
+                        return EntityManager.GetBuffer<BehaviorTreeBufferElement>(Entity)[BehaviorTreeIndex];
+                    if (type.IsValueType && typeof(IComponentData).IsAssignableFrom(type))
+                    {
+                        var typeIndex = TypeManager.GetTypeIndex(type);
+                        var ptr = Entity.GetComponentDataRawRO(EntityManager, typeIndex);
+                        return Marshal.PtrToStructure(new IntPtr(ptr), type);
+                    }
                     return EntityManager.Debug.GetComponentBoxed(Entity, type);
-                default:
-                    throw new NotImplementedException();
                 }
+                throw new NotImplementedException();
             }
             set
             {
-                var type = key as Type;
-                if (type.IsComponentDataType())
+                if (key is Type type && type.IsValueType)
                 {
-                    var ptr = GetPtrRW(key);
-                    Marshal.StructureToPtr(value, new IntPtr(ptr), false);
-                    return;
+                    var typeIndex = TypeManager.GetTypeIndex(type);
+                    var typeInfo = TypeManager.GetTypeInfo(typeIndex);
+                    if (typeInfo.Category == TypeManager.TypeCategory.ComponentData)
+                    {
+                        var ptr = Entity.GetComponentDataRawRW(EntityManager, typeIndex);
+                        Marshal.StructureToPtr(value, new IntPtr(ptr), false);
+                        return;
+                    }
                 }
-                
-                if (type.IsManagedDataType()) throw new Exception($"Managed data {type.Name} is not writable");
-                if (type.IsUnityComponentType()) throw new Exception($"Component {type.Name} is not writable");
                 throw new NotImplementedException();
             }
         }
