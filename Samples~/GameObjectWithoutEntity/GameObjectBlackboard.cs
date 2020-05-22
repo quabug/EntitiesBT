@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using EntitiesBT.Core;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace EntitiesBT.Sample
@@ -48,7 +50,12 @@ namespace EntitiesBT.Sample
 
         public unsafe void* GetPtrRO(object key)
         {
-            throw new NotImplementedException();
+            var type = (Type)key;
+            var obj = Activator.CreateInstance(type);
+            var ptr = new IntPtr(UnsafeUtility.PinGCObjectAndGetAddress(obj, out var handle));
+            Marshal.StructureToPtr(_dict[key], ptr, false);
+            UnsafeUtility.ReleaseGCObject(handle);
+            return ptr.ToPointer();
         }
     }
 }
