@@ -22,7 +22,7 @@ namespace EntitiesBT.Nodes
             var count = endIndex - childIndex;
             // count will be 0 if there's no child
             blob.ResetStates(childIndex, count);
-            return blob.TickChildren(index, bb).FirstOrDefault();
+            return blob.TickChildrenReturnFirstOrDefault(index, bb);
         }
 
         public void Reset(int index, INodeBlob blob, IBlackboard blackboard)

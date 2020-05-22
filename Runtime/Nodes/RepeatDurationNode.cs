@@ -14,11 +14,11 @@ namespace EntitiesBT.Nodes
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
         {
-            var childState = blob.TickChildren(index, bb).FirstOrDefault();
+            var childState = blob.TickChildrenReturnFirstOrDefault(index, bb);
             if (childState == 0)
             {
                 blob.ResetChildren(index, bb);
-                childState = blob.TickChildren(index, bb).FirstOrDefault();
+                childState = blob.TickChildrenReturnFirstOrDefault(index, bb);
             }
             if (BreakStates.HasFlag(childState)) return childState;
 

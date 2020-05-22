@@ -13,14 +13,14 @@ namespace EntitiesBT.Nodes
             ref var behaviorTreeElement = ref bb.GetDataRef<BehaviorTreeBufferElement>();
             if (behaviorTreeElement.RuntimeThread == BehaviorTreeRuntimeThread.ForceJobThread
                 || behaviorTreeElement.RuntimeThread == BehaviorTreeRuntimeThread.ForceMainThread)
-                return blob.TickChildren(index, bb).FirstOrDefault();
+                return blob.TickChildrenReturnFirstOrDefault(index, bb);
             
             if (behaviorTreeElement.RuntimeThread == BehaviorTreeRuntimeThread.JobThread)
             {
                 behaviorTreeElement.RuntimeThread = BehaviorTreeRuntimeThread.MainThread;
                 return NodeState.Running;
             }
-            var state = blob.TickChildren(index, bb).FirstOrDefault();
+            var state = blob.TickChildrenReturnFirstOrDefault(index, bb);
             if (state != NodeState.Running) behaviorTreeElement.RuntimeThread = BehaviorTreeRuntimeThread.JobThread;
             return state;
         }

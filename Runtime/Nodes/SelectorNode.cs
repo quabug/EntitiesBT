@@ -9,7 +9,7 @@ namespace EntitiesBT.Nodes
     {
         public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            return blob.TickChildren(index, blackboard, breakCheck: state => state.IsRunningOrSuccess()).LastOrDefault();
+            return blob.TickChildrenReturnLastOrDefault(index, blackboard, breakCheck: state => state.IsRunningOrSuccess());
         }
 
         public void Reset(int index, INodeBlob blob, IBlackboard blackboard)

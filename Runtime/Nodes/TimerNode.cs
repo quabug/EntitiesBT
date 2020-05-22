@@ -14,7 +14,7 @@ namespace EntitiesBT.Nodes
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
         {
-            var childState = blob.TickChildren(index, blackboard, state => state.IsCompleted()).FirstOrDefault();
+            var childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
             CountdownSeconds -= blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
             if (CountdownSeconds <= 0f) return childState.IsCompleted() ? childState : BreakReturnState;
             return NodeState.Running;

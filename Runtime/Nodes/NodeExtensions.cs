@@ -52,6 +52,50 @@ namespace EntitiesBT.Nodes
             }
         }
 
+        #region GC free
+
+        // GC free version of TickChildren().LastOrDefault()
+        public static NodeState TickChildrenReturnLastOrDefault(
+            this INodeBlob blob
+          , int parentIndex
+          , IBlackboard bb
+          , Predicate<NodeState> breakCheck
+        )
+        {
+            return TickChildrenReturnBreakOrDefault(blob, parentIndex, bb, breakCheck, state => !state.IsCompleted());
+        }
+        
+        // GC free version of TickChildren().FirstOrDefault()
+        public static NodeState TickChildrenReturnFirstOrDefault(
+            this INodeBlob blob
+          , int parentIndex
+          , IBlackboard bb
+        )
+        {
+            return TickChildrenReturnBreakOrDefault(blob, parentIndex, bb, state => true, state => !state.IsCompleted());
+        }
+        
+        private static NodeState TickChildrenReturnBreakOrDefault(
+            this INodeBlob blob
+          , int parentIndex
+          , IBlackboard bb
+          , Predicate<NodeState> breakCheck
+          , Predicate<NodeState> tickCheck
+        )
+        {
+            NodeState currentState = 0;
+            var endIndex = blob.GetEndIndex(parentIndex);
+            var childIndex = parentIndex + 1;
+            while (childIndex < endIndex)
+            {
+                var prevState = blob.GetState(childIndex);
+                currentState = tickCheck(prevState) ? VirtualMachine.Tick(childIndex, blob, bb) : 0;
+                if (breakCheck(currentState == 0 ? prevState : currentState)) break;
+                childIndex = blob.GetEndIndex(childIndex);
+            }
+            return currentState;
+        }
+
         public static T FirstOrDefault<T>(this IEnumerable<T> enumerable)
         {
             return enumerable.SingleOrDefault();
@@ -63,5 +107,8 @@ namespace EntitiesBT.Nodes
             foreach (var item in enumerable) result = item;
             return result;
         }
+        
+
+        #endregion
     }
 }
