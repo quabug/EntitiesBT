@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
@@ -11,6 +12,7 @@ namespace EntitiesBT.Variable
         public int VariableId;
         public int OffsetPtr;
         
+        [Pure]
         public unsafe ref TValue Value<TValue>() where TValue : struct
         {
 #if ENABLE_UNITY_COLLECTIONS_CHECKS
@@ -25,13 +27,14 @@ namespace EntitiesBT.Variable
 
         public IEnumerable<ComponentType> ComponentAccessList => VariableRegisters<T>.GetComponentAccess(VariableId)(ref this);
         
-        
-        public T GetData(int index, INodeBlob blob, IBlackboard bb)
+        [Pure]
+        public T GetData(int index, [NotNull] INodeBlob blob, [NotNull] IBlackboard bb)
         {
             return VariableRegisters<T>.GetData(VariableId)(ref this, index, blob, bb);
         }
         
-        public unsafe ref T GetDataRef(int index, INodeBlob blob, IBlackboard bb)
+        [Pure]
+        public unsafe ref T GetDataRef(int index, [NotNull] INodeBlob blob, [NotNull] IBlackboard bb)
         {
             // NOTE: error CS8170: Struct members cannot return 'this' or other instance members by reference
             // return ref VariableRegisters<T>.GetDataRef(VariableId)(ref this, index, blob, bb);

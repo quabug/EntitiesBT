@@ -36,6 +36,6 @@ namespace EntitiesBT.Core
 
     public interface IRuntimeComponentAccessor
     {
-        IEnumerable<ComponentType> ComponentAccessList { get; }
+        IEnumerable<ComponentType> ComponentAccessList { [Pure] get; }
     }
 }

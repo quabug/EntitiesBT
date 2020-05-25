@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 
 namespace EntitiesBT.Nodes
 {
     public static class NodeExtensions
     {
-        public static void ResetChildren(this INodeBlob blob, int parentIndex, IBlackboard bb)
+        public static void ResetChildren([NotNull] this INodeBlob blob, int parentIndex, IBlackboard bb)
         {
             // TODO: reset children which is not NodeState.None?
             var firstChildIndex = parentIndex + 1;
@@ -17,28 +18,30 @@ namespace EntitiesBT.Nodes
         }
         
         public static IEnumerable<NodeState> TickChildren(
-            this INodeBlob blob
+            [NotNull] this INodeBlob blob
           , int parentIndex
-          , IBlackboard bb
+          , [NotNull] IBlackboard bb
         )
         {
             return TickChildren(blob, parentIndex, bb, state => false, state => !state.IsCompleted());
         }
         
+        [LinqTunnel]
         public static IEnumerable<NodeState> TickChildren(
-            this INodeBlob blob
+            [NotNull] this INodeBlob blob
           , int parentIndex
-          , IBlackboard bb
+          , [NotNull] IBlackboard bb
           , Predicate<NodeState> breakCheck
         )
         {
             return TickChildren(blob, parentIndex, bb, breakCheck, state => !state.IsCompleted());
         }
         
+        [LinqTunnel]
         public static IEnumerable<NodeState> TickChildren(
-            this INodeBlob blob
+            [NotNull] this INodeBlob blob
           , int parentIndex
-          , IBlackboard bb
+          , [NotNull] IBlackboard bb
           , Predicate<NodeState> breakCheck
           , Predicate<NodeState> tickCheck
         )
@@ -55,10 +58,11 @@ namespace EntitiesBT.Nodes
         #region GC free
 
         // GC free version of TickChildren().LastOrDefault()
+        [LinqTunnel]
         public static NodeState TickChildrenReturnLastOrDefault(
-            this INodeBlob blob
+            [NotNull] this INodeBlob blob
           , int parentIndex
-          , IBlackboard bb
+          , [NotNull] IBlackboard bb
           , Predicate<NodeState> breakCheck
         )
         {
@@ -67,18 +71,19 @@ namespace EntitiesBT.Nodes
         
         // GC free version of TickChildren().FirstOrDefault()
         public static NodeState TickChildrenReturnFirstOrDefault(
-            this INodeBlob blob
+            [NotNull] this INodeBlob blob
           , int parentIndex
-          , IBlackboard bb
+          , [NotNull] IBlackboard bb
         )
         {
             return TickChildrenReturnBreakOrDefault(blob, parentIndex, bb, state => true, state => !state.IsCompleted());
         }
         
+        [LinqTunnel]
         private static NodeState TickChildrenReturnBreakOrDefault(
-            this INodeBlob blob
+            [NotNull] this INodeBlob blob
           , int parentIndex
-          , IBlackboard bb
+          , [NotNull] IBlackboard bb
           , Predicate<NodeState> breakCheck
           , Predicate<NodeState> tickCheck
         )
@@ -96,12 +101,14 @@ namespace EntitiesBT.Nodes
             return currentState;
         }
 
-        public static T FirstOrDefault<T>(this IEnumerable<T> enumerable)
+        [Pure]
+        public static T FirstOrDefault<T>([NoEnumeration, NotNull] this IEnumerable<T> enumerable)
         {
             return enumerable.SingleOrDefault();
         }
 
-        public static T LastOrDefault<T>(this IEnumerable<T> enumerable)
+        [Pure]
+        public static T LastOrDefault<T>([NotNull] this IEnumerable<T> enumerable)
         {
             var result = default(T);
             foreach (var item in enumerable) result = item;

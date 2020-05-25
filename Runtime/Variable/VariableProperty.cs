@@ -1,5 +1,6 @@
 using System.Reflection;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
@@ -14,7 +15,7 @@ namespace EntitiesBT.Variable
     {
         public const BindingFlags FIELD_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public;
         
-        public virtual void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        public virtual void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, [NotNull] INodeDataBuilder self, [NotNull] ITreeNode<INodeDataBuilder>[] tree)
         {
             blobVariable.VariableId = VariablePropertyTypeId;
             AllocateData(ref builder, ref blobVariable, self, tree);
@@ -29,8 +30,8 @@ namespace EntitiesBT.Variable
             this VariableProperty<T> variable
           , ref BlobBuilder builder
           , void* blobVariablePtr
-          , INodeDataBuilder self
-          , ITreeNode<INodeDataBuilder>[] tree
+          , [NotNull] INodeDataBuilder self
+          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : struct
         {
             variable.Allocate(ref builder, ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(blobVariablePtr), self, tree);
