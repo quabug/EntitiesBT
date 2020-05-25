@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
@@ -15,7 +16,8 @@ namespace EntitiesBT.Core
 
     public static class BlackboardExtensions
     {
-        public static unsafe T GetData<T>(this IBlackboard bb)
+        [Pure]
+        public static unsafe T GetData<T>([NotNull] this IBlackboard bb)
         {
             var type = typeof(T);
             if (type.IsValueType && typeof(IComponentData).IsAssignableFrom(type))
@@ -27,7 +29,8 @@ namespace EntitiesBT.Core
             return (T) bb[type];
         }
         
-        public static unsafe T GetData<T>(this IBlackboard bb, ulong componentStableHash, int componentDataOffset)
+        [Pure]
+        public static unsafe T GetData<T>([NotNull] this IBlackboard bb, ulong componentStableHash, int componentDataOffset)
             where T : struct
         {
             var componentPtr = (byte*)bb.GetPtrRO(componentStableHash);
@@ -36,22 +39,25 @@ namespace EntitiesBT.Core
             return UnsafeUtilityEx.AsRef<T>(dataPtr);
         }
         
-        public static void SetData<T>(this IBlackboard bb, T data)
+        public static void SetData<T>([NotNull] this IBlackboard bb, T data)
         {
             bb[typeof(T)] = data;
         }
         
-        public static bool HasData<T>(this IBlackboard bb)
+        [Pure]
+        public static bool HasData<T>([NotNull] this IBlackboard bb)
         {
             return bb.Has(typeof(T));
         }
         
-        public static unsafe ref T GetDataRef<T>(this IBlackboard bb) where T : struct
+        [Pure]
+        public static unsafe ref T GetDataRef<T>([NotNull] this IBlackboard bb) where T : struct
         {
             return ref UnsafeUtilityEx.AsRef<T>(bb.GetPtrRW(typeof(T)));
         }
         
-        public static unsafe ref T GetDataRef<T>(this IBlackboard bb, ulong componentStableHash, int componentDataOffset)
+        [Pure]
+        public static unsafe ref T GetDataRef<T>([NotNull] this IBlackboard bb, ulong componentStableHash, int componentDataOffset)
             where T : struct
         {
             var componentPtr = (byte*)bb.GetPtrRW(componentStableHash);
@@ -60,7 +66,8 @@ namespace EntitiesBT.Core
             return ref UnsafeUtilityEx.AsRef<T>(dataPtr);
         }
 
-        public static int FetchTypeIndex(this object key)
+        [Pure]
+        public static int FetchTypeIndex([NotNull] this object key)
         {
             switch (key)
             {

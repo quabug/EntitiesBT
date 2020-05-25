@@ -1,5 +1,6 @@
 using System;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -23,12 +24,15 @@ namespace EntitiesBT.Entities
 
         public int Count => Types.Length;
 
+        [Pure]
         public static int CalculateDefaultSize(int count, int dataSize) =>
             UnsafeUtility.SizeOf<NodeBlob>() + dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
         
+        [Pure]
         public static int CalculateRuntimeSize(int count, int dataSize) =>
             dataSize/* RuntimeDataBlob */ + sizeof(NodeState) * count;
 
+        [Pure]
         public static int CalculateSize(int count, int dataSize) =>
             CalculateDefaultSize(count, dataSize) + CalculateRuntimeSize(count, dataSize);
     }

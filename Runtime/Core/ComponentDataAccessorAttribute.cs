@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Unity.Entities;
 
 namespace EntitiesBT.Core
@@ -10,19 +11,19 @@ namespace EntitiesBT.Core
     {
         protected readonly Type[] _types;
         public abstract IEnumerable<ComponentType> Types { get; }
-        public ComponentAccessorAttribute(Type[] types) => _types = types;
+        public ComponentAccessorAttribute([NotNull, ItemNotNull] Type[] types) => _types = types;
     }
     
     public class ReadOnlyAttribute : ComponentAccessorAttribute
     {
-        public ReadOnlyAttribute(params Type[] types) : base(types) {}
+        public ReadOnlyAttribute([NotNull, ItemNotNull] params Type[] types) : base(types) {}
         public override IEnumerable<ComponentType> Types =>
             _types.Select(t => new ComponentType(t, ComponentType.AccessMode.ReadOnly));
     }
     
     public class ReadWriteAttribute : ComponentAccessorAttribute
     {
-        public ReadWriteAttribute(params Type[] types) : base(types) {}
+        public ReadWriteAttribute([NotNull, ItemNotNull] params Type[] types) : base(types) {}
         public override IEnumerable<ComponentType> Types =>
             _types.Select(t => new ComponentType(t, ComponentType.AccessMode.ReadWrite));
     }
@@ -35,6 +36,6 @@ namespace EntitiesBT.Core
 
     public interface IRuntimeComponentAccessor
     {
-        IEnumerable<ComponentType> ComponentAccessList { get; }
+        IEnumerable<ComponentType> ComponentAccessList { [Pure] get; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
+using JetBrains.Annotations;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -15,6 +16,7 @@ namespace EntitiesBT.Components
 {
     public static class BehaviorTreeExtensions
     {
+        [Pure]
         public static unsafe BlobAssetReference<NodeBlob> ToBlob(this TextAsset file)
         {
             var dataPtr = UnsafeUtility.PinGCArrayAndGetDataAddress(file.bytes, out var gcHandle);
@@ -32,7 +34,8 @@ namespace EntitiesBT.Components
             }
         }
 
-        public static ComponentTypeSet GetAccessTypes(this INodeBlob blob)
+        [Pure]
+        public static ComponentTypeSet GetAccessTypes([NotNull] this INodeBlob blob)
         {
             return new ComponentTypeSet(
                 Enumerable.Range(0, blob.Count).SelectMany(i => VirtualMachine.GetAccessTypes(i, blob))

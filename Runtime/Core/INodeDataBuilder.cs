@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Unity.Entities;
+using JetBrains.Annotations;
 
 namespace EntitiesBT.Core
 {
@@ -7,7 +7,7 @@ namespace EntitiesBT.Core
     {
         BehaviorNodeType BehaviorNodeType { get; }
         int NodeId { get; }
-        BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders);
+        BlobAssetReference Build([NotNull] ITreeNode<INodeDataBuilder>[] builders);
         INodeDataBuilder Self { get; }
         IEnumerable<INodeDataBuilder> Children { get; }
     }

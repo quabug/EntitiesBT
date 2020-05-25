@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -12,12 +13,14 @@ namespace EntitiesBT.Entities
 {
     public static class NodeBlobExtensions
     {
-        public static BlobAssetReference<NodeBlob> ToBlob(this INodeDataBuilder root, Allocator allocator = Allocator.Persistent)
+        [Pure]
+        public static BlobAssetReference<NodeBlob> ToBlob([NotNull] this INodeDataBuilder root, Allocator allocator = Allocator.Persistent)
         {
             return root.Flatten(builder => builder.Children, builder => builder.Self).ToArray().ToBlob(allocator);
         }
 
-        public static unsafe BlobAssetReference<NodeBlob> ToBlob(this ITreeNode<INodeDataBuilder>[] nodes, Allocator allocator)
+        [Pure]
+        public static unsafe BlobAssetReference<NodeBlob> ToBlob([NotNull] this ITreeNode<INodeDataBuilder>[] nodes, Allocator allocator)
         {
             var dataSize = 0;
             var nodeDataList = new NativeArray<BlobAssetReference>(nodes.Length, Allocator.Temp);
@@ -90,7 +93,7 @@ namespace EntitiesBT.Entities
             }
         }
 
-        public static unsafe void SaveToStream(this INodeDataBuilder builder, Stream stream)
+        public static unsafe void SaveToStream([NotNull] this INodeDataBuilder builder, Stream stream)
         {
             using (var blob = builder.ToBlob(Allocator.Temp))
             using (var writer = new MemoryBinaryWriter())

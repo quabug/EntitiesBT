@@ -1,8 +1,10 @@
+using JetBrains.Annotations;
+
 namespace EntitiesBT.Core
 {
     public interface INodeData
     {
-        NodeState Tick(int index, INodeBlob blob, IBlackboard bb);
-        void Reset(int index, INodeBlob blob, IBlackboard bb);
+        NodeState Tick(int index, [NotNull] INodeBlob blob, [NotNull] IBlackboard bb);
+        void Reset(int index, [NotNull] INodeBlob blob, [NotNull] IBlackboard bb);
     }
 }

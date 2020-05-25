@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Unity.Entities;
 
 namespace EntitiesBT.Entities
@@ -11,7 +12,7 @@ namespace EntitiesBT.Entities
         public ComponentTypeSet Set { get; }
         public EntityQuery Query { get; }
 
-        public BlackboardDataQuery(ComponentTypeSet set, Func<IEnumerable<ComponentType>, EntityQuery> createEntityQuery)
+        public BlackboardDataQuery([NotNull] ComponentTypeSet set, Func<IEnumerable<ComponentType>, EntityQuery> createEntityQuery)
         {
             Set = set;
             Query = createEntityQuery(Set);

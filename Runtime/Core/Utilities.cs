@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -39,16 +40,19 @@ namespace EntitiesBT.Core
         public delegate IEnumerable<T> ChildrenFunc<T>(T parent);
         public delegate T SelfFunc<T>(T self);
         
+        [Pure]
         public static IEnumerable<T> Yield<T>(this T self)
         {
             yield return self;
         }
 
+        [Pure]
         public static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc)
         {
             return node.Flatten(childrenFunc, default(ITreeNode<T>)).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
         }
 
+        [Pure]
         private static IEnumerable<TreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, ITreeNode<T> parent)
         {
             if (node == null) return Enumerable.Empty<TreeNode<T>>();
@@ -56,11 +60,13 @@ namespace EntitiesBT.Core
             return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => child.Flatten(childrenFunc, treeNode)));
         }
         
+        [Pure]
         public static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, SelfFunc<T> selfFunc)
         {
             return selfFunc(node).Flatten(childrenFunc, default, selfFunc).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
         }
 
+        [Pure]
         private static IEnumerable<TreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, ITreeNode<T> parent, SelfFunc<T> selfFunc)
         {
             if (node == null) return Enumerable.Empty<TreeNode<T>>();
@@ -68,13 +74,15 @@ namespace EntitiesBT.Core
             return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => selfFunc(child).Flatten(childrenFunc, treeNode, selfFunc)));
         }
 
-        public static IEnumerable<float> NormalizeUnsafe(this IEnumerable<float> weights)
+        [Pure]
+        public static IEnumerable<float> NormalizeUnsafe([NotNull] this IEnumerable<float> weights)
         {
             var sum = weights.Sum();
             return weights.Select(w => w / sum);
         }
         
-        public static IEnumerable<float> Normalize(this IEnumerable<float> weights)
+        [Pure]
+        public static IEnumerable<float> Normalize([NotNull] this IEnumerable<float> weights)
         {
             var sum = weights.Where(w => w > 0).Sum();
             if (sum <= math.FLT_MIN_NORMAL) sum = 1;
@@ -82,7 +90,8 @@ namespace EntitiesBT.Core
         }
         
         // https://stackoverflow.com/a/27851610
-        public static bool IsZeroSizeStruct(this Type t)
+        [Pure]
+        public static bool IsZeroSizeStruct([NotNull] this Type t)
         {
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
             return t.IsValueType
