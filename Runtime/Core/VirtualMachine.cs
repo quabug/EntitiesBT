@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Unity.Entities;
 
 namespace EntitiesBT.Core
 {
     public static class VirtualMachine
     {
-        public static NodeState Tick(INodeBlob blob, IBlackboard bb)
+        public static NodeState Tick([NotNull] INodeBlob blob, [NotNull] IBlackboard bb)
         {
             return Tick(0, blob, bb);
         }
         
-        public static NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public static NodeState Tick(int index, [NotNull] INodeBlob blob, [NotNull] IBlackboard bb)
         {
             var typeId = blob.GetTypeId(index);
             var ptr = blob.GetRuntimeDataPtr(index);
@@ -21,7 +22,7 @@ namespace EntitiesBT.Core
             return state;
         }
 
-        public static void Reset(int fromIndex, INodeBlob blob, IBlackboard bb, int count = 1)
+        public static void Reset(int fromIndex, [NotNull] INodeBlob blob, [NotNull] IBlackboard bb, int count = 1)
         {
             blob.ResetStates(fromIndex, count);
             blob.ResetRuntimeData(fromIndex, count);
@@ -33,13 +34,14 @@ namespace EntitiesBT.Core
             }
         }
 
-        public static void Reset(INodeBlob blob, IBlackboard bb)
+        public static void Reset([NotNull] INodeBlob blob, [NotNull] IBlackboard bb)
         {
             var count = blob.GetEndIndex(0);
             Reset(0, blob, bb, count);
         }
 
-        public static IEnumerable<ComponentType> GetAccessTypes(int index, INodeBlob blob)
+        [Pure]
+        public static IEnumerable<ComponentType> GetAccessTypes(int index, [NotNull] INodeBlob blob)
         {
             var typeId = blob.GetTypeId(index);
             var ptr = blob.GetRuntimeDataPtr(index);
@@ -48,6 +50,7 @@ namespace EntitiesBT.Core
             return node.StaticTypes.Concat(runtimeTypes);
         }
         
+        [Pure]
         public static Type GetNodeType(int nodeId)
         {
             return MetaNodeRegister.NODES[nodeId].Type;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 
 namespace EntitiesBT.Core
@@ -8,23 +9,24 @@ namespace EntitiesBT.Core
 
     public interface INodeBlob
     {
-        int Count { get; }
+        int Count { [Pure] get; }
         
-        int GetTypeId(int nodeIndex);
-        int GetEndIndex(int nodeIndex);
-        int GetNodeDataSize(int startNodeIndex, int count = 1);
+        [Pure] int GetTypeId(int nodeIndex);
+        [Pure] int GetEndIndex(int nodeIndex);
+        [Pure] int GetNodeDataSize(int startNodeIndex, int count = 1);
         
-        NodeState GetState(int nodeIndex);
+        [Pure] NodeState GetState(int nodeIndex);
         void SetState(int nodeIndex, NodeState state);
         void ResetStates(int index, int count = 1);
         
-        IntPtr GetDefaultDataPtr(int nodeIndex);
-        IntPtr GetRuntimeDataPtr(int nodeIndex);
+        [Pure] IntPtr GetDefaultDataPtr(int nodeIndex);
+        [Pure] IntPtr GetRuntimeDataPtr(int nodeIndex);
     }
 
     public static class NodeBlobExtensions
     {
-        public static IEnumerable<int> GetChildrenIndices(this INodeBlob blob, int parentIndex)
+        [Pure]
+        public static IEnumerable<int> GetChildrenIndices([NotNull] this INodeBlob blob, int parentIndex)
         {
             var endIndex = blob.GetEndIndex(parentIndex);
             var childIndex = parentIndex + 1;
@@ -35,12 +37,13 @@ namespace EntitiesBT.Core
             }
         }
         
-        public static IEnumerable<int> GetChildrenIndices(this INodeBlob blob, int parentIndex, Predicate<NodeState> predicate)
+        [LinqTunnel, Pure]
+        public static IEnumerable<int> GetChildrenIndices([NotNull] this INodeBlob blob, int parentIndex, Predicate<NodeState> predicate)
         {
             return blob.GetChildrenIndices(parentIndex).Where(childIndex => predicate(blob.GetState(childIndex)));
         }
         
-        public static void ForEachChildrenIndices(this INodeBlob blob, int parentIndex, Action<int> action)
+        public static void ForEachChildrenIndices([NotNull] this INodeBlob blob, int parentIndex, Action<int> action)
         {
             var endIndex = blob.GetEndIndex(parentIndex);
             var childIndex = parentIndex + 1;
@@ -51,7 +54,8 @@ namespace EntitiesBT.Core
             }
         }
         
-        public static int FirstOrDefaultChildIndex(this INodeBlob blob, int parentIndex, Predicate<NodeState> predicate)
+        [Pure]
+        public static int FirstOrDefaultChildIndex([NotNull] this INodeBlob blob, int parentIndex, Predicate<NodeState> predicate)
         {
             var endIndex = blob.GetEndIndex(parentIndex);
             var childIndex = parentIndex + 1;
@@ -63,7 +67,8 @@ namespace EntitiesBT.Core
             return default;
         }
 
-        public static int ParentIndex(this INodeBlob blob, int childIndex)
+        [Pure]
+        public static int ParentIndex([NotNull] this INodeBlob blob, int childIndex)
         {
             var endIndex = blob.GetEndIndex(childIndex);
             for (var i = childIndex - 1; i >= 0; i--)
@@ -74,24 +79,27 @@ namespace EntitiesBT.Core
             return -1;
         }
         
-        public static unsafe void ResetRuntimeData(this INodeBlob blob, int index, int count = 1)
+        public static unsafe void ResetRuntimeData([NotNull] this INodeBlob blob, int index, int count = 1)
         {
             var dest = (void*)blob.GetRuntimeDataPtr(index);
             var src = (void*)blob.GetDefaultDataPtr(index);
             UnsafeUtility.MemCpy(dest, src, blob.GetNodeDataSize(index, count));
         }
 
-        public static IntPtr GetNodeDataPtr(this INodeBlob blob, int index)
+        [Pure]
+        public static IntPtr GetNodeDataPtr([NotNull] this INodeBlob blob, int index)
         {
             return blob.GetRuntimeDataPtr(index);
         }
 
-        public static unsafe ref T GetNodeData<T>(this INodeBlob blob, int index) where T : struct
+        [Pure]
+        public static unsafe ref T GetNodeData<T>([NotNull] this INodeBlob blob, int index) where T : struct
         {
             return ref UnsafeUtilityEx.AsRef<T>((void*)blob.GetRuntimeDataPtr(index));
         }
         
-        public static unsafe ref T GetNodeDefaultData<T>(this INodeBlob blob, int index) where T : struct
+        [Pure]
+        public static unsafe ref T GetNodeDefaultData<T>([NotNull] this INodeBlob blob, int index) where T : struct
         {
             return ref UnsafeUtilityEx.AsRef<T>((void*)blob.GetDefaultDataPtr(index));
         }

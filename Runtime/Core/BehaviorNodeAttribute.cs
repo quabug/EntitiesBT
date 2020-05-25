@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace EntitiesBT.Core
 {
@@ -11,13 +12,14 @@ namespace EntitiesBT.Core
     }
     
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+    [BaseTypeRequired(typeof(INodeData))]
     public class BehaviorNodeAttribute : Attribute
     {
         public Guid Guid { get; } 
         public int Id { get; }
         public BehaviorNodeType Type { get; }
         
-        public BehaviorNodeAttribute(string guid, BehaviorNodeType type = BehaviorNodeType.Action)
+        public BehaviorNodeAttribute([NotNull] string guid, BehaviorNodeType type = BehaviorNodeType.Action)
         {
             Type = type;
             Guid = Guid.Parse(guid);
@@ -27,7 +29,7 @@ namespace EntitiesBT.Core
 
     public static class BehaviorNodeAttributeExtensions
     {
-        public static BehaviorNodeAttribute GetBehaviorNodeAttribute(this Type type)
+        public static BehaviorNodeAttribute GetBehaviorNodeAttribute([NotNull] this Type type)
         {
             return (BehaviorNodeAttribute) type.GetCustomAttribute(typeof(BehaviorNodeAttribute));
         }
