@@ -110,7 +110,7 @@ namespace EntitiesBT.Editor
              {
                  subclasses =
                  (
-                     from type in Utilities.VALID_TYPES
+                     from type in Utilities.ValidTypes
                      where type.IsGenericType
                          ? IsSubclassOfRawGeneric(variableType.GetGenericTypeDefinition(), type)
                          : type.IsSubclassOf(variableType)

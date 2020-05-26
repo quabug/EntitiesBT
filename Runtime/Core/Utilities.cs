@@ -124,7 +124,7 @@ namespace EntitiesBT.Core
             .ToArray()
         );
         
-        public static readonly IEnumerable<Type> VALID_TYPES = _VALID_ASSEMBLIES.Value
+        public static IEnumerable<Type> ValidTypes => _VALID_ASSEMBLIES.Value
             .SelectMany(assembly => assembly.GetTypesWithoutException());
     }
 }

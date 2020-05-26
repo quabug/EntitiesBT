@@ -15,7 +15,7 @@ namespace EntitiesBT.DebugView
         {
             var debugViews = new List<(int nodeTypeId, Type debugViewType)>();
             
-            foreach (var type in Utilities.VALID_TYPES)
+            foreach (var type in Utilities.ValidTypes)
             {
                 var behaviorNodeAttribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 if (behaviorNodeAttribute != null)
