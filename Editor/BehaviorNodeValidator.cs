@@ -13,7 +13,7 @@ namespace EntitiesBT.Editor
         public static void OnReload()
         {
             var dictionary = new Dictionary<int, (Type type, BehaviorNodeAttribute attribute)>(128);
-            foreach (var type in Utilities.VALID_TYPES)
+            foreach (var type in Utilities.ValidTypes)
             {
                 var attributes = type.GetCustomAttributes(typeof(BehaviorNodeAttribute));
                 if (!attributes.Any()) continue;
