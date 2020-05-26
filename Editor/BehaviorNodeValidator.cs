@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
 using UnityEditor.Callbacks;
-using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
@@ -14,7 +13,9 @@ namespace EntitiesBT.Editor
         public static void OnReload()
         {
             var dictionary = new Dictionary<int, (Type type, BehaviorNodeAttribute attribute)>(128);
-            foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(GetTypes))
+            foreach (var type in AppDomain.CurrentDomain
+                .GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypesWithoutException()))
             {
                 var attributes = type.GetCustomAttributes(typeof(BehaviorNodeAttribute));
                 if (!attributes.Any()) continue;
@@ -23,19 +24,6 @@ namespace EntitiesBT.Editor
                 if (dictionary.TryGetValue(behaviorNodeAttribute.Id, out var other))
                     throw new Exception($"{other.type.FullName} has same id {behaviorNodeAttribute.Id} with {type.FullName}");
                 dictionary.Add(behaviorNodeAttribute.Id, (type, behaviorNodeAttribute));
-            }
-
-            Type[] GetTypes(Assembly assembly)
-            {
-                try
-                {
-                    return assembly.GetTypes();
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning($"Cannot get types from {assembly.FullName}: {ex.Message}\n{ex.StackTrace}");
-                    return Array.Empty<Type>();
-                }
             }
         }
     }

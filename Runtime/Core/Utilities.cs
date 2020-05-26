@@ -99,5 +99,19 @@ namespace EntitiesBT.Core
                    && t.GetFields(flags).All(fi => IsZeroSizeStruct(fi.FieldType))
             ;
         }
+
+        [Pure]
+        public static Type[] GetTypesWithoutException(this Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"Cannot get types from {assembly.FullName}: {ex.Message}\n{ex.StackTrace}");
+                return Array.Empty<Type>();
+            }
+        }
     }
 }
