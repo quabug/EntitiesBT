@@ -68,7 +68,7 @@ namespace EntitiesBT.Core
         static MetaNodeRegister()
         {
             foreach (var type in AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes()))
+                .SelectMany(assembly => assembly.GetTypesWithoutException()))
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 if (attribute == null) continue;

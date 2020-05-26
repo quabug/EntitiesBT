@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EntitiesBT.Core;
 using EntitiesBT.Variable;
 using UnityEditor;
 using UnityEngine;
@@ -110,7 +111,7 @@ namespace EntitiesBT.Editor
                  subclasses =
                  (
                      from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                     from type in assembly.GetTypes()
+                     from type in assembly.GetTypesWithoutException()
                      where type.IsGenericType
                          ? IsSubclassOfRawGeneric(variableType.GetGenericTypeDefinition(), type)
                          : type.IsSubclassOf(variableType)

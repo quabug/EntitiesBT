@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using EntitiesBT.Core;
 using EntitiesBT.Variable;
 using Unity.Entities;
 using UnityEditor;
@@ -116,7 +117,7 @@ namespace EntitiesBT.Editor
 
         private static readonly Lazy<IEnumerable<Type>> _VALUE_TYPES = new Lazy<IEnumerable<Type>>(() => 
             AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes(), (assembly, type) => (assembly, type))
+                .SelectMany(assembly => assembly.GetTypesWithoutException(), (assembly, type) => (assembly, type))
                 .Where(t => t.type != typeof(void))
                 .Where(t => t.type.IsPrimitive || (t.type.IsValueType && t.type.HasSerializableAttribute()))
                 .Select(t => t.type))
@@ -124,7 +125,7 @@ namespace EntitiesBT.Editor
         
         private static readonly Lazy<IEnumerable<Type>> _PROPERTY_TYPES = new Lazy<IEnumerable<Type>>(() => 
             AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
+                .SelectMany(assembly => assembly.GetTypesWithoutException())
                 .Where(type => !type.IsAbstract
                                && type.IsGenericType
                                && typeof(IVariableProperty).IsAssignableFrom(type)

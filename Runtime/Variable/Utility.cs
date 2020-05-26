@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
@@ -32,7 +33,7 @@ namespace EntitiesBT.Variable
         {
             var types =
                 from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                from type in assembly.GetTypes()
+                from type in assembly.GetTypesWithoutException()
                 where type.IsValueType && typeof(IComponentData).IsAssignableFrom(type)
                 select (type, hash: TypeHash.CalculateStableTypeHash(type))
             ;
