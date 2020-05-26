@@ -100,8 +100,7 @@ namespace EntitiesBT.Core
             ;
         }
 
-        [Pure]
-        public static Type[] GetTypesWithoutException(this Assembly assembly)
+        private static Type[] GetTypesWithoutException(this Assembly assembly)
         {
             try
             {
@@ -113,5 +112,19 @@ namespace EntitiesBT.Core
                 return Array.Empty<Type>();
             }
         }
+
+        private static readonly Lazy<Assembly> _ASSEMBLY_ENTITIES_BT = new Lazy<Assembly>(() => typeof(VirtualMachine).Assembly);
+        
+        private static readonly Lazy<Assembly[]> _VALID_ASSEMBLIES = new Lazy<Assembly[]>(() => AppDomain
+            .CurrentDomain
+            .GetAssemblies()
+            .Where(assembly => assembly.GetReferencedAssemblies()
+                .Any(name => name.Name == _ASSEMBLY_ENTITIES_BT.Value.GetName().Name))
+            .Append(_ASSEMBLY_ENTITIES_BT.Value)
+            .ToArray()
+        );
+        
+        public static readonly IEnumerable<Type> VALID_TYPES = _VALID_ASSEMBLIES.Value
+            .SelectMany(assembly => assembly.GetTypesWithoutException());
     }
 }

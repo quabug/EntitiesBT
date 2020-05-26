@@ -32,8 +32,7 @@ namespace EntitiesBT.Variable
         private static readonly Lazy<IEnumerable<ComponentFieldData>> _COMPONENT_FIELDS = new Lazy<IEnumerable<ComponentFieldData>>(() =>
         {
             var types =
-                from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                from type in assembly.GetTypesWithoutException()
+                from type in Utilities.VALID_TYPES
                 where type.IsValueType && typeof(IComponentData).IsAssignableFrom(type)
                 select (type, hash: TypeHash.CalculateStableTypeHash(type))
             ;
