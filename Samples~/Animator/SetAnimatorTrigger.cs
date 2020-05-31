@@ -27,7 +27,7 @@ namespace EntitiesBT.Sample
                 where TNodeBlob : struct, INodeBlob
                 where TBlackboard : struct, IBlackboard
         {
-            var animator = blackboard.GetData<Animator>();
+            var animator = blackboard.GetManagedData<Animator>();
             animator.SetTrigger(Value);
             return NodeState.Success;
         }
