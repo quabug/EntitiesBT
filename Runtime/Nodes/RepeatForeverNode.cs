@@ -9,18 +9,22 @@ namespace EntitiesBT.Nodes
     {
         public NodeState BreakStates;
         
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
+            var childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref blackboard);
             if (childState == 0)
             {
-                blob.ResetChildren(index, blackboard);
-                childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
+                index.ResetChildren(ref blob, ref blackboard);
+                childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref blackboard);
             }
             return BreakStates.HasFlagFast(childState) ? childState : NodeState.Running;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

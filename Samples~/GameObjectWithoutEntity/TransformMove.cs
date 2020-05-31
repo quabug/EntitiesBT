@@ -25,7 +25,9 @@ namespace EntitiesBT.Sample
         
         [Core.ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         [ReadWrite(typeof(Transform))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>().Value;
             var transform = bb.GetData<Transform>();
@@ -34,7 +36,9 @@ namespace EntitiesBT.Sample
             return NodeState.Running;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

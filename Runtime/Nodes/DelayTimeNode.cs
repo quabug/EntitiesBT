@@ -13,13 +13,17 @@ namespace EntitiesBT.Nodes
         public float TimerSeconds;
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             TimerSeconds -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;
             return TimerSeconds <= 0 ? NodeState.Success : NodeState.Running;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

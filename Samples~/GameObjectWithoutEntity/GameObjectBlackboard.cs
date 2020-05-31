@@ -7,14 +7,15 @@ using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
-    public class GameObjectBlackboard : IBlackboard
+    public struct GameObjectBlackboard : IBlackboard
     {
         private readonly GameObject _gameObject;
-        private readonly Dictionary<object, object> _dict = new Dictionary<object, object>();
+        private readonly Dictionary<object, object> _dict;
         
         public GameObjectBlackboard(GameObject gameObject)
         {
             _gameObject = gameObject;
+            _dict = new Dictionary<object, object>();
         }
         
         public object this[object key]

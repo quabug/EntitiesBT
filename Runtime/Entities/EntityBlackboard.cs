@@ -6,11 +6,11 @@ using Unity.Entities;
 
 namespace EntitiesBT.Entities
 {
-    public class EntityBlackboard : IBlackboard
+    public struct EntityBlackboard : IBlackboard
     {
         public EntityManager EntityManager;
         public Entity Entity;
-        public EntityCommandMainThread EntityCommandMainThread = new EntityCommandMainThread();
+        public EntityCommandMainThread EntityCommandMainThread;
         public int BehaviorTreeIndex;
         
         public unsafe object this[object key]

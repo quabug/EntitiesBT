@@ -10,34 +10,38 @@ namespace EntitiesBT.Entities
     public class VirtualMachineSystem : SystemBase
     {
         private EndSimulationEntityCommandBufferSystem _endSimulationEntityCommandBufferSystem;
-        private readonly EntityBlackboard _mainThreadBlackboard = new EntityBlackboard();
         private EntityQuery _jobQuery;
+        private EntityBlackboard _mainThreadBlackboard;
 
         protected override void OnCreate()
         {
             _jobQuery = GetEntityQuery(typeof(BehaviorTreeBufferElement));
             _endSimulationEntityCommandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+            _mainThreadBlackboard = new EntityBlackboard
+            {
+                EntityManager = EntityManager
+            };
         }
         
         protected override void OnUpdate()
         {
-            _mainThreadBlackboard.EntityCommandMainThread.EntityCommandBuffer = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer();
-            _mainThreadBlackboard.EntityManager = EntityManager;
-            
+            _mainThreadBlackboard.EntityCommandMainThread.EntityCommandBuffer =
+                _endSimulationEntityCommandBufferSystem.CreateCommandBuffer();
             var behaviorTreeDeps = new JobHandle();
             Entities.WithoutBurst().ForEach((Entity entity, DynamicBuffer<BehaviorTreeBufferElement> buffers) =>
             {
+                _mainThreadBlackboard.Entity = entity;
+                _mainThreadBlackboard.EntityCommandMainThread.Entity = entity;
                 for (var i = 0; i < buffers.Length; i++)
                 {
+                    _mainThreadBlackboard.BehaviorTreeIndex = i;
                     if (buffers[i].RuntimeThread == BehaviorTreeRuntimeThread.MainThread
                         || buffers[i].RuntimeThread == BehaviorTreeRuntimeThread.ForceMainThread)
                     {
                         if (buffers[i].QueryMask.Matches(entity))
                         {
-                            _mainThreadBlackboard.EntityCommandMainThread.Entity = entity;
-                            _mainThreadBlackboard.Entity = entity;
-                            _mainThreadBlackboard.BehaviorTreeIndex = i;
-                            VirtualMachine.Tick(buffers[i].NodeBlob, _mainThreadBlackboard);
+                            var blob = buffers[i].NodeBlob;
+                            VirtualMachine.Tick(ref blob, ref _mainThreadBlackboard);
                         }
                     }
                     else
@@ -53,13 +57,13 @@ namespace EntitiesBT.Entities
             var behaviorTreeBufferType = GetArchetypeChunkBufferType<BehaviorTreeBufferElement>();
             var entityType = GetArchetypeChunkEntityType();
             var chunks = _jobQuery.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
-            var ecb = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
+            var jobECB = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
             var job = new TickVirtualMachine {
                 Chunks = chunks
               , Blackboard = new EntityJobChunkBlackboard { GlobalSystemVersion = GlobalSystemVersion }
               , BehaviorTreeBufferType = behaviorTreeBufferType
               , EntityType = entityType
-              , ECB = ecb
+              , ECB = jobECB
             };
             
             Dependency = JobHandle.CombineDependencies(deps, Dependency);
@@ -94,7 +98,8 @@ namespace EntitiesBT.Entities
                             Blackboard.EntityCommandJob = new EntityCommandJob(ECB, entities[entityIndex], index);
                             var offset = (long) behaviorTreeIndex * UnsafeUtility.SizeOf<BehaviorTreeBufferElement>();
                             Blackboard.BehaviorTreeElementPtr = (byte*) buffers.GetUnsafePtr() + offset;
-                            VirtualMachine.Tick(buffers[behaviorTreeIndex].NodeBlob, Blackboard);
+                            var blob = buffers[behaviorTreeIndex].NodeBlob;
+                            VirtualMachine.Tick(ref blob, ref Blackboard);
                         }
                     }
                 }

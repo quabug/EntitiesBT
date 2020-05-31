@@ -39,7 +39,9 @@ namespace EntitiesBT.Samples
         [ReadOnly] public BlobVariable<float2> InputMove;
         public BlobVariable<float3> OutputVelocity;
         
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             var input = InputMove.GetData(index, blob, bb);
             var direction = new Vector3(input.x, 0, input.y).normalized;
@@ -48,7 +50,9 @@ namespace EntitiesBT.Samples
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

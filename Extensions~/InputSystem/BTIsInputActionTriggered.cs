@@ -11,13 +11,17 @@ namespace EntitiesBT.Extensions.InputSystem
         public Guid ActionId { get; set; }
 
         [ReadOnly(typeof(InputActionAssetComponent))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             var isTriggered = bb.IsInputActionTriggered<IsInputActionTriggeredNode>(index, blob);
             return isTriggered ? NodeState.Success : NodeState.Failure;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

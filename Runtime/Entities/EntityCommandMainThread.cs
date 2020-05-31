@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace EntitiesBT.Entities
 {
-    public class EntityCommandMainThread : IEntityCommand
+    public struct EntityCommandMainThread : IEntityCommand
     {
         public EntityCommandBuffer EntityCommandBuffer;
         public Entity Entity;

@@ -23,14 +23,18 @@ namespace EntitiesBT.Sample
         public int Value;
 
         [ReadWrite(typeof(Animator))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+                where TNodeBlob : struct, INodeBlob
+                where TBlackboard : struct, IBlackboard
         {
             var animator = blackboard.GetData<Animator>();
             animator.SetTrigger(Value);
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

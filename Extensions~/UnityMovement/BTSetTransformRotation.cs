@@ -29,7 +29,9 @@ namespace EntitiesBT.Extensions.UnityMovement
         [ReadOnly] public BlobVariable<quaternion> RotationProperty;
         
         [ReadWrite(typeof(Transform))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             var transform = bb.GetData<Transform>();
             if (transform == null) return NodeState.Failure;
@@ -38,7 +40,9 @@ namespace EntitiesBT.Extensions.UnityMovement
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

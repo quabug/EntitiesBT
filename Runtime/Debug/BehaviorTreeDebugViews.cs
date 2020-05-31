@@ -9,13 +9,13 @@ namespace EntitiesBT.DebugView
     [AddComponentMenu("")] // hide from component menu
     public class BTDebugView : MonoBehaviour
     {
-        [NonSerialized] public EntityBlackboard Blackboard;
+        [NonSerialized] public EntityBlackboard? Blackboard;
         [NonSerialized] public int Index;
         
         public bool IsValid => Blackboard != null && Blob.BlobRef.IsCreated;
-        public EntityManager EntityManager => Blackboard.EntityManager;
-        public Entity Entity => Blackboard.Entity;
-        public NodeBlobRef Blob => Blackboard.GetDataRef<BehaviorTreeBufferElement>().NodeBlob;
+        public EntityManager EntityManager => Blackboard.Value.EntityManager;
+        public Entity Entity => Blackboard.Value.Entity;
+        public NodeBlobRef Blob => Blackboard.Value.GetDataRef<BehaviorTreeBufferElement>().NodeBlob;
 
         // TODO: not implemented yet
         [NonSerialized] public bool PauseOnTick = false;

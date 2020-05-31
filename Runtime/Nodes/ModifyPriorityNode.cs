@@ -11,7 +11,9 @@ namespace EntitiesBT.Nodes
         public int WeightIndex;
         public int AddWeight;
         
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard _)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard _)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             if (PrioritySelectorIndex < 0) return NodeState.Failure;
             
@@ -20,7 +22,9 @@ namespace EntitiesBT.Nodes
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

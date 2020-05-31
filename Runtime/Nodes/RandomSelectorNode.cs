@@ -9,12 +9,14 @@ namespace EntitiesBT.Nodes
     public struct RandomSelectorNode : INodeData
     {
         [ReadWrite(typeof(BehaviorTreeRandom))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             if (blob.GetState(index) == NodeState.Running)
             {
                 var childIndex = blob.FirstOrDefaultChildIndex(index, state => state == NodeState.Running);
-                return childIndex != default ? VirtualMachine.Tick(childIndex, blob, blackboard) : 0;
+                return childIndex != default ? VirtualMachine.Tick(childIndex, ref blob, ref blackboard) : 0;
             }
             
             var chosenIndex = 0;
@@ -30,9 +32,12 @@ namespace EntitiesBT.Nodes
                 }
             }
 
-            return VirtualMachine.Tick(chosenIndex, blob, blackboard);
+            return VirtualMachine.Tick(chosenIndex, ref blob, ref blackboard);
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {}
     }
 }

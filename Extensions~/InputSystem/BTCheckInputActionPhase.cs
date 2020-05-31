@@ -23,14 +23,18 @@ namespace EntitiesBT.Extensions.InputSystem
         public InputActionPhase Phase;
 
         [ReadOnly(typeof(InputActionAssetComponent))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             var input = bb.GetData<InputActionAssetComponent>().Value;
             var action = input.FindAction(ActionId);
             return action != null && action.phase == Phase ? NodeState.Success : NodeState.Failure;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

@@ -39,13 +39,18 @@ namespace EntitiesBT.Sample
         [ReadOnly] public BlobVariable<float> SrcVariable;
         public long Long;
 
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             DestVariable.GetDataRef(index, blob, bb) = (int)SrcVariable.GetData(index, blob, bb);
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {}
     }
 
     [BehaviorTreeDebugView(typeof(VariablesTestNode))]

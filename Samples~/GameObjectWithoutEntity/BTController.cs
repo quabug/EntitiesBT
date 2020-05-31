@@ -9,20 +9,20 @@ namespace EntitiesBT.Sample
     {
         public BTNode RootNode;
         private NodeBlobRef _nodeBlobRef;
-        private IBlackboard _bb;
+        private GameObjectBlackboard _bb;
 
         private void Awake()
         {
             _nodeBlobRef = new NodeBlobRef(RootNode.ToBlob());
             Destroy(RootNode.gameObject);
             _bb = new GameObjectBlackboard(gameObject);
-            VirtualMachine.Reset(_nodeBlobRef, _bb);
+            VirtualMachine.Reset(ref _nodeBlobRef, ref _bb);
         }
 
         private void Update()
         {
             _bb.SetData(new BehaviorTreeTickDeltaTime{ Value = Time.deltaTime });
-            VirtualMachine.Tick(_nodeBlobRef, _bb);
+            VirtualMachine.Tick(ref _nodeBlobRef, ref _bb);
         }
 
         private void OnDestroy()

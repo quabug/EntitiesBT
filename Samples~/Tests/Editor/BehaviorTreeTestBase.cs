@@ -24,9 +24,9 @@ namespace EntitiesBT.Test
           , { "b", CreateB }
         };
 
-        protected IBlackboard _blackboard;
+        protected Blackboard _blackboard;
         
-        class Blackboard : IBlackboard
+        protected struct Blackboard : IBlackboard
         {
             public object this[object key]
             {
@@ -56,7 +56,7 @@ namespace EntitiesBT.Test
             _blackboard = new Blackboard();
         }
 
-        protected INodeBlob CreateBlob(string tree)
+        protected NodeBlobRef CreateBlob(string tree)
         {
             var root = CreateBTNode(tree).GetComponent<BTNode>();
             var blob = root.ToBlob();
