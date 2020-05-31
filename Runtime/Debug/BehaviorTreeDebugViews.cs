@@ -32,20 +32,23 @@ namespace EntitiesBT.DebugView
 
         public override void Init()
         {
-            RuntimeData = Blob.GetNodeData<T>(Index);
-            DefaultData = Blob.GetNodeDefaultData<T>(Index);
+            var blob = Blob;
+            RuntimeData = blob.GetNodeData<T, NodeBlobRef>(Index);
+            DefaultData = blob.GetNodeDefaultData<T, NodeBlobRef>(Index);
         }
 
         public override void Tick()
         {
-            RuntimeData = Blob.GetNodeData<T>(Index);
+            var blob = Blob;
+            RuntimeData = blob.GetNodeData<T, NodeBlobRef>(Index);
         }
 
         protected virtual void OnValidate()
         {
             if (!IsValid) return;
-            Blob.GetNodeData<T>(Index) = RuntimeData;
-            Blob.GetNodeDefaultData<T>(Index) = DefaultData;
+            var blob = Blob;
+            blob.GetNodeData<T, NodeBlobRef>(Index) = RuntimeData;
+            blob.GetNodeDefaultData<T, NodeBlobRef>(Index) = DefaultData;
             Debug.Log("node data changed");
         }
     }

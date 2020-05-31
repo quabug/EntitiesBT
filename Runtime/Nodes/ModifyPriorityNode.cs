@@ -17,7 +17,7 @@ namespace EntitiesBT.Nodes
         {
             if (PrioritySelectorIndex < 0) return NodeState.Failure;
             
-            ref var prioritySelectorData = ref blob.GetNodeDefaultData<PrioritySelectorNode>(PrioritySelectorIndex);
+            ref var prioritySelectorData = ref blob.GetNodeDefaultData<PrioritySelectorNode, TNodeBlob>(PrioritySelectorIndex);
             prioritySelectorData.Weights[WeightIndex] += AddWeight;
             return NodeState.Success;
         }

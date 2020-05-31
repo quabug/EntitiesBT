@@ -20,18 +20,23 @@ namespace EntitiesBT.Nodes
                 var childIndex = blob.FirstOrDefaultChildIndex(index, state => state == NodeState.Running);
                 return childIndex != default ? VirtualMachine.Tick(childIndex, ref blob, ref blackboard) : 0;
             }
-            
-            ref var data = ref blob.GetNodeData<WeightRandomSelectorNode>(index);
-            var rn = blackboard.GetDataRef<BehaviorTreeRandom>().Value.NextFloat(data.Sum);
-            var weightIndex = 0;
-            var currentWeightSum = 0f;
-            foreach (var childIndex in blob.GetChildrenIndices(index))
+            else
             {
-                currentWeightSum += data.Weights[weightIndex];
-                if (rn < currentWeightSum) return VirtualMachine.Tick(childIndex, ref blob, ref blackboard);
-                weightIndex++;
+                var rn = blackboard.GetDataRef<BehaviorTreeRandom>().Value.NextFloat(Sum);
+                var weightIndex = 0;
+                var currentWeightSum = 0f;
+            
+                var endIndex = blob.GetEndIndex(index);
+                var childIndex = index + 1;
+                while (childIndex < endIndex)
+                {
+                    currentWeightSum += Weights[weightIndex];
+                    if (rn < currentWeightSum) return VirtualMachine.Tick(childIndex, ref blob, ref blackboard);
+                    weightIndex++;
+                    childIndex = blob.GetEndIndex(childIndex);
+                }
+                return 0;
             }
-            return 0;
         }
 
         public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)

@@ -18,21 +18,26 @@ namespace EntitiesBT.Nodes
                 var childIndex = blob.FirstOrDefaultChildIndex(index, state => state == NodeState.Running);
                 return childIndex != default ? VirtualMachine.Tick(childIndex, ref blob, ref blackboard) : 0;
             }
-            
-            var chosenIndex = 0;
-            uint maxNumber = 0;
-            ref var random = ref blackboard.GetDataRef<BehaviorTreeRandom>().Value;
-            foreach (var childIndex in blob.GetChildrenIndices(index))
+            else
             {
-                var rn = random.NextUInt();
-                if (rn >= maxNumber)
+                var chosenIndex = 0;
+                uint maxNumber = 0;
+                ref var random = ref blackboard.GetDataRef<BehaviorTreeRandom>().Value;
+                var endIndex = blob.GetEndIndex(index);
+                var childIndex = index + 1;
+                while (childIndex < endIndex)
                 {
-                    chosenIndex = childIndex;
-                    maxNumber = rn;
+                    var rn = random.NextUInt();
+                    if (rn >= maxNumber)
+                    {
+                        chosenIndex = childIndex;
+                        maxNumber = rn;
+                    }
+                    childIndex = blob.GetEndIndex(childIndex);
                 }
-            }
 
-            return VirtualMachine.Tick(chosenIndex, ref blob, ref blackboard);
+                return VirtualMachine.Tick(chosenIndex, ref blob, ref blackboard);
+            }
         }
 
         public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)

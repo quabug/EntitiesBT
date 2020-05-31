@@ -68,5 +68,24 @@ namespace EntitiesBT.Entities
         {
             return Chunk.GetComponentDataWithTypeRO(EntityIndex, typeIndex);
         }
+
+        public unsafe T GetData<T>() where T : struct
+        {
+            var index = TypeManager.GetTypeIndex<T>();
+            var ptr = GetPtrByTypeIndexRO(index);
+            return UnsafeUtilityEx.AsRef<T>(ptr);
+        }
+
+        public unsafe ref T GetDataRef<T>() where T : struct
+        {
+            var index = TypeManager.GetTypeIndex<T>();
+            var ptr = GetPtrByTypeIndexRW(index);
+            return ref UnsafeUtilityEx.AsRef<T>(ptr);
+        }
+
+        public T GetManagedData<T>() where T : class
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 
 namespace EntitiesBT.Core
 {
-
     public interface INodeBlob
     {
         int Count { [Pure] get; }
@@ -26,36 +23,8 @@ namespace EntitiesBT.Core
     public static class NodeBlobExtensions
     {
         [Pure]
-        public static IEnumerable<int> GetChildrenIndices([NotNull] this INodeBlob blob, int parentIndex)
-        {
-            var endIndex = blob.GetEndIndex(parentIndex);
-            var childIndex = parentIndex + 1;
-            while (childIndex < endIndex)
-            {
-                yield return childIndex;
-                childIndex = blob.GetEndIndex(childIndex);
-            }
-        }
-        
-        [LinqTunnel, Pure]
-        public static IEnumerable<int> GetChildrenIndices([NotNull] this INodeBlob blob, int parentIndex, Predicate<NodeState> predicate)
-        {
-            return blob.GetChildrenIndices(parentIndex).Where(childIndex => predicate(blob.GetState(childIndex)));
-        }
-        
-        public static void ForEachChildrenIndices([NotNull] this INodeBlob blob, int parentIndex, Action<int> action)
-        {
-            var endIndex = blob.GetEndIndex(parentIndex);
-            var childIndex = parentIndex + 1;
-            while (childIndex < endIndex)
-            {
-                action(childIndex);
-                childIndex = blob.GetEndIndex(childIndex);
-            }
-        }
-        
-        [Pure]
-        public static int FirstOrDefaultChildIndex([NotNull] this INodeBlob blob, int parentIndex, Predicate<NodeState> predicate)
+        public static int FirstOrDefaultChildIndex<TNodeBlob>(this ref TNodeBlob blob, int parentIndex, Predicate<NodeState> predicate)
+            where TNodeBlob : struct, INodeBlob
         {
             var endIndex = blob.GetEndIndex(parentIndex);
             var childIndex = parentIndex + 1;
@@ -68,7 +37,8 @@ namespace EntitiesBT.Core
         }
 
         [Pure]
-        public static int ParentIndex([NotNull] this INodeBlob blob, int childIndex)
+        public static int ParentIndex<TNodeBlob>(this ref TNodeBlob blob, int childIndex)
+            where TNodeBlob : struct, INodeBlob
         {
             var endIndex = blob.GetEndIndex(childIndex);
             for (var i = childIndex - 1; i >= 0; i--)
@@ -79,7 +49,8 @@ namespace EntitiesBT.Core
             return -1;
         }
         
-        public static unsafe void ResetRuntimeData([NotNull] this INodeBlob blob, int index, int count = 1)
+        public static unsafe void ResetRuntimeData<TNodeBlob>(this ref TNodeBlob blob, int index, int count = 1)
+            where TNodeBlob : struct, INodeBlob
         {
             var dest = (void*)blob.GetRuntimeDataPtr(index);
             var src = (void*)blob.GetDefaultDataPtr(index);
@@ -87,19 +58,15 @@ namespace EntitiesBT.Core
         }
 
         [Pure]
-        public static IntPtr GetNodeDataPtr([NotNull] this INodeBlob blob, int index)
-        {
-            return blob.GetRuntimeDataPtr(index);
-        }
-
-        [Pure]
-        public static unsafe ref T GetNodeData<T>([NotNull] this INodeBlob blob, int index) where T : struct
+        public static unsafe ref T GetNodeData<T, TNodeBlob>(this ref TNodeBlob blob, int index) where T : struct
+            where TNodeBlob : struct, INodeBlob
         {
             return ref UnsafeUtilityEx.AsRef<T>((void*)blob.GetRuntimeDataPtr(index));
         }
         
         [Pure]
-        public static unsafe ref T GetNodeDefaultData<T>([NotNull] this INodeBlob blob, int index) where T : struct
+        public static unsafe ref T GetNodeDefaultData<T, TNodeBlob>(this ref TNodeBlob blob, int index) where T : struct
+            where TNodeBlob : struct, INodeBlob
         {
             return ref UnsafeUtilityEx.AsRef<T>((void*)blob.GetDefaultDataPtr(index));
         }
