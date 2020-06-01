@@ -32,7 +32,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var inputValue = bb.ReadInputActionValue<InputMoveNode, Vector2>(index, blob);
+            var inputValue = index.ReadInputActionValue<InputMoveNode, Vector2, TNodeBlob, TBlackboard>(ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
             Output.GetDataRef(index, blob, bb) = inputValue.Value;
             return NodeState.Success;

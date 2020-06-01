@@ -15,7 +15,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var isTriggered = bb.IsInputActionTriggered<IsInputActionTriggeredNode>(index, blob);
+            var isTriggered = index.IsInputActionTriggered<IsInputActionTriggeredNode, TNodeBlob, TBlackboard>(ref blob, ref bb);
             return isTriggered ? NodeState.Success : NodeState.Failure;
         }
 

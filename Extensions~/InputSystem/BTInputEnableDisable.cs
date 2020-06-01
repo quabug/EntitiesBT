@@ -26,7 +26,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            bb.GetData<InputActionAssetComponent>().Value.Enable();
+            bb.GetObject<InputActionAssetComponent>().Value.Enable();
             return NodeState.Success;
         }
 
@@ -45,7 +45,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            bb.GetData<InputActionAssetComponent>().Value.Enable();
+            bb.GetObject<InputActionAssetComponent>().Value.Enable();
             return NodeState.Success;
         }
 

@@ -34,11 +34,13 @@ namespace EntitiesBT.Extensions.InputSystem
         where TNodeData : struct, IReadInputValueNode
         where TValue : struct
     {
-        public static unsafe NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public static unsafe NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var inputValue = bb.ReadInputActionValue<TNodeData, TValue>(index, blob);
+            var inputValue = index.ReadInputActionValue<TNodeData, TValue, TNodeBlob, TBlackboard>(ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
-            ref var data = ref blob.GetNodeData<TNodeData>(index);
+            ref var data = ref blob.GetNodeData<TNodeData, TNodeBlob>(index);
             ref var output = ref UnsafeUtilityEx.AsRef<BlobVariable<TValue>>(data.OutputPtr);
             output.GetDataRef(index, blob, bb) = inputValue.Value;
             return NodeState.Success;

@@ -31,7 +31,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var inputValue = bb.ReadInputActionValue<InputAimPositionNode, Vector2>(index, blob);
+            var inputValue = index.ReadInputActionValue<InputAimPositionNode, Vector2, TNodeBlob, TBlackboard>(ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
             bb.GetDataRef<BTInputAimPositionData>().Value = inputValue.Value;
             return NodeState.Success;
@@ -54,7 +54,7 @@ namespace EntitiesBT.Extensions.InputSystem
         public override void Tick()
         {
             base.Tick();
-            AimPosition = Blackboard.GetData<BTInputAimPositionData>().Value;
+            AimPosition = Blackboard.Value.GetData<BTInputAimPositionData>().Value;
         }
     }
 }

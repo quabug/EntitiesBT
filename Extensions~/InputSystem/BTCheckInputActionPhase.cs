@@ -27,7 +27,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var input = bb.GetData<InputActionAssetComponent>().Value;
+            var input = bb.GetObject<InputActionAssetComponent>().Value;
             var action = input.FindAction(ActionId);
             return action != null && action.phase == Phase ? NodeState.Success : NodeState.Failure;
         }
