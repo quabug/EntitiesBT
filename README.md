@@ -43,12 +43,13 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Able to serialize behavior tree into binary file.
 - Flexible thread control: force on main thread, force on job thread, controlled by behavior tree.
 - Runtime debug window to show the states of nodes.
+- Optimized. 0 GC allocated by behavior tree itself, only 64Byte GC allocated every tick by [`CreateArchetypeChunkArrayAsync`](Runtime/Entities/VirtualMachineSystem.cs#L59). 
 
 ## Disadvantages
-- Incompatible with burst (Won't support this in the foreseen future)
+- Incompatible with burst.
 - Lack of action nodes. (Will add some actions as extension if I personally need them)
 - Not easy to modify tree structure at runtime.
-- Node data must be compatible with `Blob` and created by [`BlobBuilder`](https://docs.unity3d.com/Packages/com.unity.entities@0.8/api/Unity.Entities.BlobBuilder.html)
+- Node data must be compatible with `Blob` and created by [`BlobBuilder`](https://docs.unity3d.com/Packages/com.unity.entities@0.11/api/Unity.Entities.BlobBuilder.html)
 
 ## HowTo
 ### Installation
@@ -136,14 +137,19 @@ Fetch data from different sources.
     {
         public BlobVariable<int> IntBlobVariable;
 
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var intVariable = IntBlobVariable.GetData(index, blob, blackboard); // get variable value
-            ref var intVariable = ref IntBlobVariable.GetDataRef(index, blob, blackboard); // get variable ref value
+            var intVariable = IntBlobVariable.GetData(index, ref blob, ref blackboard); // get variable value
+            ref var intVariable = ref IntBlobVariable.GetDataRef(index, ref blob, ref blackboard); // get variable ref value
             return NodeState.Success;
         }
         
-        public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {}
     }
 ```
 ##### Generate specific types of `VariableProperty<T>`
@@ -181,7 +187,9 @@ public struct EntityMoveNode : INodeData
     
     [EntitiesBT.Core.ReadWrite(typeof(Translation))] // declare readwrite access of `Translation` component
     [EntitiesBT.Core.ReadOnly(typeof(BehaviorTreeTickDeltaTime))] // declare readonly access of `BehaviorTreeTickDeltaTime` component
-    public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+    public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
     { // access and modify node data
         ref var translation = ref bb.GetDataRef<Translation>(); // get blackboard data by ref (read/write)
         var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>(); // get blackboard data by value (readonly)
@@ -189,7 +197,10 @@ public struct EntityMoveNode : INodeData
         return NodeState.Running;
     }
 
-    public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
+    public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
+    {}
 }
 
 // builder and editor part of node
@@ -217,22 +228,27 @@ public struct RepeatForeverNode : INodeData
 {
     public NodeState BreakStates;
     
-    public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+    public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
     {
         // short-cut to tick first only children
-        var childState = blob.TickChildren(index, blackboard).FirstOrDefault();
+        var childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
         if (childState == 0) // 0 means no child was ticked
                              // tick a already completed `Sequence` or `Selector` will return 0
         {
             blob.ResetChildren(index, blackboard);
-            childState = blob.TickChildren(index, blackboard).FirstOrDefault();
+            childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
         }
         if (BreakStates.HasFlag(childState)) return childState;
         
         return NodeState.Running;
     }
 
-    public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
+    public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
+    {}
 }
 
 // builder and editor
@@ -257,13 +273,18 @@ public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode> {}
 [BehaviorNode("BD4C1D8F-BA8E-4D74-9039-7D1E6010B058", BehaviorNodeType.Composite/*composite must explicit declared*/)]
 public struct SelectorNode : INodeData
 {
-    public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+    public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
     {
         // tick children and break if child state is running or success.
-        return blob.TickChildren(index, blackboard, breakCheck: state => state.IsRunningOrSuccess()).LastOrDefault();
+        return blob.TickChildrenReturnLastOrDefault(index, blackboard, breakCheck: state => state.IsRunningOrSuccess());
     }
 
-    public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
+    public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
+    {}
 }
 
 // builder and editor
@@ -287,7 +308,9 @@ public struct SomeNode : INodeData
     // declare right access types for `Tick` method
     [EntitiesBT.Core.ReadWrite(typeof(ReadWriteComponentData))]
     [EntitiesBT.Core.ReadOnly(typeof(ReadOnlyComponentData))]
-    public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+    public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
     {
         // access `ComponentData`s by variables or directly from `blackboard`
         // ...
@@ -296,7 +319,9 @@ public struct SomeNode : INodeData
 
     // also declare right access types for `Reset` method if there's any
     [EntitiesBT.Core.ReadWrite(typeof(ReadWriteComponentData))]
-    public void Reset(int index, INodeBlob blob, IBlackboard bb)
+    public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
     {
         // access `ComponentData`s by variables or directly from `blackboard`
         // ...
