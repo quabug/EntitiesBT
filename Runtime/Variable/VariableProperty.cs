@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
@@ -8,12 +9,7 @@ using Unity.Entities;
 
 namespace EntitiesBT.Variable
 {
-    public interface IVariableProperty
-    {
-        int VariablePropertyTypeId { get; }
-    }
-
-    public abstract class VariableProperty<T> : IVariableProperty where T : struct
+    public abstract class VariableProperty<T> where T : struct
     {
         public const BindingFlags FIELD_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public;
         
@@ -45,6 +41,31 @@ namespace EntitiesBT.Variable
             Assert.IsTrue(methodInfo.IsGenericMethod);
             Assert.AreEqual(2, methodInfo.GetGenericArguments().Length);
             return methodInfo;
+        }
+        
+        public static readonly Lazy<Type[]> VARIABLE_PROPERTY_TYPES = new Lazy<Type[]>(() =>
+        {
+            var variableAssemblyName = typeof(VariableProperty<>).Assembly.GetName().Name;
+            return AppDomain
+                .CurrentDomain
+                .GetAssemblies()
+                .Where(assembly => assembly.GetReferencedAssemblies().Any(name => name.Name == variableAssemblyName))
+                .SelectMany(assembly => assembly.GetTypes())
+                .Where(type => !type.IsAbstract
+                               && type.IsGenericType
+                               && type.GetGenericArguments().Length == 1
+                               && type.IsSubclassOfRawGeneric(typeof(VariableProperty<>))
+                ).ToArray()
+            ;
+        });
+        
+        private static bool IsSubclassOfRawGeneric(this Type type, Type generic) {
+            while (type != null && type != typeof(object)) {
+                var cur = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+                if (generic == cur) return true;
+                type = type.BaseType;
+            }
+            return false;
         }
     }
 }

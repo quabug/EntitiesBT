@@ -5,7 +5,7 @@ using System.Reflection;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
 using Unity.Entities;
-using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace EntitiesBT.Variable
 {
@@ -25,6 +25,17 @@ namespace EntitiesBT.Variable
         public static GetComponentAccessFunc GetComponentAccess(int entryId) => _ENTRIES[entryId].ComponentAccess;
 
         private static readonly Dictionary<int, Entry> _ENTRIES = new Dictionary<int, Entry>();
+        
+        // guarantee register every properties into this.
+        static VariableRegisters()
+        {
+            foreach (var type in VariablePropertyExtensions.VARIABLE_PROPERTY_TYPES.Value)
+            {
+                var propertyType = type.MakeGenericType(typeof(T));
+                // call static ctor https://stackoverflow.com/a/29511342
+                System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(propertyType.TypeHandle);
+            }
+        }
 
         public static void Register(int id, MethodInfo getData, MethodInfo getDataRef = null, GetComponentAccessFunc componentAccess = null)
         {
@@ -60,6 +71,7 @@ namespace EntitiesBT.Variable
             .GetMethod("GetDataRefThrow", BindingFlags.Static | BindingFlags.NonPublic)
         ;
         
+        [Preserve]
         private static ref T GetDataRefThrow<TNodeBlob, TBlackboard>(ref BlobVariable<T> _, int __, ref TNodeBlob ___, ref TBlackboard ____)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
@@ -72,8 +84,8 @@ namespace EntitiesBT.Variable
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            public static GetDataFunc<TNodeBlob, TBlackboard> GetData(int entryId) => GETTER_ENTRIES[entryId].Data;
-            public static GetDataRefFunc<TNodeBlob, TBlackboard> GetDataRef(int entryId) => GETTER_ENTRIES[entryId].DataRef;
+            [Preserve] public static GetDataFunc<TNodeBlob, TBlackboard> GetData(int entryId) => GETTER_ENTRIES[entryId].Data;
+            [Preserve] public static GetDataRefFunc<TNodeBlob, TBlackboard> GetDataRef(int entryId) => GETTER_ENTRIES[entryId].DataRef;
 
             public readonly struct GetterEntry
             {
