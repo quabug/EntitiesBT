@@ -12,7 +12,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         public bool IsLocal;
         
 #if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
 #endif
         public VariableProperty<float3> VelocityProperty;
 
