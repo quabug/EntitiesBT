@@ -22,7 +22,7 @@ namespace EntitiesBT.Test
             Index = index;
             ResetTimes++;
 
-            ref var defaultData = ref blob.GetNodeDefaultData<TestNode>(index);
+            ref var defaultData = ref blob.GetNodeDefaultData<TestNode, TNodeBlob>(index);
             defaultData.Index = index;
             defaultData.ResetTimes++;
         }
@@ -34,7 +34,7 @@ namespace EntitiesBT.Test
             Assert.AreEqual(Index, index);
             TickTimes++;
             
-            ref var defaultData = ref blob.GetNodeDefaultData<TestNode>(index);
+            ref var defaultData = ref blob.GetNodeDefaultData<TestNode, TNodeBlob>(index);
             defaultData.TickTimes++;
             
             return State;

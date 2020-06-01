@@ -24,7 +24,7 @@ namespace EntitiesBT.Test
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var data = blob.GetNodeData<NodeB>(index);
+            var data = blob.GetNodeData<NodeB, TNodeBlob>(index);
             var state = data.B == data.BB ? NodeState.Success : NodeState.Failure;
             Debug.Log($"[B]: tick {index} {state}");
             return state;

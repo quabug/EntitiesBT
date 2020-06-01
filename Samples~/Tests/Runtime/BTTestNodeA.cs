@@ -23,7 +23,7 @@ namespace EntitiesBT.Test
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var data = blob.GetNodeData<NodeA>(index);
+            var data = blob.GetNodeData<NodeA, TNodeBlob>(index);
             var state = data.A == 0 ? NodeState.Failure : NodeState.Success;
             Debug.Log($"[A]: tick {index} {state}");
             return state;

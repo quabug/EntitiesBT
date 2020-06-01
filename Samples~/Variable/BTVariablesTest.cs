@@ -3,6 +3,7 @@ using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
+using EntitiesBT.Entities;
 using EntitiesBT.Variable;
 using Unity.Entities;
 using UnityEngine;
@@ -65,7 +66,8 @@ namespace EntitiesBT.Sample
 
         public override void Tick()
         {
-            ref var data = ref Blob.GetNodeData<VariablesTestNode>(Index);
+            var blob = Blob;
+            ref var data = ref blob.GetNodeData<VariablesTestNode, NodeBlobRef>(Index);
             LongVariable = data.LongVariable.GetData(Index, Blob, Blackboard);
             IntVariable = data.DestVariable.GetData(Index, Blob, Blackboard);
             FloatVariable = data.SrcVariable.GetData(Index, Blob, Blackboard);
