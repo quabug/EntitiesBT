@@ -1,3 +1,4 @@
+using System;
 using EntitiesBT.Core;
 using Unity.Entities;
 
@@ -8,33 +9,42 @@ namespace EntitiesBT.Nodes
     {
         public BlobArray<int> Weights;
         
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             if (blob.GetState(index) == NodeState.Running)
             {
                 var childIndex = blob.FirstOrDefaultChildIndex(index, state => state == NodeState.Running);
-                return childIndex != default ? VirtualMachine.Tick(childIndex, blob, blackboard) : 0;
+                return childIndex != default ? VirtualMachine.Tick(childIndex, ref blob, ref blackboard) : 0;
             }
-
-            var weightIndex = 0;
-            var currentMaxWeight = int.MinValue;
-            var maxChildIndex = 0;
-            foreach (var childIndex in blob.GetChildrenIndices(index))
+            else
             {
-                var weight = Weights[weightIndex];
-                if (weight > currentMaxWeight)
+                var weightIndex = 0;
+                var currentMaxWeight = int.MinValue;
+                var maxChildIndex = 0;
+            
+                var endIndex = blob.GetEndIndex(index);
+                var childIndex = index + 1;
+                while (childIndex < endIndex)
                 {
-                    maxChildIndex = childIndex;
-                    currentMaxWeight = weight;
+                    var weight = Weights[weightIndex];
+                    if (weight > currentMaxWeight)
+                    {
+                        maxChildIndex = childIndex;
+                        currentMaxWeight = weight;
+                    }
+                    weightIndex++;
+                    childIndex = blob.GetEndIndex(childIndex);
                 }
 
-                weightIndex++;
+                return VirtualMachine.Tick(maxChildIndex, ref blob, ref blackboard);
             }
-
-            return VirtualMachine.Tick(maxChildIndex, blob, blackboard);
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

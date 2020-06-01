@@ -9,13 +9,13 @@ namespace EntitiesBT.DebugView
     [AddComponentMenu("")] // hide from component menu
     public class BTDebugView : MonoBehaviour
     {
-        [NonSerialized] public EntityBlackboard Blackboard;
+        [NonSerialized] public EntityBlackboard? Blackboard;
         [NonSerialized] public int Index;
         
         public bool IsValid => Blackboard != null && Blob.BlobRef.IsCreated;
-        public EntityManager EntityManager => Blackboard.EntityManager;
-        public Entity Entity => Blackboard.Entity;
-        public NodeBlobRef Blob => Blackboard.GetDataRef<BehaviorTreeBufferElement>().NodeBlob;
+        public EntityManager EntityManager => Blackboard.Value.EntityManager;
+        public Entity Entity => Blackboard.Value.Entity;
+        public NodeBlobRef Blob => Blackboard.Value.GetDataRef<BehaviorTreeBufferElement>().NodeBlob;
 
         // TODO: not implemented yet
         [NonSerialized] public bool PauseOnTick = false;
@@ -32,20 +32,23 @@ namespace EntitiesBT.DebugView
 
         public override void Init()
         {
-            RuntimeData = Blob.GetNodeData<T>(Index);
-            DefaultData = Blob.GetNodeDefaultData<T>(Index);
+            var blob = Blob;
+            RuntimeData = blob.GetNodeData<T, NodeBlobRef>(Index);
+            DefaultData = blob.GetNodeDefaultData<T, NodeBlobRef>(Index);
         }
 
         public override void Tick()
         {
-            RuntimeData = Blob.GetNodeData<T>(Index);
+            var blob = Blob;
+            RuntimeData = blob.GetNodeData<T, NodeBlobRef>(Index);
         }
 
         protected virtual void OnValidate()
         {
             if (!IsValid) return;
-            Blob.GetNodeData<T>(Index) = RuntimeData;
-            Blob.GetNodeDefaultData<T>(Index) = DefaultData;
+            var blob = Blob;
+            blob.GetNodeData<T, NodeBlobRef>(Index) = RuntimeData;
+            blob.GetNodeDefaultData<T, NodeBlobRef>(Index) = DefaultData;
             Debug.Log("node data changed");
         }
     }

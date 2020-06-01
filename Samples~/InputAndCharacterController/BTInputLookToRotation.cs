@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Extensions.InputSystem;
 using EntitiesBT.Extensions.UnityMovement;
 using Unity.Entities;
 using Unity.Mathematics;

@@ -11,28 +11,37 @@ namespace EntitiesBT.Nodes
         public BlobArray<float> Weights;
 
         [ReadWrite(typeof(BehaviorTreeRandom))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             if (blob.GetState(index) == NodeState.Running)
             {
                 var childIndex = blob.FirstOrDefaultChildIndex(index, state => state == NodeState.Running);
-                return childIndex != default ? VirtualMachine.Tick(childIndex, blob, blackboard) : 0;
+                return childIndex != default ? VirtualMachine.Tick(childIndex, ref blob, ref blackboard) : 0;
             }
-            
-            ref var data = ref blob.GetNodeData<WeightRandomSelectorNode>(index);
-            var rn = blackboard.GetDataRef<BehaviorTreeRandom>().Value.NextFloat(data.Sum);
-            var weightIndex = 0;
-            var currentWeightSum = 0f;
-            foreach (var childIndex in blob.GetChildrenIndices(index))
+            else
             {
-                currentWeightSum += data.Weights[weightIndex];
-                if (rn < currentWeightSum) return VirtualMachine.Tick(childIndex, blob, blackboard);
-                weightIndex++;
+                var rn = blackboard.GetDataRef<BehaviorTreeRandom>().Value.NextFloat(Sum);
+                var weightIndex = 0;
+                var currentWeightSum = 0f;
+            
+                var endIndex = blob.GetEndIndex(index);
+                var childIndex = index + 1;
+                while (childIndex < endIndex)
+                {
+                    currentWeightSum += Weights[weightIndex];
+                    if (rn < currentWeightSum) return VirtualMachine.Tick(childIndex, ref blob, ref blackboard);
+                    weightIndex++;
+                    childIndex = blob.GetEndIndex(childIndex);
+                }
+                return 0;
             }
-            return 0;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

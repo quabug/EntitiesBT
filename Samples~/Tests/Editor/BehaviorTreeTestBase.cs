@@ -24,27 +24,36 @@ namespace EntitiesBT.Test
           , { "b", CreateB }
         };
 
-        protected IBlackboard _blackboard;
+        protected Blackboard _blackboard;
         
-        class Blackboard : IBlackboard
+        protected struct Blackboard : IBlackboard
         {
-            public object this[object key]
-            {
-                get => throw new NotImplementedException();
-                set => throw new NotImplementedException();
-            }
-
-            public bool Has(object key)
+            public bool HasData<T>() where T : struct
             {
                 throw new NotImplementedException();
             }
 
-            public unsafe void* GetPtrRW(object key)
+            public T GetData<T>() where T : struct
             {
                 throw new NotImplementedException();
             }
 
-            public unsafe void* GetPtrRO(object key)
+            public ref T GetDataRef<T>() where T : struct
+            {
+                throw new NotImplementedException();
+            }
+
+            public IntPtr GetDataPtrRO(Type type)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IntPtr GetDataPtrRW(Type type)
+            {
+                throw new NotImplementedException();
+            }
+
+            public T GetObject<T>() where T : class
             {
                 throw new NotImplementedException();
             }
@@ -56,7 +65,7 @@ namespace EntitiesBT.Test
             _blackboard = new Blackboard();
         }
 
-        protected INodeBlob CreateBlob(string tree)
+        protected NodeBlobRef CreateBlob(string tree)
         {
             var root = CreateBTNode(tree).GetComponent<BTNode>();
             var blob = root.ToBlob();

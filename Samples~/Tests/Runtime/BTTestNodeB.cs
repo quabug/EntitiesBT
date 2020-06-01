@@ -13,14 +13,18 @@ namespace EntitiesBT.Test
         public int B;
         public int BB;
 
-        public void Reset(int index, INodeBlob _, IBlackboard __)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob _, ref TBlackboard __)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             Debug.Log($"[B]: reset {index}");
         }
 
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard __)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard __)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var data = blob.GetNodeData<NodeB>(index);
+            var data = blob.GetNodeData<NodeB, TNodeBlob>(index);
             var state = data.B == data.BB ? NodeState.Success : NodeState.Failure;
             Debug.Log($"[B]: tick {index} {state}");
             return state;

@@ -12,13 +12,15 @@ namespace EntitiesBT.Nodes
         public NodeState BreakStates;
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var childState = blob.TickChildrenReturnFirstOrDefault(index, bb);
+            var childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref bb);
             if (childState == 0)
             {
-                blob.ResetChildren(index, bb);
-                childState = blob.TickChildrenReturnFirstOrDefault(index, bb);
+                index.ResetChildren(ref blob, ref bb);
+                childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref bb);
             }
             if (BreakStates.HasFlag(childState)) return childState;
 
@@ -26,7 +28,9 @@ namespace EntitiesBT.Nodes
             return CountdownSeconds <= 0 ? NodeState.Success : NodeState.Running;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

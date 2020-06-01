@@ -16,9 +16,14 @@ namespace EntitiesBT.Extensions.InputSystem
         public unsafe void* OutputPtr => UnsafeUtility.AddressOf(ref Output);
 
         [ReadOnly(typeof(InputActionAssetComponent))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb) =>
-            ReadInputValueNode<ReadInputVector2Node, Vector2>.Tick(index, blob, bb);
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+            => ReadInputValueNode<ReadInputVector2Node, Vector2>.Tick(index, ref blob, ref bb);
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard) {}
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {}
     }
 }

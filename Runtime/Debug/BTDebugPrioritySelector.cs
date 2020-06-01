@@ -1,5 +1,6 @@
 using System;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using UnityEngine;
 
@@ -13,27 +14,30 @@ namespace EntitiesBT.DebugView
 
         public override void Init()
         {
-            ref var runtime = ref Blob.GetNodeData<PrioritySelectorNode>(Index).Weights;
+            var blob = Blob;
+            ref var runtime = ref blob.GetNodeData<PrioritySelectorNode, NodeBlobRef>(Index).Weights;
             RuntimeWeights = runtime.ToArray();
             
-            ref var @default = ref Blob.GetNodeDefaultData<PrioritySelectorNode>(Index).Weights;
+            ref var @default = ref blob.GetNodeDefaultData<PrioritySelectorNode, NodeBlobRef>(Index).Weights;
             DefaultWeights = @default.ToArray();
         }
 
         public override void Tick()
         {
-            ref var runtime = ref Blob.GetNodeData<PrioritySelectorNode>(Index).Weights;
+            var blob = Blob;
+            ref var runtime = ref blob.GetNodeData<PrioritySelectorNode, NodeBlobRef>(Index).Weights;
             RuntimeWeights = runtime.ToArray();
         }
 
         protected override void OnValidate()
         {
             if (!IsValid) return;
-            
-            ref var @default = ref Blob.GetNodeDefaultData<PrioritySelectorNode>(Index);
+
+            var blob = Blob;
+            ref var @default = ref blob.GetNodeDefaultData<PrioritySelectorNode, NodeBlobRef>(Index);
             SetData(ref @default, DefaultWeights);
             
-            ref var runtime = ref Blob.GetNodeData<PrioritySelectorNode>(Index);
+            ref var runtime = ref blob.GetNodeData<PrioritySelectorNode, NodeBlobRef>(Index);
             SetData(ref runtime, RuntimeWeights);
 
             void SetData(ref PrioritySelectorNode data, int[] array)

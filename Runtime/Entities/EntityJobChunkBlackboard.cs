@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -14,51 +13,6 @@ namespace EntitiesBT.Entities
         public EntityCommandJob EntityCommandJob;
         [NativeDisableUnsafePtrRestriction] public unsafe void* BehaviorTreeElementPtr;
         
-        public unsafe object this[object key]
-        {
-            get
-            {
-                {
-                    switch (key)
-                    {
-                    case Type type when type == typeof(IEntityCommand):
-                        return EntityCommandJob;
-                    case Type type when type == typeof(BehaviorTreeBufferElement):
-                        return UnsafeUtilityEx.AsRef<BehaviorTreeBufferElement>(BehaviorTreeElementPtr);
-                    }
-                }
-
-                {
-                    var typeIndex = key.FetchTypeIndex();
-                    var type = TypeManager.GetType(typeIndex);
-                    var ptr = GetPtrRO(key);
-                    return Marshal.PtrToStructure(new IntPtr(ptr), type);
-                }
-            }
-            set
-            {
-                var typeIndex = key.FetchTypeIndex();
-                var dest = GetPtrByTypeIndexRW(typeIndex);
-                Marshal.StructureToPtr(value, new IntPtr(dest), false);
-            }
-        }
-
-        public bool Has(object key)
-        {
-            return Chunk.GetIndexInTypeArray(key.FetchTypeIndex()) != -1;
-        }
-
-        public unsafe void* GetPtrRW(object key)
-        {
-            if (key is Type type && type == typeof(BehaviorTreeBufferElement)) return BehaviorTreeElementPtr;
-            return GetPtrByTypeIndexRW(key.FetchTypeIndex());
-        }
-        
-        public unsafe void* GetPtrRO(object key)
-        {
-            return GetPtrByTypeIndexRO(key.FetchTypeIndex());
-        }
-
         private unsafe void* GetPtrByTypeIndexRW(int typeIndex)
         {
             return Chunk.GetComponentDataWithTypeRW(EntityIndex, typeIndex, GlobalSystemVersion);
@@ -67,6 +21,47 @@ namespace EntitiesBT.Entities
         private unsafe void* GetPtrByTypeIndexRO(int typeIndex)
         {
             return Chunk.GetComponentDataWithTypeRO(EntityIndex, typeIndex);
+        }
+
+        public bool HasData<T>() where T : struct
+        {
+            var index = TypeManager.GetTypeIndex<T>();
+            return Chunk.GetIndexInTypeArray(index) != -1;
+        }
+
+        public unsafe T GetData<T>() where T : struct
+        {
+            if (typeof(T) == typeof(BehaviorTreeBufferElement))
+                return UnsafeUtilityEx.AsRef<T>(BehaviorTreeElementPtr);
+            var index = TypeManager.GetTypeIndex<T>();
+            var ptr = GetPtrByTypeIndexRO(index);
+            return UnsafeUtilityEx.AsRef<T>(ptr);
+        }
+
+        public unsafe ref T GetDataRef<T>() where T : struct
+        {
+            if (typeof(T) == typeof(BehaviorTreeBufferElement))
+                return ref UnsafeUtilityEx.AsRef<T>(BehaviorTreeElementPtr);
+            var index = TypeManager.GetTypeIndex<T>();
+            var ptr = GetPtrByTypeIndexRW(index);
+            return ref UnsafeUtilityEx.AsRef<T>(ptr);
+        }
+
+        public unsafe IntPtr GetDataPtrRO(Type type)
+        {
+            return new IntPtr(GetPtrByTypeIndexRO(TypeManager.GetTypeIndex(type)));
+        }
+
+        public unsafe IntPtr GetDataPtrRW(Type type)
+        {
+            return new IntPtr(GetPtrByTypeIndexRW(TypeManager.GetTypeIndex(type)));
+        }
+
+        public T GetObject<T>() where T : class
+        {
+            if (typeof(T) == typeof(IEntityCommand))
+                return EntityCommandJob as T;
+            throw new NotImplementedException();
         }
     }
 }

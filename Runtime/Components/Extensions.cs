@@ -35,11 +35,13 @@ namespace EntitiesBT.Components
         }
 
         [Pure]
-        public static ComponentTypeSet GetAccessTypes([NotNull] this INodeBlob blob)
+        public static ComponentTypeSet GetAccessTypes<TNodeBlob>(this ref TNodeBlob blob)
+            where TNodeBlob : struct, INodeBlob
         {
-            return new ComponentTypeSet(
-                Enumerable.Range(0, blob.Count).SelectMany(i => VirtualMachine.GetAccessTypes(i, blob))
-            );
+            var accessTypes = Enumerable.Empty<ComponentType>();
+            for (var i = 0; i < blob.Count; i++)
+                accessTypes = accessTypes.Concat(VirtualMachine.GetAccessTypes(i, ref blob));
+            return new ComponentTypeSet(accessTypes);
         }
 
         public static void AddBehaviorTree(
@@ -53,7 +55,7 @@ namespace EntitiesBT.Components
         )
         {
             var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
-            VirtualMachine.Reset(blob, bb);
+            VirtualMachine.Reset(ref blob, ref bb);
 
             dstManager.AddBuffer<BehaviorTreeBufferElement>(entity);
 

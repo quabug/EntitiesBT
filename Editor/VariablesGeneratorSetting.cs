@@ -54,7 +54,7 @@ namespace EntitiesBT.Editor
                     if (types.Contains(type.FullName))
                     {
                         writer.WriteLine(CreateInterface(type));
-                        foreach (var propertyType in _PROPERTY_TYPES.Value)
+                        foreach (var propertyType in VariablePropertyExtensions.VARIABLE_PROPERTY_TYPES.Value)
                             writer.WriteLine(CreateClass(type, propertyType));
                         writer.WriteLine();
                     }
@@ -86,7 +86,7 @@ namespace EntitiesBT.Editor
                 {
                     if (types.Contains(type.FullName))
                     {
-                        foreach (var propertyType in _PROPERTY_TYPES.Value)
+                        foreach (var propertyType in VariablePropertyExtensions.VARIABLE_PROPERTY_TYPES.Value)
                             writer.WriteLine(CreateClass(type, propertyType));
                     }
                 }
@@ -119,13 +119,6 @@ namespace EntitiesBT.Editor
             Utilities.ValidTypes
                 .Where(type => type != typeof(void))
                 .Where(type => type.IsPrimitive || type.IsValueType && type.HasSerializableAttribute())
-        );
-        
-        private static readonly Lazy<IEnumerable<Type>> _PROPERTY_TYPES = new Lazy<IEnumerable<Type>>(() => 
-            Utilities.ValidTypes.Where(type => !type.IsAbstract
-               && type.IsGenericType
-               && typeof(IVariableProperty).IsAssignableFrom(type)
-               && type != typeof(VariableProperty<>))
         );
 
         private static bool HasSerializableAttribute(this Type type)

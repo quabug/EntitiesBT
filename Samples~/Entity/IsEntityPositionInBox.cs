@@ -26,13 +26,17 @@ namespace EntitiesBT.Sample
         public Bounds Bounds;
 
         [ReadOnly(typeof(Translation))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             var translation = bb.GetData<Translation>();
             return Bounds.Contains(translation.Value) ? NodeState.Success : NodeState.Failure;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

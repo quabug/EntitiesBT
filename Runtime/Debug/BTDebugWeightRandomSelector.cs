@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using UnityEngine;
 
@@ -14,27 +15,30 @@ namespace EntitiesBT.DebugView
 
         public override void Init()
         {
-            ref var runtime = ref Blob.GetNodeData<WeightRandomSelectorNode>(Index).Weights;
+            var blob = Blob;
+            ref var runtime = ref blob.GetNodeData<WeightRandomSelectorNode, NodeBlobRef>(Index).Weights;
             RuntimeWeights = runtime.ToArray();
             
-            ref var @default = ref Blob.GetNodeDefaultData<WeightRandomSelectorNode>(Index).Weights;
+            ref var @default = ref blob.GetNodeDefaultData<WeightRandomSelectorNode, NodeBlobRef>(Index).Weights;
             DefaultWeights = @default.ToArray();
         }
 
         public override void Tick()
         {
-            ref var runtime = ref Blob.GetNodeData<WeightRandomSelectorNode>(Index).Weights;
+            var blob = Blob;
+            ref var runtime = ref blob.GetNodeData<WeightRandomSelectorNode, NodeBlobRef>(Index).Weights;
             RuntimeWeights = runtime.ToArray();
         }
 
         protected override void OnValidate()
         {
             if (!IsValid) return;
-            
-            ref var @default = ref Blob.GetNodeDefaultData<WeightRandomSelectorNode>(Index);
+
+            var blob = Blob;
+            ref var @default = ref blob.GetNodeDefaultData<WeightRandomSelectorNode, NodeBlobRef>(Index);
             SetData(ref @default, DefaultWeights);
             
-            ref var runtime = ref Blob.GetNodeData<WeightRandomSelectorNode>(Index);
+            ref var runtime = ref blob.GetNodeData<WeightRandomSelectorNode, NodeBlobRef>(Index);
             SetData(ref runtime, RuntimeWeights);
 
             void SetData(ref WeightRandomSelectorNode data, float[] array)

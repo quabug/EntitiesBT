@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
@@ -14,7 +12,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         public bool IsLocal;
         
 #if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
+        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
 #endif
         public VariableProperty<float3> VelocityProperty;
 
@@ -32,16 +30,20 @@ namespace EntitiesBT.Extensions.UnityMovement
         public BlobVariable<float3> Velocity;
 
         [ReadWrite(typeof(CharacterController))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var controller = bb.GetData<CharacterController>();
+            var controller = bb.GetObject<CharacterController>();
             if (controller == null) return NodeState.Failure;
-            Vector3 velocity = Velocity.GetData(index, blob, bb);
+            Vector3 velocity = Velocity.GetData(index, ref blob, ref bb);
             controller.SimpleMove(IsLocal ? controller.transform.localToWorldMatrix.MultiplyVector(velocity) : velocity);
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

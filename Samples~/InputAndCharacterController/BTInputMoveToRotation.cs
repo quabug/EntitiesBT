@@ -31,17 +31,21 @@ namespace EntitiesBT.Samples
         [ReadOnly] public BlobVariable<float2> InputMove;
         public BlobVariable<quaternion> OutputDirection;
         
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var move = InputMove.GetData(index, blob, bb);
+            var move = InputMove.GetData(index, ref blob, ref bb);
             if (math.lengthsq(move) <= math.FLT_MIN_NORMAL) return NodeState.Success;
             
             var direction = quaternion.LookRotationSafe(new float3(move.x, 0, move.y), math.up());
-            OutputDirection.GetDataRef(index, blob, bb) = direction;
+            OutputDirection.GetDataRef(index, ref blob, ref bb) = direction;
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

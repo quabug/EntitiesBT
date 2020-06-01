@@ -12,15 +12,19 @@ namespace EntitiesBT.Nodes
         public NodeState BreakReturnState;
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
+            var childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref blackboard);
             CountdownSeconds -= blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
             if (CountdownSeconds <= 0f) return childState.IsCompleted() ? childState : BreakReturnState;
             return NodeState.Running;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

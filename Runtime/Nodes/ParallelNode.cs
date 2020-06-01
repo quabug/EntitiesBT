@@ -8,7 +8,9 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("A316D182-7D8C-4075-A46D-FEE08CAEEEAF", BehaviorNodeType.Composite)]
     public struct ParallelNode : INodeData
     {
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             NodeState flags = 0;
             var endIndex = blob.GetEndIndex(index);
@@ -16,7 +18,7 @@ namespace EntitiesBT.Nodes
             while (childIndex < endIndex)
             {
                 var prevState = blob.GetState(childIndex);
-                flags |= prevState.IsCompleted() ? 0 : VirtualMachine.Tick(childIndex, blob, bb);
+                flags |= prevState.IsCompleted() ? 0 : VirtualMachine.Tick(childIndex, ref blob, ref bb);
                 childIndex = blob.GetEndIndex(childIndex);
             }
             
@@ -32,7 +34,9 @@ namespace EntitiesBT.Nodes
             return 0;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

@@ -12,22 +12,6 @@ namespace EntitiesBT.Core
 {
     internal static class MetaNodeRegister
     {
-        internal delegate NodeState TickFunc(IntPtr ptr, int index, INodeBlob blob, IBlackboard bb);
-        
-        [Preserve]
-        private static unsafe NodeState Tick<T>(IntPtr ptr, int index, INodeBlob blob, IBlackboard bb) where T : struct, INodeData
-        {
-            return UnsafeUtilityEx.AsRef<T>((void*)ptr).Tick(index, blob, bb);
-        }
-        
-        internal delegate void ResetFunc(IntPtr ptr, int index, INodeBlob blob, IBlackboard bb);
-        
-        [Preserve]
-        private static unsafe void Reset<T>(IntPtr ptr, int index, INodeBlob blob, IBlackboard bb) where T : struct, INodeData
-        {
-            UnsafeUtilityEx.AsRef<T>((void*)ptr).Reset(index, blob, bb);
-        }
-        
         internal delegate IEnumerable<ComponentType> ComponentTypesFunc(IntPtr ptr);
         
         [Preserve]
@@ -57,8 +41,6 @@ namespace EntitiesBT.Core
         internal class Node
         {
             public Type Type;
-            public ResetFunc Reset;
-            public TickFunc Tick;
             public ComponentType[] StaticTypes;
             public RuntimeTypeAccessor[] RuntimeTypes;
         }
@@ -75,8 +57,6 @@ namespace EntitiesBT.Core
 
                 NODES[attribute.Id] = new Node{
                     Type = type
-                  , Reset = CreateDelegate<ResetFunc>("Reset", type)
-                  , Tick = CreateDelegate<TickFunc>("Tick", type)
                   , StaticTypes = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
                         .SelectMany(mi => mi.GetCustomAttributes<ComponentAccessorAttribute>())
                         .SelectMany(attr => attr.Types)
@@ -102,6 +82,56 @@ namespace EntitiesBT.Core
                 ;
             }
         }
+    }
+    internal static class MetaNodeRegister<TNodeBlob, TBlackboard>
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
+    {
+        internal delegate NodeState TickFunc(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb);
         
+        [Preserve]
+        private static unsafe NodeState Tick<TNodeData>(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb)
+            where TNodeData : struct, INodeData
+        {
+            return UnsafeUtilityEx.AsRef<TNodeData>((void*)ptr).Tick(index, ref blob, ref bb);
+        }
+        
+        internal delegate void ResetFunc(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb);
+        
+        [Preserve]
+        private static unsafe void Reset<TNodeData>(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb)
+            where TNodeData : struct, INodeData
+        {
+            UnsafeUtilityEx.AsRef<TNodeData>((void*)ptr).Reset(index, ref blob, ref bb);
+        }
+        
+        internal class Node
+        {
+            public ResetFunc Reset;
+            public TickFunc Tick;
+        }
+        
+        internal static readonly Dictionary<int, Node> NODES = new Dictionary<int, Node>();
+
+        static MetaNodeRegister()
+        {
+            foreach (var type in MetaNodeRegister.NODES.Values.Select(node => node.Type))
+            {
+                var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
+                NODES[attribute.Id] = new Node {
+                  Reset = CreateDelegate<ResetFunc>("Reset", type)
+                  , Tick = CreateDelegate<TickFunc>("Tick", type)
+                };
+            }
+            
+            T CreateDelegate<T>(string methodName, Type type) where T : Delegate
+            {
+                return (T) typeof(MetaNodeRegister<TNodeBlob, TBlackboard>)
+                    .GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static)
+                    .MakeGenericMethod(type)
+                    .CreateDelegate(typeof(T))
+                ;
+            }
+        }
     }
 }

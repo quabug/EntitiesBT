@@ -27,15 +27,19 @@ namespace EntitiesBT.Extensions.InputSystem
         
         [ReadWrite(typeof(BTInputAimPositionData))]
         [ReadOnly(typeof(InputActionAssetComponent))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var inputValue = bb.ReadInputActionValue<InputAimPositionNode, Vector2>(index, blob);
+            var inputValue = index.ReadInputActionValue<InputAimPositionNode, Vector2, TNodeBlob, TBlackboard>(ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
             bb.GetDataRef<BTInputAimPositionData>().Value = inputValue.Value;
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }
@@ -50,7 +54,7 @@ namespace EntitiesBT.Extensions.InputSystem
         public override void Tick()
         {
             base.Tick();
-            AimPosition = Blackboard.GetData<BTInputAimPositionData>().Value;
+            AimPosition = Blackboard.Value.GetData<BTInputAimPositionData>().Value;
         }
     }
 }

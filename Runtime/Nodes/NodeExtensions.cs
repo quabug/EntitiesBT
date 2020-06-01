@@ -8,85 +8,53 @@ namespace EntitiesBT.Nodes
 {
     public static class NodeExtensions
     {
-        public static void ResetChildren([NotNull] this INodeBlob blob, int parentIndex, IBlackboard bb)
+        public static void ResetChildren<TNodeBlob, TBlackboard>(this int parentIndex, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             // TODO: reset children which is not NodeState.None?
             var firstChildIndex = parentIndex + 1;
             var lastChildIndex = blob.GetEndIndex(parentIndex);
             var childCount = lastChildIndex - firstChildIndex;
-            VirtualMachine.Reset(firstChildIndex, blob, bb, childCount);
+            VirtualMachine.Reset(firstChildIndex, ref blob, ref bb, childCount);
         }
         
-        public static IEnumerable<NodeState> TickChildren(
-            [NotNull] this INodeBlob blob
-          , int parentIndex
-          , [NotNull] IBlackboard bb
-        )
-        {
-            return TickChildren(blob, parentIndex, bb, state => false, state => !state.IsCompleted());
-        }
-        
-        [LinqTunnel]
-        public static IEnumerable<NodeState> TickChildren(
-            [NotNull] this INodeBlob blob
-          , int parentIndex
-          , [NotNull] IBlackboard bb
-          , Predicate<NodeState> breakCheck
-        )
-        {
-            return TickChildren(blob, parentIndex, bb, breakCheck, state => !state.IsCompleted());
-        }
-        
-        [LinqTunnel]
-        public static IEnumerable<NodeState> TickChildren(
-            [NotNull] this INodeBlob blob
-          , int parentIndex
-          , [NotNull] IBlackboard bb
-          , Predicate<NodeState> breakCheck
-          , Predicate<NodeState> tickCheck
-        )
-        {
-            foreach (var childIndex in blob.GetChildrenIndices(parentIndex))
-            {
-                var prevState = blob.GetState(childIndex);
-                var currentState = tickCheck(prevState) ? VirtualMachine.Tick(childIndex, blob, bb) : 0;
-                yield return currentState;
-                if (breakCheck(currentState == 0 ? prevState : currentState)) yield break;
-            }
-        }
-
-        #region GC free
-
         // GC free version of TickChildren().LastOrDefault()
         [LinqTunnel]
-        public static NodeState TickChildrenReturnLastOrDefault(
-            [NotNull] this INodeBlob blob
-          , int parentIndex
-          , [NotNull] IBlackboard bb
+        public static NodeState TickChildrenReturnLastOrDefault<TNodeBlob, TBlackboard>(
+          this int parentIndex
+          , ref TNodeBlob blob
+          , ref TBlackboard bb
           , Predicate<NodeState> breakCheck
         )
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            return TickChildrenReturnBreakOrDefault(blob, parentIndex, bb, breakCheck, state => !state.IsCompleted());
+            return TickChildrenReturnBreakOrDefault(parentIndex, ref blob, ref bb, breakCheck, state => !state.IsCompleted());
         }
         
         // GC free version of TickChildren().FirstOrDefault()
-        public static NodeState TickChildrenReturnFirstOrDefault(
-            [NotNull] this INodeBlob blob
-          , int parentIndex
-          , [NotNull] IBlackboard bb
+        public static NodeState TickChildrenReturnFirstOrDefault<TNodeBlob, TBlackboard>(
+          this int parentIndex
+          , ref TNodeBlob blob
+          , ref TBlackboard bb
         )
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            return TickChildrenReturnBreakOrDefault(blob, parentIndex, bb, state => true, state => !state.IsCompleted());
+            return TickChildrenReturnBreakOrDefault(parentIndex, ref blob, ref bb, state => true, state => !state.IsCompleted());
         }
         
         [LinqTunnel]
-        private static NodeState TickChildrenReturnBreakOrDefault(
-            [NotNull] this INodeBlob blob
-          , int parentIndex
-          , [NotNull] IBlackboard bb
+        private static NodeState TickChildrenReturnBreakOrDefault<TNodeBlob, TBlackboard>(
+          this int parentIndex
+          , ref TNodeBlob blob
+          , ref TBlackboard bb
           , Predicate<NodeState> breakCheck
           , Predicate<NodeState> tickCheck
         )
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             NodeState currentState = 0;
             var endIndex = blob.GetEndIndex(parentIndex);
@@ -94,7 +62,7 @@ namespace EntitiesBT.Nodes
             while (childIndex < endIndex)
             {
                 var prevState = blob.GetState(childIndex);
-                currentState = tickCheck(prevState) ? VirtualMachine.Tick(childIndex, blob, bb) : 0;
+                currentState = tickCheck(prevState) ? VirtualMachine.Tick(childIndex, ref blob, ref bb) : 0;
                 if (breakCheck(currentState == 0 ? prevState : currentState)) break;
                 childIndex = blob.GetEndIndex(childIndex);
             }
@@ -114,8 +82,5 @@ namespace EntitiesBT.Nodes
             foreach (var item in enumerable) result = item;
             return result;
         }
-        
-
-        #endregion
     }
 }

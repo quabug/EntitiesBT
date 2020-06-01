@@ -1,61 +1,57 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using EntitiesBT.Core;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
-    public class GameObjectBlackboard : IBlackboard
+    public struct GameObjectBlackboard : IBlackboard
     {
         private readonly GameObject _gameObject;
-        private readonly Dictionary<object, object> _dict = new Dictionary<object, object>();
+        private readonly Dictionary<object, object> _dict;
         
         public GameObjectBlackboard(GameObject gameObject)
         {
             _gameObject = gameObject;
-        }
-        
-        public object this[object key]
-        {
-            get
-            {
-                var type = key as Type;
-                if (type != null && type.IsSubclassOf(typeof(Component)))
-                    return _gameObject.GetComponent(type);
-                return _dict[key];
-            }
-            set
-            {
-                var type = key as Type;
-                if (type != null && type.IsSubclassOf(typeof(Component)))
-                    _gameObject.AddComponent(type);
-                _dict[key] = value;
-            }
+            _dict = new Dictionary<object, object>();
         }
 
-        public bool Has(object key)
+        public void SetData<T>(T value) where T : struct
         {
-            var type = key as Type;
-            if (type != null && type.IsSubclassOf(typeof(Component)))
-                return _gameObject.GetComponent(type) != null;
-            return _dict.ContainsKey(key);
+            _dict[typeof(T)] = value;
         }
 
-        public unsafe void* GetPtrRW(object key)
+        public bool HasData<T>() where T : struct
+        {
+            return _dict.ContainsKey(typeof(T));
+        }
+
+        public T GetData<T>() where T : struct
+        {
+            return (T)_dict[typeof(T)];
+        }
+
+        public ref T GetDataRef<T>() where T : struct
         {
             throw new NotImplementedException();
         }
 
-        public unsafe void* GetPtrRO(object key)
+        public IntPtr GetDataPtrRO(Type type)
         {
-            var type = (Type)key;
-            var obj = Activator.CreateInstance(type);
-            var ptr = new IntPtr(UnsafeUtility.PinGCObjectAndGetAddress(obj, out var handle));
-            Marshal.StructureToPtr(_dict[key], ptr, false);
-            UnsafeUtility.ReleaseGCObject(handle);
-            return ptr.ToPointer();
+            throw new NotImplementedException();
+        }
+
+        public IntPtr GetDataPtrRW(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T GetObject<T>() where T : class
+        {
+            if (typeof(T).IsSubclassOf(typeof(Component)))
+                return _gameObject.GetComponent<T>();
+            _dict.TryGetValue(typeof(T), out var obj);
+            return (T)obj;
         }
     }
 }

@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
+using EntitiesBT.Entities;
 using EntitiesBT.Variable;
 using Unity.Entities;
 using UnityEngine;
@@ -39,13 +38,18 @@ namespace EntitiesBT.Sample
         [ReadOnly] public BlobVariable<float> SrcVariable;
         public long Long;
 
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            DestVariable.GetDataRef(index, blob, bb) = (int)SrcVariable.GetData(index, blob, bb);
+            DestVariable.GetDataRef(index, ref blob, ref bb) = (int)SrcVariable.GetData(index, ref blob, ref bb);
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard bb) {}
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {}
     }
 
     [BehaviorTreeDebugView(typeof(VariablesTestNode))]
@@ -60,10 +64,12 @@ namespace EntitiesBT.Sample
 
         public override void Tick()
         {
-            ref var data = ref Blob.GetNodeData<VariablesTestNode>(Index);
-            LongVariable = data.LongVariable.GetData(Index, Blob, Blackboard);
-            IntVariable = data.DestVariable.GetData(Index, Blob, Blackboard);
-            FloatVariable = data.SrcVariable.GetData(Index, Blob, Blackboard);
+            var blob = Blob;
+            var bb = Blackboard.Value;
+            ref var data = ref blob.GetNodeData<VariablesTestNode, NodeBlobRef>(Index);
+            LongVariable = data.LongVariable.GetData(Index, ref blob, ref bb);
+            IntVariable = data.DestVariable.GetData(Index, ref blob, ref bb);
+            FloatVariable = data.SrcVariable.GetData(Index, ref blob, ref bb);
             String = data.String.ToString();
             IntArray = data.IntArray.ToArray();
             LongValue = data.Long;

@@ -28,15 +28,19 @@ namespace EntitiesBT.Extensions.InputSystem
         public BlobVariable<float2> Output;
         
         [ReadOnly(typeof(InputActionAssetComponent))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
-            var inputValue = bb.ReadInputActionValue<InputLookNode, Vector2>(index, blob);
+            var inputValue = index.ReadInputActionValue<InputLookNode, Vector2, TNodeBlob, TBlackboard>(ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
-            Output.GetDataRef(index, blob, bb) = inputValue.Value;
+            Output.GetDataRef(index, ref blob, ref bb) = inputValue.Value;
             return NodeState.Success;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }

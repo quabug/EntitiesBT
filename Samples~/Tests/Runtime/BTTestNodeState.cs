@@ -15,22 +15,26 @@ namespace EntitiesBT.Test
         public int ResetTimes;
         public int TickTimes;
         
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             Index = index;
             ResetTimes++;
 
-            ref var defaultData = ref blob.GetNodeDefaultData<TestNode>(index);
+            ref var defaultData = ref blob.GetNodeDefaultData<TestNode, TNodeBlob>(index);
             defaultData.Index = index;
             defaultData.ResetTimes++;
         }
 
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard blackboard)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             Assert.AreEqual(Index, index);
             TickTimes++;
             
-            ref var defaultData = ref blob.GetNodeDefaultData<TestNode>(index);
+            ref var defaultData = ref blob.GetNodeDefaultData<TestNode, TNodeBlob>(index);
             defaultData.TickTimes++;
             
             return State;

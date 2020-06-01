@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
 using EntitiesBT.DebugView;
@@ -30,7 +28,9 @@ namespace EntitiesBT.Sample
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         [ReadWrite(typeof(Translation))]
-        public NodeState Tick(int index, INodeBlob blob, IBlackboard bb)
+        public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             ref var translation = ref bb.GetDataRef<Translation>();
             var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>();
@@ -38,7 +38,9 @@ namespace EntitiesBT.Sample
             return NodeState.Running;
         }
 
-        public void Reset(int index, INodeBlob blob, IBlackboard blackboard)
+        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
         }
     }
