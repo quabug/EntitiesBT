@@ -33,7 +33,7 @@ namespace EntitiesBT.Extensions.UnityMovement
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var transform = bb.GetData<Transform>();
+            var transform = bb.GetObject<Transform>();
             if (transform == null) return NodeState.Failure;
             var rotation = RotationProperty.GetData(index, blob, bb);
             transform.rotation = rotation;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
 
@@ -54,24 +55,33 @@ namespace EntitiesBT.Variable
         private static readonly int _DYNAMIC_ID = new Guid("8E5CDB60-17DB-498A-B925-2094062769AB").GetHashCode();
         private static readonly int _COPYTOLOCAL_ID = new Guid("F89F8ACD-1D27-4253-8BEB-8411FB3D6773").GetHashCode();
         private static readonly int _LOCAL_ID = new Guid("48E4C6C0-F715-48DD-9CD8-E5DB6C940B5C").GetHashCode();
+
+        private static unsafe ref T GetData(ulong stableHash, int offset, Func<Type, IntPtr> getDataPtr)
+        {
+            var index = TypeManager.GetTypeIndexFromStableTypeHash(stableHash);
+            var componentPtr = getDataPtr(TypeManager.GetType(index));
+            // TODO: type safety check
+            var dataPtr = componentPtr + offset;
+            return ref UnsafeUtilityEx.AsRef<T>(dataPtr.ToPointer());
+        }
         
         private static T GetData(ref BlobVariable<T> blobVariable, int index, INodeBlob blob, IBlackboard bb)
         {
             ref var data = ref blobVariable.Value<DynamicComponentData>();
-            return bb.GetData<T>(data.StableHash, data.Offset);
+            return GetData(data.StableHash, data.Offset, bb.GetDataPtrRO);
         }
         
         private static ref T GetDataRef(ref BlobVariable<T> blobVariable, int index, INodeBlob blob, IBlackboard bb)
         {
             ref var data = ref blobVariable.Value<DynamicComponentData>();
-            return ref bb.GetDataRef<T>(data.StableHash, data.Offset);
+            return ref GetData(data.StableHash, data.Offset, bb.GetDataPtrRW);
         }
         
         private static T CopyAndGetData(ref BlobVariable<T> blobVariable, int index, INodeBlob blob, IBlackboard bb)
         {
             blobVariable.VariableId = _LOCAL_ID;
             ref var data = ref blobVariable.Value<CopyToLocalComponentData>();
-            data.LocalValue = bb.GetData<T>(data.StableHash, data.Offset);
+            data.LocalValue = GetData(data.StableHash, data.Offset, bb.GetDataPtrRO);
             return data.LocalValue;
         }
         
@@ -79,7 +89,7 @@ namespace EntitiesBT.Variable
         {
             blobVariable.VariableId = _LOCAL_ID;
             ref var data = ref blobVariable.Value<CopyToLocalComponentData>();
-            data.LocalValue = bb.GetDataRef<T>(data.StableHash, data.Offset);
+            data.LocalValue = GetData(data.StableHash, data.Offset, bb.GetDataPtrRO);
             return ref data.LocalValue;
         }
         

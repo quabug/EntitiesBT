@@ -30,7 +30,7 @@ namespace EntitiesBT.Sample
             where TBlackboard : struct, IBlackboard
         {
             var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>().Value;
-            var transform = bb.GetData<Transform>();
+            var transform = bb.GetObject<Transform>();
             var deltaMove = Velocity * deltaTime;
             transform.position += deltaMove;
             return NodeState.Running;

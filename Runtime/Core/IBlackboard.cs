@@ -6,14 +6,13 @@ namespace EntitiesBT.Core
 {
     public interface IBlackboard
     {
-        // object this[object key] { get; set; }
-        bool Has(object key);
-        // unsafe void* GetPtrRW(object key);
-        // unsafe void* GetPtrRO(object key);
-        //
+        bool HasData<T>() where T : struct;
         T GetData<T>() where T : struct;
         ref T GetDataRef<T>() where T : struct;
-        T GetManagedData<T>() where T : class;
+        IntPtr GetDataPtrRO(Type type);
+        IntPtr GetDataPtrRW(Type type);
+        
+        T GetObject<T>() where T : class;
     }
     
     public static class BlackboardExtensions

@@ -36,7 +36,7 @@ namespace EntitiesBT.Extensions.UnityMovement
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var controller = bb.GetData<CharacterController>();
+            var controller = bb.GetObject<CharacterController>();
             if (controller == null) return NodeState.Failure;
             Vector3 velocity = Velocity.GetData(index, blob, bb);
             controller.SimpleMove(IsLocal ? controller.transform.localToWorldMatrix.MultiplyVector(velocity) : velocity);
