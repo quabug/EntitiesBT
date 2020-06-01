@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
@@ -38,7 +36,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         {
             var controller = bb.GetObject<CharacterController>();
             if (controller == null) return NodeState.Failure;
-            Vector3 velocity = Velocity.GetData(index, blob, bb);
+            Vector3 velocity = Velocity.GetData(index, ref blob, ref bb);
             controller.SimpleMove(IsLocal ? controller.transform.localToWorldMatrix.MultiplyVector(velocity) : velocity);
             return NodeState.Success;
         }

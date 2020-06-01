@@ -43,10 +43,10 @@ namespace EntitiesBT.Samples
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var input = InputMove.GetData(index, blob, bb);
+            var input = InputMove.GetData(index, ref blob, ref bb);
             var direction = new Vector3(input.x, 0, input.y).normalized;
-            var speed = Speed.GetData(index, blob, bb);
-            OutputVelocity.GetDataRef(index, blob, bb) = direction * speed;
+            var speed = Speed.GetData(index, ref blob, ref bb);
+            OutputVelocity.GetDataRef(index, ref blob, ref bb) = direction * speed;
             return NodeState.Success;
         }
 

@@ -34,7 +34,7 @@ namespace EntitiesBT.Extensions.InputSystem
         {
             var inputValue = index.ReadInputActionValue<InputLookNode, Vector2, TNodeBlob, TBlackboard>(ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
-            Output.GetDataRef(index, blob, bb) = inputValue.Value;
+            Output.GetDataRef(index, ref blob, ref bb) = inputValue.Value;
             return NodeState.Success;
         }
 

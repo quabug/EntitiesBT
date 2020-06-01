@@ -35,11 +35,11 @@ namespace EntitiesBT.Samples
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var move = InputMove.GetData(index, blob, bb);
+            var move = InputMove.GetData(index, ref blob, ref bb);
             if (math.lengthsq(move) <= math.FLT_MIN_NORMAL) return NodeState.Success;
             
             var direction = quaternion.LookRotationSafe(new float3(move.x, 0, move.y), math.up());
-            OutputDirection.GetDataRef(index, blob, bb) = direction;
+            OutputDirection.GetDataRef(index, ref blob, ref bb) = direction;
             return NodeState.Success;
         }
 

@@ -42,7 +42,7 @@ namespace EntitiesBT.Extensions.InputSystem
             if (!inputValue.HasValue) return NodeState.Failure;
             ref var data = ref blob.GetNodeData<TNodeData, TNodeBlob>(index);
             ref var output = ref UnsafeUtilityEx.AsRef<BlobVariable<TValue>>(data.OutputPtr);
-            output.GetDataRef(index, blob, bb) = inputValue.Value;
+            output.GetDataRef(index, ref blob, ref bb) = inputValue.Value;
             return NodeState.Success;
         }
     }

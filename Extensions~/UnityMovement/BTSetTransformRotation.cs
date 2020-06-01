@@ -35,7 +35,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         {
             var transform = bb.GetObject<Transform>();
             if (transform == null) return NodeState.Failure;
-            var rotation = RotationProperty.GetData(index, blob, bb);
+            var rotation = RotationProperty.GetData(index, ref blob, ref bb);
             transform.rotation = rotation;
             return NodeState.Success;
         }

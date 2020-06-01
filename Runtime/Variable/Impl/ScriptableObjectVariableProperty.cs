@@ -78,17 +78,22 @@ namespace EntitiesBT.Variable
 
         static ScriptableObjectVariableProperty()
         {
-            VariableRegisters<T>.Register(ID, GetData, GetDataRef);
+            var type = typeof(ScriptableObjectVariableProperty<T>);
+            VariableRegisters<T>.Register(ID, type.Getter("GetData"), type.Getter("GetDataRef"));
         }
 
         public static readonly int ID = new Guid("B3668D2B-DC57-45F9-B71C-BF578E3EEF88").GetHashCode();
         
-        private static T GetData(ref BlobVariable<T> blobVariable, int index, INodeBlob blob, IBlackboard bb)
+        private static T GetData<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             return blobVariable.Value<T>();
         }
         
-        private static ref T GetDataRef(ref BlobVariable<T> blobVariable, int index, INodeBlob blob, IBlackboard bb)
+        private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
         {
             return ref blobVariable.Value<T>();
         }

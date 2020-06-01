@@ -1,6 +1,8 @@
+using System;
 using System.Reflection;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
+using Unity.Assertions;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
@@ -35,6 +37,14 @@ namespace EntitiesBT.Variable
         ) where T : struct
         {
             variable.Allocate(ref builder, ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(blobVariablePtr), self, tree);
+        }
+
+        public static MethodInfo Getter(this Type type, string name)
+        {
+            var methodInfo = type.GetMethod(name, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            Assert.IsTrue(methodInfo.IsGenericMethod);
+            Assert.AreEqual(2, methodInfo.GetGenericArguments().Length);
+            return methodInfo;
         }
     }
 }

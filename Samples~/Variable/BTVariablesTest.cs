@@ -44,7 +44,7 @@ namespace EntitiesBT.Sample
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            DestVariable.GetDataRef(index, blob, bb) = (int)SrcVariable.GetData(index, blob, bb);
+            DestVariable.GetDataRef(index, ref blob, ref bb) = (int)SrcVariable.GetData(index, ref blob, ref bb);
             return NodeState.Success;
         }
 
@@ -67,10 +67,11 @@ namespace EntitiesBT.Sample
         public override void Tick()
         {
             var blob = Blob;
+            var bb = Blackboard.Value;
             ref var data = ref blob.GetNodeData<VariablesTestNode, NodeBlobRef>(Index);
-            LongVariable = data.LongVariable.GetData(Index, Blob, Blackboard);
-            IntVariable = data.DestVariable.GetData(Index, Blob, Blackboard);
-            FloatVariable = data.SrcVariable.GetData(Index, Blob, Blackboard);
+            LongVariable = data.LongVariable.GetData(Index, ref blob, ref bb);
+            IntVariable = data.DestVariable.GetData(Index, ref blob, ref bb);
+            FloatVariable = data.SrcVariable.GetData(Index, ref blob, ref bb);
             String = data.String.ToString();
             IntArray = data.IntArray.ToArray();
             LongValue = data.Long;
