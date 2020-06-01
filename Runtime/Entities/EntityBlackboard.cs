@@ -52,6 +52,8 @@ namespace EntitiesBT.Entities
 
         public T GetObject<T>() where T : class
         {
+            if (typeof(T) == typeof(IEntityCommand))
+                return EntityCommandMainThread as T;
             return EntityManager.GetComponentObject<T>(Entity);
         }
     }
