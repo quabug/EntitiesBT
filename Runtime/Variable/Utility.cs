@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variable
 {
@@ -32,7 +32,7 @@ namespace EntitiesBT.Variable
         private static readonly Lazy<IEnumerable<ComponentFieldData>> _COMPONENT_FIELDS = new Lazy<IEnumerable<ComponentFieldData>>(() =>
         {
             var types =
-                from type in Utilities.ValidTypes
+                from type in ValidAssemblyTypes
                 where type.IsValueType && typeof(IComponentData).IsAssignableFrom(type)
                 select (type, hash: TypeHash.CalculateStableTypeHash(type))
             ;
@@ -72,39 +72,6 @@ namespace EntitiesBT.Variable
         {
             return _VALUE_TYPE_LOOKUP.Value[valueType];
         }
-        //
-        // public static (Type componentType, FieldInfo componentDataField) GetComponentDataType(ulong hash, int offset)
-        // {
-        //     _VALUE_TYPE_MAP.Value.TryGetValue((hash, offset), out var result);
-        //     return result;
-        // }
-        //
-        // public static VariableProperty<T> ToVariable<T>(this BlobVariable<T> blobVariable) where T : struct
-        // {
-        //     var variable = new VariableProperty<T>();
-        //     variable.ValueSource = blobVariable.Source;
-        //     switch (blobVariable.Source)
-        //     {
-        //     case ValueSource.Custom:
-        //     case ValueSource.ConstantUnityComponent:
-        //     case ValueSource.ConstantScriptableObject:
-        //     case ValueSource.ConstantNode:
-        //         variable.ConstantValue = blobVariable.ConstantData;
-        //         break;
-        //     case ValueSource.DynamicComponent:
-        //         var component = blobVariable.ComponentData;
-        //         var (componentType, fieldInfo) = GetComponentDataType(component.StableHash, component.Offset);
-        //         variable.ComponentValue = $"{componentType.Name}.{fieldInfo.Name}";
-        //         break;
-        //     case ValueSource.DynamicScriptableObject:
-        //         throw new NotImplementedException();
-        //     case ValueSource.DynamicNode:
-        //         throw new NotImplementedException();
-        //     default:
-        //         throw new ArgumentOutOfRangeException();
-        //     }
-        //     return variable;
-        // }
         
         public static void Allocate<TValue, TFallback>(this BlobBuilder builder, ref BlobVariable<TFallback> blob, TValue value)
             where TValue : struct

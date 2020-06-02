@@ -100,7 +100,7 @@ namespace EntitiesBT.Core
             ;
         }
 
-        private static Type[] GetTypesWithoutException(this Assembly assembly)
+        public static Type[] GetTypesWithoutException(this Assembly assembly)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace EntitiesBT.Core
             .ToArray()
         );
         
-        public static IEnumerable<Type> ValidTypes => _VALID_ASSEMBLIES.Value
+        public static IEnumerable<Type> ValidAssemblyTypes => _VALID_ASSEMBLIES.Value
             .SelectMany(assembly => assembly.GetTypesWithoutException());
     }
 }

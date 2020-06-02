@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine.Scripting;
+using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Core
 {
@@ -49,7 +50,7 @@ namespace EntitiesBT.Core
 
         static MetaNodeRegister()
         {
-            foreach (var type in Utilities.ValidTypes)
+            foreach (var type in ValidAssemblyTypes)
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 if (attribute == null) continue;

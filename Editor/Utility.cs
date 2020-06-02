@@ -110,7 +110,7 @@ namespace EntitiesBT.Editor
              {
                  subclasses =
                  (
-                     from type in Utilities.ValidTypes
+                     from type in Utilities.ValidAssemblyTypes
                      where type.IsGenericType
                          ? IsSubclassOfRawGeneric(variableType.GetGenericTypeDefinition(), type)
                          : type.IsSubclassOf(variableType)
