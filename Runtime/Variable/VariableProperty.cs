@@ -50,7 +50,7 @@ namespace EntitiesBT.Variable
                 .CurrentDomain
                 .GetAssemblies()
                 .Where(assembly => assembly.GetReferencedAssemblies().Any(name => name.Name == variableAssemblyName))
-                .SelectMany(assembly => assembly.GetTypes())
+                .SelectMany(assembly => assembly.GetTypesWithoutException())
                 .Where(type => !type.IsAbstract
                                && type.IsGenericType
                                && type.GetGenericArguments().Length == 1
