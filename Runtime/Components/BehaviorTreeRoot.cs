@@ -34,7 +34,7 @@ namespace EntitiesBT.Components
                 _rootNode.gameObject.AddComponent<StopConvertToEntity>();
             
             var blob = _file != null ? _file.ToBlob() : _rootNode.ToBlob();
-            var blobRef = new NodeBlobRef {BlobRef = blob};
+            var blobRef = new NodeBlobRef(blob);
             entity.AddBehaviorTree(dstManager, blobRef, _order, _autoCreateTypes, _thread, _debugName);
         }
     }

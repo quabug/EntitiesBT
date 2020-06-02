@@ -37,10 +37,10 @@ namespace EntitiesBT.Entities
             CalculateDefaultSize(count, dataSize) + CalculateRuntimeSize(count, dataSize);
     }
 
-    public struct NodeBlobRef : INodeBlob, IEquatable<NodeBlobRef>
+    public readonly struct NodeBlobRef : INodeBlob, IEquatable<NodeBlobRef>
     {
         private ref NodeBlob _blob => ref BlobRef.Value;
-        public BlobAssetReference<NodeBlob> BlobRef;
+        public readonly BlobAssetReference<NodeBlob> BlobRef;
         
         public NodeBlobRef(BlobAssetReference<NodeBlob> blobRef) => BlobRef = blobRef;
         
