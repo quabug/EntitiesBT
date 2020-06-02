@@ -11,16 +11,17 @@ namespace EntitiesBT.Entities
     {
         public const int VERSION = 2;
 
-        // default data (serializable data)
+#region Serialized Data
         public BlobArray<int> Types;
         public BlobArray<int> EndIndices;
         public BlobArray<int> Offsets; // count = count of nodes + 1
         public BlobArray<byte> DefaultDataBlob;
+#endregion
         
-        // runtime only data (only exist on runtime)
-        public BlobArray<NodeState> States;
-        // initialize from `DefaultDataBlob`
-        public BlobArray<byte> RuntimeDataBlob;
+#region NonSerialized Data (runtime only)
+        public BlobArray<NodeState> States; // states of each nodes
+        public BlobArray<byte> RuntimeDataBlob; // initialize from `DefaultDataBlob`
+#endregion
 
         public int Count => Types.Length;
 
