@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using EntitiesBT.Core;
-using EntitiesBT.Variable;
-using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
+using static EntitiesBT.Core.Utilities;
+using static EntitiesBT.Variable.VariablePropertyExtensions;
+using static UnityEditor.EditorUtility;
 
 namespace EntitiesBT.Editor
 {
@@ -21,21 +20,21 @@ namespace EntitiesBT.Editor
         [ContextMenu("CreateScript")]
         public void CreateScript()
         {
-            var filePath = EditorUtility.SaveFilePanel("Save Script", Directory, Filename, "cs");
+            var filePath = SaveFilePanel("Save Script", Directory, Filename, "cs");
             VariableGenerator.CreateScript(filePath, Namespace, Types);
         }
         
         [ContextMenu("CreateScript-InterfaceOnly")]
         public void CreateInterfaceScript()
         {
-            var filePath = EditorUtility.SaveFilePanel("Save Script", Directory, $"{Filename}-Interface", "cs");
+            var filePath = SaveFilePanel("Save Script", Directory, $"{Filename}-Interface", "cs");
             VariableGenerator.CreateScriptInterfaceOnly(filePath, Namespace, Types);
         }
         
         [ContextMenu("CreateScript-ClassesOnly")]
         public void CreateClassesScript()
         {
-            var filePath = EditorUtility.SaveFilePanel("Save Script", Directory, $"{Filename}-Classes", "cs");
+            var filePath = SaveFilePanel("Save Script", Directory, $"{Filename}-Classes", "cs");
             VariableGenerator.CreateScriptClassOnly(filePath, Namespace, Types);
         }
 
@@ -54,7 +53,7 @@ namespace EntitiesBT.Editor
                     if (types.Contains(type.FullName))
                     {
                         writer.WriteLine(CreateInterface(type));
-                        foreach (var propertyType in VariablePropertyExtensions.VARIABLE_PROPERTY_TYPES.Value)
+                        foreach (var propertyType in VARIABLE_PROPERTY_TYPES.Value)
                             writer.WriteLine(CreateClass(type, propertyType));
                         writer.WriteLine();
                     }
@@ -86,7 +85,7 @@ namespace EntitiesBT.Editor
                 {
                     if (types.Contains(type.FullName))
                     {
-                        foreach (var propertyType in VariablePropertyExtensions.VARIABLE_PROPERTY_TYPES.Value)
+                        foreach (var propertyType in VARIABLE_PROPERTY_TYPES.Value)
                             writer.WriteLine(CreateClass(type, propertyType));
                     }
                 }
@@ -116,7 +115,7 @@ namespace EntitiesBT.Editor
         }
 
         private static readonly Lazy<IEnumerable<Type>> _VALUE_TYPES = new Lazy<IEnumerable<Type>>(() => 
-            Utilities.ValidTypes
+            ValidAssemblyTypes
                 .Where(type => type != typeof(void))
                 .Where(type => type.IsPrimitive || type.IsValueType && type.HasSerializableAttribute())
         );

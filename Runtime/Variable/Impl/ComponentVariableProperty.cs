@@ -5,6 +5,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Scripting;
+using static EntitiesBT.Variable.Utility;
 
 namespace EntitiesBT.Variable
 {
@@ -36,7 +37,7 @@ namespace EntitiesBT.Variable
         
         protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
-            var data = Utility.GetTypeHashAndFieldOffset(ComponentValueName);
+            var data = GetTypeHashAndFieldOffset(ComponentValueName);
             if (data.Type != typeof(T) || data.Hash == 0)
             {
                 Debug.LogError($"ComponentVariable({ComponentValueName}) is not valid, fallback to ConstantValue", (UnityEngine.Object)self);

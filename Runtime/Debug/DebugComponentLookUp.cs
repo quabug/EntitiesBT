@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
+using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.DebugView
 {
@@ -15,7 +16,7 @@ namespace EntitiesBT.DebugView
         {
             var debugViews = new List<(int nodeTypeId, Type debugViewType)>();
             
-            foreach (var type in Utilities.ValidTypes)
+            foreach (var type in ValidAssemblyTypes)
             {
                 var behaviorNodeAttribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 if (behaviorNodeAttribute != null)

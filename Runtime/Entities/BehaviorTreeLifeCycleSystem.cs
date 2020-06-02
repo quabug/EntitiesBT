@@ -50,8 +50,9 @@ namespace EntitiesBT.Entities
                 .WithNone<BehaviorTreeTargetComponent>()
                 .ForEach((Entity entity, in LastTargetComponent lastTarget) =>
             {
-                ecb.RemoveComponent<LastTargetComponent>(entity);
                 UnbindBehaviorTree(lastTarget.Target, lastTarget.Blob);
+                lastTarget.Blob.BlobRef.Dispose();
+                ecb.RemoveComponent<LastTargetComponent>(entity);
             }).Run();
             
             _entityCommandBufferSystem.AddJobHandleForProducer(Dependency);
