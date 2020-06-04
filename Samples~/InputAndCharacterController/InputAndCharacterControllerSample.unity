@@ -2126,12 +2126,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _file: {fileID: 0}
-  _rootNode: {fileID: 1454846013}
+  _source:
+    id: 0
   _thread: 0
-  _autoCreateTypes: 7
+  _autoCreateTypes: 1
   _order: 0
   _debugName: 
+  references:
+    version: 1
+    00000000:
+      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Components}
+      data:
+        Root: {fileID: 1454846013}
+        AutoDestroy: 1
 --- !u!114 &1736258352
 MonoBehaviour:
   m_ObjectHideFlags: 0

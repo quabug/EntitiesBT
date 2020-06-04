@@ -1,5 +1,3 @@
-using System;
-using System.Reflection;
 using EntitiesBT.Entities;
 using Unity.Entities;
 using UnityEngine;
@@ -8,9 +6,7 @@ namespace EntitiesBT.Components
 {
     public class BehaviorTreeRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
-        [Header("Order: File > RootNode")]
-        [SerializeField] private TextAsset _file = default;
-        [SerializeField] private BTNode _rootNode;
+        [SerializeReference] private IBehaviorTreeSource _source = default;
         [SerializeField] private BehaviorTreeThread _thread = BehaviorTreeThread.ForceRunOnMainThread;
         
         [Tooltip("add queried components of behavior tree into entity automatically")]
@@ -23,17 +19,19 @@ namespace EntitiesBT.Components
 
         private void Reset()
         {
-            _rootNode = GetComponentInChildren<BTNode>();
+            var source = new BehaviorTreeSourceGameObject
+            {
+                Root = GetComponentInChildren<BTNode>()
+              , AutoDestroy = true
+            };
+            _source = source;
         }
 
-        public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        public async void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             if (!enabled) return;
             
-            if (_rootNode != null && _rootNode.GetComponent<StopConvertToEntity>() == null)
-                _rootNode.gameObject.AddComponent<StopConvertToEntity>();
-            
-            var blob = _file != null ? _file.ToBlob() : _rootNode.ToBlob();
+            var blob = await _source.GetBlobAsset();
             var blobRef = new NodeBlobRef(blob);
             entity.AddBehaviorTree(dstManager, blobRef, _order, _autoCreateTypes, _thread, _debugName);
         }
