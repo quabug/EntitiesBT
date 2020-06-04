@@ -10,7 +10,7 @@ namespace EntitiesBT.Components
         [SerializeField] private BehaviorTreeThread _thread = BehaviorTreeThread.ForceRunOnMainThread;
         
         [Tooltip("add queried components of behavior tree into entity automatically")]
-        [SerializeField] private AutoCreateType _autoCreateTypes = AutoCreateType.BehaviorTreeComponent;
+        [SerializeField] private AutoCreateType _autoCreateTypes = AutoCreateType.All;
 
         [SerializeField] private int _order = 0;
         [SerializeField] private string _debugName = default;

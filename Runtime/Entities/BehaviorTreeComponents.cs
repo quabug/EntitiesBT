@@ -42,6 +42,7 @@ namespace EntitiesBT.Entities
     public enum AutoCreateType
     {
         None = 0
+      , All = int.MaxValue
       , BehaviorTreeComponent = 1 << 0
       , ReadOnly = 1 << 1
       , ReadWrite = 1 << 2
