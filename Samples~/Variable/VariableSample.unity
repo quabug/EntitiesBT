@@ -180,6 +180,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   LongVariable:
     id: 0
   String: aabbbcccc
@@ -249,6 +258,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   LongVariable:
     id: 0
   String: aabbbcccc
@@ -349,12 +367,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _file: {fileID: 0}
-  _rootNode: {fileID: 1427302886}
+  _source:
+    id: 0
   _thread: 0
-  _autoCreateTypes: -1
+  _autoCreateTypes: 7
   _order: 0
   _debugName: 
+  references:
+    version: 1
+    00000000:
+      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Components}
+      data:
+        Root: {fileID: 1427302886}
+        AutoDestroy: 1
 --- !u!114 &455006541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,12 +439,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _file: {fileID: 0}
-  _rootNode: {fileID: 1723425238}
+  _source:
+    id: 0
   _thread: 0
-  _autoCreateTypes: -1
+  _autoCreateTypes: 7
   _order: 0
   _debugName: 
+  references:
+    version: 1
+    00000000:
+      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Components}
+      data:
+        Root: {fileID: 1723425238}
+        AutoDestroy: 1
 --- !u!114 &1392768647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,6 +536,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!4 &1427302887
 Transform:
@@ -647,6 +688,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   LongVariable:
     id: 0
   String: 
@@ -718,6 +768,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!1 &1754363719
 GameObject:
@@ -762,6 +821,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   LongVariable:
     id: 0
   String: 

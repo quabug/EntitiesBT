@@ -68,7 +68,7 @@ or
 <img width="600" alt="create" src="https://user-images.githubusercontent.com/683655/72404172-5b4f5c00-378f-11ea-94a1-bb8aa5eb2608.gif" />
 
 #### Attach behavior tree onto _Entity_
-<img width="600" alt="attach" src="https://user-images.githubusercontent.com/683655/72404398-27c10180-3790-11ea-82e3-0a973369ab0f.gif" />
+<img width="600" alt="attach" src="https://user-images.githubusercontent.com/683655/83865297-97905280-a758-11ea-9dd0-0a76bf601895.gif" />
 
 #### Serialization
 <img width="600" alt="save-to-file" src="https://user-images.githubusercontent.com/683655/72407209-b7b77900-3799-11ea-9de3-0703b1936f63.gif" />

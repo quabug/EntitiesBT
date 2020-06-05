@@ -27,5 +27,11 @@ namespace EntitiesBT.Components
         {
             return Children(parent).Select(child => child.GetComponent<T>()).Where(child => child != null);
         }
+        
+        [Pure]
+        public static bool IsPrefab([NotNull] this GameObject gameObject)
+        {
+            return !gameObject.scene.IsValid() && !gameObject.scene.isLoaded;
+        }
     }
 }
