@@ -19,10 +19,11 @@ namespace EntitiesBT.Components
 
         private void Reset()
         {
+            var childBehaviorTree = GetComponentInChildren<BTNode>();
             var source = new BehaviorTreeSourceGameObject
             {
-                Root = GetComponentInChildren<BTNode>()
-              , AutoDestroy = true
+                Root = childBehaviorTree
+              , AutoDestroy = childBehaviorTree != null
             };
             _source = source;
         }
