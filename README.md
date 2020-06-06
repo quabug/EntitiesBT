@@ -43,7 +43,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Able to serialize behavior tree into binary file.
 - Flexible thread control: force on main thread, force on job thread, controlled by behavior tree.
 - Runtime debug window to show the states of nodes.
-- Optimized. 0 GC allocated by behavior tree itself, only 64Byte GC allocated every tick by [`CreateArchetypeChunkArrayAsync`](Runtime/Entities/VirtualMachineSystem.cs#L59). 
+- Optimized. 0 GC allocated by behavior tree itself after initialized, only 64Byte GC allocated every tick by [`CreateArchetypeChunkArrayAsync`](Runtime/Entities/VirtualMachineSystem.cs#L59). 
 
 ## Disadvantages
 - Incompatible with burst.
