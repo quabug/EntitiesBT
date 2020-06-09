@@ -5571,7 +5571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _source:
     id: 0
-  _thread: 2
+  _thread: 0
   _autoCreateTypes: 1
   _order: 0
   _debugName: 
@@ -7799,7 +7799,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _source:
     id: 0
-  _thread: 1
+  _thread: 0
   _autoCreateTypes: 1
   _order: 0
   _debugName: 

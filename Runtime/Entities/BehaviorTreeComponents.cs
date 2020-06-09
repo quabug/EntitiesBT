@@ -1,5 +1,5 @@
 ﻿using System;
-using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using Unity.Jobs;
 
@@ -65,6 +65,13 @@ namespace EntitiesBT.Entities
         public EntityQueryMask QueryMask;
         public Entity BehaviorTree;
         public JobHandle Dependency;
+    }
+
+    public struct CurrentBehaviorTreeComponent : IComponentData
+    {
+        public IntPtr/* BehaviorTreeBufferElement* */ Value;
+        public unsafe ref BehaviorTreeBufferElement RefValue =>
+            ref UnsafeUtilityEx.AsRef<BehaviorTreeBufferElement>(Value.ToPointer());
     }
 
     public struct BehaviorTreeTargetComponent : IComponentData

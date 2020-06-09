@@ -58,6 +58,7 @@ namespace EntitiesBT.Components
             VirtualMachine.Reset(ref blob, ref bb);
 
             dstManager.AddBuffer<BehaviorTreeBufferElement>(entity);
+            dstManager.AddComponent<CurrentBehaviorTreeComponent>(entity);
 
             var behaviorTreeEntity = dstManager.CreateEntity();
             

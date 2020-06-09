@@ -72,10 +72,8 @@ namespace EntitiesBT.DebugView
                         tree = new GameObject(EntityManager.GetName(buffer[i].BehaviorTree));
                         tree.transform.SetParent(transform);
                         var root = tree.AddComponent<BTDebugViewRoot>();
-                        root.Blackboard = new EntityBlackboard
-                        {
-                            EntityManager = EntityManager, Entity = Entity, BehaviorTreeIndex = i
-                        };
+                        root.Blackboard = new EntityBlackboard { EntityManager = EntityManager, Entity = Entity };
+                        root.Blob = buffer[i].NodeBlob;
                     }
                     tree.transform.SetAsLastSibling();
                     trees[buffer[i].NodeBlob] = tree;
@@ -93,14 +91,14 @@ namespace EntitiesBT.DebugView
     public class BTDebugViewRoot : MonoBehaviour
     {
         [NonSerialized] public EntityBlackboard Blackboard;
+        [NonSerialized] public NodeBlobRef Blob;
         private List<BTDebugView> _views = new List<BTDebugView>();
 
         private void OnEnable() {}
 
         private void Start()
         {
-            var blob = Blackboard.GetDataRef<BehaviorTreeBufferElement>().NodeBlob;
-            CreateViews(blob);
+            CreateViews(Blob);
         }
 
         private void Update()
@@ -124,12 +122,15 @@ namespace EntitiesBT.DebugView
                 if (debugViewTypeList.Any())
                 {
                     foreach (var viewType in debugViewTypeList)
-                        nodeGameObject.AddComponent(viewType);
+                    {
+                        var view = nodeGameObject.AddComponent(viewType) as BTDebugView;
+                        if (view != null) view.Blob = blob;
+                    }
                 }
                 else
                 {
                     nodeGameObject.name = $"?? {nodeGameObject.name}";
-                    nodeGameObject.AddComponent<BTDebugView>();
+                    nodeGameObject.AddComponent<BTDebugView>().Blob = blob;
                 }
                 
                 var parentIndex = blob.ParentIndex(i);

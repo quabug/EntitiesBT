@@ -11,7 +11,6 @@ namespace EntitiesBT.Entities
         public ArchetypeChunk Chunk;
         public int EntityIndex;
         public EntityCommandJob EntityCommandJob;
-        [NativeDisableUnsafePtrRestriction] public unsafe void* BehaviorTreeElementPtr;
         
         private unsafe void* GetPtrByTypeIndexRW(int typeIndex)
         {
@@ -31,8 +30,6 @@ namespace EntitiesBT.Entities
 
         public unsafe T GetData<T>() where T : struct
         {
-            if (typeof(T) == typeof(BehaviorTreeBufferElement))
-                return UnsafeUtilityEx.AsRef<T>(BehaviorTreeElementPtr);
             var index = TypeManager.GetTypeIndex<T>();
             var ptr = GetPtrByTypeIndexRO(index);
             return UnsafeUtilityEx.AsRef<T>(ptr);
@@ -40,8 +37,6 @@ namespace EntitiesBT.Entities
 
         public unsafe ref T GetDataRef<T>() where T : struct
         {
-            if (typeof(T) == typeof(BehaviorTreeBufferElement))
-                return ref UnsafeUtilityEx.AsRef<T>(BehaviorTreeElementPtr);
             var index = TypeManager.GetTypeIndex<T>();
             var ptr = GetPtrByTypeIndexRW(index);
             return ref UnsafeUtilityEx.AsRef<T>(ptr);

@@ -1,7 +1,7 @@
 {
   "name": "entities-bt",
   "description": "Behavior Tree for Unity Entities",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "unity": "2019.3",
   "displayName": "Entities Behavior Tree",
   "dependencies": {
@@ -51,7 +51,7 @@
     {
       "displayName": "[HACK] internal-methods-of-Unity.Entities",
       "description": "(NOT A CODE SAMPLE) hacky way to access internal methods of unity entities",
-      "path": "Samples~/EntitiesInternalMethods"
+      "path": "Hack~/EntitiesInternalMethods"
     }
   ]
 }

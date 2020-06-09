@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Unity.Entities;
 
 namespace EntitiesBT.Entities
@@ -70,7 +71,19 @@ namespace EntitiesBT.Entities
                         || bt.AutoCreation.HasFlagFast(AutoCreateType.ReadWrite) && componentType.AccessModeType == ComponentType.AccessMode.ReadWrite
                         || bt.AutoCreation.HasFlagFast(AutoCreateType.BehaviorTreeComponent) && TypeManager.GetType(componentType.TypeIndex)?.GetCustomAttribute<BehaviorTreeComponentAttribute>() != null
                     ;
-                    if (shouldCreate) ecb.AddComponent(target, componentType);
+                    if (shouldCreate)
+                    {
+                        var typeInfo = TypeManager.GetTypeInfo(componentType.TypeIndex);
+                        switch (typeInfo.Category)
+                        {
+                            case TypeManager.TypeCategory.ComponentData:
+                                ecb.AddComponent(target, componentType);
+                                break;
+                            case TypeManager.TypeCategory.BufferData:
+                                ecb.AddBuffer(target, componentType);
+                                break;
+                        }
+                    }
                 }
             }
 

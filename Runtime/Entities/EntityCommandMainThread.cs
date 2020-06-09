@@ -72,5 +72,65 @@ namespace EntitiesBT.Entities
         {
             return EntityCommandBuffer.SetBuffer<T>(Entity);
         }
+
+        public Entity Clone(Entity entity)
+        {
+            return EntityCommandBuffer.Instantiate(entity);
+        }
+
+        public void Destroy(Entity entity)
+        {
+            EntityCommandBuffer.DestroyEntity(entity);
+        }
+
+        public void AddComponent<T>(Entity entity, T component) where T : struct, IComponentData
+        {
+            EntityCommandBuffer.AddComponent(entity, component);
+        }
+
+        public void AddComponent<T>(Entity entity) where T : struct, IComponentData
+        {
+            EntityCommandBuffer.AddComponent<T>(entity);
+        }
+
+        public void AddComponent(Entity entity, ComponentType componentType)
+        {
+            EntityCommandBuffer.AddComponent(entity, componentType);
+        }
+
+        public void SetComponent<T>(Entity entity, T component) where T : struct, IComponentData
+        {
+            EntityCommandBuffer.SetComponent(entity, component);
+        }
+
+        public void RemoveComponent<T>(Entity entity)
+        {
+            EntityCommandBuffer.RemoveComponent<T>(entity);
+        }
+
+        public void RemoveComponent(Entity entity, ComponentType componentType)
+        {
+            EntityCommandBuffer.RemoveComponent(entity, componentType);
+        }
+
+        public void AddSharedComponent<T>(Entity entity, T component) where T : struct, ISharedComponentData
+        {
+            EntityCommandBuffer.AddSharedComponent(entity, component);
+        }
+
+        public void SetSharedComponent<T>(Entity entity, T component) where T : struct, ISharedComponentData
+        {
+            EntityCommandBuffer.SetSharedComponent(entity, component);
+        }
+
+        public DynamicBuffer<T> AddBuffer<T>(Entity entity) where T : struct, IBufferElementData
+        {
+            return EntityCommandBuffer.AddBuffer<T>(entity);
+        }
+
+        public DynamicBuffer<T> SetBuffer<T>(Entity entity) where T : struct, IBufferElementData
+        {
+            return EntityCommandBuffer.SetBuffer<T>(entity);
+        }
     }
 }
