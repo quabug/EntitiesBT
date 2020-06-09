@@ -26,7 +26,8 @@ namespace EntitiesBT.Entities
 
         public unsafe ref T GetDataRef<T>() where T : struct
         {
-            if (typeof(T) == typeof(BehaviorTreeBufferElement))
+            var type = typeof(T);
+            if (type == typeof(BehaviorTreeBufferElement))
             {
                 var offset = (long) BehaviorTreeIndex * UnsafeUtility.SizeOf<BehaviorTreeBufferElement>();
                 var ptr = (byte*)EntityManager.GetBuffer<BehaviorTreeBufferElement>(Entity).GetUnsafePtr() + offset;

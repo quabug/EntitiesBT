@@ -1,7 +1,8 @@
 {
     "name": "EntitiesInternalMethods",
     "references": [
-        "GUID:734d92eba21c94caba915361bd5ac177"
+        "GUID:734d92eba21c94caba915361bd5ac177",
+        "GUID:e0cd26848372d4e5c891c569017e11f1"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -13,5 +14,5 @@
         "BT_EDITOR_INTERAL_METHODS_DLL"
     ],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }
