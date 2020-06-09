@@ -358,6 +358,7 @@ public class BehaviorTreeDeltaTimeSystem : ComponentSystem
 }
 ```
 The components of behavior will add into `Entity` automatically on the stage of convert `GameObject` to `Entity`, if `AutoAddBehaviorTreeComponents` is enabled.
+
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/72411453-d7549e80-37a5-11ea-925a-b3949180dd16.png" />
 
 #### Advanced: virtual node builder
