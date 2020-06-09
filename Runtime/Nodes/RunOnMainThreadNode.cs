@@ -8,11 +8,12 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("64E0DAFB-20E2-4DF4-910E-ADFA831DB8A9", BehaviorNodeType.Decorate)]
     public struct RunOnMainThreadNode : INodeData
     {
+        [ReadWrite(typeof(CurrentBehaviorTreeComponent))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            ref var behaviorTreeElement = ref bb.GetDataRef<BehaviorTreeBufferElement>();
+            ref var behaviorTreeElement = ref bb.GetDataRef<CurrentBehaviorTreeComponent>().RefValue;
             if (behaviorTreeElement.RuntimeThread == BehaviorTreeRuntimeThread.ForceJobThread
                 || behaviorTreeElement.RuntimeThread == BehaviorTreeRuntimeThread.ForceMainThread)
                 return index.TickChildrenReturnFirstOrDefault(ref blob, ref bb);

@@ -11,11 +11,11 @@ namespace EntitiesBT.DebugView
     {
         [NonSerialized] public EntityBlackboard? Blackboard;
         [NonSerialized] public int Index;
+        [NonSerialized] public NodeBlobRef Blob;
         
         public bool IsValid => Blackboard != null && Blob.BlobRef.IsCreated;
         public EntityManager EntityManager => Blackboard.Value.EntityManager;
         public Entity Entity => Blackboard.Value.Entity;
-        public NodeBlobRef Blob => Blackboard.Value.GetDataRef<BehaviorTreeBufferElement>().NodeBlob;
 
         // TODO: not implemented yet
         [NonSerialized] public bool PauseOnTick = false;

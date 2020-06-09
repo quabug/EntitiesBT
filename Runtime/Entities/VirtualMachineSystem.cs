@@ -1,3 +1,4 @@
+using System;
 using EntitiesBT.Core;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -23,57 +24,59 @@ namespace EntitiesBT.Entities
             };
         }
         
-        protected override void OnUpdate()
+        protected override unsafe void OnUpdate()
         {
             _mainThreadBlackboard.EntityCommandMainThread.EntityCommandBuffer =
                 _endSimulationEntityCommandBufferSystem.CreateCommandBuffer();
-            var behaviorTreeDeps = new JobHandle();
-            Entities.WithoutBurst().ForEach((Entity entity, DynamicBuffer<BehaviorTreeBufferElement> buffers) =>
+            var behaviorTreeJobDeps = new JobHandle();
+            Entities.WithoutBurst().ForEach((Entity entity, DynamicBuffer<BehaviorTreeBufferElement> buffers, ref CurrentBehaviorTreeComponent currentBehaviorTree) =>
             {
                 _mainThreadBlackboard.Entity = entity;
                 _mainThreadBlackboard.EntityCommandMainThread.Entity = entity;
                 for (var i = 0; i < buffers.Length; i++)
                 {
-                    _mainThreadBlackboard.BehaviorTreeIndex = i;
-                    if (buffers[i].RuntimeThread == BehaviorTreeRuntimeThread.MainThread
-                        || buffers[i].RuntimeThread == BehaviorTreeRuntimeThread.ForceMainThread)
+                    var bufferPtr = (IntPtr) buffers.GetUnsafeReadOnlyPtr() + UnsafeUtility.SizeOf<BehaviorTreeBufferElement>() * i;
+                    ref var buffer = ref UnsafeUtilityEx.AsRef<BehaviorTreeBufferElement>(bufferPtr.ToPointer());
+                    if (buffer.RuntimeThread == BehaviorTreeRuntimeThread.MainThread
+                        || buffer.RuntimeThread == BehaviorTreeRuntimeThread.ForceMainThread)
                     {
-                        if (buffers[i].QueryMask.Matches(entity))
+                        if (buffer.QueryMask.Matches(entity))
                         {
                             var blob = buffers[i].NodeBlob;
+                            currentBehaviorTree.Value = bufferPtr;
                             VirtualMachine.Tick(ref blob, ref _mainThreadBlackboard);
                         }
                     }
                     else
                     {
                         // TODO: is this right way to do this? seems not optimize?
-                        behaviorTreeDeps = JobHandle.CombineDependencies(behaviorTreeDeps, buffers[i].Dependency);
+                        behaviorTreeJobDeps = JobHandle.CombineDependencies(behaviorTreeJobDeps, buffers[i].Dependency);
                     }
                 }
             }).Run();
             
-            Dependency = JobHandle.CombineDependencies(Dependency, behaviorTreeDeps);
+            Dependency = JobHandle.CombineDependencies(Dependency, behaviorTreeJobDeps);
             
-            var behaviorTreeBufferType = GetArchetypeChunkBufferType<BehaviorTreeBufferElement>();
-            var entityType = GetArchetypeChunkEntityType();
             var chunks = _jobQuery.CreateArchetypeChunkArrayAsync(Allocator.TempJob, out var deps);
-            var jobECB = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
+            Dependency = JobHandle.CombineDependencies(deps, Dependency);
+            
             var job = new TickVirtualMachine {
                 Chunks = chunks
               , Blackboard = new EntityJobChunkBlackboard { GlobalSystemVersion = GlobalSystemVersion }
-              , BehaviorTreeBufferType = behaviorTreeBufferType
-              , EntityType = entityType
-              , ECB = jobECB
+              , BehaviorTreeBufferType = GetArchetypeChunkBufferType<BehaviorTreeBufferElement>()
+              , CurrentBehaviorTreeType = GetArchetypeChunkComponentType<CurrentBehaviorTreeComponent>()
+              , EntityType = GetArchetypeChunkEntityType()
+              , ECB = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
             };
-            
-            Dependency = JobHandle.CombineDependencies(deps, Dependency);
             Dependency = job.Schedule(chunks.Length, 8, Dependency);
+            
             _endSimulationEntityCommandBufferSystem.AddJobHandleForProducer(Dependency);
         }
         
         struct TickVirtualMachine : IJobParallelFor
         {
             public ArchetypeChunkBufferType<BehaviorTreeBufferElement> BehaviorTreeBufferType;
+            public ArchetypeChunkComponentType<CurrentBehaviorTreeComponent> CurrentBehaviorTreeType;
             [Unity.Collections.ReadOnly] public ArchetypeChunkEntityType EntityType;
             [DeallocateOnJobCompletion] public NativeArray<ArchetypeChunk> Chunks;
             public EntityJobChunkBlackboard Blackboard;
@@ -84,21 +87,24 @@ namespace EntitiesBT.Entities
                 var chunk = Chunks[index];
                 var entities = chunk.GetNativeArray(EntityType);
                 var bufferAccessor = chunk.GetBufferAccessor(BehaviorTreeBufferType);
+                var currentBehaviorTrees = chunk.GetNativeArray(CurrentBehaviorTreeType);
                 for (var entityIndex = 0; entityIndex < chunk.Count; entityIndex++)
                 {
                     var buffers = bufferAccessor[entityIndex];
                     for (var behaviorTreeIndex = 0; behaviorTreeIndex < buffers.Length; behaviorTreeIndex++)
                     {
-                        if ((buffers[behaviorTreeIndex].RuntimeThread == BehaviorTreeRuntimeThread.JobThread
-                             || buffers[behaviorTreeIndex].RuntimeThread == BehaviorTreeRuntimeThread.ForceJobThread)
-                            && buffers[behaviorTreeIndex].QueryMask.Matches(entities[entityIndex]))
+                        var bufferPtr = (IntPtr) buffers.GetUnsafeReadOnlyPtr()
+                                        + UnsafeUtility.SizeOf<BehaviorTreeBufferElement>() * behaviorTreeIndex;
+                        ref var buffer = ref UnsafeUtilityEx.AsRef<BehaviorTreeBufferElement>(bufferPtr.ToPointer());
+                        if ((buffer.RuntimeThread == BehaviorTreeRuntimeThread.JobThread
+                             || buffer.RuntimeThread == BehaviorTreeRuntimeThread.ForceJobThread)
+                            && buffer.QueryMask.Matches(entities[entityIndex]))
                         {
                             Blackboard.Chunk = chunk;
                             Blackboard.EntityIndex = entityIndex;
                             Blackboard.EntityCommandJob = new EntityCommandJob(ECB, entities[entityIndex], index);
-                            var offset = (long) behaviorTreeIndex * UnsafeUtility.SizeOf<BehaviorTreeBufferElement>();
-                            Blackboard.BehaviorTreeElementPtr = (byte*) buffers.GetUnsafePtr() + offset;
-                            var blob = buffers[behaviorTreeIndex].NodeBlob;
+                            var blob = buffer.NodeBlob;
+                            currentBehaviorTrees[entityIndex] = new CurrentBehaviorTreeComponent{Value = bufferPtr};
                             VirtualMachine.Tick(ref blob, ref Blackboard);
                         }
                     }

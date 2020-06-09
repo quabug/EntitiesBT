@@ -10,7 +10,6 @@ namespace EntitiesBT.Entities
         public EntityManager EntityManager;
         public Entity Entity;
         public EntityCommandMainThread EntityCommandMainThread;
-        public int BehaviorTreeIndex;
         
         public bool HasData<T>() where T : struct
         {
@@ -26,19 +25,9 @@ namespace EntitiesBT.Entities
 
         public unsafe ref T GetDataRef<T>() where T : struct
         {
-            var type = typeof(T);
-            if (type == typeof(BehaviorTreeBufferElement))
-            {
-                var offset = (long) BehaviorTreeIndex * UnsafeUtility.SizeOf<BehaviorTreeBufferElement>();
-                var ptr = (byte*)EntityManager.GetBuffer<BehaviorTreeBufferElement>(Entity).GetUnsafePtr() + offset;
-                return ref UnsafeUtilityEx.AsRef<T>(ptr);
-            }
-            else
-            {
-                var index = TypeManager.GetTypeIndex<T>();
-                var ptr = Entity.GetComponentDataRawRW(EntityManager, index);
-                return ref UnsafeUtilityEx.AsRef<T>(ptr);
-            }
+            var index = TypeManager.GetTypeIndex<T>();
+            var ptr = Entity.GetComponentDataRawRW(EntityManager, index);
+            return ref UnsafeUtilityEx.AsRef<T>(ptr);
         }
 
         public unsafe IntPtr GetDataPtrRO(Type type)
