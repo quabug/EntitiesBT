@@ -127,6 +127,7 @@ namespace EntitiesBT.Core
                 .Where(asm => asm.GetReferencedAssemblies().Any(name => name.Name == assemblyName))
                 .Append(assembly)
                 .SelectMany(asm => asm.GetTypesWithoutException())
+                .Distinct()
             ;
         }
     }

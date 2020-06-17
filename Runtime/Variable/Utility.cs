@@ -17,7 +17,7 @@ namespace EntitiesBT.Variable
             public readonly FieldInfo FieldInfo;
             public readonly ulong Hash;
             public readonly int Offset;
-            public string Name => FieldInfo == null ? ComponentType.Name : $"{ComponentType.Name}.{FieldInfo.Name}";
+            public string Name => FieldInfo == null ? ComponentType.FullName : $"{ComponentType.FullName}.{FieldInfo.Name}";
             public Type Type => FieldInfo == null ? ComponentType : FieldInfo.FieldType;
 
             public ComponentFieldData(Type componentType, FieldInfo fieldInfo, ulong hash, int offset)
@@ -29,7 +29,8 @@ namespace EntitiesBT.Variable
             }
         }
         
-        private static readonly Lazy<IEnumerable<ComponentFieldData>> _COMPONENT_FIELDS = new Lazy<IEnumerable<ComponentFieldData>>(() =>
+        
+        private static readonly Lazy<ComponentFieldData[]> _COMPONENT_FIELDS = new Lazy<ComponentFieldData[]>(() =>
         {
             var types =
                 from type in typeof(Entity).Assembly.GetTypesIncludeReference()
@@ -37,7 +38,7 @@ namespace EntitiesBT.Variable
                 select (type, hash: TypeHash.CalculateStableTypeHash(type))
             ;
 
-            return Result();
+            return Result().ToArray();
             
             IEnumerable<ComponentFieldData> Result()
             {
