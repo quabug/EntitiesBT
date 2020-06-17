@@ -32,8 +32,6 @@ namespace EntitiesBT.Components
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            if (!enabled) return;
-            
             var blob = new NodeBlobRef(_source.GetBlobAsset());
             var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
             VirtualMachine.Reset(ref blob, ref bb);

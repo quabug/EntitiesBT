@@ -18,8 +18,6 @@ namespace EntitiesBT.DebugView
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            if (!enabled) return;
-
             var debugView = new GameObject();
             var root = debugView.AddComponent<BTDebugViewTreesManager>();
             root.EntityManager = dstManager;
