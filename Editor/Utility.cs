@@ -102,35 +102,35 @@ namespace EntitiesBT.Editor
              };
          }
 
-         private static IDictionary<Type, Type[]> _variableSubclasses = new Dictionary<Type, Type[]>();
-
-         public static Type[] GetVariableSubclasses(this Type variableType)
-         {
-             if (!_variableSubclasses.TryGetValue(variableType, out var subclasses))
-             {
-                 subclasses =
-                 (
-                     from type in Utilities.ValidAssemblyTypes
-                     where type.IsGenericType
-                         ? IsSubclassOfRawGeneric(variableType.GetGenericTypeDefinition(), type)
-                         : type.IsSubclassOf(variableType)
-                     select type
-                 ).ToArray();
-                 _variableSubclasses[variableType] = subclasses;
-             }
-             return subclasses;
-         }
-         
-         // https://stackoverflow.com/a/457708
-         private static bool IsSubclassOfRawGeneric(Type generic, Type toCheck) {
-             while (toCheck != null && toCheck != typeof(object)) {
-                 var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
-                 if (generic == cur) {
-                     return true;
-                 }
-                 toCheck = toCheck.BaseType;
-             }
-             return false;
-         }
+         // private static IDictionary<Type, Type[]> _variableSubclasses = new Dictionary<Type, Type[]>();
+         //
+         // public static Type[] GetVariableSubclasses(this Type variableType)
+         // {
+         //     if (!_variableSubclasses.TryGetValue(variableType, out var subclasses))
+         //     {
+         //         subclasses =
+         //         (
+         //             from type in Utilities.BehaviorTreeAssemblyTypes
+         //             where type.IsGenericType
+         //                 ? IsSubclassOfRawGeneric(variableType.GetGenericTypeDefinition(), type)
+         //                 : type.IsSubclassOf(variableType)
+         //             select type
+         //         ).ToArray();
+         //         _variableSubclasses[variableType] = subclasses;
+         //     }
+         //     return subclasses;
+         // }
+         //
+         // // https://stackoverflow.com/a/457708
+         // private static bool IsSubclassOfRawGeneric(Type generic, Type toCheck) {
+         //     while (toCheck != null && toCheck != typeof(object)) {
+         //         var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+         //         if (generic == cur) {
+         //             return true;
+         //         }
+         //         toCheck = toCheck.BaseType;
+         //     }
+         //     return false;
+         // }
     }
 }

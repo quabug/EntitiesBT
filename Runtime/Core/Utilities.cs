@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
+using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -113,18 +114,20 @@ namespace EntitiesBT.Core
             }
         }
 
-        private static readonly Lazy<Assembly> _ASSEMBLY_ENTITIES_BT = new Lazy<Assembly>(() => typeof(VirtualMachine).Assembly);
-        
-        private static readonly Lazy<Assembly[]> _VALID_ASSEMBLIES = new Lazy<Assembly[]>(() => AppDomain
-            .CurrentDomain
-            .GetAssemblies()
-            .Where(assembly => assembly.GetReferencedAssemblies()
-                .Any(name => name.Name == _ASSEMBLY_ENTITIES_BT.Value.GetName().Name))
-            .Append(_ASSEMBLY_ENTITIES_BT.Value)
-            .ToArray()
+        public static readonly Lazy<Type[]> BEHAVIOR_TREE_ASSEMBLY_TYPES = new Lazy<Type[]>(() =>
+            typeof(VirtualMachine).Assembly.GetTypesIncludeReference().ToArray()
         );
-        
-        public static IEnumerable<Type> ValidAssemblyTypes => _VALID_ASSEMBLIES.Value
-            .SelectMany(assembly => assembly.GetTypesWithoutException());
+
+        public static IEnumerable<Type> GetTypesIncludeReference(this Assembly assembly)
+        {
+            var assemblyName = assembly.GetName().Name;
+            return AppDomain
+                .CurrentDomain
+                .GetAssemblies()
+                .Where(asm => asm.GetReferencedAssemblies().Any(name => name.Name == assemblyName))
+                .Append(assembly)
+                .SelectMany(asm => asm.GetTypesWithoutException())
+            ;
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace EntitiesBT.Editor
         public static void OnReload()
         {
             var dictionary = new Dictionary<int, (Type type, BehaviorNodeAttribute attribute)>(128);
-            foreach (var type in ValidAssemblyTypes)
+            foreach (var type in BEHAVIOR_TREE_ASSEMBLY_TYPES.Value)
             {
                 var attributes = type.GetCustomAttributes(typeof(BehaviorNodeAttribute));
                 if (!attributes.Any()) continue;

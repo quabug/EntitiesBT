@@ -16,7 +16,7 @@ namespace EntitiesBT.DebugView
         {
             var debugViews = new List<(int nodeTypeId, Type debugViewType)>();
             
-            foreach (var type in ValidAssemblyTypes)
+            foreach (var type in BEHAVIOR_TREE_ASSEMBLY_TYPES.Value)
             {
                 var behaviorNodeAttribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 if (behaviorNodeAttribute != null)
