@@ -50,7 +50,7 @@ namespace EntitiesBT.Core
 
         static MetaNodeRegister()
         {
-            foreach (var type in ValidAssemblyTypes)
+            foreach (var type in BEHAVIOR_TREE_ASSEMBLY_TYPES.Value)
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 if (attribute == null) continue;

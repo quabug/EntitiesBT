@@ -114,8 +114,11 @@ namespace EntitiesBT.Editor
             return Environment.NewLine + "}" + Environment.NewLine;
         }
 
-        private static readonly Lazy<IEnumerable<Type>> _VALUE_TYPES = new Lazy<IEnumerable<Type>>(() => 
-            ValidAssemblyTypes
+        private static readonly Lazy<IEnumerable<Type>> _VALUE_TYPES = new Lazy<IEnumerable<Type>>(() =>
+            AppDomain
+                .CurrentDomain
+                .GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => type != typeof(void))
                 .Where(type => type.IsPrimitive || type.IsValueType && type.HasSerializableAttribute())
         );

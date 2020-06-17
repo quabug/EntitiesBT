@@ -43,40 +43,6 @@ namespace EntitiesBT.Components
                 accessTypes = accessTypes.Concat(VirtualMachine.GetAccessTypes(i, ref blob));
             return new ComponentTypeSet(accessTypes);
         }
-
-        public static void AddBehaviorTree(
-            this Entity entity
-          , EntityManager dstManager
-          , NodeBlobRef blob
-          , int order = 0
-          , AutoCreateType autoCreateType = AutoCreateType.None
-          , BehaviorTreeThread thread = BehaviorTreeThread.ForceRunOnMainThread
-          , string debugName = default
-        )
-        {
-            var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
-            VirtualMachine.Reset(ref blob, ref bb);
-
-            dstManager.AddBuffer<BehaviorTreeBufferElement>(entity);
-            dstManager.AddComponent<CurrentBehaviorTreeComponent>(entity);
-
-            var behaviorTreeEntity = dstManager.CreateEntity();
-            
-#if UNITY_EDITOR
-            dstManager.SetName(behaviorTreeEntity, $"[BT]{dstManager.GetName(entity)}:{order}.{debugName}");
-#endif
-            var query = blob.GetAccessTypes();
-            var dataQuery = new BlackboardDataQuery(query, components =>
-                dstManager.CreateEntityQuery(components.ToArray()));
-            dstManager.AddSharedComponentData(behaviorTreeEntity, dataQuery);
-            
-            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeComponent
-            {
-                Blob = blob, Thread = thread, AutoCreation = autoCreateType
-            });
-            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeTargetComponent {Value = entity});
-            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeOrderComponent {Value = order});
-        }
     }
 
     public static class BlobBuilderExtensions

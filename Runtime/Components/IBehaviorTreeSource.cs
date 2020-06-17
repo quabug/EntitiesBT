@@ -10,17 +10,17 @@ namespace EntitiesBT.Components
     public interface IBehaviorTreeSource
     {
         // TODO: `ValueTask` would be a better choice once available.
-        Task<BlobAssetReference<NodeBlob>> GetBlobAsset();
+        BlobAssetReference<NodeBlob> GetBlobAsset();
     }
 
     [Serializable]
     public class BehaviorTreeSourceTextAsset : IBehaviorTreeSource
     {
         [SerializeField] private TextAsset _file = default;
-        
-        public Task<BlobAssetReference<NodeBlob>> GetBlobAsset()
+
+        public BlobAssetReference<NodeBlob> GetBlobAsset()
         {
-            return Task.FromResult(_file.ToBlob());
+            return _file.ToBlob();
         }
     }
 
@@ -29,14 +29,14 @@ namespace EntitiesBT.Components
     {
         public BTNode Root = default;
         public bool AutoDestroy = false;
-        public Task<BlobAssetReference<NodeBlob>> GetBlobAsset()
+        public BlobAssetReference<NodeBlob> GetBlobAsset()
         {
             var isPrefab = Root.gameObject.IsPrefab();
             if (!isPrefab && !Root.GetComponent<StopConvertToEntity>())
                 Root.gameObject.AddComponent<StopConvertToEntity>();
-            var task = Task.FromResult(Root.ToBlob());
+            var blob = Root.ToBlob();
             if (!isPrefab && AutoDestroy) Object.Destroy(Root.gameObject);
-            return task;
+            return blob;
         }
     }
 }
