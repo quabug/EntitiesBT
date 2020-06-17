@@ -1,3 +1,5 @@
+using System.Linq;
+using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Entities;
 using UnityEngine;
@@ -28,13 +30,33 @@ namespace EntitiesBT.Components
             _source = source;
         }
 
-        public async void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+        public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             if (!enabled) return;
             
-            var blob = await _source.GetBlobAsset();
-            var blobRef = new NodeBlobRef(blob);
-            entity.AddBehaviorTree(dstManager, blobRef, _order, _autoCreateTypes, _thread, _debugName);
+            var blob = new NodeBlobRef(_source.GetBlobAsset());
+            var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
+            VirtualMachine.Reset(ref blob, ref bb);
+
+            dstManager.AddBuffer<BehaviorTreeBufferElement>(entity);
+            dstManager.AddComponent<CurrentBehaviorTreeComponent>(entity);
+
+            var behaviorTreeEntity = conversionSystem.CreateAdditionalEntity(gameObject);
+
+#if UNITY_EDITOR
+            dstManager.SetName(behaviorTreeEntity, $"[BT]{dstManager.GetName(entity)}:{_order}.{_debugName}");
+#endif
+            var query = blob.GetAccessTypes();
+            var dataQuery = new BlackboardDataQuery(query, components =>
+                dstManager.CreateEntityQuery(components.ToArray()));
+            dstManager.AddSharedComponentData(behaviorTreeEntity, dataQuery);
+
+            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeComponent
+            {
+                Blob = blob, Thread = _thread, AutoCreation = _autoCreateTypes
+            });
+            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeTargetComponent {Value = entity});
+            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeOrderComponent {Value = _order});
         }
     }
 }
