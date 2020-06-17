@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -18,21 +19,21 @@ namespace EntitiesBT.DebugView
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             if (!enabled) return;
-            
+
             var debugView = new GameObject();
             var root = debugView.AddComponent<BTDebugViewTreesManager>();
             root.EntityManager = dstManager;
             root.Entity = entity;
-            if (GetComponentInParent<ConvertToEntity>().ConversionMode == ConvertToEntity.Mode.ConvertAndInjectGameObject)
-            {
-                debugView.name = "__bt_debug_view__";
-                debugView.transform.SetParent(transform);
-            }
-            else
+            if (GetComponentInParent<ConvertToEntity>()?.ConversionMode == ConvertToEntity.Mode.ConvertAndDestroy)
             {
                 debugView.name = name;
                 var parent = FindOrCreateGameObject("__bt_debug_views__");
                 debugView.transform.SetParent(parent.transform);
+            }
+            else
+            {
+                debugView.name = "__bt_debug_view__";
+                debugView.transform.SetParent(transform);
             }
         }
 
