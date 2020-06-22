@@ -203,17 +203,17 @@ MonoBehaviour:
     00000000:
       type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.LongValue
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
         CopyToLocalNode: 0
     00000001:
       type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.OutputValue
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.OutputValue
         CopyToLocalNode: 0
     00000002:
       type: {class: SingleComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.InputValue
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.InputValue
         CopyToLocalNode: 0
 --- !u!4 &327906298
 Transform:
@@ -281,17 +281,17 @@ MonoBehaviour:
     00000000:
       type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.LongValue
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
         CopyToLocalNode: 0
     00000001:
       type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.OutputValue
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.OutputValue
         CopyToLocalNode: 0
     00000002:
       type: {class: SingleComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.InputValue
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.InputValue
         CopyToLocalNode: 0
 --- !u!4 &332438390
 Transform:
@@ -339,8 +339,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac828a561a46d4c2e8c8930610ee3eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputValue: 123.456
-  OutputValue: 333
+  InputValue: 0
+  OutputValue: 0
   LongValue: 0
 --- !u!114 &455006539
 MonoBehaviour:
@@ -504,8 +504,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac828a561a46d4c2e8c8930610ee3eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputValue: 123.456
-  OutputValue: 333
+  InputValue: 0
+  OutputValue: 0
   LongValue: 0
 --- !u!1 &1427302885
 GameObject:
@@ -711,7 +711,7 @@ MonoBehaviour:
     00000000:
       type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.LongValue
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
         CopyToLocalNode: 0
     00000001:
       type: {class: Int32CustomVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
@@ -844,12 +844,12 @@ MonoBehaviour:
     00000000:
       type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.LongValue
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
         CopyToLocalNode: 0
     00000001:
       type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: ComponentVariableData.OutputValue
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.OutputValue
         CopyToLocalNode: 0
     00000002:
       type: {class: SingleNodeVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}

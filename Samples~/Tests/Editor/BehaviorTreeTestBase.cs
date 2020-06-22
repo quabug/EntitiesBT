@@ -43,6 +43,11 @@ namespace EntitiesBT.Test
                 throw new NotImplementedException();
             }
 
+            public bool HasData(Type type)
+            {
+                throw new NotImplementedException();
+            }
+
             public IntPtr GetDataPtrRO(Type type)
             {
                 throw new NotImplementedException();
