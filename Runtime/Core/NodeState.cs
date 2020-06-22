@@ -36,5 +36,11 @@ namespace EntitiesBT.Core
         {
             return state == NodeState.Success || state == NodeState.Running;
         }
+
+        [Pure]
+        public static NodeState ToNodeState(this bool isSuccess)
+        {
+            return isSuccess ? NodeState.Success : NodeState.Failure;
+        }
     }
 }

@@ -42,6 +42,12 @@ namespace EntitiesBT.Entities
             return ref UnsafeUtilityEx.AsRef<T>(ptr);
         }
 
+        public bool HasData(Type type)
+        {
+            var index = TypeManager.GetTypeIndex(type);
+            return Chunk.GetIndexInTypeArray(index) != -1;
+        }
+
         public unsafe IntPtr GetDataPtrRO(Type type)
         {
             return new IntPtr(GetPtrByTypeIndexRO(TypeManager.GetTypeIndex(type)));

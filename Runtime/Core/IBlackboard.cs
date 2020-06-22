@@ -8,6 +8,8 @@ namespace EntitiesBT.Core
         bool HasData<T>() where T : struct;
         T GetData<T>() where T : struct;
         ref T GetDataRef<T>() where T : struct;
+
+        bool HasData(Type type);
         IntPtr GetDataPtrRO(Type type);
         IntPtr GetDataPtrRW(Type type);
         

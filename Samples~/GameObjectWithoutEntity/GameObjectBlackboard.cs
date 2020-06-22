@@ -36,6 +36,11 @@ namespace EntitiesBT.Sample
             throw new NotImplementedException();
         }
 
+        public bool HasData(Type type)
+        {
+            return _dict.ContainsKey(type);
+        }
+
         public IntPtr GetDataPtrRO(Type type)
         {
             throw new NotImplementedException();

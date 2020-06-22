@@ -30,6 +30,11 @@ namespace EntitiesBT.Entities
             return ref UnsafeUtilityEx.AsRef<T>(ptr);
         }
 
+        public bool HasData(Type type)
+        {
+            return EntityManager.HasComponent(Entity, ComponentType.ReadOnly(type));
+        }
+
         public unsafe IntPtr GetDataPtrRO(Type type)
         {
             return new IntPtr(Entity.GetComponentDataRawRO(EntityManager, TypeManager.GetTypeIndex(type)));
