@@ -13,11 +13,11 @@ namespace EntitiesBT.Nodes
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref blackboard);
+            var childState = index.TickChild(ref blob, ref blackboard);
             if (childState == 0)
             {
                 index.ResetChildren(ref blob, ref blackboard);
-                childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref blackboard);
+                childState = index.TickChild(ref blob, ref blackboard);
             }
             return BreakStates.HasFlagFast(childState) ? childState : NodeState.Running;
         }

@@ -16,7 +16,7 @@ namespace EntitiesBT.Nodes
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref blackboard);
+            var childState = index.TickChild(ref blob, ref blackboard);
             CountdownSeconds -= blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
             if (CountdownSeconds <= 0f) return childState.IsCompleted() ? childState : BreakReturnState;
             return NodeState.Running;

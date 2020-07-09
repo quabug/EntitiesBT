@@ -16,11 +16,11 @@ namespace EntitiesBT.Nodes
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref bb);
+            var childState = index.TickChild(ref blob, ref bb);
             if (childState == 0)
             {
                 index.ResetChildren(ref blob, ref bb);
-                childState = index.TickChildrenReturnFirstOrDefault(ref blob, ref bb);
+                childState = index.TickChild(ref blob, ref bb);
             }
             if (BreakStates.HasFlag(childState)) return childState;
 

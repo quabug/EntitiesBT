@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Collections;
@@ -42,8 +43,9 @@ namespace EntitiesBT.Components
     
     public class BTVirtualDecorator<T> : BTVirtualNode<T> where T : struct, INodeData
     {
-        private readonly INodeDataBuilder _child;
-        public BTVirtualDecorator(INodeDataBuilder child) => _child = new BTVirtualRealSelf(child);
-        public override IEnumerable<INodeDataBuilder> Children => _child.Yield();
+        private readonly IEnumerable<INodeDataBuilder> _children;
+        public BTVirtualDecorator(INodeDataBuilder child) => _children = new BTVirtualRealSelf(child).Yield();
+        public BTVirtualDecorator(IEnumerable<INodeDataBuilder> children) => _children = children;
+        public override IEnumerable<INodeDataBuilder> Children => _children;
     }
 }
