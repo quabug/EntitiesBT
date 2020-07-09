@@ -44,7 +44,20 @@ namespace EntitiesBT.Nodes
         {
             return TickChildrenReturnBreakOrDefault(parentIndex, ref blob, ref bb, state => true, state => !state.IsCompleted());
         }
-        
+
+        public static NodeState TickChild<TNodeBlob, TBlackboard>(
+          this int parentIndex
+          , ref TNodeBlob blob
+          , ref TBlackboard bb
+        )
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            var endIndex = blob.GetEndIndex(parentIndex);
+            var childIndex = parentIndex + 1;
+            return childIndex < endIndex ? VirtualMachine.Tick(childIndex, ref blob, ref bb) : 0;
+        }
+
         [LinqTunnel]
         private static NodeState TickChildrenReturnBreakOrDefault<TNodeBlob, TBlackboard>(
           this int parentIndex

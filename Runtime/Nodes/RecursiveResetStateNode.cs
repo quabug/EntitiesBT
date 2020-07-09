@@ -24,7 +24,7 @@ namespace EntitiesBT.Nodes
             var count = endIndex - childIndex;
             // count will be 0 if there's no child
             blob.ResetStates(childIndex, count);
-            return index.TickChildrenReturnFirstOrDefault(ref blob, ref bb);
+            return index.TickChild(ref blob, ref bb);
         }
 
         public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
