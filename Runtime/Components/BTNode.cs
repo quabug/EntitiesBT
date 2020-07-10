@@ -83,13 +83,11 @@ namespace EntitiesBT.Components
         [ContextMenu("Save to file")]
         public void SaveToFile()
         {
-            var path = UnityEditor.EditorUtility.SaveFilePanel("save path", Application.dataPath, "behavior-tree", "bytes");
-            if (string.IsNullOrEmpty(path))
-                return;
-
-            using (var file = new FileStream(path, FileMode.OpenOrCreate))
-                this.SaveToStream(file);
-            
+            var path = UnityEditor.AssetDatabase.GetAssetPath(gameObject);
+            path = string.IsNullOrEmpty(path) ? Application.dataPath : Path.GetDirectoryName(path);
+            path = UnityEditor.EditorUtility.SaveFilePanel("save path", path, name, "bytes");
+            if (string.IsNullOrEmpty(path)) return;
+            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(file);
             UnityEditor.AssetDatabase.Refresh();
         }
 #endif
