@@ -1,0 +1,37 @@
+{
+  "name": "com.quabug.entities-bt.builder.commponent",
+  "description": "Behavior Tree for Unity Entities - Component Builder",
+  "version": "0.18.4",
+  "unity": "2019.3",
+  "displayName": "Entities Behavior Tree - Component Builder",
+  "dependencies": {
+    "com.unity.entities": "0.10.0-preview.6"
+  },
+  "samples": [
+    {
+      "displayName": "[Sample] hybrid-animator",
+      "description": "animator controlled by behavior tree",
+      "path": "Samples~/Animator"
+    },
+    {
+      "displayName": "[Sample] unity-transform",
+      "description": "control transform of game object directly without entity",
+      "path": "Samples~/GameObjectWithoutEntity"
+    },
+    {
+      "displayName": "[Sample] entity",
+      "description": "control translation of entity",
+      "path": "Samples~/Entity"
+    },
+    {
+      "displayName": "[Sample] input system & movement (NEED Odin Serializer)",
+      "description": "sample of input system and unity movement extensions.",
+      "path": "Samples~/InputAndCharacterController"
+    },
+    {
+      "displayName": "[Sample] variable",
+      "description": "variable value from variant source",
+      "path": "Samples~/Variable"
+    }
+  ]
+}

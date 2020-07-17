@@ -58,3 +58,9 @@ Assets/Plugins/Animancer/Examples.meta
 .DS_Store
 
 /Packages/packages-lock.json
+
+# linked directory
+/Packages/essential/Tests
+/Packages/essential/Tests.meta
+/Packages/samples/Samples
+/Packages/samples/Samples.meta

@@ -1,0 +1,10 @@
+{
+  "name": "com.quabug.entities-bt.debug.component-viewer",
+  "description": "Behavior Tree for Unity Entities - Component Debug Viewer",
+  "version": "0.18.4",
+  "unity": "2019.3",
+  "displayName": "Entities Behavior Tree - Component Debug Viewer",
+  "dependencies": {
+    "com.unity.entities": "0.10.0-preview.6"
+  }
+}
