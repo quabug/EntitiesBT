@@ -62,5 +62,8 @@ Assets/Plugins/Animancer/Examples.meta
 # linked directory
 /Packages/essential/Tests
 /Packages/essential/Tests.meta
+!/Packages/essential/Tests~
+
 /Packages/samples/Samples
 /Packages/samples/Samples.meta
+!/Packages/samples/Samples~
