@@ -8,7 +8,10 @@
   "dependencies": {
     "com.unity.entities": "0.10.0-preview.6",
     "com.unity.inputsystem": "1.0.0",
-    "com.unity.rendering.hybrid": "0.5.0-preview.6"
+    "com.unity.rendering.hybrid": "0.5.0-preview.6",
+    "com.quabug.entities-bt.essential": "0.18.4",
+    "com.quabug.entities-bt.builder.component": "0.18.4",
+    "com.quabug.entities-bt.debug.component-view": "0.18.4"
   },
   "samples": [
     {
