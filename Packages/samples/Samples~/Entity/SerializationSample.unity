@@ -175,7 +175,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Components}
+      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
       data:
         _file: {fileID: 4900000, guid: 33c02bf2d9f6e477ba7cce0e0c9976bd, type: 3}
 --- !u!23 &25814985
@@ -294,7 +294,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Components}
+      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
       data:
         _file: {fileID: 4900000, guid: 33c02bf2d9f6e477ba7cce0e0c9976bd, type: 3}
 --- !u!23 &87452522
@@ -424,7 +424,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Components}
+      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
       data:
         _file: {fileID: 4900000, guid: f1a59f99c442548cea0f241af2715c00, type: 3}
 --- !u!23 &339702456
@@ -894,7 +894,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Components}
+      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
       data:
         _file: {fileID: 4900000, guid: f1a59f99c442548cea0f241af2715c00, type: 3}
 --- !u!23 &1896262139
@@ -1000,7 +1000,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Components}
+      type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
       data:
         _file: {fileID: 4900000, guid: f1a59f99c442548cea0f241af2715c00, type: 3}
 --- !u!114 &2006228427

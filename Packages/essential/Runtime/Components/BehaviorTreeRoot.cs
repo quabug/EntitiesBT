@@ -22,17 +22,6 @@ namespace EntitiesBT.Components
 
         private void OnEnable() {}
 
-        private void Reset()
-        {
-            var childBehaviorTree = GetComponentInChildren<BTNode>();
-            var source = new BehaviorTreeSourceGameObject
-            {
-                Root = childBehaviorTree
-              , AutoDestroy = childBehaviorTree != null
-            };
-            _source = source;
-        }
-
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
             var blob = new NodeBlobRef(_source.GetBlobAsset());
