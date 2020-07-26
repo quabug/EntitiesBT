@@ -51,17 +51,36 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Not easy to modify tree structure at runtime.
 - Node data must be compatible with `Blob` and created by [`BlobBuilder`](https://docs.unity3d.com/Packages/com.unity.entities@0.11/api/Unity.Entities.BlobBuilder.html)
 
+## Packages
+- [essential](Packages/essential): essential part of entities behavior tree, any extension should depend on this package.
+- [builder.component](Packages/builder.component): build behavior tree data from unity components.
+- [debug.component-viewer](Packages/debug.component-viewer): show selected entity with behavior tree as components in inspector of unity while running.
+- [variable.scriptable-object](Packages/variable.scriptable-object): extension for using scriptable object data as variable source of behavior tree node.
+- [samples](Packages/samples): samples.
+
 ## HowTo
 ### Installation
-Requirement: Unity >= 2019.3 and entities package >= 0.6.0-preview.24
+Requirement: Unity >= 2019.3 and entities package >= 0.10.0-preview.6
 
 Install the package either by
 
-[UMP](https://docs.unity3d.com/Manual/upm-ui-giturl.html): `https://github.com/quabug/EntitiesBT.git` 
+[UPM](https://docs.unity3d.com/Manual/upm-ui-giturl.html):
+```
+https://github.com/quabug/EntitiesBT.git?path=Packages/essential
+https://github.com/quabug/EntitiesBT.git?path=Packages/builder.component
+https://github.com/quabug/EntitiesBT.git?path=Packages/debug.component-viewer
+https://github.com/quabug/EntitiesBT.git?path=Packages/variable.scriptable-object
+```
 
 or 
 
-[OpenUMP](https://openupm.com/docs/getting-started.html#installing-an-upm-package): `openupm add entities-bt`
+[OpenUPM](https://openupm.com/docs/getting-started.html#installing-an-upm-package):
+```
+openupm add com.quabug.entities-bt.essential
+openupm add com.quabug.entities-bt.builder.component
+openupm add com.quabug.entities-bt.debug.component-viewer
+openupm add com.quabug.entities-bt.variable.scriptable-object
+```
 
 ### Usage
 #### Create behavior tree
