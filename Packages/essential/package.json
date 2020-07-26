@@ -1,7 +1,7 @@
 {
   "name": "com.quabug.entities-bt.essential",
   "description": "Behavior Tree for Unity Entities - Essential",
-  "version": "0.18.4",
+  "version": "0.19.0",
   "unity": "2019.3",
   "displayName": "EntitiesBT - Essential",
   "dependencies": {
@@ -11,7 +11,7 @@
     {
       "displayName": "[Test] tests",
       "description": "test cases of behavior tree",
-      "path": "Samples~/Tests"
+      "path": "Test~"
     },
     {
       "displayName": "[HACK] internal-methods-of-Unity.Entities",

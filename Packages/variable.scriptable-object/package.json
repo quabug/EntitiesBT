@@ -1,11 +1,11 @@
 {
   "name": "com.quabug.entities-bt.variable.scriptable-object",
   "description": "Behavior Tree for Unity Entities - Scriptable Object Variable",
-  "version": "0.18.4",
+  "version": "0.19.0",
   "unity": "2019.3",
   "displayName": "EntitiesBT - Scriptable Object Variable",
   "dependencies": {
     "com.unity.entities": "0.10.0-preview.6",
-    "com.quabug.entities-bt.essential": "0.18.4"
+    "com.quabug.entities-bt.essential": "0.19.0"
   }
 }
