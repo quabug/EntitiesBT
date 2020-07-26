@@ -16,10 +16,13 @@ namespace EntitiesBT.Nodes
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
+            if (CountdownSeconds <= 0f) return 0;
+
             var childState = index.TickChild(ref blob, ref blackboard);
+            if (BreakReturnState.HasFlagFast(childState)) return childState;
+
             CountdownSeconds -= blackboard.GetData<BehaviorTreeTickDeltaTime>().Value;
-            if (CountdownSeconds <= 0f) return childState.IsCompleted() ? childState : BreakReturnState;
-            return NodeState.Running;
+            return CountdownSeconds <= 0f ? NodeState.Success : NodeState.Running;
         }
 
         public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
