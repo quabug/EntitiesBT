@@ -60,9 +60,9 @@ Assets/Plugins/Animancer/Examples.meta
 /Packages/packages-lock.json
 
 # linked directory
-/Packages/essential/Tests
-/Packages/essential/Tests.meta
-!/Packages/essential/Tests~
+/Packages/samples/Tests
+/Packages/samples/Tests.meta
+!/Packages/samples/Tests~
 
 /Packages/samples/Samples
 /Packages/samples/Samples.meta
