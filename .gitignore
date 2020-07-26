@@ -1,11 +1,69 @@
-/Samples
-/Samples.meta
-!/Samples~/
+# Unity
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+sysinfo.txt
+*.pidb.meta
+/bin/
+/LocalPackages/
+/UserSettings/
+ 
+# VS/Rider/MD/Consulo
+ExportedObj/
+.consulo/
+.idea/
+*.csproj
+*.csproj.meta
+*.csproj.DotSettings
+*.unityproj
+*.sln
+*.sln.meta
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+.vs/
+ 
+# Builds
+*.apk
+*.app
+#*.exe
 
-/Extensions
-/Extensions.meta
-!/Extensions~/
+*~$*.xlsx*
+*.userproperties
+*.symbols.zip
 
-/Hack
-/Hack.meta
-!/Hack~/
+# Assets
+!Assets/**/*
+
+Assets/Plugins/Editor/JetBrains
+Assets/Plugins/Editor/JetBrains.meta
+Assets/Plugins/Editor.meta
+
+Assets/EntityCache/
+Assets/EntityCache.meta
+
+Assets/StreamingAssets/
+
+Assets/Plugins/Animancer/Examples/
+Assets/Plugins/Animancer/Examples.meta
+
+# OS
+.DS_Store
+
+/Packages/packages-lock.json
+
+# linked directory
+/Packages/essential/Tests
+/Packages/essential/Tests.meta
+!/Packages/essential/Tests~
+
+/Packages/samples/Samples
+/Packages/samples/Samples.meta
+!/Packages/samples/Samples~
