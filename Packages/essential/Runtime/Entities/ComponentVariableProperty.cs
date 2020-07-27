@@ -13,7 +13,7 @@ namespace EntitiesBT.Variable
     public class VariableComponentDataAttribute : PropertyAttribute {}
     
     [Serializable]
-    public class ComponentVariableProperty<T> : VariableProperty<T> where T : struct
+    public class ComponentVariableProperty<T> : VariableProperty<T> where T : unmanaged
     {
         private struct DynamicComponentData
         {

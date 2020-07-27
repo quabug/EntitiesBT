@@ -22,7 +22,7 @@ namespace EntitiesBT.Variable
     }
     
     // TODO: check loop ref?
-    public class NodeVariableProperty<T> : VariableProperty<T> where T : struct
+    public class NodeVariableProperty<T> : VariableProperty<T> where T : unmanaged
     {
         private struct DynamicNodeRefData
         {

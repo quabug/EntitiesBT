@@ -9,7 +9,7 @@ using Unity.Entities;
 namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTReadInputValue<T, U> : BTInputActionBase<U>
-        where T : struct
+        where T : unmanaged
         where U : struct, IReadInputValueNode
     {
 #if ODIN_INSPECTOR

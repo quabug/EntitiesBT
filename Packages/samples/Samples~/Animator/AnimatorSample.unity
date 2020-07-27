@@ -164,15 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01f5b98cb103407fabb64e2e665e8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   TriggerName: Roll
 --- !u!1 &456945890
 GameObject:
@@ -355,15 +346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!4 &512318346
 Transform:
@@ -425,15 +407,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01f5b98cb103407fabb64e2e665e8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   TriggerName: Crouch
 --- !u!1 &565112784
 GameObject:
@@ -482,15 +455,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
 --- !u!1 &705507993
 GameObject:
@@ -627,16 +591,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  DelayInSeconds: 1
+  TimerSeconds:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,16 +725,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  DelayInSeconds: 1
+  TimerSeconds:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 2
 --- !u!1 &1365720264
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,15 +777,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3013650591734b2cbe7111fcc10341ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   Type: 0
   BreakStates: 0
   RepeatTimes: 0
@@ -873,15 +824,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01f5b98cb103407fabb64e2e665e8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   TriggerName: Jump
 --- !u!1 &2006228425
 GameObject:
@@ -1094,13 +1036,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  DelayInSeconds: 1
+  TimerSeconds:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1

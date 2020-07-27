@@ -20,7 +20,7 @@ namespace EntitiesBT.Variable
     }
     
     [Serializable]
-    public class ScriptableObjectVariableProperty<T> : VariableProperty<T> where T : struct
+    public class ScriptableObjectVariableProperty<T> : VariableProperty<T> where T : unmanaged
     {
         public override int VariablePropertyTypeId => ID;
         

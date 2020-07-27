@@ -9,7 +9,17 @@ using Unity.Entities;
 
 namespace EntitiesBT.Variable
 {
-    public abstract class VariableProperty<T> where T : struct
+    public interface IVariableProperty<T> where T : unmanaged
+    {
+        void Allocate(
+            ref Unity.Entities.BlobBuilder builder
+          , ref EntitiesBT.Variable.BlobVariable<T> blobVariable
+          , EntitiesBT.Core.INodeDataBuilder self
+          , EntitiesBT.Core.ITreeNode<EntitiesBT.Core.INodeDataBuilder>[] tree
+        );
+    }
+
+    public abstract class VariableProperty<T> : IVariableProperty<T> where T : unmanaged
     {
         public const BindingFlags FIELD_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public;
         
@@ -30,7 +40,7 @@ namespace EntitiesBT.Variable
           , void* blobVariablePtr
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : struct
+        ) where T : unmanaged
         {
             variable.Allocate(ref builder, ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(blobVariablePtr), self, tree);
         }
@@ -45,11 +55,13 @@ namespace EntitiesBT.Variable
         
         public static readonly Lazy<Type[]> VARIABLE_PROPERTY_TYPES = new Lazy<Type[]>(() =>
         {
-            var variableAssemblyName = typeof(VariableProperty<>).Assembly.GetName().Name;
+            var variableAssembly = typeof(VariableProperty<>).Assembly;
+            var variableAssemblyName = variableAssembly.GetName().Name;
             return AppDomain
                 .CurrentDomain
                 .GetAssemblies()
                 .Where(assembly => assembly.GetReferencedAssemblies().Any(name => name.Name == variableAssemblyName))
+                .Append(variableAssembly)
                 .SelectMany(assembly => assembly.GetTypesWithoutException())
                 .Where(type => !type.IsAbstract
                                && type.IsGenericType

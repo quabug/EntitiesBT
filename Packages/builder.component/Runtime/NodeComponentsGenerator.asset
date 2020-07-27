@@ -12,19 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283b83d5022d46b8a345bad7768d520e, type: 3}
   m_Name: NodeComponentsGenerator
   m_EditorClassIdentifier: 
-  _directory: Gen
+  _directory: Components
+  _classRenameRegex: (\w+)Node/BT$1
   _includedNodeAssemblies:
   - EntitiesBT.Runtime
-  _excludedNodeTypes: []
+  _excludedNodeTypes:
+  - EntitiesBT.Nodes.ZeroNode
   _fieldCodeGenerators:
   - id: 0
   - id: 1
   - id: 2
+  - id: 3
   references:
     version: 1
     00000000:
-      type: {class: BlobStringFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+      type: {class: BlobVariableFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+      data:
+        ShouldGenerateVariableInterface: 1
+        VariableInterfaceDirectory: Variable
+        VariableInterfaceNamespace: EntitiesBT.Variable
+        VariablePropertyNameSuffix: Property
+        Generator: {fileID: 11400000}
     00000001:
-      type: {class: BlobArrayFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+      type: {class: BlobStringFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
     00000002:
+      type: {class: BlobArrayFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+    00000003:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}

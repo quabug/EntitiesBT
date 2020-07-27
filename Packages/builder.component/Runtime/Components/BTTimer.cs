@@ -1,17 +1,24 @@
+// automatically generate from `NodeComponentTemplateCode.cs`
 using EntitiesBT.Core;
-using EntitiesBT.Nodes;
 using Unity.Entities;
 
 namespace EntitiesBT.Components
 {
-    public class BTTimer : BTNode<TimerNode>
+    public class BTTimer : BTNode<EntitiesBT.Nodes.TimerNode>
     {
-        public float TimeInSeconds;
-        public NodeState BreakReturnState;
+        
+#if ODIN_INSPECTOR
+        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
+        public EntitiesBT.Variable.VariableProperty<System.Single> CountdownSeconds;
+#else
+        [UnityEngine.SerializeReference, SerializeReferenceButton]
+        public EntitiesBT.Variable.SingleProperty CountdownSeconds;
+#endif
 
-        protected override void Build(ref TimerNode data, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders)
+        public EntitiesBT.Core.NodeState BreakReturnState;
+        protected override void Build(ref EntitiesBT.Nodes.TimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            data.CountdownSeconds = TimeInSeconds;
+            CountdownSeconds.Allocate(ref builder, ref data.CountdownSeconds, Self, tree);
             data.BreakReturnState = BreakReturnState;
         }
     }
