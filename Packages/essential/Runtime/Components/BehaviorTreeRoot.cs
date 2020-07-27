@@ -8,6 +8,9 @@ namespace EntitiesBT.Components
 {
     public class BehaviorTreeRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
+#if !ODIN_INSPECTOR
+        [SerializeReferenceButton]
+#endif
         [SerializeReference] private IBehaviorTreeSource _source = default;
         [SerializeField] private BehaviorTreeThread _thread = BehaviorTreeThread.ForceRunOnMainThread;
         
@@ -18,17 +21,6 @@ namespace EntitiesBT.Components
         [SerializeField] private string _debugName = default;
 
         private void OnEnable() {}
-
-        private void Reset()
-        {
-            var childBehaviorTree = GetComponentInChildren<BTNode>();
-            var source = new BehaviorTreeSourceGameObject
-            {
-                Root = childBehaviorTree
-              , AutoDestroy = childBehaviorTree != null
-            };
-            _source = source;
-        }
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {

@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using EntitiesBT.Core;
-using EntitiesBT.Variable;
 using UnityEditor;
 using UnityEngine;
 

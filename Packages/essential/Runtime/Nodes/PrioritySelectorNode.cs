@@ -1,4 +1,3 @@
-using System;
 using EntitiesBT.Core;
 using Unity.Entities;
 

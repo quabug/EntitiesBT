@@ -1,13 +1,13 @@
 {
     "name": "EntitiesBT.Tests.Editor",
     "references": [
-        "UnityEditor.TestRunner",
-        "UnityEngine.TestRunner",
-        "Unity.Collections",
-        "Unity.Entities",
-        "EntitiesBT.Runtime",
-        "EntitiesBT.Tests.Runtime",
-        "EntitiesBT.Components"
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:e0cd26848372d4e5c891c569017e11f1",
+        "GUID:734d92eba21c94caba915361bd5ac177",
+        "GUID:0db6da4b0e13948bab4bf99649766bad",
+        "GUID:c7babe7561eb244059259745ef27b866",
+        "GUID:d3630359ae08047918d5cd6cddd51767"
     ],
     "includePlatforms": [
         "Editor"
