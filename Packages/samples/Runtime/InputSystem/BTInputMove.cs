@@ -9,10 +9,8 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputMove : BTInputActionBase<InputMoveNode>
     {
-#if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
-#endif
-        public VariableProperty<float2> Output;
+        [SerializeReference, SerializeReferenceButton]
+        public float2Property Output;
 
         protected override void Build(ref InputMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

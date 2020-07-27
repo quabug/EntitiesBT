@@ -165,8 +165,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &99409460
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,6 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _recursiveResetStatesBeforeTick: 0
 --- !u!1 &140367276
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,8 +310,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3013650591734b2cbe7111fcc10341ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RepeatTimes: 0
+  Type: 0
   BreakStates: 0
+  RepeatTimes: 0
+  RepeatDurationInSeconds: 0
 --- !u!1 &418836912
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,8 +358,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &617382750
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,8 +411,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &632570901
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,6 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _recursiveResetStatesBeforeTick: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,8 +648,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &749688865
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,8 +872,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &1615340633
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,7 +924,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DelayInSeconds: 1
+  TimerSeconds:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &1851670873
 GameObject:
   m_ObjectHideFlags: 0
@@ -974,8 +1020,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &2006228425
 GameObject:
   m_ObjectHideFlags: 0

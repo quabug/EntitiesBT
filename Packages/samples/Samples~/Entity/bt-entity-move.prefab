@@ -44,8 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &7154796705611245648
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,8 +97,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &7154796705739208521
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,8 +194,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &7154796705978280124
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,8 +339,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &7154796706415700004
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,8 +540,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1
 --- !u!1 &7154796706839227953
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,5 +729,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeInSeconds: 1
+  CountdownSeconds:
+    id: 0
   BreakReturnState: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      data:
+        CustomValue: 1

@@ -3,20 +3,17 @@ using EntitiesBT.Core;
 using EntitiesBT.Variable;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace EntitiesBT.Samples
 {
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
-#if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
-#endif
-        public VariableProperty<float2> InputMoveProperty;
+        [SerializeReference, SerializeReferenceButton]
+        public float2Property InputMoveProperty;
         
-#if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
-#endif
-        public VariableProperty<quaternion> OutputDirectionProperty;
+        [SerializeReference, SerializeReferenceButton]
+        public quaternionProperty OutputDirectionProperty;
 
         protected override void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

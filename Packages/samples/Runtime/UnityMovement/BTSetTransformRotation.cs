@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
@@ -12,10 +9,8 @@ namespace EntitiesBT.Extensions.UnityMovement
 {
     public class BTSetTransformRotation : BTNode<SetTransformRotationNode>
     {
-#if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
-#endif
-        public VariableProperty<quaternion> RotationProperty;
+        [SerializeReference, SerializeReferenceButton]
+        public quaternionProperty RotationProperty;
 
         protected override void Build(ref SetTransformRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

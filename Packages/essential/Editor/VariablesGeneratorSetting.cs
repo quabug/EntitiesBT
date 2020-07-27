@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using static EntitiesBT.Core.Utilities;
 using static EntitiesBT.Variable.VariablePropertyExtensions;
 using static UnityEditor.EditorUtility;
 
@@ -63,7 +62,7 @@ namespace EntitiesBT.Editor
             AssetDatabase.Refresh();
         }
         
-        public static void CreateScriptInterfaceOnly(string filepath, string @namespace, string[] types)
+        public static void CreateScriptInterfaceOnly(string filepath, string @namespace, params string[] types)
         {
             using (var writer = new StreamWriter(filepath))
             {
@@ -94,22 +93,22 @@ namespace EntitiesBT.Editor
             AssetDatabase.Refresh();
         }
         
-        static string CreateInterface(Type type)
+        public static string CreateInterface(Type type, string suffix = "Property")
         {
-            return $"public interface {type.Name}Property {{ void Allocate(ref Unity.Entities.BlobBuilder builder, ref EntitiesBT.Variable.BlobVariable<{type.FullName}> blobVariable, EntitiesBT.Core.INodeDataBuilder self, EntitiesBT.Core.ITreeNode<EntitiesBT.Core.INodeDataBuilder>[] tree); }}";
+            return $"public interface {type.Name}{suffix} : EntitiesBT.Variable.IVariableProperty<{type.FullName}> {{ }}";
         }
 
-        static string CreateClass(Type valueType, Type variablePropertyType)
+        static string CreateClass(Type valueType, Type variablePropertyType, string suffix = "Property")
         {
-            return $"public class {valueType.Name}{variablePropertyType.Name.Split('`')[0]} : {variablePropertyType.FullName.Split('`')[0]}<{valueType.FullName}>, {valueType.Name}Property {{ }}";
+            return $"public class {valueType.Name}{variablePropertyType.Name.Split('`')[0]} : {variablePropertyType.FullName.Split('`')[0]}<{valueType.FullName}>, {valueType.Name}{suffix} {{ }}";
         }
 
-        static string NamespaceBegin(string @namespace)
+        public static string NamespaceBegin(string @namespace)
         {
             return $"namespace {@namespace}" + Environment.NewLine + "{" + Environment.NewLine;
         }
 
-        static string NamespaceEnd()
+        public static string NamespaceEnd()
         {
             return Environment.NewLine + "}" + Environment.NewLine;
         }

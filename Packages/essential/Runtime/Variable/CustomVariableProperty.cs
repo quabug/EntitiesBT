@@ -6,7 +6,7 @@ using UnityEngine.Scripting;
 namespace EntitiesBT.Variable
 {
     [Serializable]
-    public class CustomVariableProperty<T> : VariableProperty<T> where T : struct
+    public class CustomVariableProperty<T> : VariableProperty<T> where T : unmanaged
     {
         public override int VariablePropertyTypeId => ID;
         public T CustomValue;

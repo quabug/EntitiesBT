@@ -9,20 +9,14 @@ namespace EntitiesBT.Samples
 {
     public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
     {
-#if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
-#endif
-        public VariableProperty<float> SpeedProperty;
+        [SerializeReference, SerializeReferenceButton]
+        public SingleProperty SpeedProperty;
         
-#if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
-#endif
-        public VariableProperty<float2> InputMoveProperty;
+        [SerializeReference, SerializeReferenceButton]
+        public float2Property InputMoveProperty;
         
-#if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, System.NonSerialized]
-#endif
-        public VariableProperty<float3> OutputVelocityProperty;
+        [SerializeReference, SerializeReferenceButton]
+        public float3Property OutputVelocityProperty;
 
         protected override void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
