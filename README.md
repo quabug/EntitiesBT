@@ -67,14 +67,29 @@ While developing my new game by using Unity Entities, I found that the existing 
 ### Installation
 Requirement: Unity >= 2019.4 and entities package >= 0.10.0-preview.6
 
-Install the package either by
+Install the packages either by
 
 [UPM](https://docs.unity3d.com/Manual/upm-ui-giturl.html):
+modify `Packages/manifest.json` as below
 ```
-https://github.com/quabug/EntitiesBT.git?path=Packages/essential
-https://github.com/quabug/EntitiesBT.git?path=Packages/builder.component
-https://github.com/quabug/EntitiesBT.git?path=Packages/debug.component-viewer
-https://github.com/quabug/EntitiesBT.git?path=Packages/variable.scriptable-object
+{
+  "dependencies": {
+    ...
+    "com.quabug.entities-bt.essential": "0.19.2",
+    "com.quabug.entities-bt.builder.component": "0.19.2",
+    "com.quabug.entities-bt.debug.component-viewer": "0.19.2",
+    "com.quabug.entities-bt.variable.scriptable-object": "0.19.2"
+  },
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.quabug.entities-bt"
+      ]
+    }
+  ]
+}
 ```
 
 or 
