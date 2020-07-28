@@ -26,6 +26,7 @@ _____      _   _ _   _           ______ _____
 >       - [Decorator](#decorator)
 >       - [Composite](#composite)
 >       - [Entity Query](#entityquery)
+>       - [Advanced: automatically generate unity components from nodes](#advanced-automatically-generate-unity-components-from-nodes)
 >       - [Advanced: customize debug view](#advanced-customize-debug-view)
 >       - [Advanced: access other node data](#advanced-access-other-node-data)
 >       - [Advanced: behavior tree component](#advanced-behavior-tree-component)
@@ -40,7 +41,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 ## Features
 - Actions are easy to read/write data from/to entity.
 - Use Component of Unity directly instead of own editor window to maximize compatibility of other plugins.
-- Data-oriented design, save all nodes data into a continuous data blob ([NodeBlob.cs](Runtime/Entities/NodeBlob.cs))
+- Data-oriented design, save all nodes data into a continuous data blob ([NodeBlob.cs](Packages/essential/Runtime/Entities/NodeBlob.cs))
 - Node has no internal states.
 - Separate runtime nodes and editor nodes.
 - Easy to extend.
@@ -48,7 +49,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 - Able to serialize behavior tree into binary file.
 - Flexible thread control: force on main thread, force on job thread, controlled by behavior tree.
 - Runtime debug window to show the states of nodes.
-- Optimized. 0 GC allocated by behavior tree itself after initialized, only 64Byte GC allocated every tick by [`CreateArchetypeChunkArrayAsync`](Runtime/Entities/VirtualMachineSystem.cs#L59). 
+- Optimized. 0 GC allocated by behavior tree itself after initialized, only 64Byte GC allocated every tick by [`CreateArchetypeChunkArrayAsync`](Packages/essential/Runtime/Entities/VirtualMachineSystem.cs#L59). 
 
 ## Disadvantages
 - Incompatible with burst.
@@ -117,22 +118,22 @@ openupm add com.quabug.entities-bt.variable.scriptable-object
 
 - Force Run on Main Thread: running on main thread only, will not use job to tick behavior tree. Safe to call `UnityEngine` method.
 - Force Run on Job: running on job threads only, will not use main thread to tick behavior tree. Not safe to call `UnityEngine` method.
-- Controlled by Behavior Tree: Running on job threads by default, but will switch to main thread once meet decorator of [`RunOnMainThread`](Runtime/Nodes/RunOnMainThreadNode.cs)
+- Controlled by Behavior Tree: Running on job threads by default, but will switch to main thread once meet decorator of [`RunOnMainThread`](Packages/essential/Runtime/Nodes/RunOnMainThreadNode.cs)
 <img width="300" alt="" src="https://user-images.githubusercontent.com/683655/72407836-cdc63900-379b-11ea-8979-605e725ab0f7.png" />
 
 #### Variable Property
 Fetch data from different sources.
-- [`CustomVariableProperty`](Runtime/Variable/CustomVariableProperty.cs): regular variable, custom value will save into `NodeData`.
+- [`CustomVariableProperty`](Packages/essential/Runtime/Variable/CustomVariableProperty.cs): regular variable, custom value will save into `NodeData`.
 
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950074-7764aa80-6944-11ea-9ea7-0697ad5a6da5.gif">
 
-- [`ComponentVariableProperty`](Runtime/Components/ComponentVariableProperty.cs): fetch data from `Component` on `Entity`
+- [`ComponentVariableProperty`](Packages/essential/Runtime/Entities/ComponentVariableProperty.cs): fetch data from `Component` on `Entity`
   - _Component Value Name_: which value should be access from component
   - _Copy To Local Node_: Will read component data into local node and never write back into component data. (Force `ReadOnly` access)
 
 <img width="600" src="https://user-images.githubusercontent.com/683655/77412835-69f26900-6df9-11ea-95d8-13fef4f1142d.gif">
 
-- [`NodeVariableProperty`](Runtime/Components/NodeVariableProperty.cs): fetch data from blob of another node
+- [`NodeVariableProperty`](Packages/builder.component/Runtime/Variable/NodeVariableProperty.cs): fetch data from blob of another node
   - _Node Object_: another node should be access by this variable, must be in the same behavior tree.
   - _Value Field Name_: the name of data field in another node.
   - _Access Runtime Data_:
@@ -141,7 +142,7 @@ Fetch data from different sources.
 
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950091-7cc1f500-6944-11ea-994b-5307f08169a2.gif">
 
-- [`ScriptableObjectVariableProperty`](Runtime/Components/ScriptableObjectVariableProperty.cs): fetch data from field of `ScriptableObject`.
+- [`ScriptableObjectVariableProperty`](Packages/variable.scriptable-object/Runtime/ScriptableObjectVariableProperty.cs): fetch data from field of `ScriptableObject`.
   - _Scriptable Object_: target SO.
   - _Scriptable Object Value_: target field.
 
@@ -368,16 +369,22 @@ public struct SomeNode : INodeData
 }
 ```
 
+#### Advanced: automatically generate unity components from nodes
+<img width="692" alt="image" src="https://user-images.githubusercontent.com/683655/88620751-56218100-d0d1-11ea-9a88-e9b2dfeee252.png">
+
+1. Create a `NodeComponentsGenerator` scriptable object.
+2. Fill values of `NodeComponentGenerator`
+3. Click *GenerateComponents* in the menu of scriptable object.
 
 #### Advanced: customize debug view
-- Behavior Node example: [PrioritySelectorNode.cs](Runtime/Nodes/PrioritySelectorNode.cs)
-- Debug View example: [BTDebugPrioritySelector.cs](Runtime/Debug/BTDebugPrioritySelector.cs)
+- Behavior Node example: [PrioritySelectorNode.cs](Packages/essential/Runtime/Nodes/PrioritySelectorNode.cs)
+- Debug View example: [BTDebugPrioritySelector.cs](Packages/debug.component-viewer/Runtime/BTDebugPrioritySelector.cs)
 
 #### Advanced: access other node data
 `NodeBlob` store all internal data of behavior tree, and it can be access from any node.
 To access specific node data, just store its index and access by `INodeData.GetNodeData<T>(index)`.
-- Behavior Node example: [ModifyPriorityNode.cs](Runtime/Nodes/ModifyPriorityNode.cs)
-- Editor/Builder example: [BTModifyPriority.cs](Runtime/Components/BTModifyPriority.cs)
+- Behavior Node example: [ModifyPriorityNode.cs](Packages/essential/Runtime/Nodes/ModifyPriorityNode.cs)
+- Editor/Builder example: [BTModifyPriority.cs](Packages/builder.component/Runtime/Components/BTModifyPriority.cs)
 
 #### Advanced: behavior tree component
 ``` c#
