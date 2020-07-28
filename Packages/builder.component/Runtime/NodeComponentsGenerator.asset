@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283b83d5022d46b8a345bad7768d520e, type: 3}
   m_Name: NodeComponentsGenerator
   m_EditorClassIdentifier: 
-  _directory: Components
-  _classRenameRegex: (\w+)Node/BT$1
+  _outputDirectory: Components
+  _classRenameRegex: (\w+)(?:Node)/BT$1
   _includedNodeAssemblies:
   - EntitiesBT.Runtime
   _excludedNodeTypes:

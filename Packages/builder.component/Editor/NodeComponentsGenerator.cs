@@ -11,7 +11,7 @@ namespace EntitiesBT.Editor
     [CreateAssetMenu(fileName = "NodeComponentsGenerator", menuName = "EntitiesBT/NodeComponentsGenerator")]
     public class NodeComponentsGenerator : ScriptableObject
     {
-        [SerializeField] private string _directory = default;
+        [SerializeField] private string _outputDirectory = default;
         [SerializeField] private string _classRenameRegex = @"(\w+)Node/BT$1";
         [SerializeField] private string[] _includedNodeAssemblies = default;
         [SerializeField] private string[] _excludedNodeTypes = default;
@@ -22,7 +22,7 @@ namespace EntitiesBT.Editor
         public void GenerateComponents()
         {
             var currentDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
-            var scriptDirectory = $"{currentDirectory}/{_directory}";
+            var scriptDirectory = $"{currentDirectory}/{_outputDirectory}";
             var regexList = _classRenameRegex.Split('/');
             var classNameRegex = new Regex(regexList.Length > 0 ? regexList[0] : @"(*)");
             var replaceName = regexList.Length > 1 ? regexList[1] : "$1";
