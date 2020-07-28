@@ -36,7 +36,7 @@ namespace EntitiesBT.Entities
                 for (var i = 0; i < buffers.Length; i++)
                 {
                     var bufferPtr = (IntPtr) buffers.GetUnsafeReadOnlyPtr() + UnsafeUtility.SizeOf<BehaviorTreeBufferElement>() * i;
-                    ref var buffer = ref UnsafeUtilityEx.AsRef<BehaviorTreeBufferElement>(bufferPtr.ToPointer());
+                    ref var buffer = ref UnsafeUtility.AsRef<BehaviorTreeBufferElement>(bufferPtr.ToPointer());
                     if (buffer.RuntimeThread == BehaviorTreeRuntimeThread.MainThread
                         || buffer.RuntimeThread == BehaviorTreeRuntimeThread.ForceMainThread)
                     {
@@ -63,10 +63,10 @@ namespace EntitiesBT.Entities
             var job = new TickVirtualMachine {
                 Chunks = chunks
               , Blackboard = new EntityJobChunkBlackboard { GlobalSystemVersion = GlobalSystemVersion }
-              , BehaviorTreeBufferType = GetArchetypeChunkBufferType<BehaviorTreeBufferElement>()
-              , CurrentBehaviorTreeType = GetArchetypeChunkComponentType<CurrentBehaviorTreeComponent>()
-              , EntityType = GetArchetypeChunkEntityType()
-              , ECB = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent()
+              , BehaviorTreeBufferType = GetBufferTypeHandle<BehaviorTreeBufferElement>()
+              , CurrentBehaviorTreeType = GetComponentTypeHandle<CurrentBehaviorTreeComponent>()
+              , EntityType = GetEntityTypeHandle()
+              , ECB = _endSimulationEntityCommandBufferSystem.CreateCommandBuffer().AsParallelWriter()
             };
             Dependency = job.Schedule(chunks.Length, 8, Dependency);
             
@@ -75,12 +75,12 @@ namespace EntitiesBT.Entities
         
         struct TickVirtualMachine : IJobParallelFor
         {
-            public ArchetypeChunkBufferType<BehaviorTreeBufferElement> BehaviorTreeBufferType;
-            public ArchetypeChunkComponentType<CurrentBehaviorTreeComponent> CurrentBehaviorTreeType;
-            [Unity.Collections.ReadOnly] public ArchetypeChunkEntityType EntityType;
+            public BufferTypeHandle<BehaviorTreeBufferElement> BehaviorTreeBufferType;
+            public ComponentTypeHandle<CurrentBehaviorTreeComponent> CurrentBehaviorTreeType;
+            [Unity.Collections.ReadOnly] public EntityTypeHandle EntityType;
             [DeallocateOnJobCompletion] public NativeArray<ArchetypeChunk> Chunks;
             public EntityJobChunkBlackboard Blackboard;
-            public EntityCommandBuffer.Concurrent ECB;
+            public EntityCommandBuffer.ParallelWriter ECB;
             
             public unsafe void Execute(int index)
             {
@@ -95,7 +95,7 @@ namespace EntitiesBT.Entities
                     {
                         var bufferPtr = (IntPtr) buffers.GetUnsafeReadOnlyPtr()
                                         + UnsafeUtility.SizeOf<BehaviorTreeBufferElement>() * behaviorTreeIndex;
-                        ref var buffer = ref UnsafeUtilityEx.AsRef<BehaviorTreeBufferElement>(bufferPtr.ToPointer());
+                        ref var buffer = ref UnsafeUtility.AsRef<BehaviorTreeBufferElement>(bufferPtr.ToPointer());
                         if ((buffer.RuntimeThread == BehaviorTreeRuntimeThread.JobThread
                              || buffer.RuntimeThread == BehaviorTreeRuntimeThread.ForceJobThread)
                             && buffer.QueryMask.Matches(entities[entityIndex]))

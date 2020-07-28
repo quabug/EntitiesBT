@@ -66,7 +66,7 @@ namespace EntitiesBT.Variable
             var componentPtr = getDataPtr(TypeManager.GetType(index));
             // TODO: type safety check
             var dataPtr = componentPtr + offset;
-            return ref UnsafeUtilityEx.AsRef<T>(dataPtr.ToPointer());
+            return ref UnsafeUtility.AsRef<T>(dataPtr.ToPointer());
         }
         
         [Preserve]

@@ -137,7 +137,7 @@ namespace EntitiesBT.Variable
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = ptrFunc(data.Index);
-            return ref UnsafeUtilityEx.AsRef<T>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            return ref UnsafeUtility.AsRef<T>(IntPtr.Add(ptr, data.Offset).ToPointer());
         }
         
         [Preserve]
@@ -147,7 +147,7 @@ namespace EntitiesBT.Variable
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = blob.GetRuntimeDataPtr(data.Index);
-            ref var variable = ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return variable.GetData(index, ref blob, ref bb);
         }
         
@@ -158,7 +158,7 @@ namespace EntitiesBT.Variable
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = blob.GetRuntimeDataPtr(data.Index);
-            ref var variable = ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return ref variable.GetDataRef(index, ref blob, ref bb);
         }
         
@@ -169,7 +169,7 @@ namespace EntitiesBT.Variable
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = blob.GetDefaultDataPtr(data.Index);
-            ref var variable = ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return variable.GetData(index, ref blob, ref bb);
         }
         
@@ -180,7 +180,7 @@ namespace EntitiesBT.Variable
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = blob.GetDefaultDataPtr(data.Index);
-            ref var variable = ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return ref variable.GetDataRef(index, ref blob, ref bb);
         }
     }

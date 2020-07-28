@@ -36,7 +36,7 @@ namespace EntitiesBT.Entities
 
         void InitByRandomSeed()
         {
-            var ecb = _ECB.CreateCommandBuffer().ToConcurrent();
+            var ecb = _ECB.CreateCommandBuffer().AsParallelWriter();
             var randomSeed = new Random((uint)System.Environment.TickCount);
             Entities.WithNone<ExistTag, BehaviorTreeRandomSeed>()
                 .ForEach((Entity entity, int nativeThreadIndex, ref BehaviorTreeRandom random) =>
@@ -48,7 +48,7 @@ namespace EntitiesBT.Entities
 
         void InitByCustomSeed()
         {
-            var ecb = _ECB.CreateCommandBuffer().ToConcurrent();
+            var ecb = _ECB.CreateCommandBuffer().AsParallelWriter();
             Entities.WithNone<ExistTag>()
                 .ForEach((Entity entity, int nativeThreadIndex, ref BehaviorTreeRandom random, ref BehaviorTreeRandomSeed seed) => {
                     random.Value.InitState(seed.Value);
@@ -58,7 +58,7 @@ namespace EntitiesBT.Entities
 
         void Destroy()
         {
-            var ecb = _ECB.CreateCommandBuffer().ToConcurrent();
+            var ecb = _ECB.CreateCommandBuffer().AsParallelWriter();
             Entities.WithNone<BehaviorTreeRandom>().WithAll<ExistTag>()
                 .ForEach((Entity entity, int nativeThreadIndex) =>
                     ecb.RemoveComponent<ExistTag>(nativeThreadIndex, entity))

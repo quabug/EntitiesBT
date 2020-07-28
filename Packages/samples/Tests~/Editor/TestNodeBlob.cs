@@ -39,10 +39,10 @@ namespace EntitiesBT.Test
                 var offset = 0;
                 offsets[0] = offset;
                 offsets[1] = offset;
-                UnsafeUtilityEx.AsRef<NodeA>(unsafePtr + offset).A = 111;
+                UnsafeUtility.AsRef<NodeA>(unsafePtr + offset).A = 111;
                 offset += sizeof(NodeA);
                 offsets[2] = offset;
-                ref var local2 = ref UnsafeUtilityEx.AsRef<NodeB>(unsafePtr + offset);
+                ref var local2 = ref UnsafeUtility.AsRef<NodeB>(unsafePtr + offset);
                 local2.B = 222;
                 local2.BB = 2222;
                 offset += sizeof(NodeB);
@@ -69,7 +69,7 @@ namespace EntitiesBT.Test
                 }
                 
                 ref T GetDefaultData<T>(int nodeIndex) where T : struct =>
-                    ref UnsafeUtilityEx.AsRef<T>((byte*) blobRef.Value.DefaultDataBlob.GetUnsafePtr() + blobRef.Value.Offsets[nodeIndex]);
+                    ref UnsafeUtility.AsRef<T>((byte*) blobRef.Value.DefaultDataBlob.GetUnsafePtr() + blobRef.Value.Offsets[nodeIndex]);
             }
             
             
@@ -116,7 +116,7 @@ namespace EntitiesBT.Test
             Assert.AreEqual(GetDefaultData<NodeA>(4), new NodeA {A = 111});
             
             ref T GetDefaultData<T>(int nodeIndex) where T : struct =>
-                ref UnsafeUtilityEx.AsRef<T>((byte*) blobRef.Value.DefaultDataBlob.GetUnsafePtr() + blobRef.Value.Offsets[nodeIndex]);
+                ref UnsafeUtility.AsRef<T>((byte*) blobRef.Value.DefaultDataBlob.GetUnsafePtr() + blobRef.Value.Offsets[nodeIndex]);
         }
     }
 }

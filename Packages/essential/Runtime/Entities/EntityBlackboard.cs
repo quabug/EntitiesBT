@@ -20,14 +20,14 @@ namespace EntitiesBT.Entities
         {
             var index = TypeManager.GetTypeIndex<T>();
             var ptr = Entity.GetComponentDataRawRO(EntityManager, index);
-            return UnsafeUtilityEx.AsRef<T>(ptr);
+            return UnsafeUtility.AsRef<T>(ptr);
         }
 
         public unsafe ref T GetDataRef<T>() where T : struct
         {
             var index = TypeManager.GetTypeIndex<T>();
             var ptr = Entity.GetComponentDataRawRW(EntityManager, index);
-            return ref UnsafeUtilityEx.AsRef<T>(ptr);
+            return ref UnsafeUtility.AsRef<T>(ptr);
         }
 
         public bool HasData(Type type)

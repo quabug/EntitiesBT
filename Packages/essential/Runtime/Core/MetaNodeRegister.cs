@@ -18,13 +18,13 @@ namespace EntitiesBT.Core
         [Preserve]
         private static unsafe IEnumerable<ComponentType> ReadOnlyTypes<T>(IntPtr ptr) where T : struct, IRuntimeComponentAccessor
         {
-            return UnsafeUtilityEx.AsRef<T>((void*)ptr).ComponentAccessList.Select(t => ComponentType.ReadOnly(t.TypeIndex));
+            return UnsafeUtility.AsRef<T>((void*)ptr).ComponentAccessList.Select(t => ComponentType.ReadOnly(t.TypeIndex));
         }
         
         [Preserve]
         private static unsafe IEnumerable<ComponentType> ReadWriteTypes<T>(IntPtr ptr) where T : struct, IRuntimeComponentAccessor
         {
-            return UnsafeUtilityEx.AsRef<T>((void*)ptr).ComponentAccessList;
+            return UnsafeUtility.AsRef<T>((void*)ptr).ComponentAccessList;
         }
 
         internal readonly struct RuntimeTypeAccessor
@@ -94,7 +94,7 @@ namespace EntitiesBT.Core
         private static unsafe NodeState Tick<TNodeData>(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb)
             where TNodeData : struct, INodeData
         {
-            return UnsafeUtilityEx.AsRef<TNodeData>((void*)ptr).Tick(index, ref blob, ref bb);
+            return UnsafeUtility.AsRef<TNodeData>((void*)ptr).Tick(index, ref blob, ref bb);
         }
         
         internal delegate void ResetFunc(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb);
@@ -103,7 +103,7 @@ namespace EntitiesBT.Core
         private static unsafe void Reset<TNodeData>(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb)
             where TNodeData : struct, INodeData
         {
-            UnsafeUtilityEx.AsRef<TNodeData>((void*)ptr).Reset(index, ref blob, ref bb);
+            UnsafeUtility.AsRef<TNodeData>((void*)ptr).Reset(index, ref blob, ref bb);
         }
         
         internal class Node

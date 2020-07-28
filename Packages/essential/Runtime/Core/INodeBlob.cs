@@ -61,14 +61,14 @@ namespace EntitiesBT.Core
         public static unsafe ref T GetNodeData<T, TNodeBlob>(this ref TNodeBlob blob, int index) where T : struct
             where TNodeBlob : struct, INodeBlob
         {
-            return ref UnsafeUtilityEx.AsRef<T>((void*)blob.GetRuntimeDataPtr(index));
+            return ref UnsafeUtility.AsRef<T>((void*)blob.GetRuntimeDataPtr(index));
         }
         
         [Pure]
         public static unsafe ref T GetNodeDefaultData<T, TNodeBlob>(this ref TNodeBlob blob, int index) where T : struct
             where TNodeBlob : struct, INodeBlob
         {
-            return ref UnsafeUtilityEx.AsRef<T>((void*)blob.GetDefaultDataPtr(index));
+            return ref UnsafeUtility.AsRef<T>((void*)blob.GetDefaultDataPtr(index));
         }
     }
 

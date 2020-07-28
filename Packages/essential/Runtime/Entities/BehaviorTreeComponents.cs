@@ -71,7 +71,7 @@ namespace EntitiesBT.Entities
     {
         public IntPtr/* BehaviorTreeBufferElement* */ Value;
         public unsafe ref BehaviorTreeBufferElement RefValue =>
-            ref UnsafeUtilityEx.AsRef<BehaviorTreeBufferElement>(Value.ToPointer());
+            ref UnsafeUtility.AsRef<BehaviorTreeBufferElement>(Value.ToPointer());
     }
 
     public struct BehaviorTreeTargetComponent : IComponentData
