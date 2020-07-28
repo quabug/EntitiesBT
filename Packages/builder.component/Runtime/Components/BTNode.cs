@@ -99,7 +99,7 @@ namespace EntitiesBT.Components
 
         protected override unsafe void Build(void* dataPtr, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            Build(ref UnsafeUtilityEx.AsRef<T>(dataPtr), builder, tree);
+            Build(ref UnsafeUtility.AsRef<T>(dataPtr), builder, tree);
         }
         
         protected virtual void Build(ref T data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree) {}

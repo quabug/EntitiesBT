@@ -42,7 +42,7 @@ namespace EntitiesBT.Variable
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged
         {
-            variable.Allocate(ref builder, ref UnsafeUtilityEx.AsRef<BlobVariable<T>>(blobVariablePtr), self, tree);
+            variable.Allocate(ref builder, ref UnsafeUtility.AsRef<BlobVariable<T>>(blobVariablePtr), self, tree);
         }
 
         public static MethodInfo Getter(this Type type, string name)

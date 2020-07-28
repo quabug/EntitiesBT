@@ -21,7 +21,7 @@ namespace EntitiesBT.Variable
 #endif
             fixed (int* thisPtr = &OffsetPtr)
             {
-                return ref UnsafeUtilityEx.AsRef<TValue>((byte*)thisPtr + OffsetPtr);
+                return ref UnsafeUtility.AsRef<TValue>((byte*)thisPtr + OffsetPtr);
             }
         }
 
@@ -43,7 +43,7 @@ namespace EntitiesBT.Variable
             // NOTE: error CS8170: Struct members cannot return 'this' or other instance members by reference
             // return ref VariableRegisters<T>.GetDataRef(VariableId)(ref this, index, blob, bb);
             var ptr = UnsafeUtility.AddressOf(ref VariableRegisters<T>.GetDataRef<TNodeBlob, TBlackboard>(VariableId)(ref this, index, ref blob, ref bb));
-            return ref UnsafeUtilityEx.AsRef<T>(ptr);
+            return ref UnsafeUtility.AsRef<T>(ptr);
         }
     }
 }

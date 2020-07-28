@@ -5,11 +5,11 @@ namespace EntitiesBT.Entities
 {
     public struct EntityCommandJob : IEntityCommand
     {
-        private EntityCommandBuffer.Concurrent _ecb;
+        private EntityCommandBuffer.ParallelWriter _ecb;
         private readonly Entity _entity;
         private readonly int _jobIndex;
         
-        public EntityCommandJob(EntityCommandBuffer.Concurrent ecb, Entity entity, int jobIndex)
+        public EntityCommandJob(EntityCommandBuffer.ParallelWriter ecb, Entity entity, int jobIndex)
         {
             _ecb = ecb;
             _entity = entity;

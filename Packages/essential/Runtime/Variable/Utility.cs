@@ -78,7 +78,7 @@ namespace EntitiesBT.Variable
             where TValue : struct
             where TFallback : struct
         {
-            ref var blobPtr = ref UnsafeUtilityEx.As<int, BlobPtr<TValue>>(ref blob.OffsetPtr);
+            ref var blobPtr = ref UnsafeUtility.As<int, BlobPtr<TValue>>(ref blob.OffsetPtr);
             ref var blobValue = ref builder.Allocate(ref blobPtr);
             blobValue = value;
         }
