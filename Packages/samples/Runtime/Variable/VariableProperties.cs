@@ -1,7 +1,7 @@
 namespace EntitiesBT.Variable
 {
 
-public class SingleCustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<System.Single>, SingleProperty { }
+// public class SingleCustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<System.Single>, SingleProperty { }
 
 public interface Int32Property : EntitiesBT.Variable.IVariableProperty<System.Int32> { }
 public class Int32CustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<System.Int32>, Int32Property { }

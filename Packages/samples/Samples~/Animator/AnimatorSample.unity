@@ -596,7 +596,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Components}
       data:
         CustomValue: 1
 --- !u!1 &963194225
@@ -730,7 +730,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Components}
       data:
         CustomValue: 2
 --- !u!1 &1365720264
@@ -1041,6 +1041,6 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Components}
       data:
         CustomValue: 1
