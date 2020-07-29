@@ -1,10 +1,8 @@
-using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 
 namespace EntitiesBT.Nodes
 {
-    [StructLayout(LayoutKind.Explicit)]
     [BehaviorNode("64E0DAFB-20E2-4DF4-910E-ADFA831DB8A9", BehaviorNodeType.Decorate)]
     public struct RunOnMainThreadNode : INodeData
     {

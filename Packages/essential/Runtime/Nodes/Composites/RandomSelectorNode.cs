@@ -1,10 +1,8 @@
-using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 
 namespace EntitiesBT.Nodes
 {
-    [StructLayout(LayoutKind.Explicit)]
     [BehaviorNode("BA0106CA-618F-409A-903A-973B89F1470A", BehaviorNodeType.Composite)]
     public struct RandomSelectorNode : INodeData
     {
