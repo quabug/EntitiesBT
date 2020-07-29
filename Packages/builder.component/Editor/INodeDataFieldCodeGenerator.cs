@@ -90,18 +90,9 @@ namespace EntitiesBT.Editor
             var variableType = fi.FieldType.GetGenericArguments()[0];
             if (ShouldGenerateVariableInterface) GenerateVariableInterface();
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("");
-            stringBuilder.AppendLine("#if ODIN_INSPECTOR");
-            stringBuilder.Append("        ");
-            stringBuilder.AppendLine("[Sirenix.Serialization.OdinSerialize, System.NonSerialized]");
-            stringBuilder.Append("        ");
-            stringBuilder.AppendLine($"public EntitiesBT.Variable.VariableProperty<{variableType.FullName}> {fi.Name};");
-            stringBuilder.AppendLine("#else");
-            stringBuilder.Append("        ");
-            stringBuilder.AppendLine("[UnityEngine.SerializeReference, SerializeReferenceButton]");
-            stringBuilder.Append("        ");
+            stringBuilder.Append("[UnityEngine.SerializeReference, SerializeReferenceButton]");
+            stringBuilder.Append(" ");
             stringBuilder.AppendLine($"public {VariableInterfaceNamespace}.{variableType.Name}{VariablePropertyNameSuffix} {fi.Name};");
-            stringBuilder.AppendLine("#endif");
             return stringBuilder.ToString();
 
             void GenerateVariableInterface()
@@ -117,6 +108,9 @@ namespace EntitiesBT.Editor
                         writer.WriteLine(_HEAD_LINE);
                         writer.WriteLine(VariableGenerator.NamespaceBegin(VariableInterfaceNamespace));
                         writer.WriteLine(VariableGenerator.CreateInterface(variableType, VariablePropertyNameSuffix));
+                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(CustomVariableProperty<>), VariablePropertyNameSuffix));
+                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(ComponentVariableProperty<>), VariablePropertyNameSuffix));
+                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(NodeVariableProperty<>), VariablePropertyNameSuffix));
                         writer.WriteLine(VariableGenerator.NamespaceEnd());
                     }
                 }
@@ -126,6 +120,40 @@ namespace EntitiesBT.Editor
         public string GenerateBuild(FieldInfo fi)
         {
             return $"{fi.Name}.Allocate(ref builder, ref data.{fi.Name}, Self, tree);";
+        }
+    }
+
+    [Serializable]
+    public class BlobVariableFieldCodeGeneratorForOdin : INodeDataFieldCodeGenerator
+    {
+        public bool ShouldGenerate(FieldInfo fi)
+        {
+            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariable<>);
+        }
+
+        public string GenerateField(FieldInfo fi)
+        {
+            var variableType = fi.FieldType.GetGenericArguments()[0];
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("#if ODIN_INSPECTOR");
+            stringBuilder.Append("        ");
+            stringBuilder.AppendLine("[Sirenix.Serialization.OdinSerialize, System.NonSerialized]");
+            stringBuilder.Append("        ");
+            stringBuilder.AppendLine($"public EntitiesBT.Variable.VariableProperty<{variableType.FullName}> {fi.Name};");
+            stringBuilder.AppendLine("#endif");
+            return stringBuilder.ToString();
+        }
+
+        public string GenerateBuild(FieldInfo fi)
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("#if ODIN_INSPECTOR");
+            stringBuilder.Append("            ");
+            stringBuilder.AppendLine($"{fi.Name}.Allocate(ref builder, ref data.{fi.Name}, Self, tree);");
+            stringBuilder.AppendLine("#endif");
+            return stringBuilder.ToString();
         }
     }
 }

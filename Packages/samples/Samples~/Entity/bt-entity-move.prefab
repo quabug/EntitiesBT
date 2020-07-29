@@ -50,7 +50,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Components}
       data:
         CustomValue: 1
 --- !u!1 &7154796705611245648
@@ -103,7 +103,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Components}
       data:
         CustomValue: 1
 --- !u!1 &7154796705739208521
@@ -200,7 +200,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Components}
       data:
         CustomValue: 1
 --- !u!1 &7154796705978280124
@@ -345,7 +345,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Components}
       data:
         CustomValue: 1
 --- !u!1 &7154796706415700004
@@ -546,7 +546,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Components}
       data:
         CustomValue: 1
 --- !u!1 &7154796706839227953
@@ -735,6 +735,6 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Components}
       data:
         CustomValue: 1

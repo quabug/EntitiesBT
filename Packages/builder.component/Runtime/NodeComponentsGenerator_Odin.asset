@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 283b83d5022d46b8a345bad7768d520e, type: 3}
-  m_Name: NodeComponentsGenerator
+  m_Name: NodeComponentsGenerator_Odin
   m_EditorClassIdentifier: 
   _outputDirectory: Components
-  _classRenameRegex: (\w+)(?:Node)/BT$1
+  _classRenameRegex: (\w+)(?:Node)/BT$1_Odin
   _includedNodeAssemblies:
   - EntitiesBT.Runtime
   _excludedNodes:
@@ -26,18 +26,10 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: ExcludedNodeWithCustomName, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
-      data:
-        NodeNames:
-        - EntitiesBT.Nodes.ZeroNode
+      type: {class: ExcludedNodeWithoutBlobVariable, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
     00000001:
-      type: {class: BlobVariableFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
-      data:
-        ShouldGenerateVariableInterface: 1
-        VariableInterfaceDirectory: Variable
-        VariableInterfaceNamespace: EntitiesBT.Variable
-        VariablePropertyNameSuffix: Property
-        Generator: {fileID: 11400000}
+      type: {class: BlobVariableFieldCodeGeneratorForOdin, ns: EntitiesBT.Editor,
+        asm: EntitiesBT.Components.Editor}
     00000002:
       type: {class: BlobStringFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
     00000003:
