@@ -31,20 +31,7 @@ namespace EntitiesBT.Variable
         }
         
         public BTNode NodeObject;
-#if ODIN_INSPECTOR
-        IEnumerable<string> _validValueNames => NodeObject == null
-            ? Enumerable.Empty<string>()
-            : VirtualMachine.GetNodeType(NodeObject.NodeId)
-                .GetFields(FIELD_BINDING_FLAGS)
-                .Where(fi => fi.FieldType == typeof(T) || fi.FieldType == typeof(BlobVariable<>).MakeGenericType(typeof(T)))
-                .Select(fi => fi.Name)
-        ;
-
-        [Sirenix.OdinInspector.ValueDropdown("_validValueNames")]
-#else
-        [VariableNodeObject("NodeObject")]
-#endif
-        public string ValueFieldName;
+        [VariableNodeObject("NodeObject")] public string ValueFieldName;
         public bool AccessRuntimeData = true;
         
         public override void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)

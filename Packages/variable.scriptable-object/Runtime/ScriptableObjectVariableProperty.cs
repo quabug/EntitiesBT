@@ -26,33 +26,7 @@ namespace EntitiesBT.Variable
         
         public ScriptableObject ScriptableObject;
         
-#if ODIN_INSPECTOR
-        IEnumerable<string> _validValueNames
-        {
-            get
-            {
-                if (ScriptableObject == null) return Enumerable.Empty<string>();
-
-                var type = ScriptableObject.GetType();
-                var validFields = type
-                    .GetFields(FIELD_BINDING_FLAGS)
-                    .Where(fi => fi.FieldType == typeof(T))
-                    .Select(fi => fi.Name)
-                ;
-                var validProperties = type
-                    .GetProperties(FIELD_BINDING_FLAGS)
-                    .Where(pi => pi.CanRead && pi.PropertyType == typeof(T))
-                    .Select(pi => pi.Name)
-                ;
-                
-                return validFields.Concat(validProperties);
-            }
-        }
-        
-        [Sirenix.OdinInspector.ValueDropdown("_validValueNames")]
-#else
         [VariableScriptableObjectValue("ScriptableObject")]
-#endif
         public string ScriptableObjectValueName;
         
         protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)

@@ -9,9 +9,6 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputLook : BTInputActionBase<InputLookNode>
     {
-#if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
-#endif
         public VariableProperty<float2> Output;
 
         protected override void Build(ref InputLookNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
