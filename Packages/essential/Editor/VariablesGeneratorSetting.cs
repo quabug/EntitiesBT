@@ -98,7 +98,7 @@ namespace EntitiesBT.Editor
             return $"public interface {type.Name}{suffix} : EntitiesBT.Variable.IVariableProperty<{type.FullName}> {{ }}";
         }
 
-        static string CreateClass(Type valueType, Type variablePropertyType, string suffix = "Property")
+        public static string CreateClass(Type valueType, Type variablePropertyType, string suffix = "Property")
         {
             return $"public class {valueType.Name}{variablePropertyType.Name.Split('`')[0]} : {variablePropertyType.FullName.Split('`')[0]}<{valueType.FullName}>, {valueType.Name}{suffix} {{ }}";
         }

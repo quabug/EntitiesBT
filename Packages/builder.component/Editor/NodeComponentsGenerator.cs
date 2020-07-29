@@ -14,7 +14,8 @@ namespace EntitiesBT.Editor
         [SerializeField] private string _outputDirectory = default;
         [SerializeField] private string _classRenameRegex = @"(\w+)Node/BT$1";
         [SerializeField] private string[] _includedNodeAssemblies = default;
-        [SerializeField] private string[] _excludedNodeTypes = default;
+        [SerializeReference, SerializeReferenceButton] private IExcludedNode[] _excludedNodes =
+            { new ExcludedNodeWithCustomName() };
         [SerializeReference, SerializeReferenceButton] private INodeDataFieldCodeGenerator[] _fieldCodeGenerators =
             { new DefaultNodeDataFieldCodeGenerator() };
 
@@ -31,7 +32,7 @@ namespace EntitiesBT.Editor
                 .Where(assembly => _includedNodeAssemblies.Contains(assembly.GetName().Name))
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => typeof(INodeData).IsAssignableFrom(type) && type.IsValueType)
-                .Where(type => !_excludedNodeTypes.Contains(type.FullName))
+                .Where(type => !_excludedNodes.Any(check => check.IsExcluded(type)))
             )
             {
                 var className = classNameRegex.Replace(nodeType.Name, replaceName);
