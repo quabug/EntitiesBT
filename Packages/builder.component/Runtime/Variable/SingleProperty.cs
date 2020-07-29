@@ -6,6 +6,7 @@ public interface SingleProperty : EntitiesBT.Variable.IVariableProperty<System.S
 public class SingleCustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<System.Single>, SingleProperty { }
 public class SingleComponentVariableProperty : EntitiesBT.Variable.ComponentVariableProperty<System.Single>, SingleProperty { }
 public class SingleNodeVariableProperty : EntitiesBT.Variable.NodeVariableProperty<System.Single>, SingleProperty { }
+public class SingleScriptableObjectVariableProperty : EntitiesBT.Variable.ScriptableObjectVariableProperty<System.Single>, SingleProperty { }
 
 }
 

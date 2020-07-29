@@ -111,6 +111,7 @@ namespace EntitiesBT.Editor
                         writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(CustomVariableProperty<>), VariablePropertyNameSuffix));
                         writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(ComponentVariableProperty<>), VariablePropertyNameSuffix));
                         writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(NodeVariableProperty<>), VariablePropertyNameSuffix));
+                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(ScriptableObjectVariableProperty<>), VariablePropertyNameSuffix));
                         writer.WriteLine(VariableGenerator.NamespaceEnd());
                     }
                 }
