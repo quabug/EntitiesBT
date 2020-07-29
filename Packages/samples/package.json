@@ -10,7 +10,7 @@
     "com.unity.entities": "0.13.0-preview.24",
     "com.unity.inputsystem": "1.0.0",
     "com.unity.rendering.hybrid": "0.7.0-preview.24",
-    "com.quabug.entities-bt.essential": "0.20.0",
+    "com.quabug.entities-bt.essential": "0.20.2",
     "com.quabug.entities-bt.builder.component": "0.20.1",
     "com.quabug.entities-bt.debug.component-viewer": "0.19.3",
     "com.quabug.entities-bt.variable.scriptable-object": "0.19.3"

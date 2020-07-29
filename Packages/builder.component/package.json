@@ -7,6 +7,6 @@
   "displayName": "EntitiesBT - Component Builder",
   "dependencies": {
     "com.unity.entities": "0.13.0-preview.24",
-    "com.quabug.entities-bt.essential": "0.20.0"
+    "com.quabug.entities-bt.essential": "0.20.2"
   }
 }
