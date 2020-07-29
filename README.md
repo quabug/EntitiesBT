@@ -66,7 +66,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 
 ## HowTo
 ### Installation
-Requirement: Unity >= 2019.4 and entities package >= 0.10.0-preview.6
+Requirement: Unity >= 2020.1 and entities package >= 0.13.0-preview.24
 
 Install the packages either by
 
@@ -76,10 +76,10 @@ modify `Packages/manifest.json` as below
 {
   "dependencies": {
     ...
-    "com.quabug.entities-bt.essential": "0.19.2",
-    "com.quabug.entities-bt.builder.component": "0.19.2",
-    "com.quabug.entities-bt.debug.component-viewer": "0.19.2",
-    "com.quabug.entities-bt.variable.scriptable-object": "0.19.2"
+    "com.quabug.entities-bt.essential": "0.21.0",
+    "com.quabug.entities-bt.builder.component": "0.21.0",
+    "com.quabug.entities-bt.debug.component-viewer": "0.21.0",
+    "com.quabug.entities-bt.variable.scriptable-object": "0.21.0"
   },
   "scopedRegistries": [
     {
