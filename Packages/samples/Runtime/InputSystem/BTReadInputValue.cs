@@ -12,9 +12,6 @@ namespace EntitiesBT.Extensions.InputSystem
         where T : unmanaged
         where U : struct, IReadInputValueNode
     {
-#if ODIN_INSPECTOR
-        [Sirenix.Serialization.OdinSerialize, NonSerialized]
-#endif
         public VariableProperty<T> Output;
 
         protected override unsafe void Build(ref U data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
