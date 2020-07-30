@@ -118,7 +118,7 @@ openupm add com.quabug.entities-bt.variable.scriptable-object
 
 - Force Run on Main Thread: running on main thread only, will not use job to tick behavior tree. Safe to call `UnityEngine` method.
 - Force Run on Job: running on job threads only, will not use main thread to tick behavior tree. Not safe to call `UnityEngine` method.
-- Controlled by Behavior Tree: Running on job threads by default, but will switch to main thread once meet decorator of [`RunOnMainThread`](Packages/essential/Runtime/Nodes/RunOnMainThreadNode.cs)
+- Controlled by Behavior Tree: Running on job threads by default, but will switch to main thread once meet decorator of [`RunOnMainThread`](Packages/essential/Runtime/Nodes/Decorators/RunOnMainThreadNode.cs)
 <img width="300" alt="" src="https://user-images.githubusercontent.com/683655/72407836-cdc63900-379b-11ea-8979-605e725ab0f7.png" />
 
 #### Variable Property
@@ -369,13 +369,13 @@ public struct SomeNode : INodeData
 3. Click *GenerateComponents* in the menu of scriptable object.
 
 #### Advanced: customize debug view
-- Behavior Node example: [PrioritySelectorNode.cs](Packages/essential/Runtime/Nodes/PrioritySelectorNode.cs)
+- Behavior Node example: [PrioritySelectorNode.cs](Packages/essential/Runtime/Nodes/Composites/PrioritySelectorNode.cs)
 - Debug View example: [BTDebugPrioritySelector.cs](Packages/debug.component-viewer/Runtime/BTDebugPrioritySelector.cs)
 
 #### Advanced: access other node data
 `NodeBlob` store all internal data of behavior tree, and it can be access from any node.
 To access specific node data, just store its index and access by `INodeData.GetNodeData<T>(index)`.
-- Behavior Node example: [ModifyPriorityNode.cs](Packages/essential/Runtime/Nodes/ModifyPriorityNode.cs)
+- Behavior Node example: [ModifyPriorityNode.cs](Packages/essential/Runtime/Nodes/Actions/ModifyPriorityNode.cs)
 - Editor/Builder example: [BTModifyPriority.cs](Packages/builder.component/Runtime/Components/BTModifyPriority.cs)
 
 #### Advanced: behavior tree component
