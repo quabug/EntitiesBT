@@ -77,7 +77,7 @@ modify `Packages/manifest.json` as below
   "dependencies": {
     ...
     "com.quabug.entities-bt.essential": "0.21.0",
-    "com.quabug.entities-bt.builder.component": "0.21.0",
+    "com.quabug.entities-bt.builder.component": "0.21.1",
     "com.quabug.entities-bt.debug.component-viewer": "0.21.0",
     "com.quabug.entities-bt.variable.scriptable-object": "0.21.0"
   },
