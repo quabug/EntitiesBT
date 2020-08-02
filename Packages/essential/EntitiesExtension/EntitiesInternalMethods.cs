@@ -83,5 +83,8 @@ namespace EntitiesBT
              var header = (BufferHeader*) ptr.ToPointer();
              return (new IntPtr(BufferHeader.GetElementPointer(header)), header->Length);
          }
+
+         public static ComponentType[] GetComponentTypes(this EntityQuery query) => query.GetQueryTypes();
+         public static ComponentType[] GetReadAndWriteComponentTypes(this EntityQuery query) => query.GetReadAndWriteTypes();
      }
 }
