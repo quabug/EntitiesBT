@@ -5,42 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.DebugView
 {
-    [DisallowMultipleComponent]
-    public class BehaviorTreeDebug : MonoBehaviour, IConvertGameObjectToEntity
-    {
-        private void OnEnable() {}
-
-        public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
-        {
-            var debugView = new GameObject();
-            var root = debugView.AddComponent<BTDebugViewTreesManager>();
-            root.EntityManager = dstManager;
-            root.Entity = entity;
-            if (GetComponentInParent<ConvertToEntity>()?.ConversionMode == ConvertToEntity.Mode.ConvertAndDestroy)
-            {
-                debugView.name = name;
-                var parent = FindOrCreateGameObject("__bt_debug_views__");
-                debugView.transform.SetParent(parent.transform);
-            }
-            else
-            {
-                debugView.name = "__bt_debug_view__";
-                debugView.transform.SetParent(transform);
-            }
-        }
-
-        public GameObject FindOrCreateGameObject(string name)
-        {
-            var obj = GameObject.Find(name);
-            return obj ? obj : new GameObject(name);
-        }
-    }
+    [GenerateAuthoringComponent]
+    public readonly struct BehaviorTreeDebug : IComponentData {}
 
     [AddComponentMenu("")] // hide in component menu
     public class BTDebugViewTreesManager : MonoBehaviour
@@ -50,7 +21,7 @@ namespace EntitiesBT.DebugView
 
         private IDictionary<NodeBlobRef, GameObject> _trees = new Dictionary<NodeBlobRef, GameObject>();
 
-        private void Update()
+        public void Tick()
         {
             if (EntityManager == default
                 || !EntityManager.Exists(Entity)
@@ -91,7 +62,7 @@ namespace EntitiesBT.DebugView
     {
         [NonSerialized] public EntityBlackboard Blackboard;
         [NonSerialized] public NodeBlobRef Blob;
-        private List<BTDebugView> _views = new List<BTDebugView>();
+        private readonly List<BTDebugView> _views = new List<BTDebugView>();
 
         private void OnEnable() {}
 
@@ -100,7 +71,7 @@ namespace EntitiesBT.DebugView
             CreateViews(Blob);
         }
 
-        private void Update()
+        public void Update()
         {
             if (!enabled) return;
             GetComponentsInChildren(_views);

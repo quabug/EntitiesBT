@@ -35,7 +35,9 @@ namespace EntitiesBT.Components
 #endif
             var query = blob.GetAccessTypes();
             var dataQuery = new BlackboardDataQuery(query, components =>
-                dstManager.CreateEntityQuery(components.ToArray()));
+                // HACK: workaround for different world/dstManager in subscenes.
+                // dstManager.CreateEntityQuery(components.ToArray()));
+                World.DefaultGameObjectInjectionWorld.EntityManager.CreateEntityQuery(components.ToArray()));
             dstManager.AddSharedComponentData(behaviorTreeEntity, dataQuery);
 
             dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeComponent

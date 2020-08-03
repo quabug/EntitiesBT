@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Unity.Entities;
 
 namespace EntitiesBT.Entities
