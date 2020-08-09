@@ -12,7 +12,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/essential
-        upm_tag_prefix: essential-
+        upm_tag_prefix: essential/v
   upm-release-builder-component:
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +22,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/builder.component
-        upm_tag_prefix: builder.component-
+        upm_tag_prefix: builder.component/v
   upm-release-debug-component-viewer:
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +32,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/debug.component-viewer
-        upm_tag_prefix: debug.component-viewer-
+        upm_tag_prefix: debug.component-viewer/v
   upm-release-variable-scriptable-object:
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +42,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/variable.scriptable-object
-        upm_tag_prefix: variable.scriptable-object-
+        upm_tag_prefix: variable.scriptable-object/v
   upm-release-samples:
     runs-on: ubuntu-latest
     steps:
@@ -52,4 +52,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/samples
-        upm_tag_prefix: samples-
+        upm_tag_prefix: samples/v
