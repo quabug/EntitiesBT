@@ -1,7 +1,7 @@
 {
   "name": "com.quabug.entities-bt.essential",
   "description": "Behavior Tree for Unity Entities - Essential",
-  "version": "0.21.2",
+  "version": "0.21.3",
   "unity": "2020.1",
   "displayName": "EntitiesBT - Essential",
   "dependencies": {

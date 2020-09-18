@@ -81,7 +81,7 @@ namespace EntitiesBT.Entities
         {
             return BlobRef.GetHashCode();
         }
-        
+
         public static bool operator==(NodeBlobRef lhs, NodeBlobRef rhs)
         {
             return lhs.BlobRef == rhs.BlobRef;
