@@ -107,5 +107,30 @@ namespace EntitiesBT.Entities
                     writerData.CopyTo(stream);
             }
         }
+
+        [Pure]
+        public static Entity CloneBehaviorTree(this EntityManager dstManager, Entity behaviorTreeEntity)
+        {
+            var query = dstManager.GetSharedComponentData<BlackboardDataQuery>(behaviorTreeEntity);
+            var comp = dstManager.GetComponentData<BehaviorTreeComponent>(behaviorTreeEntity);
+            var clone = dstManager.CreateEntity();
+#if UNITY_EDITOR
+            dstManager.SetName(clone, dstManager.GetName(behaviorTreeEntity)+"-clone");
+#endif
+            dstManager.AddSharedComponentData(clone, query);
+            var blob = new NodeBlobRef(comp.Blob.BlobRef.Clone());
+            dstManager.AddComponentData(clone, new BehaviorTreeComponent
+            {
+                Blob = blob, Thread = comp.Thread, AutoCreation = comp.AutoCreation
+            });
+            return clone;
+        }
+
+        [Pure]
+        public static unsafe BlobAssetReference<T> Clone<T>(this BlobAssetReference<T> @this) where T : struct
+        {
+            var untypedRef = BlobAssetReference.Create(@this);
+            return BlobAssetReference<T>.Create(untypedRef.GetUnsafePtr(), untypedRef.Length);
+        }
     }
 }
