@@ -1,6 +1,6 @@
 name: Publish UPM Package
 
-on: workflow_dispatch
+on: push
 
 jobs:
   upm-release-essential:
@@ -53,3 +53,13 @@ jobs:
       with:
         upm_package_path: Packages/samples
         upm_tag_prefix: samples/v
+  upm-release-builder-visual:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: quabug/create-upm-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upm_package_path: Packages/builder.visual
+        upm_tag_prefix: builder.visual/v
