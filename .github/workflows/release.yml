@@ -1,6 +1,9 @@
 name: Publish UPM Package
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   upm-release-essential:
