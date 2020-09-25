@@ -16,7 +16,6 @@ jobs:
       with:
         upm_package_path: Packages/essential
         upm_tag_prefix: essential/v
-        draft: true
   upm-release-builder-component:
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +26,6 @@ jobs:
       with:
         upm_package_path: Packages/builder.component
         upm_tag_prefix: builder.component/v
-        draft: true
   upm-release-debug-component-viewer:
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +36,6 @@ jobs:
       with:
         upm_package_path: Packages/debug.component-viewer
         upm_tag_prefix: debug.component-viewer/v
-        draft: true
   upm-release-variable-scriptable-object:
     runs-on: ubuntu-latest
     steps:
@@ -49,7 +46,6 @@ jobs:
       with:
         upm_package_path: Packages/variable.scriptable-object
         upm_tag_prefix: variable.scriptable-object/v
-        draft: true
   upm-release-samples:
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +56,6 @@ jobs:
       with:
         upm_package_path: Packages/samples
         upm_tag_prefix: samples/v
-        draft: true
   upm-release-builder-visual:
     runs-on: ubuntu-latest
     steps:
@@ -71,4 +66,3 @@ jobs:
       with:
         upm_package_path: Packages/builder.visual
         upm_tag_prefix: builder.visual/v
-        draft: true
