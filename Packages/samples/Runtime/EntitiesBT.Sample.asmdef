@@ -1,7 +1,9 @@
 {
-    "name": "EntitySample",
+    "name": "EntitiesBT.Sample",
     "references": [
         "GUID:c7babe7561eb244059259745ef27b866",
+        "GUID:4494fa222d28a2e49b5858abfef507e8",
+        "GUID:73106583b323919458c1e05166706ce3",
         "GUID:d3630359ae08047918d5cd6cddd51767",
         "GUID:734d92eba21c94caba915361bd5ac177",
         "GUID:8819f35a0fc84499b990e90a4ca1911f",
@@ -11,10 +13,10 @@
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
