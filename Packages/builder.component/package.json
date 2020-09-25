@@ -1,11 +1,11 @@
 {
   "name": "com.quabug.entities-bt.builder.component",
   "description": "Behavior Tree for Unity Entities - Component Builder",
-  "version": "0.21.4",
+  "version": "0.21.5",
   "unity": "2020.1",
   "displayName": "EntitiesBT - Component Builder",
   "dependencies": {
-    "com.quabug.entities-bt.essential": "0.21.2",
+    "com.quabug.entities-bt.essential": "0.21.5",
     "com.quabug.entities-bt.variable.scriptable-object": "0.21.1"
   }
 }
