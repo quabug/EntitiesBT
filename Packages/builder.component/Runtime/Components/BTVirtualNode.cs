@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Core;
-using EntitiesBT.Entities;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -10,7 +8,6 @@ namespace EntitiesBT.Components
 {
     public abstract class BTVirtualNode<T> : INodeDataBuilder where T : struct, INodeData
     {
-        public virtual BehaviorNodeType BehaviorNodeType => typeof(T).GetBehaviorNodeAttribute().Type;
         public virtual int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
         public virtual INodeDataBuilder Self => this;
         public abstract IEnumerable<INodeDataBuilder> Children { get; }
@@ -34,7 +31,6 @@ namespace EntitiesBT.Components
     {
         public BTVirtualRealSelf(INodeDataBuilder self) => _self = self;
         private readonly INodeDataBuilder _self;
-        public BehaviorNodeType BehaviorNodeType => _self.BehaviorNodeType;
         public int NodeId => _self.NodeId;
         public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders) => BlobAssetReference.Null;
         public INodeDataBuilder Self => _self;
