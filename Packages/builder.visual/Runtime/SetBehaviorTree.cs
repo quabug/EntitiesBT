@@ -1,5 +1,4 @@
 ﻿using System;
-using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Runtime;
 using Unity.Entities;
