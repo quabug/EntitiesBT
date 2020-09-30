@@ -1,0 +1,436 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e47f74f8807144bbc73c11220e654a, type: 3}
+  m_Name: BuildBehaviorTree
+  m_EditorClassIdentifier: 
+  m_GraphModel:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: VSGraphModel, ns: DotsStencil, asm: Unity.VisualScripting.Ecs.Editor}
+      data:
+        m_AssetModel: {fileID: 11400000}
+        m_GraphNodeModels:
+        - id: 1
+        - id: 2
+        - id: 3
+        - id: 4
+        m_EdgeModels: []
+        m_GraphEdgeModels:
+        - id: 5
+        - id: 6
+        - id: 7
+        m_StickyNoteModels: []
+        m_GraphStickyNoteModels: []
+        m_PlacematModels: []
+        m_GraphPlacematModels: []
+        m_GraphVariableModels: []
+        m_GraphPortalModels: []
+        m_Stencil:
+          id: 8
+        m_Name: BuildBehaviorTree
+    00000001:
+      type: {class: GenericDotsNodeModel, ns: DotsStencil, asm: Unity.VisualScripting.Ecs.Editor}
+      data:
+        m_Guid:
+          m_Value0: 4860370371197555293
+          m_Value1: 11741955266496544419
+        m_GraphAssetModel: {fileID: 11400000}
+        m_Position: {x: 155.4359, y: 139.76923}
+        m_Color: {r: 0.776, g: 0.443, b: 0, a: 0.5}
+        m_HasUserColor: 0
+        m_Title: Builder
+        m_InputConstantKeys: []
+        m_InputConstants: []
+        m_State: 0
+        m_Node:
+          id: 9
+    00000002:
+      type: {class: GenericDotsNodeModel, ns: DotsStencil, asm: Unity.VisualScripting.Ecs.Editor}
+      data:
+        m_Guid:
+          m_Value0: 5395282232384921646
+          m_Value1: 2408543080922385295
+        m_GraphAssetModel: {fileID: 11400000}
+        m_Position: {x: 391.94873, y: 165.92307}
+        m_Color: {r: 0.776, g: 0.443, b: 0, a: 0.5}
+        m_HasUserColor: 0
+        m_Title: Forever
+        m_InputConstantKeys: []
+        m_InputConstants: []
+        m_State: 0
+        m_Node:
+          id: 10
+    00000003:
+      type: {class: GenericDotsNodeModel, ns: DotsStencil, asm: Unity.VisualScripting.Ecs.Editor}
+      data:
+        m_Guid:
+          m_Value0: 4799349937247020034
+          m_Value1: 7539088001509972899
+        m_GraphAssetModel: {fileID: 11400000}
+        m_Position: {x: 582.3077, y: 173.07692}
+        m_Color: {r: 0.776, g: 0.443, b: 0, a: 0.5}
+        m_HasUserColor: 0
+        m_Title: EntityRotate
+        m_InputConstantKeys: []
+        m_InputConstants: []
+        m_State: 0
+        m_Node:
+          id: 11
+    00000004:
+      type: {class: GenericDotsNodeModel, ns: DotsStencil, asm: Unity.VisualScripting.Ecs.Editor}
+      data:
+        m_Guid:
+          m_Value0: 4937692738069982860
+          m_Value1: 3347735835041788826
+        m_GraphAssetModel: {fileID: 11400000}
+        m_Position: {x: 483.02563, y: -44.692318}
+        m_Color: {r: 0.776, g: 0.443, b: 0, a: 0.5}
+        m_HasUserColor: 0
+        m_Title: SetBehaviorTree
+        m_InputConstantKeys:
+        - Order
+        - CloneBehaviorTree
+        m_InputConstants:
+        - id: 12
+        - id: 13
+        m_State: 0
+        m_Node:
+          id: 14
+    00000005:
+      type: {class: EdgeModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_GraphAssetModel: {fileID: 11400000}
+        m_FromPortReference:
+          NodeModelGuid:
+            m_Value0: 4860370371197555293
+            m_Value1: 11741955266496544419
+          GraphAssetModel: {fileID: 11400000}
+          UniqueId: BehaviorTree_0
+        m_ToPortReference:
+          NodeModelGuid:
+            m_Value0: 5395282232384921646
+            m_Value1: 2408543080922385295
+          GraphAssetModel: {fileID: 11400000}
+          UniqueId: Parent_0
+        m_EdgeControlPoints: []
+        m_EditMode: 0
+        m_EdgeLabel: 
+        m_Guid:
+          m_Value0: 4978863888998030565
+          m_Value1: 11019654447100158907
+    00000006:
+      type: {class: EdgeModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_GraphAssetModel: {fileID: 11400000}
+        m_FromPortReference:
+          NodeModelGuid:
+            m_Value0: 5395282232384921646
+            m_Value1: 2408543080922385295
+          GraphAssetModel: {fileID: 11400000}
+          UniqueId: Child_0
+        m_ToPortReference:
+          NodeModelGuid:
+            m_Value0: 4799349937247020034
+            m_Value1: 7539088001509972899
+          GraphAssetModel: {fileID: 11400000}
+          UniqueId: Parent_0
+        m_EdgeControlPoints: []
+        m_EditMode: 0
+        m_EdgeLabel: 
+        m_Guid:
+          m_Value0: 4862338124166277407
+          m_Value1: 2296383626645578133
+    00000007:
+      type: {class: EdgeModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_GraphAssetModel: {fileID: 11400000}
+        m_FromPortReference:
+          NodeModelGuid:
+            m_Value0: 4860370371197555293
+            m_Value1: 11741955266496544419
+          GraphAssetModel: {fileID: 11400000}
+          UniqueId: BehaviorTreeEntity_0
+        m_ToPortReference:
+          NodeModelGuid:
+            m_Value0: 4937692738069982860
+            m_Value1: 3347735835041788826
+          GraphAssetModel: {fileID: 11400000}
+          UniqueId: BehaviorTreeEntity
+        m_EdgeControlPoints: []
+        m_EditMode: 0
+        m_EdgeLabel: 
+        m_Guid:
+          m_Value0: 5332148816169106048
+          m_Value1: 8973136206986343057
+    00000008:
+      type: {class: DotsStencil, ns: DotsStencil, asm: Unity.VisualScripting.Ecs.Editor}
+      data:
+        CompiledScriptingGraphAsset: {fileID: 6580651651554700210}
+        Type: 0
+    00000009:
+      type: {class: BehaviorTreeBuilder, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
+      data:
+        BehaviorTreeEntity:
+          Port:
+            Index: 1
+        BehaviorTree:
+          Port:
+            Index: 2
+        DebugName: 
+        Thread: 0
+        AutoCreation: 0
+    0000000A:
+      type: {class: VisualForever, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
+      data:
+        BreakStates: 0
+        Parent:
+          Port:
+            Index: 3
+        Child:
+          Port:
+            Index: 4
+    0000000B:
+      type: {class: VisualEntityRotate, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Sample.Visual}
+      data:
+        Parent:
+          Port:
+            Index: 5
+        Axis:
+          x: 0
+          y: 1
+          z: 0
+        RadianPerSecond: 60
+    0000000C:
+      type: {class: IntConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_Value: 0
+    0000000D:
+      type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_Value: 0
+    0000000E:
+      type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
+      data:
+        Input:
+          Port:
+            Index: 6
+        BehaviorTreeEntity:
+          Port:
+            Index: 7
+        TargetEntity:
+          Port:
+            Index: 8
+        Order:
+          Port:
+            Index: 9
+        CloneBehaviorTree:
+          Port:
+            Index: 10
+--- !u!114 &6580651651554700210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d133638b8a4a708ab07e8047ecd0c8, type: 3}
+  m_Name: BuildBehaviorTree Runtime Graph
+  m_EditorClassIdentifier: 
+  Definition:
+    id: 0
+  HashCode: 283809364
+  references:
+    version: 1
+    00000000:
+      type: {class: GraphDefinition, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
+        NodeTable:
+        - id: 1
+        - id: 2
+        - id: 3
+        - id: 4
+        - id: 5
+        - id: 6
+        PortInfoTable:
+        - IsDataPort: 0
+          IsOutputPort: 0
+          DataIndex: 0
+          NodeId:
+            m_NodeIndex: 0
+          PortName: NULL
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 1
+          NodeId:
+            m_NodeIndex: 1
+          PortName: BehaviorTreeEntity
+        - IsDataPort: 0
+          IsOutputPort: 1
+          DataIndex: 1
+          NodeId:
+            m_NodeIndex: 1
+          PortName: BehaviorTree
+        - IsDataPort: 0
+          IsOutputPort: 0
+          DataIndex: 0
+          NodeId:
+            m_NodeIndex: 2
+          PortName: Parent
+        - IsDataPort: 0
+          IsOutputPort: 1
+          DataIndex: 3
+          NodeId:
+            m_NodeIndex: 2
+          PortName: Child
+        - IsDataPort: 0
+          IsOutputPort: 0
+          DataIndex: 0
+          NodeId:
+            m_NodeIndex: 3
+          PortName: Parent
+        - IsDataPort: 0
+          IsOutputPort: 0
+          DataIndex: 0
+          NodeId:
+            m_NodeIndex: 4
+          PortName: Input
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 1
+          NodeId:
+            m_NodeIndex: 4
+          PortName: BehaviorTreeEntity
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 0
+          NodeId:
+            m_NodeIndex: 4
+          PortName: TargetEntity
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 2
+          NodeId:
+            m_NodeIndex: 4
+          PortName: Order
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 3
+          NodeId:
+            m_NodeIndex: 4
+          PortName: CloneBehaviorTree
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 2
+          NodeId:
+            m_NodeIndex: 5
+          PortName: ValuePort
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 3
+          NodeId:
+            m_NodeIndex: 6
+          PortName: ValuePort
+        DataPortTable:
+        - m_NodeIndex: 0
+        - m_NodeIndex: 1
+        - m_NodeIndex: 5
+        - m_NodeIndex: 6
+        TriggerTable: 0000000003000000000000000500000000000000
+        VariableInitValues: []
+        Strings: []
+        InputTriggers: []
+        OutputTriggers: []
+        SubgraphReferences: []
+        ComponentFields: []
+        EventFields: []
+        Variables: []
+        Inputs:
+          StartIndex: 0
+          Count: 0
+        Outputs:
+          StartIndex: 0
+          Count: 0
+        ContainsEventReceiver: 0
+    00000001:
+      type: {class: BehaviorTreeBuilder, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
+      data:
+        BehaviorTreeEntity:
+          Port:
+            Index: 1
+        BehaviorTree:
+          Port:
+            Index: 2
+        DebugName: 
+        Thread: 0
+        AutoCreation: 0
+    00000002:
+      type: {class: VisualForever, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
+      data:
+        BreakStates: 0
+        Parent:
+          Port:
+            Index: 3
+        Child:
+          Port:
+            Index: 4
+    00000003:
+      type: {class: VisualEntityRotate, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Sample.Visual}
+      data:
+        Parent:
+          Port:
+            Index: 5
+        Axis:
+          x: 0
+          y: 1
+          z: 0
+        RadianPerSecond: 60
+    00000004:
+      type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
+      data:
+        Input:
+          Port:
+            Index: 6
+        BehaviorTreeEntity:
+          Port:
+            Index: 7
+        TargetEntity:
+          Port:
+            Index: 8
+        Order:
+          Port:
+            Index: 9
+        CloneBehaviorTree:
+          Port:
+            Index: 10
+    00000005:
+      type: {class: ConstantInt, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
+        Value: 0
+        ValuePort:
+          Port:
+            Index: 11
+    00000006:
+      type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
+        Value: 0
+        ValuePort:
+          Port:
+            Index: 12

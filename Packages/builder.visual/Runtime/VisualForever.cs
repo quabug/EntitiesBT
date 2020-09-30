@@ -8,7 +8,7 @@ namespace EntitiesBT.Builder.Visual
 {
     [NodeSearcherItem("EntitiesBT/Build/Forever")]
     [Serializable]
-    public struct Forever : INode, IVisualBuilderNode
+    public struct VisualForever : INode, IVisualBuilderNode
     {
         public NodeState BreakStates;
 
@@ -20,7 +20,7 @@ namespace EntitiesBT.Builder.Visual
 
         public INodeDataBuilder GetBuilder(GraphDefinition definition)
         {
-            return new VisualBuilder<RepeatForeverNode>(BuildImpl, Child.ToBuilderNode(definition)).Self;
+            return new VisualBuilder<RepeatForeverNode>(BuildImpl, Child.ToBuilderNode(definition).Yield());
         }
 
         public void BuildImpl(BlobBuilder blobBuilder, ref RepeatForeverNode data, ITreeNode<INodeDataBuilder>[] builders)
