@@ -23,7 +23,6 @@ namespace EntitiesBT.Builder.Visual
         [PortDescription("")]
         public OutputTriggerPort BehaviorTree;
 
-        public string DebugName;
         public BehaviorTreeThread Thread;
         public AutoCreateType AutoCreation;
 
@@ -37,9 +36,6 @@ namespace EntitiesBT.Builder.Visual
             var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
             VirtualMachine.Reset(ref blob, ref bb);
 
-#if UNITY_EDITOR
-            dstManager.SetName(entity, $"[BT]{DebugName}");
-#endif
             var query = blob.GetAccessTypes();
             var dataQuery = new BlackboardDataQuery(query, components => dstManager.CreateEntityQuery(components.ToArray()));
             dstManager.AddSharedComponentData(entity, dataQuery);
@@ -66,9 +62,13 @@ namespace EntitiesBT.Builder.Visual
 
         public static INodeDataBuilder ToBuilderNode(this OutputTriggerPort port, GraphDefinition definition)
         {
-            var portIndex = (int)port.Port.Index;
-            Assert.IsTrue(portIndex < definition.PortInfoTable.Count);
-            var nodeIndex = (int)definition.PortInfoTable[portIndex].NodeId.GetIndex();
+            var outputPortIndex = (int)port.Port.Index;
+            Assert.IsTrue(outputPortIndex < definition.PortInfoTable.Count);
+            var triggerIndex = (int)definition.PortInfoTable[outputPortIndex].DataIndex;
+            Assert.IsTrue(triggerIndex < definition.TriggerTable.Count);
+            var inputPortIndex = (int)definition.TriggerTable[triggerIndex];
+            Assert.IsTrue(inputPortIndex < definition.PortInfoTable.Count);
+            var nodeIndex = (int)definition.PortInfoTable[inputPortIndex].NodeId.GetIndex();
             Assert.IsTrue(nodeIndex < definition.NodeTable.Count);
             var childNode = definition.NodeTable[nodeIndex] as IVisualBuilderNode;
             Assert.IsNotNull(childNode);
