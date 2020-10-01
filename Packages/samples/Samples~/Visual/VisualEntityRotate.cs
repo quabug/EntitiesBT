@@ -22,7 +22,7 @@ namespace EntitiesBT.Builder.Visual
             return new VisualBuilder<EntityRotateNode>(BuildImpl);
         }
 
-        public void BuildImpl(BlobBuilder blobBuilder, ref EntityRotateNode data, ITreeNode<INodeDataBuilder>[] builders)
+        public void BuildImpl(BlobBuilder blobBuilder, ref EntityRotateNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.Axis = Axis;
             data.RadianPerSecond = RadianPerSecond;

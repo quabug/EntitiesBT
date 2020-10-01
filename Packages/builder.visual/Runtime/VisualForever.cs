@@ -23,7 +23,7 @@ namespace EntitiesBT.Builder.Visual
             return new VisualBuilder<RepeatForeverNode>(BuildImpl, Child.ToBuilderNode(definition).Yield());
         }
 
-        public void BuildImpl(BlobBuilder blobBuilder, ref RepeatForeverNode data, ITreeNode<INodeDataBuilder>[] builders)
+        public void BuildImpl(BlobBuilder blobBuilder, ref RepeatForeverNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.BreakStates = BreakStates;
         }

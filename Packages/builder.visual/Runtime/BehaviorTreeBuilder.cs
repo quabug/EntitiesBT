@@ -5,6 +5,8 @@ using System.Reflection;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
+using EntitiesBT.Variable;
+using JetBrains.Annotations;
 using Runtime;
 using Unity.Assertions;
 using Unity.Collections;
@@ -50,7 +52,8 @@ namespace EntitiesBT.Builder.Visual
 
     public static class BehaviorTreeBuilderExtension
     {
-        public static GraphDefinition GetGraphDefinition<TCtx>(this TCtx ctx) where TCtx : IGraphInstance
+        [Pure]
+        public static GraphDefinition GetGraphDefinition<TCtx>([NotNull] this TCtx ctx) where TCtx : IGraphInstance
         {
             if (!(ctx is GraphInstance instance)) return null; // TODO: throw?
 
@@ -60,6 +63,7 @@ namespace EntitiesBT.Builder.Visual
             ;
         }
 
+        [Pure]
         public static INodeDataBuilder ToBuilderNode(this OutputTriggerPort port, GraphDefinition definition)
         {
             var outputPortIndex = (int)port.Port.Index;
@@ -75,9 +79,26 @@ namespace EntitiesBT.Builder.Visual
             return childNode.GetBuilder(definition);
         }
 
+        [Pure]
         public static IEnumerable<INodeDataBuilder> ToBuilderNode(this OutputTriggerMultiPort ports, GraphDefinition definition)
         {
             return Enumerable.Range(0, ports.DataCount).Select(i => ports.SelectPort((uint)i).ToBuilderNode(definition));
+        }
+
+        [Pure]
+        public static IVariableProperty<T> ToVariableProperty<T>(this InputDataPort port, GraphDefinition definition) where T : unmanaged
+        {
+            var inputPortIndex = (int)port.Port.Index;
+            Assert.IsTrue(inputPortIndex < definition.PortInfoTable.Count);
+            var dataIndex = (int)definition.PortInfoTable[inputPortIndex].DataIndex;
+            Assert.IsTrue(dataIndex < definition.DataPortTable.Count);
+            var outputPortIndex = (int)definition.DataPortTable[dataIndex].GetIndex();
+            Assert.IsTrue(outputPortIndex < definition.PortInfoTable.Count);
+            var nodeIndex = (int)definition.PortInfoTable[outputPortIndex].NodeId.GetIndex();
+            Assert.IsTrue(nodeIndex < definition.NodeTable.Count);
+            var dataNode = definition.NodeTable[nodeIndex] as IVisualVariablePropertyNode<T>;
+            Assert.IsNotNull(dataNode);
+            return dataNode.GetVariableProperty();
         }
     }
 
@@ -86,9 +107,14 @@ namespace EntitiesBT.Builder.Visual
         INodeDataBuilder GetBuilder(GraphDefinition definition);
     }
 
+    public interface IVisualVariablePropertyNode<T> where T : unmanaged
+    {
+        IVariableProperty<T> GetVariableProperty();
+    }
+
     public readonly struct VisualBuilder<T> : INodeDataBuilder where T : struct, INodeData
     {
-        public delegate void BuildImpl(BlobBuilder blobBuilder, ref T data, ITreeNode<INodeDataBuilder>[] builders);
+        public delegate void BuildImpl(BlobBuilder blobBuilder, ref T data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders);
         private readonly BuildImpl _buildImpl;
 
         public int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
@@ -99,8 +125,10 @@ namespace EntitiesBT.Builder.Visual
         {
             _buildImpl = buildImpl ?? BuildNothing;
             Children = children ?? Enumerable.Empty<INodeDataBuilder>();
-            void BuildNothing(BlobBuilder blobBuilder, ref T data, ITreeNode<INodeDataBuilder>[] builders) {}
+            void BuildNothing(BlobBuilder blobBuilder, ref T data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders) {}
         }
+
+        public VisualBuilder(IEnumerable<INodeDataBuilder> children) : this(null, children) {}
 
         public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
         {
@@ -109,7 +137,7 @@ namespace EntitiesBT.Builder.Visual
             using (var blobBuilder = new BlobBuilder(Allocator.Temp, minSize))
             {
                 ref var data = ref blobBuilder.ConstructRoot<T>();
-                _buildImpl(blobBuilder, ref data, builders);
+                _buildImpl(blobBuilder, ref data, this, builders);
                 return blobBuilder.CreateReference<T>();
             }
         }
