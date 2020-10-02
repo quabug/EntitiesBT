@@ -99,19 +99,21 @@ MonoBehaviour:
           m_Value0: 7371172364106577861
           m_Value1: 3761866872534522784
         m_GraphAssetModel: {fileID: 11400000}
-        m_Position: {x: 477, y: 151}
+        m_Position: {x: 477, y: 149.5}
         m_Color: {r: 0.776, g: 0.443, b: 0, a: 0.5}
         m_HasUserColor: 0
         m_Title: SetBehaviorTree
         m_InputConstantKeys:
         - Order
         - CloneBehaviorTree
+        - Debug
         m_InputConstants:
         - id: 28
         - id: 29
+        - id: 30
         m_State: 0
         m_Node:
-          id: 30
+          id: 31
     00000004:
       type: {class: VariableNodeModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -153,19 +155,21 @@ MonoBehaviour:
           m_Value0: 11045300884111760992
           m_Value1: 2821757732610044072
         m_GraphAssetModel: {fileID: 11400000}
-        m_Position: {x: 472.8393, y: 422.58035}
+        m_Position: {x: 475.8393, y: 378.58035}
         m_Color: {r: 0.776, g: 0.443, b: 0, a: 0.5}
         m_HasUserColor: 0
         m_Title: SetBehaviorTree
         m_InputConstantKeys:
         - Order
         - CloneBehaviorTree
+        - Debug
         m_InputConstants:
-        - id: 31
         - id: 32
+        - id: 33
+        - id: 34
         m_State: 0
         m_Node:
-          id: 33
+          id: 35
     00000007:
       type: {class: GenericDotsNodeModel, ns: DotsStencil, asm: Unity.VisualScripting.Ecs.Editor}
       data:
@@ -173,19 +177,21 @@ MonoBehaviour:
           m_Value0: 14717946789138035567
           m_Value1: 16677038740546167996
         m_GraphAssetModel: {fileID: 11400000}
-        m_Position: {x: 464.17505, y: 670.25}
+        m_Position: {x: 476.6751, y: 610.2501}
         m_Color: {r: 0.776, g: 0.443, b: 0, a: 0.5}
         m_HasUserColor: 0
         m_Title: SetBehaviorTree
         m_InputConstantKeys:
         - Order
         - CloneBehaviorTree
+        - Debug
         m_InputConstants:
-        - id: 34
-        - id: 35
+        - id: 36
+        - id: 37
+        - id: 38
         m_State: 0
         m_Node:
-          id: 36
+          id: 39
     00000008:
       type: {class: VariableNodeModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -210,19 +216,21 @@ MonoBehaviour:
           m_Value0: 16809163273387749135
           m_Value1: 8616504305681364903
         m_GraphAssetModel: {fileID: 11400000}
-        m_Position: {x: 482.25012, y: 967.00006}
+        m_Position: {x: 475.25012, y: 842.00006}
         m_Color: {r: 0.776, g: 0.443, b: 0, a: 0.5}
         m_HasUserColor: 0
         m_Title: SetBehaviorTree
         m_InputConstantKeys:
         - Order
         - CloneBehaviorTree
+        - Debug
         m_InputConstants:
-        - id: 37
-        - id: 38
+        - id: 40
+        - id: 41
+        - id: 42
         m_State: 0
         m_Node:
-          id: 39
+          id: 43
     0000000A:
       type: {class: VariableNodeModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -231,7 +239,7 @@ MonoBehaviour:
           m_Value0: 8523070602734589152
           m_Value1: 7952146777902994835
         m_GraphAssetModel: {fileID: 11400000}
-        m_Position: {x: 229.49994, y: 949.5}
+        m_Position: {x: 225.49994, y: 949.5}
         m_Color: {r: 0.776, g: 0.443, b: 0, a: 0.5}
         m_HasUserColor: 0
         m_Title: bTEntityMove
@@ -254,10 +262,10 @@ MonoBehaviour:
         m_InputConstantKeys:
         - Enabled
         m_InputConstants:
-        - id: 40
+        - id: 44
         m_State: 0
         m_Node:
-          id: 41
+          id: 45
     0000000C:
       type: {class: EdgeModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -523,7 +531,7 @@ MonoBehaviour:
         m_IsExposed: 1
         m_Tooltip: 
         m_InitializationValue:
-          id: 42
+          id: 46
         m_Modifiers: 1
         variableFlags: 0
         m_AssetModel: {fileID: 11400000}
@@ -532,7 +540,7 @@ MonoBehaviour:
           m_Value1: 1806524337034715276
         m_Id: 
         m_MetadataModel:
-          id: 42
+          id: 46
     00000018:
       type: {class: VariableDeclarationModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -545,7 +553,7 @@ MonoBehaviour:
         m_IsExposed: 1
         m_Tooltip: 
         m_InitializationValue:
-          id: 42
+          id: 46
         m_Modifiers: 1
         variableFlags: 0
         m_AssetModel: {fileID: 11400000}
@@ -554,7 +562,7 @@ MonoBehaviour:
           m_Value1: 805542147327174075
         m_Id: 
         m_MetadataModel:
-          id: 42
+          id: 46
     00000019:
       type: {class: VariableDeclarationModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -567,7 +575,7 @@ MonoBehaviour:
         m_IsExposed: 1
         m_Tooltip: 
         m_InitializationValue:
-          id: 42
+          id: 46
         m_Modifiers: 1
         variableFlags: 0
         m_AssetModel: {fileID: 11400000}
@@ -576,7 +584,7 @@ MonoBehaviour:
           m_Value1: 1124282913126199229
         m_Id: 
         m_MetadataModel:
-          id: 42
+          id: 46
     0000001A:
       type: {class: VariableDeclarationModel, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -589,7 +597,7 @@ MonoBehaviour:
         m_IsExposed: 1
         m_Tooltip: 
         m_InitializationValue:
-          id: 42
+          id: 46
         m_Modifiers: 1
         variableFlags: 0
         m_AssetModel: {fileID: 11400000}
@@ -598,7 +606,7 @@ MonoBehaviour:
           m_Value1: 2737900322040369830
         m_Id: 
         m_MetadataModel:
-          id: 42
+          id: 46
     0000001B:
       type: {class: DotsStencil, ns: DotsStencil, asm: Unity.VisualScripting.Ecs.Editor}
       data:
@@ -615,6 +623,11 @@ MonoBehaviour:
       data:
         m_Value: 1
     0000001E:
+      type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_Value: 0
+    0000001F:
       type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
       data:
         Input:
@@ -632,64 +645,52 @@ MonoBehaviour:
         CloneBehaviorTree:
           Port:
             Index: 5
-    0000001F:
+        Debug:
+          Port:
+            Index: 6
+    00000020:
       type: {class: IntConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
       data:
         m_Value: 0
-    00000020:
+    00000021:
       type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
       data:
         m_Value: 1
-    00000021:
-      type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
-      data:
-        Input:
-          Port:
-            Index: 8
-        BehaviorTreeEntity:
-          Port:
-            Index: 9
-        TargetEntity:
-          Port:
-            Index: 10
-        Order:
-          Port:
-            Index: 11
-        CloneBehaviorTree:
-          Port:
-            Index: 12
     00000022:
-      type: {class: IntConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+      type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
       data:
         m_Value: 0
     00000023:
-      type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
-        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
-      data:
-        m_Value: 1
-    00000024:
       type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
       data:
         Input:
           Port:
-            Index: 15
+            Index: 10
         BehaviorTreeEntity:
           Port:
-            Index: 16
+            Index: 11
         TargetEntity:
           Port:
-            Index: 17
+            Index: 12
         Order:
           Port:
-            Index: 18
+            Index: 13
         CloneBehaviorTree:
           Port:
-            Index: 19
-    00000025:
+            Index: 14
+        Debug:
+          Port:
+            Index: 15
+    00000024:
       type: {class: IntConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_Value: 0
+    00000025:
+      type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
       data:
         m_Value: 1
@@ -697,40 +698,79 @@ MonoBehaviour:
       type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
       data:
-        m_Value: 1
+        m_Value: 0
     00000027:
       type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
       data:
         Input:
           Port:
-            Index: 22
+            Index: 19
         BehaviorTreeEntity:
           Port:
-            Index: 23
+            Index: 20
         TargetEntity:
           Port:
-            Index: 24
+            Index: 21
         Order:
           Port:
-            Index: 25
+            Index: 22
         CloneBehaviorTree:
           Port:
-            Index: 26
+            Index: 23
+        Debug:
+          Port:
+            Index: 24
     00000028:
-      type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+      type: {class: IntConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
       data:
         m_Value: 1
     00000029:
+      type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_Value: 1
+    0000002A:
+      type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_Value: 0
+    0000002B:
+      type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
+      data:
+        Input:
+          Port:
+            Index: 28
+        BehaviorTreeEntity:
+          Port:
+            Index: 29
+        TargetEntity:
+          Port:
+            Index: 30
+        Order:
+          Port:
+            Index: 31
+        CloneBehaviorTree:
+          Port:
+            Index: 32
+        Debug:
+          Port:
+            Index: 33
+    0000002C:
+      type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
+        asm: Unity.GraphTools.Foundation.Overdrive.Editor}
+      data:
+        m_Value: 1
+    0000002D:
       type: {class: OnStart, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Enabled:
           Port:
-            Index: 29
+            Index: 37
         Output:
           Port:
-            Index: 30
-    0000002A:
+            Index: 38
+    0000002E:
       type: {class: , ns: , asm: }
 --- !u!114 &2231197237016266728
 MonoBehaviour:
@@ -746,7 +786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Definition:
     id: 0
-  HashCode: 2749443840
+  HashCode: 1156952476
   references:
     version: 1
     00000000:
@@ -767,6 +807,10 @@ MonoBehaviour:
         - id: 12
         - id: 13
         - id: 14
+        - id: 15
+        - id: 16
+        - id: 17
+        - id: 18
         PortInfoTable:
         - IsDataPort: 0
           IsOutputPort: 0
@@ -805,6 +849,12 @@ MonoBehaviour:
             m_NodeIndex: 1
           PortName: CloneBehaviorTree
         - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 7
+          NodeId:
+            m_NodeIndex: 1
+          PortName: Debug
+        - IsDataPort: 1
           IsOutputPort: 1
           DataIndex: 5
           NodeId:
@@ -816,149 +866,191 @@ MonoBehaviour:
           NodeId:
             m_NodeIndex: 3
           PortName: ValuePort
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 7
+          NodeId:
+            m_NodeIndex: 4
+          PortName: ValuePort
         - IsDataPort: 0
           IsOutputPort: 0
           DataIndex: 0
           NodeId:
-            m_NodeIndex: 4
+            m_NodeIndex: 5
           PortName: Input
         - IsDataPort: 1
           IsOutputPort: 0
           DataIndex: 2
           NodeId:
-            m_NodeIndex: 4
+            m_NodeIndex: 5
           PortName: BehaviorTreeEntity
         - IsDataPort: 1
           IsOutputPort: 0
           DataIndex: 3
           NodeId:
-            m_NodeIndex: 4
+            m_NodeIndex: 5
           PortName: TargetEntity
-        - IsDataPort: 1
-          IsOutputPort: 0
-          DataIndex: 7
-          NodeId:
-            m_NodeIndex: 4
-          PortName: Order
         - IsDataPort: 1
           IsOutputPort: 0
           DataIndex: 8
           NodeId:
-            m_NodeIndex: 4
-          PortName: CloneBehaviorTree
+            m_NodeIndex: 5
+          PortName: Order
         - IsDataPort: 1
-          IsOutputPort: 1
-          DataIndex: 7
+          IsOutputPort: 0
+          DataIndex: 9
           NodeId:
             m_NodeIndex: 5
-          PortName: ValuePort
+          PortName: CloneBehaviorTree
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 10
+          NodeId:
+            m_NodeIndex: 5
+          PortName: Debug
         - IsDataPort: 1
           IsOutputPort: 1
           DataIndex: 8
           NodeId:
             m_NodeIndex: 6
           PortName: ValuePort
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 9
+          NodeId:
+            m_NodeIndex: 7
+          PortName: ValuePort
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 10
+          NodeId:
+            m_NodeIndex: 8
+          PortName: ValuePort
         - IsDataPort: 0
           IsOutputPort: 0
           DataIndex: 0
           NodeId:
-            m_NodeIndex: 7
+            m_NodeIndex: 9
           PortName: Input
         - IsDataPort: 1
           IsOutputPort: 0
           DataIndex: 2
           NodeId:
-            m_NodeIndex: 7
+            m_NodeIndex: 9
           PortName: BehaviorTreeEntity
         - IsDataPort: 1
           IsOutputPort: 0
           DataIndex: 4
-          NodeId:
-            m_NodeIndex: 7
-          PortName: TargetEntity
-        - IsDataPort: 1
-          IsOutputPort: 0
-          DataIndex: 9
-          NodeId:
-            m_NodeIndex: 7
-          PortName: Order
-        - IsDataPort: 1
-          IsOutputPort: 0
-          DataIndex: 10
-          NodeId:
-            m_NodeIndex: 7
-          PortName: CloneBehaviorTree
-        - IsDataPort: 1
-          IsOutputPort: 1
-          DataIndex: 9
-          NodeId:
-            m_NodeIndex: 8
-          PortName: ValuePort
-        - IsDataPort: 1
-          IsOutputPort: 1
-          DataIndex: 10
           NodeId:
             m_NodeIndex: 9
-          PortName: ValuePort
-        - IsDataPort: 0
-          IsOutputPort: 0
-          DataIndex: 0
-          NodeId:
-            m_NodeIndex: 10
-          PortName: Input
-        - IsDataPort: 1
-          IsOutputPort: 0
-          DataIndex: 1
-          NodeId:
-            m_NodeIndex: 10
-          PortName: BehaviorTreeEntity
-        - IsDataPort: 1
-          IsOutputPort: 0
-          DataIndex: 4
-          NodeId:
-            m_NodeIndex: 10
           PortName: TargetEntity
         - IsDataPort: 1
           IsOutputPort: 0
           DataIndex: 11
           NodeId:
-            m_NodeIndex: 10
+            m_NodeIndex: 9
           PortName: Order
         - IsDataPort: 1
           IsOutputPort: 0
           DataIndex: 12
           NodeId:
-            m_NodeIndex: 10
+            m_NodeIndex: 9
           PortName: CloneBehaviorTree
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 13
+          NodeId:
+            m_NodeIndex: 9
+          PortName: Debug
         - IsDataPort: 1
           IsOutputPort: 1
           DataIndex: 11
+          NodeId:
+            m_NodeIndex: 10
+          PortName: ValuePort
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 12
           NodeId:
             m_NodeIndex: 11
           PortName: ValuePort
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 12
+          DataIndex: 13
           NodeId:
             m_NodeIndex: 12
           PortName: ValuePort
-        - IsDataPort: 1
+        - IsDataPort: 0
           IsOutputPort: 0
-          DataIndex: 13
+          DataIndex: 0
           NodeId:
             m_NodeIndex: 13
+          PortName: Input
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 1
+          NodeId:
+            m_NodeIndex: 13
+          PortName: BehaviorTreeEntity
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 4
+          NodeId:
+            m_NodeIndex: 13
+          PortName: TargetEntity
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 14
+          NodeId:
+            m_NodeIndex: 13
+          PortName: Order
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 15
+          NodeId:
+            m_NodeIndex: 13
+          PortName: CloneBehaviorTree
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 16
+          NodeId:
+            m_NodeIndex: 13
+          PortName: Debug
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 14
+          NodeId:
+            m_NodeIndex: 14
+          PortName: ValuePort
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 15
+          NodeId:
+            m_NodeIndex: 15
+          PortName: ValuePort
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 16
+          NodeId:
+            m_NodeIndex: 16
+          PortName: ValuePort
+        - IsDataPort: 1
+          IsOutputPort: 0
+          DataIndex: 17
+          NodeId:
+            m_NodeIndex: 17
           PortName: Enabled
         - IsDataPort: 0
           IsOutputPort: 1
           DataIndex: 1
           NodeId:
-            m_NodeIndex: 13
+            m_NodeIndex: 17
           PortName: Output
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 13
+          DataIndex: 17
           NodeId:
-            m_NodeIndex: 14
+            m_NodeIndex: 18
           PortName: ValuePort
         DataPortTable:
         - m_NodeIndex: 0
@@ -968,14 +1060,18 @@ MonoBehaviour:
         - m_NodeIndex: 0
         - m_NodeIndex: 2
         - m_NodeIndex: 3
-        - m_NodeIndex: 5
+        - m_NodeIndex: 4
         - m_NodeIndex: 6
+        - m_NodeIndex: 7
         - m_NodeIndex: 8
-        - m_NodeIndex: 9
+        - m_NodeIndex: 10
         - m_NodeIndex: 11
         - m_NodeIndex: 12
         - m_NodeIndex: 14
-        TriggerTable: 0000000001000000080000000f0000001600000000000000
+        - m_NodeIndex: 15
+        - m_NodeIndex: 16
+        - m_NodeIndex: 18
+        TriggerTable: 00000000010000000a000000130000001c00000000000000
         VariableInitValues: []
         Strings: []
         InputTriggers: []
@@ -1037,129 +1133,169 @@ MonoBehaviour:
         CloneBehaviorTree:
           Port:
             Index: 5
+        Debug:
+          Port:
+            Index: 6
     00000002:
       type: {class: ConstantInt, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 0
         ValuePort:
           Port:
-            Index: 6
+            Index: 7
     00000003:
       type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 1
         ValuePort:
           Port:
-            Index: 7
-    00000004:
-      type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
-      data:
-        Input:
-          Port:
             Index: 8
-        BehaviorTreeEntity:
+    00000004:
+      type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
+        Value: 0
+        ValuePort:
           Port:
             Index: 9
-        TargetEntity:
+    00000005:
+      type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
+      data:
+        Input:
           Port:
             Index: 10
-        Order:
+        BehaviorTreeEntity:
           Port:
             Index: 11
-        CloneBehaviorTree:
+        TargetEntity:
           Port:
             Index: 12
-    00000005:
-      type: {class: ConstantInt, ns: Runtime, asm: Unity.VisualScripting.Ecs}
-      data:
-        Value: 0
-        ValuePort:
+        Order:
           Port:
             Index: 13
-    00000006:
-      type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
-      data:
-        Value: 1
-        ValuePort:
-          Port:
-            Index: 14
-    00000007:
-      type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
-      data:
-        Input:
-          Port:
-            Index: 15
-        BehaviorTreeEntity:
-          Port:
-            Index: 16
-        TargetEntity:
-          Port:
-            Index: 17
-        Order:
-          Port:
-            Index: 18
         CloneBehaviorTree:
           Port:
-            Index: 19
-    00000008:
+            Index: 14
+        Debug:
+          Port:
+            Index: 15
+    00000006:
       type: {class: ConstantInt, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 0
         ValuePort:
           Port:
-            Index: 20
-    00000009:
+            Index: 16
+    00000007:
       type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 1
         ValuePort:
           Port:
-            Index: 21
-    0000000A:
+            Index: 17
+    00000008:
+      type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
+        Value: 0
+        ValuePort:
+          Port:
+            Index: 18
+    00000009:
       type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
       data:
         Input:
           Port:
-            Index: 22
+            Index: 19
         BehaviorTreeEntity:
           Port:
-            Index: 23
+            Index: 20
         TargetEntity:
           Port:
-            Index: 24
+            Index: 21
         Order:
           Port:
-            Index: 25
+            Index: 22
         CloneBehaviorTree:
           Port:
-            Index: 26
-    0000000B:
+            Index: 23
+        Debug:
+          Port:
+            Index: 24
+    0000000A:
       type: {class: ConstantInt, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
+        Value: 0
+        ValuePort:
+          Port:
+            Index: 25
+    0000000B:
+      type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 1
         ValuePort:
           Port:
-            Index: 27
+            Index: 26
     0000000C:
       type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
+        Value: 0
+        ValuePort:
+          Port:
+            Index: 27
+    0000000D:
+      type: {class: SetBehaviorTree, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
+      data:
+        Input:
+          Port:
+            Index: 28
+        BehaviorTreeEntity:
+          Port:
+            Index: 29
+        TargetEntity:
+          Port:
+            Index: 30
+        Order:
+          Port:
+            Index: 31
+        CloneBehaviorTree:
+          Port:
+            Index: 32
+        Debug:
+          Port:
+            Index: 33
+    0000000E:
+      type: {class: ConstantInt, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
         Value: 1
         ValuePort:
           Port:
-            Index: 28
-    0000000D:
+            Index: 34
+    0000000F:
+      type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
+        Value: 1
+        ValuePort:
+          Port:
+            Index: 35
+    00000010:
+      type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
+        Value: 0
+        ValuePort:
+          Port:
+            Index: 36
+    00000011:
       type: {class: OnStart, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Enabled:
           Port:
-            Index: 29
+            Index: 37
         Output:
           Port:
-            Index: 30
-    0000000E:
+            Index: 38
+    00000012:
       type: {class: ConstantBool, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 1
         ValuePort:
           Port:
-            Index: 31
+            Index: 39

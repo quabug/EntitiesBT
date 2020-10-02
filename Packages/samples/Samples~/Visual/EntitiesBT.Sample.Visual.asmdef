@@ -1,0 +1,20 @@
+{
+    "name": "EntitiesBT.Sample.Visual",
+    "references": [
+        "GUID:4494fa222d28a2e49b5858abfef507e8",
+        "GUID:ce5178f24efc84d3ba21ab62136805be",
+        "GUID:c7babe7561eb244059259745ef27b866",
+        "GUID:873b76bdf022049438f054cfbcc1a3dc",
+        "GUID:734d92eba21c94caba915361bd5ac177",
+        "GUID:d8b63aba1907145bea998dd612889d6b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
