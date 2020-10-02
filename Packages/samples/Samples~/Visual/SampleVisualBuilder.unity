@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 943455904}
   - component: {fileID: 943455903}
   - component: {fileID: 943455902}
+  - component: {fileID: 943455905}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -156,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Values: []
-  ScriptingGraph: {fileID: -1371342403453504180, guid: 6c6476f23dca52d4290443095e5e5a38,
+  ScriptingGraph: {fileID: 5369497826926515657, guid: a61ff736162ed44c9a88de9896f097ae,
     type: 2}
 --- !u!4 &943455901
 Transform:
@@ -234,6 +235,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
+--- !u!114 &943455905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943455899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac828a561a46d4c2e8c8930610ee3eb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InputValue: 0
+  OutputValue: 10
+  LongValue: 0
 --- !u!1 &1278482398
 GameObject:
   m_ObjectHideFlags: 0

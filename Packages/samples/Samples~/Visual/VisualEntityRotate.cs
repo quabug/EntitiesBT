@@ -9,7 +9,7 @@ namespace EntitiesBT.Builder.Visual
 {
     [NodeSearcherItem("EntitiesBT/Build/EntityRotate")]
     [Serializable]
-    public struct VisualEntityRotate : INode, IVisualBuilderNode
+    public struct VisualEntityRotate : IFlowNode, IVisualBuilderNode
     {
         [PortDescription("")]
         public InputTriggerPort Parent;
@@ -17,7 +17,7 @@ namespace EntitiesBT.Builder.Visual
         public float3 Axis;
         public float RadianPerSecond;
 
-        public INodeDataBuilder GetBuilder(GraphDefinition definition)
+        public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
             return new VisualBuilder<EntityRotateNode>(BuildImpl);
         }
@@ -27,5 +27,7 @@ namespace EntitiesBT.Builder.Visual
             data.Axis = Axis;
             data.RadianPerSecond = RadianPerSecond;
         }
+
+        public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance => Execution.Done;
     }
 }

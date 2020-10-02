@@ -7,6 +7,6 @@
   "dependencies": {
     "com.unity.visualscripting.entities": "0.5.0-preview.1",
     "com.quabug.entities-bt.essential": "0.21.5",
-    "com.quabug.entities-bt.variable.scriptable-object": "0.21.1"
+    "com.quabug.entities-bt.variable.scriptable-object": "0.21.2"
   }
 }
