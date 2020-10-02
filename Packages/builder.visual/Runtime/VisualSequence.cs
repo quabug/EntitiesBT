@@ -5,19 +5,21 @@ using Runtime;
 
 namespace EntitiesBT.Builder.Visual
 {
-    [NodeSearcherItem("EntitiesBT/Build/Sequnece")]
+    [NodeSearcherItem("EntitiesBT/Build/Sequence")]
     [Serializable]
-    public struct VisualSequence : INode, IVisualBuilderNode
+    public struct VisualSequence : IVisualBuilderNode
     {
         [PortDescription("")]
         public InputTriggerPort Parent;
 
         [PortDescription("")]
-        public OutputTriggerMultiPort Children;
+        public OutputTriggerPort Children;
 
-        public INodeDataBuilder GetBuilder(GraphDefinition definition)
+        public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
-            return new VisualBuilder<SelectorNode>(Children.ToBuilderNode(definition));
+            return new VisualBuilder<SelectorNode>(Children.ToBuilderNode(instance, definition));
         }
+
+        public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance => Execution.Done;
     }
 }

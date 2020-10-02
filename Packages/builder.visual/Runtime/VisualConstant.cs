@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Builder.Visual
 {
-    public interface IVisualConstant<T> : INode, IVisualVariablePropertyNode<T> where T : unmanaged
+    public interface IVisualConstant<T> : IConstantNode<T>, IVisualVariablePropertyNode<T> where T : unmanaged
     {
         T Value { get; }
     }
@@ -29,5 +29,7 @@ namespace EntitiesBT.Builder.Visual
 
         [PortDescription(Runtime.ValueType.Float, Description = "Returns the float value.")]
         public OutputDataPort ValuePort;
+
+        public void Execute<TCtx>(TCtx ctx) where TCtx : IGraphInstance {}
     }
 }

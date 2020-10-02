@@ -7,17 +7,19 @@ namespace EntitiesBT.Builder.Visual
 {
     [NodeSearcherItem("EntitiesBT/Build/Selector")]
     [Serializable]
-    public struct VisualSelector : INode, IVisualBuilderNode
+    public struct VisualSelector : IVisualBuilderNode
     {
         [PortDescription("")]
         public InputTriggerPort Parent;
 
         [PortDescription("")]
-        public OutputTriggerMultiPort Children;
+        public OutputTriggerPort Children;
 
-        public INodeDataBuilder GetBuilder(GraphDefinition definition)
+        public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
-            return new VisualBuilder<SelectorNode>(Children.ToBuilderNode(definition));
+            return new VisualBuilder<SelectorNode>(Children.ToBuilderNode(instance, definition));
         }
+
+        public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance => Execution.Done;
     }
 }

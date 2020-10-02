@@ -17,7 +17,7 @@ namespace EntitiesBT.Builder.Visual
 {
     [NodeSearcherItem("EntitiesBT/Builder")]
     [Serializable]
-    public struct BehaviorTreeBuilder : IConstantNode
+    public struct BehaviorTreeBuilder : IDataNode
     {
         [PortDescription("", Runtime.ValueType.Entity)]
         public OutputDataPort BehaviorTreeEntity;
@@ -25,13 +25,17 @@ namespace EntitiesBT.Builder.Visual
         [PortDescription("")]
         public OutputTriggerPort BehaviorTree;
 
+        [PortDescription(Runtime.ValueType.StringReference)]
+        public InputDataPort DebugName;
+
         public BehaviorTreeThread Thread;
         public AutoCreateType AutoCreation;
 
         public void Execute<TCtx>(TCtx ctx) where TCtx : IGraphInstance
         {
+            var instance = ctx as GraphInstance;
             var definition = ctx.GetGraphDefinition();
-            var builder = BehaviorTree.ToBuilderNode(definition);
+            var builder = BehaviorTree.ToBuilderNode(instance, definition).Single();
             var dstManager = ctx.EntityManager;
             var entity = dstManager.CreateEntity();
             var blob = new NodeBlobRef(builder.ToBlob());
@@ -45,6 +49,11 @@ namespace EntitiesBT.Builder.Visual
             {
                 Blob = blob, Thread = Thread, AutoCreation = AutoCreation
             });
+
+#if UNITY_EDITOR
+            var debugName = ctx.ReadString(DebugName);
+            if (!string.IsNullOrEmpty(debugName)) dstManager.SetName(entity, debugName);
+#endif
 
             ctx.Write(BehaviorTreeEntity, entity);
         }
@@ -64,47 +73,55 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static INodeDataBuilder ToBuilderNode(this OutputTriggerPort port, GraphDefinition definition)
+        public static IEnumerable<INodeDataBuilder> ToBuilderNode(this OutputTriggerPort port, GraphInstance instance, GraphDefinition definition)
         {
             var outputPortIndex = (int)port.Port.Index;
             Assert.IsTrue(outputPortIndex < definition.PortInfoTable.Count);
             var triggerIndex = (int)definition.PortInfoTable[outputPortIndex].DataIndex;
             Assert.IsTrue(triggerIndex < definition.TriggerTable.Count);
-            var inputPortIndex = (int)definition.TriggerTable[triggerIndex];
-            Assert.IsTrue(inputPortIndex < definition.PortInfoTable.Count);
-            var nodeIndex = (int)definition.PortInfoTable[inputPortIndex].NodeId.GetIndex();
-            Assert.IsTrue(nodeIndex < definition.NodeTable.Count);
-            var childNode = definition.NodeTable[nodeIndex] as IVisualBuilderNode;
-            Assert.IsNotNull(childNode);
-            return childNode.GetBuilder(definition);
+            foreach (int inputPortIndex in definition.TriggerTable
+                .Skip(triggerIndex)
+                .TakeWhile(portIndex => portIndex != 0)
+            ) {
+                Assert.IsTrue(inputPortIndex < definition.PortInfoTable.Count);
+                var nodeIndex = (int)definition.PortInfoTable[inputPortIndex].NodeId.GetIndex();
+                Assert.IsTrue(nodeIndex < definition.NodeTable.Count);
+                var childNode = definition.NodeTable[nodeIndex] as IVisualBuilderNode;
+                Assert.IsNotNull(childNode);
+                yield return childNode.GetBuilder(instance, definition);
+            }
         }
 
         [Pure]
-        public static IEnumerable<INodeDataBuilder> ToBuilderNode(this OutputTriggerMultiPort ports, GraphDefinition definition)
+        public static IEnumerable<INodeDataBuilder> ToBuilderNode(this OutputTriggerMultiPort ports, GraphInstance instance, GraphDefinition definition)
         {
-            return Enumerable.Range(0, ports.DataCount).Select(i => ports.SelectPort((uint)i).ToBuilderNode(definition));
+            return Enumerable.Range(0, ports.DataCount).SelectMany(i => ports.SelectPort((uint)i).ToBuilderNode(instance, definition));
         }
 
         [Pure]
-        public static IVariableProperty<T> ToVariableProperty<T>(this InputDataPort port, GraphDefinition definition) where T : unmanaged
+        public static unsafe IVariableProperty<T> ToVariableProperty<T>(this InputDataPort port, GraphInstance instance, GraphDefinition definition) where T : unmanaged
         {
             var inputPortIndex = (int)port.Port.Index;
             Assert.IsTrue(inputPortIndex < definition.PortInfoTable.Count);
             var dataIndex = (int)definition.PortInfoTable[inputPortIndex].DataIndex;
             Assert.IsTrue(dataIndex < definition.DataPortTable.Count);
-            var outputPortIndex = (int)definition.DataPortTable[dataIndex].GetIndex();
-            Assert.IsTrue(outputPortIndex < definition.PortInfoTable.Count);
-            var nodeIndex = (int)definition.PortInfoTable[outputPortIndex].NodeId.GetIndex();
+            var nodeIndex = (int)definition.DataPortTable[dataIndex].GetIndex();
             Assert.IsTrue(nodeIndex < definition.NodeTable.Count);
-            var dataNode = definition.NodeTable[nodeIndex] as IVisualVariablePropertyNode<T>;
-            Assert.IsNotNull(dataNode);
-            return dataNode.GetVariableProperty();
+            var dataNode = definition.NodeTable[nodeIndex];
+            if (dataNode is IVisualVariablePropertyNode<T> propertyNode)
+                return propertyNode.GetVariableProperty();
+
+            T data;
+            void* ptr = &data;
+            var value = instance.ReadValue(port);
+            Value.SetPtrToValue(ptr, value.Type, value);
+            return new CustomVariableProperty<T> { CustomValue = data };
         }
     }
 
-    public interface IVisualBuilderNode
+    public interface IVisualBuilderNode : IFlowNode
     {
-        INodeDataBuilder GetBuilder(GraphDefinition definition);
+        INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition);
     }
 
     public interface IVisualVariablePropertyNode<T> where T : unmanaged

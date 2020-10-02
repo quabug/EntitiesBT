@@ -8,7 +8,7 @@ namespace EntitiesBT.Builder.Visual
 {
     [NodeSearcherItem("EntitiesBT/Build/Forever")]
     [Serializable]
-    public struct VisualForever : INode, IVisualBuilderNode
+    public struct VisualForever : IVisualBuilderNode
     {
         public NodeState BreakStates;
 
@@ -18,14 +18,16 @@ namespace EntitiesBT.Builder.Visual
         [PortDescription("")]
         public OutputTriggerPort Child;
 
-        public INodeDataBuilder GetBuilder(GraphDefinition definition)
+        public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
-            return new VisualBuilder<RepeatForeverNode>(BuildImpl, Child.ToBuilderNode(definition).Yield());
+            return new VisualBuilder<RepeatForeverNode>(BuildImpl, Child.ToBuilderNode(instance, definition));
         }
 
         public void BuildImpl(BlobBuilder blobBuilder, ref RepeatForeverNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
         {
             data.BreakStates = BreakStates;
         }
+
+        public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance => Execution.Done;
     }
 }
