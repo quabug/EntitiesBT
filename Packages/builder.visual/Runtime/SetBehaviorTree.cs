@@ -56,7 +56,7 @@ namespace EntitiesBT.Builder.Visual
                 dstManager.AddComponentData(behaviorTree, new BehaviorTreeOrderComponent {Value = order});
 
             if (ctx.ReadBool(Debug) && !dstManager.HasComponent<BehaviorTreeDebug>(behaviorTree))
-                dstManager.AddComponentData(behaviorTree, new BehaviorTreeDebug());
+                dstManager.AddComponentData(target, new BehaviorTreeDebug());
 
             return Execution.Done;
         }
