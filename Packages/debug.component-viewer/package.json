@@ -5,6 +5,6 @@
   "unity": "2020.1",
   "displayName": "EntitiesBT - Component Debug Viewer",
   "dependencies": {
-    "com.quabug.entities-bt.essential": "0.21.5"
+    "com.quabug.entities-bt.essential": "0.21.6"
   }
 }
