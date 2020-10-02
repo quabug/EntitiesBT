@@ -17,7 +17,7 @@ namespace EntitiesBT.Builder.Visual
 
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
-            return new VisualBuilder<SelectorNode>(Children.ToBuilderNode(instance, definition));
+            return new VisualBuilder<SequenceNode>(Children.ToBuilderNode(instance, definition));
         }
 
         public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance => Execution.Done;
