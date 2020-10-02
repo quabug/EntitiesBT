@@ -124,7 +124,7 @@ namespace EntitiesBT.Builder.Visual
         INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition);
     }
 
-    public interface IVisualVariablePropertyNode<T> where T : unmanaged
+    public interface IVisualVariablePropertyNode<T> : INode where T : unmanaged
     {
         IVariableProperty<T> GetVariableProperty();
     }
