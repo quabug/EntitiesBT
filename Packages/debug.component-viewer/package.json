@@ -1,10 +1,10 @@
 {
   "name": "com.quabug.entities-bt.debug.component-viewer",
   "description": "Behavior Tree for Unity Entities - Component Debug Viewer",
-  "version": "0.21.3",
+  "version": "0.21.4",
   "unity": "2020.1",
   "displayName": "EntitiesBT - Component Debug Viewer",
   "dependencies": {
-    "com.quabug.entities-bt.essential": "0.21.2"
+    "com.quabug.entities-bt.essential": "0.21.5"
   }
 }
