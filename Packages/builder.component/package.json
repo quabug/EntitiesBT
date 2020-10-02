@@ -6,6 +6,6 @@
   "displayName": "EntitiesBT - Component Builder",
   "dependencies": {
     "com.quabug.entities-bt.essential": "0.21.5",
-    "com.quabug.entities-bt.variable.scriptable-object": "0.21.2"
+    "com.quabug.entities-bt.variable.scriptable-object": "0.21.1"
   }
 }
