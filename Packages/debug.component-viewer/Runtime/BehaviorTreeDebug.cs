@@ -10,9 +10,6 @@ using UnityEngine;
 
 namespace EntitiesBT.DebugView
 {
-    [GenerateAuthoringComponent]
-    public readonly struct BehaviorTreeDebug : IComponentData {}
-
     [AddComponentMenu("")] // hide in component menu
     public class BTDebugViewTreesManager : MonoBehaviour
     {

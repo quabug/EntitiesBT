@@ -18,11 +18,14 @@ namespace EntitiesBT.Builder.Visual
         [PortDescription(Runtime.ValueType.Entity)]
         public InputDataPort TargetEntity;
 
-        [PortDescription(Runtime.ValueType.Int, Description = "")]
+        [PortDescription(Runtime.ValueType.Int)]
         public InputDataPort Order;
 
-        [PortDescription(Runtime.ValueType.Bool, Description = "")]
+        [PortDescription(Runtime.ValueType.Bool)]
         public InputDataPort CloneBehaviorTree;
+
+        [PortDescription(Runtime.ValueType.Bool)]
+        public InputDataPort Debug;
 
         public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance
         {
@@ -51,6 +54,9 @@ namespace EntitiesBT.Builder.Visual
                 dstManager.SetComponentData(behaviorTree, new BehaviorTreeOrderComponent {Value = order});
             else
                 dstManager.AddComponentData(behaviorTree, new BehaviorTreeOrderComponent {Value = order});
+
+            if (ctx.ReadBool(Debug) && !dstManager.HasComponent<BehaviorTreeDebug>(behaviorTree))
+                dstManager.AddComponentData(behaviorTree, new BehaviorTreeDebug());
 
             return Execution.Done;
         }
