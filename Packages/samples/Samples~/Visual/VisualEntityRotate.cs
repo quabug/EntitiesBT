@@ -7,7 +7,7 @@ using Unity.Mathematics;
 
 namespace EntitiesBT.Builder.Visual
 {
-    [NodeSearcherItem("EntitiesBT/Build/EntityRotate")]
+    [NodeSearcherItem("EntitiesBT/Node/EntityRotate")]
     [Serializable]
     public struct VisualEntityRotate : IFlowNode, IVisualBuilderNode
     {

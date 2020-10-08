@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace EntitiesBT.Builder.Visual
 {
-    [NodeSearcherItem("EntitiesBT/Build/Forever")]
+    [NodeSearcherItem("EntitiesBT/Node/Forever")]
     [Serializable]
     public struct VisualForever : IVisualBuilderNode
     {

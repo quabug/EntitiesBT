@@ -34,6 +34,9 @@ namespace EntitiesBT.Builder.Visual
         public void Execute<TCtx>(TCtx ctx) where TCtx : IGraphInstance
         {
             var instance = ctx as GraphInstance;
+            Assert.IsNotNull(instance);
+            if (instance == null) return;
+
             var definition = ctx.GetGraphDefinition();
             var builder = BehaviorTree.ToBuilderNode(instance, definition).Single();
             var dstManager = ctx.EntityManager;
@@ -73,7 +76,7 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static IEnumerable<INodeDataBuilder> ToBuilderNode(this OutputTriggerPort port, GraphInstance instance, GraphDefinition definition)
+        public static IEnumerable<INodeDataBuilder> ToBuilderNode(this OutputTriggerPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition)
         {
             var outputPortIndex = (int)port.Port.Index;
             Assert.IsTrue(outputPortIndex < definition.PortInfoTable.Count);
@@ -93,13 +96,13 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static IEnumerable<INodeDataBuilder> ToBuilderNode(this OutputTriggerMultiPort ports, GraphInstance instance, GraphDefinition definition)
+        public static IEnumerable<INodeDataBuilder> ToBuilderNode(this OutputTriggerMultiPort ports, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition)
         {
             return Enumerable.Range(0, ports.DataCount).SelectMany(i => ports.SelectPort((uint)i).ToBuilderNode(instance, definition));
         }
 
         [Pure]
-        public static unsafe IVariableProperty<T> ToVariableProperty<T>(this InputDataPort port, GraphInstance instance, GraphDefinition definition) where T : unmanaged
+        public static unsafe IVariableProperty<T> ToVariableProperty<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
         {
             var inputPortIndex = (int)port.Port.Index;
             Assert.IsTrue(inputPortIndex < definition.PortInfoTable.Count);
@@ -108,8 +111,12 @@ namespace EntitiesBT.Builder.Visual
             var nodeIndex = (int)definition.DataPortTable[dataIndex].GetIndex();
             Assert.IsTrue(nodeIndex < definition.NodeTable.Count);
             var dataNode = definition.NodeTable[nodeIndex];
-            if (dataNode is IVisualVariablePropertyNode<T> propertyNode)
-                return propertyNode.GetVariableProperty();
+
+            if (dataNode is IVisualVariablePropertyNode propertyNode)
+                return propertyNode.GetVariableProperty<T>(dataIndex, instance, definition);
+
+            if (dataNode is IVisualVariablePropertyNode<T> genericPropertyNode)
+                return genericPropertyNode.GetVariableProperty(instance, definition);
 
             T data;
             void* ptr = &data;
@@ -117,16 +124,36 @@ namespace EntitiesBT.Builder.Visual
             Value.SetPtrToValue(ptr, value.Type, value);
             return new CustomVariableProperty<T> { CustomValue = data };
         }
+
+        // copy from `GraphInstance.GetComponentFieldDescription`
+        public static FieldDescription? GetComponentFieldDescription(this GraphDefinition definition, TypeReference componentType, int fieldIndex)
+        {
+            int index = Array.BinarySearch(definition.ComponentFieldDescriptions, new GraphDefinition.TypeFieldsDescription(componentType.TypeHash, null), GraphDefinition.TypeFieldsDescription.TypeHashComparer);
+            if (index >= 0)
+            {
+                var fieldDescriptions = definition.ComponentFieldDescriptions[index].Fields;
+                if (fieldIndex >= 0 && fieldIndex < fieldDescriptions.Count)
+                {
+                    return fieldDescriptions[fieldIndex];
+                }
+            }
+            return null;
+        }
     }
 
     public interface IVisualBuilderNode : IFlowNode
     {
-        INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition);
+        INodeDataBuilder GetBuilder([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
+    }
+
+    public interface IVisualVariablePropertyNode : INode
+    {
+        IVariableProperty<T> GetVariableProperty<T>(int dataIndex, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged;
     }
 
     public interface IVisualVariablePropertyNode<T> : INode where T : unmanaged
     {
-        IVariableProperty<T> GetVariableProperty();
+        IVariableProperty<T> GetVariableProperty([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
     }
 
     public readonly struct VisualBuilder<T> : INodeDataBuilder where T : struct, INodeData
