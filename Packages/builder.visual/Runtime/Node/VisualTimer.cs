@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace EntitiesBT.Builder.Visual
 {
-    [NodeSearcherItem("EntitiesBT/Build/Timer")]
+    [NodeSearcherItem("EntitiesBT/Node/Timer")]
     [Serializable]
     public struct VisualTimer : IVisualBuilderNode
     {

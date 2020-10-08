@@ -5,9 +5,9 @@ using Runtime;
 
 namespace EntitiesBT.Builder.Visual
 {
-    [NodeSearcherItem("EntitiesBT/Build/Sequence")]
+    [NodeSearcherItem("EntitiesBT/Node/Selector")]
     [Serializable]
-    public struct VisualSequence : IVisualBuilderNode
+    public struct VisualSelector : IVisualBuilderNode
     {
         [PortDescription("")]
         public InputTriggerPort Parent;
@@ -17,7 +17,7 @@ namespace EntitiesBT.Builder.Visual
 
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
-            return new VisualBuilder<SequenceNode>(Children.ToBuilderNode(instance, definition));
+            return new VisualBuilder<SelectorNode>(Children.ToBuilderNode(instance, definition));
         }
 
         public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance => Execution.Done;
