@@ -27,7 +27,5 @@ namespace EntitiesBT.Builder.Visual
         {
             data.BreakStates = BreakStates;
         }
-
-        public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance => Execution.Done;
     }
 }

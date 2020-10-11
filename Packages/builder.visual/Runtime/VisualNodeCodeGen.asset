@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 283b83d5022d46b8a345bad7768d520e, type: 3}
-  m_Name: NodeComponentsGenerator_Odin
+  m_Name: VisualNodeCodeGen
   m_EditorClassIdentifier: 
-  _outputDirectory: Components
-  _classRenameRegex: (\w+)(?:Node)/BT$1_Odin
+  _outputDirectory: Node
+  _classRenameRegex: (\w+)(?:Node)/Visual$1
   _includedNodeAssemblies:
   - EntitiesBT.Runtime
   _codeTemplate:
@@ -23,23 +23,16 @@ MonoBehaviour:
   _fieldCodeGenerators:
   - id: 2
   - id: 3
-  - id: 4
-  - id: 5
   references:
     version: 1
     00000000:
-      type: {class: NodeComponentTemplate, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+      type: {class: VisualNodeTemplate, ns: EntitiesBT.Builder.Visual.Editor, asm: EntitiesBT.Builder.Visual.Editor}
     00000001:
       type: {class: ExcludedNodeWithCustomName, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
       data:
         NodeNames:
         - EntitiesBT.Nodes.ZeroNode
     00000002:
-      type: {class: BlobVariableFieldCodeGeneratorForOdin, ns: EntitiesBT.Editor,
-        asm: EntitiesBT.Components.Editor}
+      type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
     00000003:
-      type: {class: BlobStringFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
-    00000004:
-      type: {class: BlobArrayFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
-    00000005:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}

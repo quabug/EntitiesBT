@@ -34,7 +34,5 @@ namespace EntitiesBT.Builder.Visual
                 ;
             }
         }
-
-        public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance => Execution.Done;
     }
 }
