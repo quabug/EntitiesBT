@@ -12,11 +12,10 @@ namespace EntitiesBT.Editor
     [CreateAssetMenu(fileName = "NodeCodeGenerator", menuName = "EntitiesBT/NodeCodeGenerator")]
     public class NodeComponentsGenerator : ScriptableObject
     {
+        [SerializeReference, SerializeReferenceButton] private INodeCodeTemplate _codeTemplate;
         [SerializeField] private string _outputDirectory = default;
         [SerializeField] private string _classRenameRegex = @"(\w+)(?:Node)/$1";
         [SerializeField] private string[] _includedNodeAssemblies = default;
-
-        [SerializeReference, SerializeReferenceButton] private INodeCodeTemplate _codeTemplate;
         [SerializeReference, SerializeReferenceButton] private IExcludedNode[] _excludedNodes =
             { new ExcludedNodeWithCustomName() };
         [SerializeReference, SerializeReferenceButton] private INodeDataFieldCodeGenerator[] _fieldCodeGenerators =
