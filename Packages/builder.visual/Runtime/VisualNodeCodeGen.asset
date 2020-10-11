@@ -23,6 +23,8 @@ MonoBehaviour:
   _fieldCodeGenerators:
   - id: 2
   - id: 3
+  - id: 4
+  - id: 5
   references:
     version: 1
     00000000:
@@ -33,6 +35,13 @@ MonoBehaviour:
         NodeNames:
         - EntitiesBT.Nodes.ZeroNode
     00000002:
-      type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
+      type: {class: VisualCodeGenBlobArray, ns: EntitiesBT.Builder.Visual.Editor,
+        asm: EntitiesBT.Builder.Visual.Editor}
     00000003:
+      type: {class: VisualCodeGeneratorBlobString, ns: EntitiesBT.Builder.Visual.Editor,
+        asm: EntitiesBT.Builder.Visual.Editor}
+    00000004:
+      type: {class: VisualCodeGeneratorBlobVariableField, ns: EntitiesBT.Builder.Visual.Editor,
+        asm: EntitiesBT.Builder.Visual.Editor}
+    00000005:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
