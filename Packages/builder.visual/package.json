@@ -1,7 +1,7 @@
 {
   "name": "com.quabug.entities-bt.builder.visual",
   "description": "Behavior Tree for Unity Entities - Visual Builder",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "unity": "2020.1",
   "displayName": "EntitiesBT - Visual Builder",
   "dependencies": {

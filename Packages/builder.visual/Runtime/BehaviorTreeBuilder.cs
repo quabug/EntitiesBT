@@ -53,6 +53,8 @@ namespace EntitiesBT.Builder.Visual
                 Blob = blob, Thread = Thread, AutoCreation = AutoCreation
             });
 
+            dstManager.AddComponentObject(entity, new GraphInstanceComponent {Value = instance});
+
 #if UNITY_EDITOR
             var debugName = ctx.ReadString(DebugName);
             if (!string.IsNullOrEmpty(debugName)) dstManager.SetName(entity, debugName);
@@ -102,7 +104,34 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static unsafe IVariableProperty<T> ToVariableProperty<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        public static IVariableProperty<T> ToVariablePropertyReadOnly<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        {
+            return ToVariableProperty(port, instance, definition, () => new GraphVariableProperty<T>(port));
+        }
+
+        [Pure]
+        public static IVariableProperty<T> ToVariablePropertyReadWrite<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        {
+            return ToVariableProperty(port, instance, definition, () => ToConstVariable<T>(instance, port));
+        }
+
+        [Pure]
+        private static unsafe IVariableProperty<T> ToConstVariable<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged
+        {
+            T data;
+            void* ptr = &data;
+            var value = instance.ReadValue(port);
+            Value.SetPtrToValue(ptr, value.Type, value);
+            return new CustomVariableProperty<T> {CustomValue = data};
+        }
+
+        [Pure]
+        private static IVariableProperty<T> ToVariableProperty<T>(
+            InputDataPort port
+          , [NotNull] GraphInstance instance
+          , [NotNull] GraphDefinition definition
+          , [NotNull] Func<IVariableProperty<T>> createGraphVariable
+        ) where T : unmanaged
         {
             var inputPortIndex = (int)port.Port.Index;
             Assert.IsTrue(inputPortIndex < definition.PortInfoTable.Count);
@@ -118,11 +147,10 @@ namespace EntitiesBT.Builder.Visual
             if (dataNode is IVisualVariablePropertyNode<T> genericPropertyNode)
                 return genericPropertyNode.GetVariableProperty(instance, definition);
 
-            T data;
-            void* ptr = &data;
-            var value = instance.ReadValue(port);
-            Value.SetPtrToValue(ptr, value.Type, value);
-            return new CustomVariableProperty<T> { CustomValue = data };
+            if (dataNode is IConstantNode)
+                return ToConstVariable<T>(instance, port);
+
+            return createGraphVariable();
         }
 
         // copy from `GraphInstance.GetComponentFieldDescription`

@@ -29,7 +29,7 @@ namespace EntitiesBT.Builder.Visual
             void BuildImpl(BlobBuilder blobBuilder, ref TimerNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.BreakReturnState = @this.BreakReturnState;
-                @this.CountdownSeconds.ToVariableProperty<float>(instance, definition)
+                @this.CountdownSeconds.ToVariablePropertyReadWrite<float>(instance, definition)
                     .Allocate(ref blobBuilder, ref data.CountdownSeconds, self, builders)
                 ;
             }
