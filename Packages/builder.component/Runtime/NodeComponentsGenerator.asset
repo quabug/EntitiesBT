@@ -16,21 +16,25 @@ MonoBehaviour:
   _classRenameRegex: (\w+)(?:Node)/BT$1
   _includedNodeAssemblies:
   - EntitiesBT.Runtime
+  _codeTemplate:
+    id: 0
   _excludedNodes:
-  - id: 0
-  _fieldCodeGenerators:
   - id: 1
+  _fieldCodeGenerators:
   - id: 2
   - id: 3
   - id: 4
+  - id: 5
   references:
     version: 1
     00000000:
-      type: {class: ExcludedNodeWithCustomName, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+      type: {class: NodeComponentTemplate, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+    00000001:
+      type: {class: ExcludedNodeWithCustomName, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
       data:
         NodeNames:
         - EntitiesBT.Nodes.ZeroNode
-    00000001:
+    00000002:
       type: {class: BlobVariableFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
       data:
         ShouldGenerateVariableInterface: 1
@@ -38,9 +42,9 @@ MonoBehaviour:
         VariableInterfaceNamespace: EntitiesBT.Variable
         VariablePropertyNameSuffix: Property
         Generator: {fileID: 11400000}
-    00000002:
-      type: {class: BlobStringFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
     00000003:
-      type: {class: BlobArrayFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+      type: {class: BlobStringFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
     00000004:
-      type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+      type: {class: BlobArrayFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+    00000005:
+      type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}

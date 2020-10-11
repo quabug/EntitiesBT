@@ -19,7 +19,5 @@ namespace EntitiesBT.Builder.Visual
         {
             return new VisualBuilder<SelectorNode>(Children.ToBuilderNode(instance, definition));
         }
-
-        public Execution Execute<TCtx>(TCtx ctx, InputTriggerPort port) where TCtx : IGraphInstance => Execution.Done;
     }
 }

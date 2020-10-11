@@ -3,25 +3,30 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using EntitiesBT.Core;
+using Unity.Assertions;
 using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    [CreateAssetMenu(fileName = "NodeComponentsGenerator", menuName = "EntitiesBT/NodeComponentsGenerator")]
+    [CreateAssetMenu(fileName = "NodeCodeGenerator", menuName = "EntitiesBT/NodeCodeGenerator")]
     public class NodeComponentsGenerator : ScriptableObject
     {
         [SerializeField] private string _outputDirectory = default;
-        [SerializeField] private string _classRenameRegex = @"(\w+)Node/BT$1";
+        [SerializeField] private string _classRenameRegex = @"(\w+)(?:Node)/$1";
         [SerializeField] private string[] _includedNodeAssemblies = default;
+
+        [SerializeReference, SerializeReferenceButton] private INodeCodeTemplate _codeTemplate;
         [SerializeReference, SerializeReferenceButton] private IExcludedNode[] _excludedNodes =
             { new ExcludedNodeWithCustomName() };
         [SerializeReference, SerializeReferenceButton] private INodeDataFieldCodeGenerator[] _fieldCodeGenerators =
             { new DefaultNodeDataFieldCodeGenerator() };
 
-        [ContextMenu("GenerateComponents")]
+        [ContextMenu("Generate")]
         public void GenerateComponents()
         {
+            Assert.IsNotNull(_codeTemplate);
+
             var currentDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
             var scriptDirectory = $"{currentDirectory}/{_outputDirectory}";
             var regexList = _classRenameRegex.Split('/');
@@ -38,9 +43,9 @@ namespace EntitiesBT.Editor
                 var className = classNameRegex.Replace(nodeType.Name, replaceName);
                 var filepath = $"{scriptDirectory}/{className}.cs";
                 if (!Directory.Exists(scriptDirectory)) Directory.CreateDirectory(scriptDirectory);
-                if (!File.Exists(filepath) || File.ReadLines(filepath).FirstOrDefault() == NodeComponentTemplate.HEAD_LINE)
+                if (!File.Exists(filepath) || File.ReadLines(filepath).FirstOrDefault() == _codeTemplate.Header)
                 {
-                    var script = nodeType.GenerateComponentScript(_fieldCodeGenerators, className);
+                    var script = _codeTemplate.Generate(nodeType, _fieldCodeGenerators, className);
                     using (var writer = new StreamWriter(filepath)) writer.Write(script);
                 }
             }

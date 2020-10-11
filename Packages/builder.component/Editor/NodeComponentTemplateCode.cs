@@ -5,21 +5,16 @@ using System.Reflection;
 
 namespace EntitiesBT.Editor
 {
-    internal static class NodeComponentTemplate
+    internal class NodeComponentTemplate : INodeCodeTemplate
     {
-        internal const string HEAD_LINE = "// automatically generate from `NodeComponentTemplateCode.cs`";
-
-        internal static string GenerateComponentScript(
-            this Type nodeType
-          , IEnumerable<INodeDataFieldCodeGenerator> fieldGenerators
-          , string classNameOverride = ""
-        )
+        public string Header => "// automatically generate from `NodeComponentTemplateCode.cs`";
+        public string Generate(Type nodeType, IEnumerable<INodeDataFieldCodeGenerator> fieldGenerators, string classNameOverride = "")
         {
             var fields = nodeType.GetFields(BindingFlags.Public | BindingFlags.Instance);
             var fieldStrings = fields.Select(fi => fieldGenerators.First(gen => gen.ShouldGenerate(fi)).GenerateField(fi));
             var buildStrings = fields.Select(fi => fieldGenerators.First(gen => gen.ShouldGenerate(fi)).GenerateBuild(fi));
             var className = string.IsNullOrEmpty(classNameOverride) ? nodeType.Name : classNameOverride;
-            return $@"{HEAD_LINE}
+            return $@"{Header}
 using EntitiesBT.Core;
 using Unity.Entities;
 
@@ -36,6 +31,5 @@ namespace EntitiesBT.Components
 }}
 ";
         }
-
     }
 }
