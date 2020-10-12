@@ -60,6 +60,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 ## Packages
 - [essential](Packages/essential): essential part of entities behavior tree, any extension should depend on this package.
 - [builder.component](Packages/builder.component): build behavior tree data from unity components.
+- [builder.visual](Packages/builder.visual): build and use behavior tree by graph of DOTS visual scripting.
 - [debug.component-viewer](Packages/debug.component-viewer): show selected entity with behavior tree as components in inspector of unity while running.
 - [variable.scriptable-object](Packages/variable.scriptable-object): extension for using scriptable object data as variable source of behavior tree node.
 - [samples](Packages/samples): samples.
