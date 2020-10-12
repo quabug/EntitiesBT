@@ -40,7 +40,7 @@ namespace EntitiesBT.Builder.Visual
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {{
             var @this = this;
-            return new VisualBuilder<{nodeType.Name}>(BuildImpl, {(hasChildren ? "Children.ToBuilderNode(instance, definition)" : "null")});
+            return new VisualBuilder<{nodeType.FullName}>(BuildImpl, {(hasChildren ? "Children.ToBuilderNode(instance, definition)" : "null")});
             void BuildImpl(BlobBuilder blobBuilder, ref {nodeType.FullName} data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {{
                 {string.Join(Environment.NewLine + "                ", buildStrings)}
