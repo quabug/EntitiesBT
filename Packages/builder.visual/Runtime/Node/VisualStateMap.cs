@@ -23,7 +23,7 @@ namespace EntitiesBT.Builder.Visual
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
             var @this = this;
-            return new VisualBuilder<StateMapNode>(BuildImpl, Children.ToBuilderNode(instance, definition));
+            return new VisualBuilder<EntitiesBT.Nodes.StateMapNode>(BuildImpl, Children.ToBuilderNode(instance, definition));
             void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.StateMapNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.MapSuccess = MapSuccess;

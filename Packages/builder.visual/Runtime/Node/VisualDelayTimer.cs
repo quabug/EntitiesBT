@@ -20,7 +20,7 @@ namespace EntitiesBT.Builder.Visual
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
             var @this = this;
-            return new VisualBuilder<DelayTimerNode>(BuildImpl, null);
+            return new VisualBuilder<EntitiesBT.Nodes.DelayTimerNode>(BuildImpl, null);
             void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.DelayTimerNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 @this.TimerSeconds.ToVariablePropertyReadWrite<System.Single>(instance, definition).Allocate(ref blobBuilder, ref data.TimerSeconds, self, builders);

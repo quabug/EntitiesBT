@@ -20,7 +20,7 @@ namespace EntitiesBT.Builder.Visual
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
             var @this = this;
-            return new VisualBuilder<HasComponentNode>(BuildImpl, null);
+            return new VisualBuilder<EntitiesBT.Nodes.HasComponentNode>(BuildImpl, null);
             void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.HasComponentNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.StableTypeHash = StableTypeHash;

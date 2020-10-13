@@ -20,7 +20,7 @@ namespace EntitiesBT.Builder.Visual
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
             var @this = this;
-            return new VisualBuilder<RepeatForeverNode>(BuildImpl, Children.ToBuilderNode(instance, definition));
+            return new VisualBuilder<EntitiesBT.Nodes.RepeatForeverNode>(BuildImpl, Children.ToBuilderNode(instance, definition));
             void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.RepeatForeverNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.BreakStates = BreakStates;
