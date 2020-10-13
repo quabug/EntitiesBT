@@ -1,12 +1,17 @@
-// automatically generate from `NodeComponentTemplateCode.cs`
+// automatically generate from `OdinNodeComponentTemplate.cs`
+#if ODIN_INSPECTOR
+
 using EntitiesBT.Core;
 using Unity.Entities;
+using Sirenix.Serialization;
+using System;
 
 namespace EntitiesBT.Components
 {
-    public class BTTimer : BTNode<EntitiesBT.Nodes.TimerNode>
+    public class OdinTimer : OdinNode<EntitiesBT.Nodes.TimerNode>
     {
-        [UnityEngine.SerializeReference, SerializeReferenceButton, DrawWithUnity] public EntitiesBT.Variable.SingleProperty CountdownSeconds;
+        [OdinSerialize, NonSerialized]
+        public EntitiesBT.Variable.VariableProperty<System.Single> CountdownSeconds;
 
         public EntitiesBT.Core.NodeState BreakReturnState;
         protected override void Build(ref EntitiesBT.Nodes.TimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
@@ -16,3 +21,5 @@ namespace EntitiesBT.Components
         }
     }
 }
+
+#endif

@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,19 +6,34 @@ using Unity.Assertions;
 using UnityEditor;
 using UnityEngine;
 
+#if ODIN_INSPECTOR
+using DrawWithUnityAttribute = Sirenix.OdinInspector.DrawWithUnityAttribute;
+#else
+using DrawWithUnityAttribute = EntitiesBT.Core.DrawWithUnityAttribute;
+#endif
+
 namespace EntitiesBT.Editor
 {
     [CreateAssetMenu(fileName = "NodeCodeGenerator", menuName = "EntitiesBT/NodeCodeGenerator")]
-    public class NodeComponentsGenerator : ScriptableObject
+    public class NodeCodeGenerator : ScriptableObject
     {
-        [SerializeReference, SerializeReferenceButton] private INodeCodeTemplate _codeTemplate;
-        [SerializeField] private string _outputDirectory = default;
-        [SerializeField] private string _classRenameRegex = @"(\w+)(?:Node)/$1";
-        [SerializeField] private string[] _includedNodeAssemblies = default;
-        [SerializeReference, SerializeReferenceButton] private IExcludedNode[] _excludedNodes =
-            { new ExcludedNodeWithCustomName() };
-        [SerializeReference, SerializeReferenceButton] private INodeDataFieldCodeGenerator[] _fieldCodeGenerators =
-            { new DefaultNodeDataFieldCodeGenerator() };
+        [SerializeReference, SerializeReferenceButton, DrawWithUnity]
+        private INodeCodeTemplate _codeTemplate;
+
+        [SerializeField]
+        private string _outputDirectory = "Node";
+
+        [SerializeField]
+        private string _classRenameRegex = @"(\w+)(?:Node)/$1";
+
+        [SerializeReference, SerializeReferenceButton, DrawWithUnity]
+        private ITypeGroup[] _includedNodes = { new TypeGroupAssemblies() };
+
+        [SerializeReference, SerializeReferenceButton, DrawWithUnity]
+        private ITypeValidator[] _excludedNodes = { new TypeValidatorWithFullName() };
+
+        [SerializeReference, SerializeReferenceButton, DrawWithUnity]
+        private INodeDataFieldCodeGenerator[] _fieldCodeGenerators = { new DefaultNodeDataFieldCodeGenerator() };
 
         [ContextMenu("Generate")]
         public void GenerateComponents()
@@ -32,11 +46,9 @@ namespace EntitiesBT.Editor
             var classNameRegex = new Regex(regexList.Length > 0 ? regexList[0] : @"(*)");
             var replaceName = regexList.Length > 1 ? regexList[1] : "$1";
 
-            foreach (var nodeType in AppDomain.CurrentDomain.GetAssemblies()
-                .Where(assembly => _includedNodeAssemblies.Contains(assembly.GetName().Name))
-                .SelectMany(assembly => assembly.GetTypes())
+            foreach (var nodeType in _includedNodes.SelectMany(include => include.Types)
                 .Where(type => typeof(INodeData).IsAssignableFrom(type) && type.IsValueType)
-                .Where(type => !_excludedNodes.Any(check => check.IsExcluded(type)))
+                .Where(type => !_excludedNodes.Any(check => check.Verify(type)))
             )
             {
                 var className = classNameRegex.Replace(nodeType.Name, replaceName);

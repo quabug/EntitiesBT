@@ -20,7 +20,7 @@ namespace EntitiesBT.Builder.Visual
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
             var @this = this;
-            return new VisualBuilder<SuccessNode>(BuildImpl, null);
+            return new VisualBuilder<EntitiesBT.Nodes.SuccessNode>(BuildImpl, null);
             void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.SuccessNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 

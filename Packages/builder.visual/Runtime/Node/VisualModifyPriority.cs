@@ -22,7 +22,7 @@ namespace EntitiesBT.Builder.Visual
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
         {
             var @this = this;
-            return new VisualBuilder<ModifyPriorityNode>(BuildImpl, null);
+            return new VisualBuilder<EntitiesBT.Nodes.ModifyPriorityNode>(BuildImpl, null);
             void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.ModifyPriorityNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.PrioritySelectorIndex = PrioritySelectorIndex;

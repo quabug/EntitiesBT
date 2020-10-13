@@ -5,25 +5,25 @@ using EntitiesBT.Variable;
 
 namespace EntitiesBT.Editor
 {
-    public interface IExcludedNode
+    public interface ITypeValidator
     {
-        bool IsExcluded(Type node);
+        bool Verify(Type value);
     }
 
     [Serializable]
-    public class ExcludedNodeWithCustomName : IExcludedNode
+    public class TypeValidatorWithFullName : ITypeValidator
     {
-        public string[] NodeNames = {};
+        public string[] TypeFullNames = {};
 
-        public bool IsExcluded(Type node)
+        public bool Verify(Type type)
         {
-            return NodeNames.Contains(node.FullName);
+            return TypeFullNames.Contains(type.FullName);
         }
     }
 
-    public class ExcludedNodeWithoutBlobVariable : IExcludedNode
+    public class TypeValidatorWithoutBlobVariable : ITypeValidator
     {
-        public bool IsExcluded(Type node)
+        public bool Verify(Type node)
         {
             var fields = node.GetFields(BindingFlags.Public | BindingFlags.Instance);
             return !fields.Select(fi => fi.FieldType)

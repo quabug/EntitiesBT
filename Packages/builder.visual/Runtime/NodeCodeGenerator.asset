@@ -10,38 +10,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 283b83d5022d46b8a345bad7768d520e, type: 3}
-  m_Name: VisualNodeCodeGen
+  m_Name: NodeCodeGenerator
   m_EditorClassIdentifier: 
-  _outputDirectory: Node
-  _classRenameRegex: (\w+)(?:Node)/Visual$1
-  _includedNodeAssemblies:
-  - EntitiesBT.Runtime
   _codeTemplate:
     id: 0
-  _excludedNodes:
+  _outputDirectory: Node
+  _classRenameRegex: (\w+)(?:Node)/Visual$1
+  _includedNodes:
   - id: 1
-  _fieldCodeGenerators:
+  _excludedNodes:
   - id: 2
+  _fieldCodeGenerators:
   - id: 3
   - id: 4
   - id: 5
+  - id: 6
   references:
     version: 1
     00000000:
       type: {class: VisualNodeTemplate, ns: EntitiesBT.Builder.Visual.Editor, asm: EntitiesBT.Builder.Visual.Editor}
     00000001:
-      type: {class: ExcludedNodeWithCustomName, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
+      type: {class: TypeGroupAssemblies, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
       data:
-        NodeNames:
-        - EntitiesBT.Nodes.ZeroNode
+        Assemblies: []
     00000002:
-      type: {class: VisualCodeGenBlobArray, ns: EntitiesBT.Builder.Visual.Editor,
-        asm: EntitiesBT.Builder.Visual.Editor}
+      type: {class: TypeValidatorWithFullName, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
+      data:
+        TypeFullNames:
+        - EntitiesBT.Nodes.ZeroNode
     00000003:
       type: {class: VisualCodeGeneratorBlobString, ns: EntitiesBT.Builder.Visual.Editor,
         asm: EntitiesBT.Builder.Visual.Editor}
     00000004:
-      type: {class: VisualCodeGeneratorBlobVariableField, ns: EntitiesBT.Builder.Visual.Editor,
+      type: {class: VisualCodeGenBlobArray, ns: EntitiesBT.Builder.Visual.Editor,
         asm: EntitiesBT.Builder.Visual.Editor}
     00000005:
+      type: {class: VisualCodeGeneratorBlobVariableField, ns: EntitiesBT.Builder.Visual.Editor,
+        asm: EntitiesBT.Builder.Visual.Editor}
+    00000006:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
