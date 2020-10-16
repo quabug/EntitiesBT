@@ -75,10 +75,10 @@ namespace EntitiesBT.Variable
         static NodeVariablePropertyReader()
         {
             var type = typeof(NodeVariablePropertyReader<T>);
-            VariableReaderRegisters<T>.Register(_ID_RUNTIME_NODE, type.Getter("GetRuntimeNodeData"), type.Getter("GetRuntimeNodeDataRef"));
-            VariableReaderRegisters<T>.Register(_ID_DEFAULT_NODE, type.Getter("GetDefaultNodeData"), type.Getter("GetDefaultNodeDataRef"));
-            VariableReaderRegisters<T>.Register(_ID_DEFAULT_NODE_VARIABLE, type.Getter("GetDefaultNodeVariable"), type.Getter("GetDefaultNodeVariableRef"));
-            VariableReaderRegisters<T>.Register(_ID_RUNTIME_NODE_VARIABLE, type.Getter("GetRuntimeNodeVariable"), type.Getter("GetRuntimeNodeVariableRef"));
+            VariableReaderRegisters<T>.Register(_ID_RUNTIME_NODE, type.Getter("GetRuntimeNodeData"));
+            VariableReaderRegisters<T>.Register(_ID_DEFAULT_NODE, type.Getter("GetDefaultNodeData"));
+            VariableReaderRegisters<T>.Register(_ID_DEFAULT_NODE_VARIABLE, type.Getter("GetDefaultNodeVariable"));
+            VariableReaderRegisters<T>.Register(_ID_RUNTIME_NODE_VARIABLE, type.Getter("GetRuntimeNodeVariable"));
         }
 
         private static readonly int _ID_RUNTIME_NODE = new Guid("220681AA-D884-4E87-90A8-5A8657A734BD").GetHashCode();
@@ -137,18 +137,7 @@ namespace EntitiesBT.Variable
             ref var variable = ref UnsafeUtility.AsRef<BlobVariableReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return variable.Read(index, ref blob, ref bb);
         }
-        
-        [Preserve]
-        private static unsafe ref T GetRuntimeNodeVariableRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-            ref var data = ref blobVariable.Value<DynamicNodeRefData>();
-            var ptr = blob.GetRuntimeDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariableReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
-            return ref variable.GetDataRef(index, ref blob, ref bb);
-        }
-        
+
         [Preserve]
         private static unsafe T GetDefaultNodeVariable<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
@@ -158,17 +147,6 @@ namespace EntitiesBT.Variable
             var ptr = blob.GetDefaultDataPtr(data.Index);
             ref var variable = ref UnsafeUtility.AsRef<BlobVariableReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return variable.Read(index, ref blob, ref bb);
-        }
-        
-        [Preserve]
-        private static unsafe ref T GetDefaultNodeVariableRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-            ref var data = ref blobVariable.Value<DynamicNodeRefData>();
-            var ptr = blob.GetDefaultDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariableReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
-            return ref variable.GetDataRef(index, ref blob, ref bb);
         }
     }
 }

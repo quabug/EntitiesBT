@@ -8,5 +8,7 @@ public class SingleComponentVariablePropertyReader : EntitiesBT.Variable.Compone
 public class SingleNodeVariablePropertyReader : EntitiesBT.Variable.NodeVariablePropertyReader<System.Single>, ISinglePropertyReader { }
 public class SingleScriptableObjectVariablePropertyReader : EntitiesBT.Variable.ScriptableObjectVariablePropertyReader<System.Single>, ISinglePropertyReader { }
 
+public interface ISinglePropertyWriter : EntitiesBT.Variable.IVariablePropertyWriter<System.Single> { }
+
 }
 

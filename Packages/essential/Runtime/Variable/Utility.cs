@@ -75,7 +75,11 @@ namespace EntitiesBT.Variable
         }
         
         public static void Allocate<TValue, TFallback>(this BlobBuilder builder, ref BlobVariableReader<TFallback> blob, TValue value)
+#if CSHARP_8_OR_NEWER
             where TValue : unmanaged
+#else
+            where TValue : struct
+#endif
             where TFallback : unmanaged
         {
             ref var blobPtr = ref UnsafeUtility.As<int, BlobPtr<TValue>>(ref blob.OffsetPtr);

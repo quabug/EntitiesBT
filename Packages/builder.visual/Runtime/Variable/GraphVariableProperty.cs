@@ -28,7 +28,7 @@ namespace EntitiesBT.Builder.Visual
         static GraphVariablePropertyReader()
         {
             var type = typeof(GraphVariablePropertyReader<T>);
-            VariableReaderRegisters<T>.Register(ID, type.Getter("GetData"), null, GetComponentAccess);
+            VariableReaderRegisters<T>.Register(ID, type.Getter("GetData"), GetComponentAccess);
 
             IEnumerable<ComponentType> GetComponentAccess(ref BlobVariableReader<T> variable)
             {

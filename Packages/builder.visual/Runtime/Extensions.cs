@@ -52,16 +52,16 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static IVariablePropertyReader<T> ToVariablePropertyReadOnly<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        public static IVariablePropertyReader<T> ToVariablePropertyReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
         {
             return ToVariableProperty(port, instance, definition, () => new GraphVariablePropertyReader<T>(port));
         }
-
-        [Pure]
-        public static IVariablePropertyReader<T> ToVariablePropertyReadWrite<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
-        {
-            return ToVariableProperty(port, instance, definition, () => ToConstVariable<T>(instance, port));
-        }
+        //
+        // [Pure]
+        // public static IVariablePropertyReader<T> ToVariablePropertyReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        // {
+        //     return ToVariableProperty(port, instance, definition, () => ToConstVariable<T>(instance, port));
+        // }
 
         [Pure]
         private static unsafe IVariablePropertyReader<T> ToConstVariable<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged

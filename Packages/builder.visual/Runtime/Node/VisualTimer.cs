@@ -19,6 +19,12 @@ namespace EntitiesBT.Builder.Visual
         [PortDescription(Runtime.ValueType.Float)]
         public InputDataPort CountdownSeconds;
 
+        [PortDescription(Runtime.ValueType.Float)]
+        public OutputDataPort CountdownSecondsOutput;
+
+        [PortDescription("CountdownSeconds")]
+        public OutputTriggerPort OnCountdownSeconds;
+
         public NodeState BreakReturnState;
 
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)
@@ -29,8 +35,8 @@ namespace EntitiesBT.Builder.Visual
             void BuildImpl(BlobBuilder blobBuilder, ref TimerNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.BreakReturnState = @this.BreakReturnState;
-                @this.CountdownSeconds.ToVariablePropertyReadWrite<float>(instance, definition)
-                    .Allocate(ref blobBuilder, ref data.CountdownSeconds, self, builders)
+                @this.CountdownSeconds.ToVariablePropertyReader<float>(instance, definition)
+                    .Allocate(ref blobBuilder, ref data.CountdownSecondsReader, self, builders)
                 ;
             }
         }

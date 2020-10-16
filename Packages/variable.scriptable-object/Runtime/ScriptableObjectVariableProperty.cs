@@ -51,7 +51,7 @@ namespace EntitiesBT.Variable
         static ScriptableObjectVariablePropertyReader()
         {
             var type = typeof(ScriptableObjectVariablePropertyReader<T>);
-            VariableReaderRegisters<T>.Register(ID, type.Getter("GetData"), type.Getter("GetDataRef"));
+            VariableReaderRegisters<T>.Register(ID, type.Getter("GetData"));
         }
 
         public static readonly int ID = new Guid("B3668D2B-DC57-45F9-B71C-BF578E3EEF88").GetHashCode();

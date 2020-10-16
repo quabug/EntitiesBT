@@ -50,9 +50,9 @@ namespace EntitiesBT.Variable
         static ComponentVariablePropertyReader()
         {
             var type = typeof(ComponentVariablePropertyReader<T>);
-            VariableReaderRegisters<T>.Register(DYNAMIC_ID, type.Getter("GetData"), type.Getter("GetDataRef"), GetDynamicAccess);
-            VariableReaderRegisters<T>.Register(COPYTOLOCAL_ID, type.Getter("CopyAndGetData"), type.Getter("CopyAndGetDataRef"), GetCopyToLocalAccess);
-            VariableReaderRegisters<T>.Register(LOCAL_ID, type.Getter("GetLocalData"), type.Getter("GetLocalDataRef"), GetCopyToLocalAccess);
+            VariableReaderRegisters<T>.Register(DYNAMIC_ID, type.Getter("GetData"), GetDynamicAccess);
+            VariableReaderRegisters<T>.Register(COPYTOLOCAL_ID, type.Getter("CopyAndGetData"), GetCopyToLocalAccess);
+            VariableReaderRegisters<T>.Register(LOCAL_ID, type.Getter("GetLocalData"), GetCopyToLocalAccess);
         }
 
         public static readonly int DYNAMIC_ID = new Guid("8E5CDB60-17DB-498A-B925-2094062769AB").GetHashCode();
