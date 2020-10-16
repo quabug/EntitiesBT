@@ -16,22 +16,22 @@ namespace EntitiesBT.Samples
         public IFloat2PropertyReader InputMovePropertyReader;
         
         [SerializeReference, SerializeReferenceButton]
-        public IFloat3PropertyReader OutputVelocityPropertyReader;
+        public IFloat3PropertyWriter OutputVelocityPropertyWriter;
 
         protected override void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             SpeedPropertyReader.Allocate(ref builder, ref data.Speed, this, tree);
             InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
-            OutputVelocityPropertyReader.Allocate(ref builder, ref data.OutputVelocity, this, tree);
+            OutputVelocityPropertyWriter.Allocate(ref builder, ref data.OutputVelocity, this, tree);
         }
     }
 
     [BehaviorNode("B4559A1E-392B-4B8C-A074-B323AB31EEA7")]
     public struct InputMoveToCharacterVelocityNode : INodeData
     {
-        [ReadOnly] public BlobVariableReader<float> Speed;
-        [ReadOnly] public BlobVariableReader<float2> InputMove;
-        public BlobVariableReader<float3> OutputVelocity;
+        public BlobVariableReader<float> Speed;
+        public BlobVariableReader<float2> InputMove;
+        public BlobVariableWriter<float3> OutputVelocity;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
@@ -40,7 +40,7 @@ namespace EntitiesBT.Samples
             var input = InputMove.Read(index, ref blob, ref bb);
             var direction = new Vector3(input.x, 0, input.y).normalized;
             var speed = Speed.Read(index, ref blob, ref bb);
-            OutputVelocity.GetDataRef(index, ref blob, ref bb) = direction * speed;
+            OutputVelocity.Write(index, ref blob, ref bb, direction * speed);
             return NodeState.Success;
         }
 

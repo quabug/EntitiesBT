@@ -10,10 +10,10 @@ namespace EntitiesBT.Sample
 {
     public class BTVariablesTest : BTNode<VariablesTestNode>
     {
-        [SerializeReference, SerializeReferenceButton] public INt64PropertyReader LongVariable;
+        [SerializeReference, SerializeReferenceButton] public Int64PropertyReader LongVariable;
         public string String;
         public int[] IntArray;
-        [SerializeReference, SerializeReferenceButton] public INt32PropertyReader DestVariable;
+        [SerializeReference, SerializeReferenceButton] public Int32PropertyWriter DestVariable;
         [SerializeReference, SerializeReferenceButton] public ISinglePropertyReader SrcVariable;
         public long LongValue;
 
@@ -34,15 +34,15 @@ namespace EntitiesBT.Sample
         [Optional] public BlobVariableReader<long> LongVariable;
         public BlobString String;
         public BlobArray<int> IntArray;
-        [ReadWrite] public BlobVariableReader<int> DestVariable;
-        [ReadOnly] public BlobVariableReader<float> SrcVariable;
+        public BlobVariableWriter<int> DestVariable;
+        public BlobVariableReader<float> SrcVariable;
         public long Long;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            DestVariable.GetDataRef(index, ref blob, ref bb) = (int)SrcVariable.Read(index, ref blob, ref bb);
+            DestVariable.Write(index, ref blob, ref bb, (int)SrcVariable.Read(index, ref blob, ref bb));
             return NodeState.Success;
         }
 
@@ -58,7 +58,7 @@ namespace EntitiesBT.Sample
         public long LongVariable;
         public string String;
         public int[] IntArray;
-        public int IntVariable;
+        // public int IntVariable;
         public float FloatVariable;
         public long LongValue;
 
@@ -68,7 +68,7 @@ namespace EntitiesBT.Sample
             var bb = Blackboard.Value;
             ref var data = ref blob.GetNodeData<VariablesTestNode, NodeBlobRef>(Index);
             LongVariable = data.LongVariable.Read(Index, ref blob, ref bb);
-            IntVariable = data.DestVariable.Read(Index, ref blob, ref bb);
+            // IntVariable = data.DestVariable.Read(Index, ref blob, ref bb);
             FloatVariable = data.SrcVariable.Read(Index, ref blob, ref bb);
             String = data.String.ToString();
             IntArray = data.IntArray.ToArray();

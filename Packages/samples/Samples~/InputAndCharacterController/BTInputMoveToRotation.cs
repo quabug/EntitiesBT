@@ -13,20 +13,20 @@ namespace EntitiesBT.Samples
         public IFloat2PropertyReader InputMovePropertyReader;
         
         [SerializeReference, SerializeReferenceButton]
-        public IQuaternionPropertyReader OutputDirectionPropertyReader;
+        public IQuaternionPropertyWriter OutputDirectionPropertyWriter;
 
         protected override void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
-            OutputDirectionPropertyReader.Allocate(ref builder, ref data.OutputDirection, this, tree);
+            OutputDirectionPropertyWriter.Allocate(ref builder, ref data.OutputDirection, this, tree);
         }
     }
 
     [BehaviorNode("2164B3CA-C12E-4C86-9F80-F45A99124FAD")]
     public struct InputMoveToRotationNode : INodeData
     {
-        [ReadOnly] public BlobVariableReader<float2> InputMove;
-        public BlobVariableReader<quaternion> OutputDirection;
+        public BlobVariableReader<float2> InputMove;
+        public BlobVariableWriter<quaternion> OutputDirection;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
@@ -36,7 +36,7 @@ namespace EntitiesBT.Samples
             if (math.lengthsq(move) <= math.FLT_MIN_NORMAL) return NodeState.Success;
             
             var direction = quaternion.LookRotationSafe(new float3(move.x, 0, move.y), math.up());
-            OutputDirection.GetDataRef(index, ref blob, ref bb) = direction;
+            OutputDirection.Write(index, ref blob, ref bb, direction);
             return NodeState.Success;
         }
 
