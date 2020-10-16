@@ -1306,7 +1306,6 @@ GameObject:
   - component: {fileID: 346271340}
   - component: {fileID: 346271339}
   - component: {fileID: 2006228433}
-  - component: {fileID: 346271343}
   m_Layer: 0
   m_Name: NonJobMoveEntity
   m_TagString: Untagged
@@ -1391,18 +1390,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &346271343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346271338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &349575967
 GameObject:
   m_ObjectHideFlags: 0
@@ -2552,7 +2539,6 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &705507995
@@ -2717,7 +2703,6 @@ GameObject:
   - component: {fileID: 766789317}
   - component: {fileID: 766789316}
   - component: {fileID: 766789315}
-  - component: {fileID: 766789314}
   - component: {fileID: 766789313}
   - component: {fileID: 766789312}
   - component: {fileID: 766789311}
@@ -2779,18 +2764,6 @@ MonoBehaviour:
       data:
         Root: {fileID: 950849821}
         AutoDestroy: 1
---- !u!114 &766789314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766789310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &766789315
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3909,7 +3882,6 @@ GameObject:
   - component: {fileID: 1027940152}
   - component: {fileID: 1027940151}
   - component: {fileID: 1027940150}
-  - component: {fileID: 1027940149}
   - component: {fileID: 1027940148}
   - component: {fileID: 1027940147}
   m_Layer: 0
@@ -3957,18 +3929,6 @@ MonoBehaviour:
       data:
         Root: {fileID: 108759892}
         AutoDestroy: 1
---- !u!114 &1027940149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1027940145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &1027940150
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4471,7 +4431,6 @@ GameObject:
   - component: {fileID: 1197847199}
   - component: {fileID: 1197847203}
   - component: {fileID: 1197847202}
-  - component: {fileID: 1197847204}
   m_Layer: 0
   m_Name: SubTree
   m_TagString: Untagged
@@ -4581,18 +4540,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
---- !u!114 &1197847204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1197847198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1211126285
 GameObject:
   m_ObjectHideFlags: 0
@@ -5140,7 +5087,6 @@ GameObject:
   - component: {fileID: 1314860104}
   - component: {fileID: 1314860103}
   - component: {fileID: 1314860102}
-  - component: {fileID: 1314860107}
   m_Layer: 0
   m_Name: NonJobRotateEntity
   m_TagString: Untagged
@@ -5250,18 +5196,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1314860107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314860101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1352951056
 GameObject:
   m_ObjectHideFlags: 0
@@ -5767,7 +5701,6 @@ GameObject:
   - component: {fileID: 1637547555}
   - component: {fileID: 1637547554}
   - component: {fileID: 1637547553}
-  - component: {fileID: 1637547552}
   - component: {fileID: 1637547551}
   - component: {fileID: 1637547550}
   - component: {fileID: 1637547549}
@@ -5829,18 +5762,6 @@ MonoBehaviour:
       data:
         Root: {fileID: 662140730}
         AutoDestroy: 1
---- !u!114 &1637547552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1637547548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &1637547553
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6132,7 +6053,6 @@ GameObject:
   - component: {fileID: 1674485431}
   - component: {fileID: 1674485430}
   - component: {fileID: 1674485429}
-  - component: {fileID: 1674485428}
   - component: {fileID: 1674485427}
   - component: {fileID: 1674485433}
   m_Layer: 0
@@ -6167,18 +6087,6 @@ MonoBehaviour:
       data:
         Root: {fileID: 2048944608}
         AutoDestroy: 1
---- !u!114 &1674485428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1674485426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &1674485429
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6611,7 +6519,6 @@ GameObject:
   - component: {fileID: 1850289273}
   - component: {fileID: 1850289277}
   - component: {fileID: 1850289276}
-  - component: {fileID: 1850289278}
   m_Layer: 0
   m_Name: SubTreeOnly
   m_TagString: Untagged
@@ -6721,18 +6628,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
---- !u!114 &1850289278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1850289272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1909685620
 GameObject:
   m_ObjectHideFlags: 0
@@ -6883,7 +6778,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
 --- !u!223 &1931715896
 Canvas:
   m_ObjectHideFlags: 0
@@ -7092,7 +6986,6 @@ GameObject:
   - component: {fileID: 2006228428}
   - component: {fileID: 2006228426}
   - component: {fileID: 2006228427}
-  - component: {fileID: 2006228431}
   m_Layer: 0
   m_Name: ForceJobEntity
   m_TagString: Untagged
@@ -7202,18 +7095,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2006228431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006228425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2006228433
 MonoBehaviour:
   m_ObjectHideFlags: 0
