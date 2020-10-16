@@ -71,12 +71,12 @@ namespace EntitiesBT.Builder.Visual
 
     public interface IVisualVariablePropertyNode : INode
     {
-        IVariableProperty<T> GetVariableProperty<T>(int dataIndex, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged;
+        IVariablePropertyReader<T> GetVariableProperty<T>(int dataIndex, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged;
     }
 
     public interface IVisualVariablePropertyNode<T> : INode where T : unmanaged
     {
-        IVariableProperty<T> GetVariableProperty([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
+        IVariablePropertyReader<T> GetVariableProperty([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
     }
 
     public readonly struct VisualBuilder<T> : INodeDataBuilder where T : struct, INodeData

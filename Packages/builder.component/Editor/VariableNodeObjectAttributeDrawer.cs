@@ -31,7 +31,7 @@ namespace EntitiesBT.Editor
                         ? new string[0]
                         : VirtualMachine.GetNodeType(nodeObject.NodeId)
                             .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                            .Where(fi => fi.FieldType == _genericType || fi.FieldType == typeof(BlobVariable<>).MakeGenericType(_genericType))
+                            .Where(fi => fi.FieldType == _genericType || fi.FieldType == typeof(BlobVariableReader<>).MakeGenericType(_genericType))
                             .Select(fi => fi.Name)
                             .ToArray()
                     ;

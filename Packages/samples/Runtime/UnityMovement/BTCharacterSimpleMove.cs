@@ -12,12 +12,12 @@ namespace EntitiesBT.Extensions.UnityMovement
         public bool IsLocal;
         
         [SerializeReference, SerializeReferenceButton]
-        public float3Property VelocityProperty;
+        public IFloat3PropertyReader VelocityPropertyReader;
 
         protected override void Build(ref CharacterSimpleMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             data.IsLocal = IsLocal;
-            VelocityProperty.Allocate(ref builder, ref data.Velocity, this, tree);
+            VelocityPropertyReader.Allocate(ref builder, ref data.Velocity, this, tree);
         }
     }
 
@@ -25,7 +25,7 @@ namespace EntitiesBT.Extensions.UnityMovement
     public struct CharacterSimpleMoveNode : INodeData
     {
         public bool IsLocal;
-        public BlobVariable<float3> Velocity;
+        public BlobVariableReader<float3> Velocity;
 
         [ReadWrite(typeof(CharacterController))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
@@ -34,7 +34,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         {
             var controller = bb.GetObject<CharacterController>();
             if (controller == null) return NodeState.Failure;
-            Vector3 velocity = Velocity.GetData(index, ref blob, ref bb);
+            Vector3 velocity = Velocity.Read(index, ref blob, ref bb);
             controller.SimpleMove(IsLocal ? controller.transform.localToWorldMatrix.MultiplyVector(velocity) : velocity);
             return NodeState.Success;
         }

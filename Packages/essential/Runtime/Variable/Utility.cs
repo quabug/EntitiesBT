@@ -74,9 +74,9 @@ namespace EntitiesBT.Variable
             return _VALUE_TYPE_LOOKUP.Value[valueType];
         }
         
-        public static void Allocate<TValue, TFallback>(this BlobBuilder builder, ref BlobVariable<TFallback> blob, TValue value)
-            where TValue : struct
-            where TFallback : struct
+        public static void Allocate<TValue, TFallback>(this BlobBuilder builder, ref BlobVariableReader<TFallback> blob, TValue value)
+            where TValue : unmanaged
+            where TFallback : unmanaged
         {
             ref var blobPtr = ref UnsafeUtility.As<int, BlobPtr<TValue>>(ref blob.OffsetPtr);
             ref var blobValue = ref builder.Allocate(ref blobPtr);

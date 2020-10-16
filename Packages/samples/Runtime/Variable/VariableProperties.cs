@@ -3,23 +3,23 @@ namespace EntitiesBT.Variable
 
 // public class SingleCustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<System.Single>, SingleProperty { }
 
-public interface Int32Property : EntitiesBT.Variable.IVariableProperty<System.Int32> { }
-public class Int32CustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<System.Int32>, Int32Property { }
+public interface INt32PropertyReader : EntitiesBT.Variable.IVariablePropertyReader<System.Int32> { }
+public class Int32CustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<System.Int32>, INt32PropertyReader { }
 
-public interface Int64Property : EntitiesBT.Variable.IVariableProperty<System.Int64> { }
-public class Int64CustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<System.Int64>, Int64Property { }
+public interface INt64PropertyReader : EntitiesBT.Variable.IVariablePropertyReader<System.Int64> { }
+public class Int64CustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<System.Int64>, INt64PropertyReader { }
 
-public interface float2Property : EntitiesBT.Variable.IVariableProperty<Unity.Mathematics.float2> { }
-public class float2NodeVariableProperty : EntitiesBT.Variable.NodeVariableProperty<Unity.Mathematics.float2>, float2Property { }
-public class float2CustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<Unity.Mathematics.float2>, float2Property { }
+public interface IFloat2PropertyReader : EntitiesBT.Variable.IVariablePropertyReader<Unity.Mathematics.float2> { }
+public class Float2NodeVariablePropertyReader : EntitiesBT.Variable.NodeVariablePropertyReader<Unity.Mathematics.float2>, IFloat2PropertyReader { }
+public class Float2CustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<Unity.Mathematics.float2>, IFloat2PropertyReader { }
 
-public interface float3Property : EntitiesBT.Variable.IVariableProperty<Unity.Mathematics.float3> { }
-public class float3NodeVariableProperty : EntitiesBT.Variable.NodeVariableProperty<Unity.Mathematics.float3>, float3Property { }
-public class float3CustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<Unity.Mathematics.float3>, float3Property { }
+public interface IFloat3PropertyReader : EntitiesBT.Variable.IVariablePropertyReader<Unity.Mathematics.float3> { }
+public class Float3NodeVariablePropertyReader : EntitiesBT.Variable.NodeVariablePropertyReader<Unity.Mathematics.float3>, IFloat3PropertyReader { }
+public class Float3CustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<Unity.Mathematics.float3>, IFloat3PropertyReader { }
 
-public interface quaternionProperty : EntitiesBT.Variable.IVariableProperty<Unity.Mathematics.quaternion> { }
-public class quaternionNodeVariableProperty : EntitiesBT.Variable.NodeVariableProperty<Unity.Mathematics.quaternion>, quaternionProperty { }
-public class quaternionCustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<Unity.Mathematics.quaternion>, quaternionProperty { }
+public interface IQuaternionPropertyReader : EntitiesBT.Variable.IVariablePropertyReader<Unity.Mathematics.quaternion> { }
+public class QuaternionNodeVariablePropertyReader : EntitiesBT.Variable.NodeVariablePropertyReader<Unity.Mathematics.quaternion>, IQuaternionPropertyReader { }
+public class QuaternionCustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<Unity.Mathematics.quaternion>, IQuaternionPropertyReader { }
 
 }
 

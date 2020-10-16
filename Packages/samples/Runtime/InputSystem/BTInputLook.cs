@@ -9,7 +9,7 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputLook : BTInputActionBase<InputLookNode>
     {
-        public VariableProperty<float2> Output;
+        public VariablePropertyWriter<float2> Output;
 
         protected override void Build(ref InputLookNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
@@ -22,7 +22,7 @@ namespace EntitiesBT.Extensions.InputSystem
     public struct InputLookNode : IInputActionNodeData
     {
         public Guid ActionId { get; set; }
-        public BlobVariable<float2> Output;
+        public BlobVariableWriter<float2> Output;
         
         [ReadOnly(typeof(InputActionAssetComponent))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
@@ -31,7 +31,7 @@ namespace EntitiesBT.Extensions.InputSystem
         {
             var inputValue = index.ReadInputActionValue<InputLookNode, Vector2, TNodeBlob, TBlackboard>(ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
-            Output.GetDataRef(index, ref blob, ref bb) = inputValue.Value;
+            Output.Write(index, ref blob, ref bb, inputValue.Value);
             return NodeState.Success;
         }
 

@@ -6,7 +6,7 @@ namespace EntitiesBT.Components
 {
     public class BTDelayTimer : BTNode<EntitiesBT.Nodes.DelayTimerNode>
     {
-        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variable.SingleProperty TimerSeconds;
+        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variable.ISinglePropertyReader TimerSeconds;
 
         protected override void Build(ref EntitiesBT.Nodes.DelayTimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

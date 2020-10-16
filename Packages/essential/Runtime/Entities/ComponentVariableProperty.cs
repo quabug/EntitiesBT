@@ -13,7 +13,7 @@ namespace EntitiesBT.Variable
     public class VariableComponentDataAttribute : PropertyAttribute {}
 
     [Serializable]
-    public class ComponentVariableProperty<T> : VariableProperty<T> where T : unmanaged
+    public class ComponentVariablePropertyReader<T> : VariablePropertyReader<T> where T : unmanaged
     {
         public struct DynamicComponentData
         {
@@ -35,7 +35,7 @@ namespace EntitiesBT.Variable
         [Tooltip("Will read component data into local node and never write back into component data. (Force `ReadOnly` access)")]
         public bool CopyToLocalNode;
 
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             var data = GetTypeHashAndFieldOffset(ComponentValueName);
             if (data.Type != typeof(T) || data.Hash == 0)
@@ -47,12 +47,12 @@ namespace EntitiesBT.Variable
             else builder.Allocate(ref blobVariable, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
         }
 
-        static ComponentVariableProperty()
+        static ComponentVariablePropertyReader()
         {
-            var type = typeof(ComponentVariableProperty<T>);
-            VariableRegisters<T>.Register(DYNAMIC_ID, type.Getter("GetData"), type.Getter("GetDataRef"), GetDynamicAccess);
-            VariableRegisters<T>.Register(COPYTOLOCAL_ID, type.Getter("CopyAndGetData"), type.Getter("CopyAndGetDataRef"), GetCopyToLocalAccess);
-            VariableRegisters<T>.Register(LOCAL_ID, type.Getter("GetLocalData"), type.Getter("GetLocalDataRef"), GetCopyToLocalAccess);
+            var type = typeof(ComponentVariablePropertyReader<T>);
+            VariableReaderRegisters<T>.Register(DYNAMIC_ID, type.Getter("GetData"), type.Getter("GetDataRef"), GetDynamicAccess);
+            VariableReaderRegisters<T>.Register(COPYTOLOCAL_ID, type.Getter("CopyAndGetData"), type.Getter("CopyAndGetDataRef"), GetCopyToLocalAccess);
+            VariableReaderRegisters<T>.Register(LOCAL_ID, type.Getter("GetLocalData"), type.Getter("GetLocalDataRef"), GetCopyToLocalAccess);
         }
 
         public static readonly int DYNAMIC_ID = new Guid("8E5CDB60-17DB-498A-B925-2094062769AB").GetHashCode();
@@ -70,7 +70,7 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve]
-        private static T GetData<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static T GetData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -79,7 +79,7 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve]
-        private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -88,7 +88,7 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve]
-        private static T CopyAndGetData<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static T CopyAndGetData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -99,7 +99,7 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve]
-        private static ref T CopyAndGetDataRef<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static ref T CopyAndGetDataRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -110,7 +110,7 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve]
-        private static T GetLocalData<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static T GetLocalData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -119,7 +119,7 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve]
-        private static ref T GetLocalDataRef<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static ref T GetLocalDataRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -127,14 +127,14 @@ namespace EntitiesBT.Variable
             return ref data.LocalValue;
         }
 
-        private static IEnumerable<ComponentType> GetCopyToLocalAccess(ref BlobVariable<T> blobVariable)
+        private static IEnumerable<ComponentType> GetCopyToLocalAccess(ref BlobVariableReader<T> blobVariable)
         {
             var hash = blobVariable.Value<CopyToLocalComponentData>().StableHash;
             var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(hash);
             return ComponentType.ReadOnly(typeIndex).Yield();
         }
 
-        private static IEnumerable<ComponentType> GetDynamicAccess(ref BlobVariable<T> blobVariable)
+        private static IEnumerable<ComponentType> GetDynamicAccess(ref BlobVariableReader<T> blobVariable)
         {
             var hash = blobVariable.Value<DynamicComponentData>().StableHash;
             var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(hash);

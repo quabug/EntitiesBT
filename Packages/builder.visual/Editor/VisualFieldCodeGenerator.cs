@@ -52,7 +52,7 @@ namespace EntitiesBT.Builder.Visual.Editor
     {
         public bool ShouldGenerate(FieldInfo fi)
         {
-            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariable<>);
+            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariableReader<>);
         }
 
         public string GenerateField(FieldInfo fi)

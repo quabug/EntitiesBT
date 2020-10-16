@@ -18,7 +18,7 @@ namespace EntitiesBT.Variable
     }
     
     [Serializable]
-    public class ScriptableObjectVariableProperty<T> : VariableProperty<T> where T : unmanaged
+    public class ScriptableObjectVariablePropertyReader<T> : VariablePropertyReader<T> where T : unmanaged
     {
         public override int VariablePropertyTypeId => ID;
         
@@ -27,7 +27,7 @@ namespace EntitiesBT.Variable
         [VariableScriptableObjectValue("ScriptableObject")]
         public string ScriptableObjectValueName;
         
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             var type = ScriptableObject.GetType();
             FieldInfo fieldInfo = null;
@@ -48,22 +48,22 @@ namespace EntitiesBT.Variable
             builder.Allocate(ref blobVariable, (T) value);
         }
 
-        static ScriptableObjectVariableProperty()
+        static ScriptableObjectVariablePropertyReader()
         {
-            var type = typeof(ScriptableObjectVariableProperty<T>);
-            VariableRegisters<T>.Register(ID, type.Getter("GetData"), type.Getter("GetDataRef"));
+            var type = typeof(ScriptableObjectVariablePropertyReader<T>);
+            VariableReaderRegisters<T>.Register(ID, type.Getter("GetData"), type.Getter("GetDataRef"));
         }
 
         public static readonly int ID = new Guid("B3668D2B-DC57-45F9-B71C-BF578E3EEF88").GetHashCode();
         
-        private static T GetData<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static T GetData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
             return blobVariable.Value<T>();
         }
         
-        private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {

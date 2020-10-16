@@ -2,11 +2,11 @@
 namespace EntitiesBT.Variable
 {
 
-public interface SingleProperty : EntitiesBT.Variable.IVariableProperty<System.Single> { }
-public class SingleCustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<System.Single>, SingleProperty { }
-public class SingleComponentVariableProperty : EntitiesBT.Variable.ComponentVariableProperty<System.Single>, SingleProperty { }
-public class SingleNodeVariableProperty : EntitiesBT.Variable.NodeVariableProperty<System.Single>, SingleProperty { }
-public class SingleScriptableObjectVariableProperty : EntitiesBT.Variable.ScriptableObjectVariableProperty<System.Single>, SingleProperty { }
+public interface ISinglePropertyReader : EntitiesBT.Variable.IVariablePropertyReader<System.Single> { }
+public class SingleCustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<System.Single>, ISinglePropertyReader { }
+public class SingleComponentVariablePropertyReader : EntitiesBT.Variable.ComponentVariablePropertyReader<System.Single>, ISinglePropertyReader { }
+public class SingleNodeVariablePropertyReader : EntitiesBT.Variable.NodeVariablePropertyReader<System.Single>, ISinglePropertyReader { }
+public class SingleScriptableObjectVariablePropertyReader : EntitiesBT.Variable.ScriptableObjectVariablePropertyReader<System.Single>, ISinglePropertyReader { }
 
 }
 

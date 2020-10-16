@@ -9,7 +9,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("46540F67-6145-4433-9A3A-E470992B952E", BehaviorNodeType.Decorate)]
     public struct TimerNode : INodeData
     {
-        [ReadWrite] public BlobVariable<float> CountdownSeconds;
+        [ReadWrite] public BlobVariableReader<float> CountdownSeconds;
         public NodeState BreakReturnState;
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]

@@ -10,27 +10,27 @@ using UnityEngine.Scripting;
 
 namespace EntitiesBT.Builder.Visual
 {
-    public class GraphVariableProperty<T> : VariableProperty<T> where T : unmanaged
+    public class GraphVariablePropertyReader<T> : VariablePropertyReader<T> where T : unmanaged
     {
         private readonly InputDataPort _port;
         public override int VariablePropertyTypeId => ID;
 
-        public GraphVariableProperty(InputDataPort port)
+        public GraphVariablePropertyReader(InputDataPort port)
         {
             _port = port;
         }
 
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             builder.Allocate(ref blobVariable, _port);
         }
 
-        static GraphVariableProperty()
+        static GraphVariablePropertyReader()
         {
-            var type = typeof(GraphVariableProperty<T>);
-            VariableRegisters<T>.Register(ID, type.Getter("GetData"), null, GetComponentAccess);
+            var type = typeof(GraphVariablePropertyReader<T>);
+            VariableReaderRegisters<T>.Register(ID, type.Getter("GetData"), null, GetComponentAccess);
 
-            IEnumerable<ComponentType> GetComponentAccess(ref BlobVariable<T> variable)
+            IEnumerable<ComponentType> GetComponentAccess(ref BlobVariableReader<T> variable)
             {
                 return ComponentType.ReadOnly<CurrentBehaviorTreeComponent>().Yield();
             }
@@ -39,7 +39,7 @@ namespace EntitiesBT.Builder.Visual
         public static readonly int ID = new Guid("A3B60190-98AF-42DC-A723-35AD725172BB").GetHashCode();
 
         [Preserve]
-        private static unsafe T GetData<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static unsafe T GetData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {

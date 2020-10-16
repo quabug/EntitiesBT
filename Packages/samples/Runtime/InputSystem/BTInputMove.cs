@@ -10,7 +10,7 @@ namespace EntitiesBT.Extensions.InputSystem
     public class BTInputMove : BTInputActionBase<InputMoveNode>
     {
         [SerializeReference, SerializeReferenceButton]
-        public float2Property Output;
+        public IFloat2PropertyReader Output;
 
         protected override void Build(ref InputMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
@@ -23,7 +23,7 @@ namespace EntitiesBT.Extensions.InputSystem
     public struct InputMoveNode : IInputActionNodeData
     {
         public Guid ActionId { get; set; }
-        public BlobVariable<float2> Output;
+        public BlobVariableReader<float2> Output;
         
         [ReadOnly(typeof(InputActionAssetComponent))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)

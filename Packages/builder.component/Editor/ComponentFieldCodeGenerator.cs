@@ -57,7 +57,7 @@ namespace EntitiesBT.Editor
 
         public bool ShouldGenerate(FieldInfo fi)
         {
-            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariable<>);
+            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariableReader<>);
         }
 
         public string GenerateField(FieldInfo fi)
@@ -83,10 +83,10 @@ namespace EntitiesBT.Editor
                         writer.WriteLine(_HEAD_LINE);
                         writer.WriteLine(VariableGenerator.NamespaceBegin(VariableInterfaceNamespace));
                         writer.WriteLine(VariableGenerator.CreateInterface(variableType, VariablePropertyNameSuffix));
-                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(CustomVariableProperty<>), VariablePropertyNameSuffix));
-                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(ComponentVariableProperty<>), VariablePropertyNameSuffix));
-                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(NodeVariableProperty<>), VariablePropertyNameSuffix));
-                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(ScriptableObjectVariableProperty<>), VariablePropertyNameSuffix));
+                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(CustomVariablePropertyReader<>), VariablePropertyNameSuffix));
+                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(ComponentVariablePropertyReader<>), VariablePropertyNameSuffix));
+                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(NodeVariablePropertyReader<>), VariablePropertyNameSuffix));
+                        writer.WriteLine(VariableGenerator.CreateClass(variableType, typeof(ScriptableObjectVariablePropertyReader<>), VariablePropertyNameSuffix));
                         writer.WriteLine(VariableGenerator.NamespaceEnd());
                     }
                 }
@@ -104,7 +104,7 @@ namespace EntitiesBT.Editor
     {
         public bool ShouldGenerate(FieldInfo fi)
         {
-            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariable<>);
+            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariableReader<>);
         }
 
         public string GenerateField(FieldInfo fi)

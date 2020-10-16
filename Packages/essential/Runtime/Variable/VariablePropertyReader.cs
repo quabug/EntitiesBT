@@ -9,40 +9,40 @@ using Unity.Entities;
 
 namespace EntitiesBT.Variable
 {
-    public interface IVariableProperty<T> where T : unmanaged
+    public interface IVariablePropertyReader<T> where T : unmanaged
     {
         void Allocate(
-            ref Unity.Entities.BlobBuilder builder
-          , ref EntitiesBT.Variable.BlobVariable<T> blobVariable
-          , EntitiesBT.Core.INodeDataBuilder self
-          , EntitiesBT.Core.ITreeNode<EntitiesBT.Core.INodeDataBuilder>[] tree
+            ref BlobBuilder builder
+          , ref BlobVariableReader<T> blobVariable
+          , INodeDataBuilder self
+          , ITreeNode<INodeDataBuilder>[] tree
         );
     }
 
-    public abstract class VariableProperty<T> : IVariableProperty<T> where T : unmanaged
+    public abstract class VariablePropertyReader<T> : IVariablePropertyReader<T> where T : unmanaged
     {
         public const BindingFlags FIELD_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public;
         
-        public virtual void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, [NotNull] INodeDataBuilder self, [NotNull] ITreeNode<INodeDataBuilder>[] tree)
+        public virtual void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, [NotNull] INodeDataBuilder self, [NotNull] ITreeNode<INodeDataBuilder>[] tree)
         {
             blobVariable.VariableId = VariablePropertyTypeId;
             AllocateData(ref builder, ref blobVariable, self, tree);
         }
-        protected virtual void AllocateData(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree) {}
+        protected virtual void AllocateData(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree) {}
         public virtual int VariablePropertyTypeId => 0;
     }
 
     public static class VariablePropertyExtensions
     {
         public static unsafe void Allocate<T>(
-            this VariableProperty<T> variable
+            this VariablePropertyReader<T> variable
           , ref BlobBuilder builder
           , void* blobVariablePtr
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged
         {
-            variable.Allocate(ref builder, ref UnsafeUtility.AsRef<BlobVariable<T>>(blobVariablePtr), self, tree);
+            variable.Allocate(ref builder, ref UnsafeUtility.AsRef<BlobVariableReader<T>>(blobVariablePtr), self, tree);
         }
 
         public static MethodInfo Getter(this Type type, string name)
@@ -55,7 +55,7 @@ namespace EntitiesBT.Variable
         
         public static readonly Lazy<Type[]> VARIABLE_PROPERTY_TYPES = new Lazy<Type[]>(() =>
         {
-            var variableAssembly = typeof(VariableProperty<>).Assembly;
+            var variableAssembly = typeof(VariablePropertyReader<>).Assembly;
             var variableAssemblyName = variableAssembly.GetName().Name;
             return AppDomain
                 .CurrentDomain
@@ -66,7 +66,7 @@ namespace EntitiesBT.Variable
                 .Where(type => !type.IsAbstract
                                && type.IsGenericType
                                && type.GetGenericArguments().Length == 1
-                               && type.IsSubclassOfRawGeneric(typeof(VariableProperty<>))
+                               && type.IsSubclassOfRawGeneric(typeof(VariablePropertyReader<>))
                 ).ToArray()
             ;
         });

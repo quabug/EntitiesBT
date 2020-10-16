@@ -41,8 +41,8 @@ namespace EntitiesBT.Builder.Visual
     [BehaviorNode("6A4E0F98-7305-439B-A68C-CA42AAC51C34")]
     public struct VisualEntityRotateNode : INodeData
     {
-        [ReadOnly] public BlobVariable<float3> Axis;
-        [ReadOnly] public BlobVariable<float> RadianPerSecond;
+        [ReadOnly] public BlobVariableReader<float3> Axis;
+        [ReadOnly] public BlobVariableReader<float> RadianPerSecond;
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         [ReadWrite(typeof(Rotation))]
@@ -52,8 +52,8 @@ namespace EntitiesBT.Builder.Visual
         {
             ref var rotation = ref bb.GetDataRef<Rotation>();
             var deltaTime = bb.GetData<BehaviorTreeTickDeltaTime>();
-            var axis = Axis.GetData(index, ref blob, ref bb);
-            var radianPerSecond = RadianPerSecond.GetData(index, ref blob, ref bb);
+            var axis = Axis.Read(index, ref blob, ref bb);
+            var radianPerSecond = RadianPerSecond.Read(index, ref blob, ref bb);
             rotation.Value = math.mul(
                 math.normalize(rotation.Value)
               , quaternion.AxisAngle(axis, radianPerSecond * deltaTime.Value)

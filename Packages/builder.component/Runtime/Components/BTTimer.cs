@@ -6,7 +6,7 @@ namespace EntitiesBT.Components
 {
     public class BTTimer : BTNode<EntitiesBT.Nodes.TimerNode>
     {
-        [UnityEngine.SerializeReference, SerializeReferenceButton, DrawWithUnity] public EntitiesBT.Variable.SingleProperty CountdownSeconds;
+        [UnityEngine.SerializeReference, SerializeReferenceButton, DrawWithUnity] public EntitiesBT.Variable.ISinglePropertyReader CountdownSeconds;
 
         public EntitiesBT.Core.NodeState BreakReturnState;
         protected override void Build(ref EntitiesBT.Nodes.TimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)

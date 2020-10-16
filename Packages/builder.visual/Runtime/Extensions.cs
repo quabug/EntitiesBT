@@ -52,33 +52,33 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static IVariableProperty<T> ToVariablePropertyReadOnly<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        public static IVariablePropertyReader<T> ToVariablePropertyReadOnly<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
         {
-            return ToVariableProperty(port, instance, definition, () => new GraphVariableProperty<T>(port));
+            return ToVariableProperty(port, instance, definition, () => new GraphVariablePropertyReader<T>(port));
         }
 
         [Pure]
-        public static IVariableProperty<T> ToVariablePropertyReadWrite<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        public static IVariablePropertyReader<T> ToVariablePropertyReadWrite<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
         {
             return ToVariableProperty(port, instance, definition, () => ToConstVariable<T>(instance, port));
         }
 
         [Pure]
-        private static unsafe IVariableProperty<T> ToConstVariable<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged
+        private static unsafe IVariablePropertyReader<T> ToConstVariable<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged
         {
             T data;
             void* ptr = &data;
             var value = instance.ReadValue(port);
             Value.SetPtrToValue(ptr, value.Type, value);
-            return new CustomVariableProperty<T> {CustomValue = data};
+            return new CustomVariablePropertyReader<T> {CustomValue = data};
         }
 
         [Pure]
-        private static IVariableProperty<T> ToVariableProperty<T>(
+        private static IVariablePropertyReader<T> ToVariableProperty<T>(
             InputDataPort port
           , [NotNull] GraphInstance instance
           , [NotNull] GraphDefinition definition
-          , [NotNull] Func<IVariableProperty<T>> createGraphVariable
+          , [NotNull] Func<IVariablePropertyReader<T>> createGraphVariable
         ) where T : unmanaged
         {
             var inputPortIndex = (int)port.Port.Index;

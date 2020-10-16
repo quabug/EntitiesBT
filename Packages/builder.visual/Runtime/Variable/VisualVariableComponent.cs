@@ -12,7 +12,7 @@ namespace EntitiesBT.Builder.Visual
         public OutputDataMultiPort ComponentData;
         public bool UseRef;
 
-        public IVariableProperty<T> GetVariableProperty<T>(int dataIndex, GraphInstance instance, GraphDefinition definition) where T : unmanaged
+        public IVariablePropertyReader<T> GetVariableProperty<T>(int dataIndex, GraphInstance instance, GraphDefinition definition) where T : unmanaged
         {
             for (uint i = 0; i < ComponentData.GetDataCount(); i++)
             {
@@ -24,7 +24,7 @@ namespace EntitiesBT.Builder.Visual
                     var field = definition.GetComponentFieldDescription(Type, (int)i);
                     // TODO: check data type
                     if (field.HasValue)
-                        return new DynamicComponentVariableProperty<T>(field.Value.DeclaringTypeHash, field.Value.Offset, UseRef);
+                        return new DynamicComponentVariablePropertyReader<T>(field.Value.DeclaringTypeHash, field.Value.Offset, UseRef);
                     throw new IndexOutOfRangeException();
                 }
             }

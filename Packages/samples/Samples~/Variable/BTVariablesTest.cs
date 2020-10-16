@@ -10,11 +10,11 @@ namespace EntitiesBT.Sample
 {
     public class BTVariablesTest : BTNode<VariablesTestNode>
     {
-        [SerializeReference, SerializeReferenceButton] public Int64Property LongVariable;
+        [SerializeReference, SerializeReferenceButton] public INt64PropertyReader LongVariable;
         public string String;
         public int[] IntArray;
-        [SerializeReference, SerializeReferenceButton] public Int32Property DestVariable;
-        [SerializeReference, SerializeReferenceButton] public SingleProperty SrcVariable;
+        [SerializeReference, SerializeReferenceButton] public INt32PropertyReader DestVariable;
+        [SerializeReference, SerializeReferenceButton] public ISinglePropertyReader SrcVariable;
         public long LongValue;
 
         protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
@@ -31,18 +31,18 @@ namespace EntitiesBT.Sample
     [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
     public struct VariablesTestNode : INodeData
     {
-        [Optional] public BlobVariable<long> LongVariable;
+        [Optional] public BlobVariableReader<long> LongVariable;
         public BlobString String;
         public BlobArray<int> IntArray;
-        [ReadWrite] public BlobVariable<int> DestVariable;
-        [ReadOnly] public BlobVariable<float> SrcVariable;
+        [ReadWrite] public BlobVariableReader<int> DestVariable;
+        [ReadOnly] public BlobVariableReader<float> SrcVariable;
         public long Long;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            DestVariable.GetDataRef(index, ref blob, ref bb) = (int)SrcVariable.GetData(index, ref blob, ref bb);
+            DestVariable.GetDataRef(index, ref blob, ref bb) = (int)SrcVariable.Read(index, ref blob, ref bb);
             return NodeState.Success;
         }
 
@@ -67,9 +67,9 @@ namespace EntitiesBT.Sample
             var blob = Blob;
             var bb = Blackboard.Value;
             ref var data = ref blob.GetNodeData<VariablesTestNode, NodeBlobRef>(Index);
-            LongVariable = data.LongVariable.GetData(Index, ref blob, ref bb);
-            IntVariable = data.DestVariable.GetData(Index, ref blob, ref bb);
-            FloatVariable = data.SrcVariable.GetData(Index, ref blob, ref bb);
+            LongVariable = data.LongVariable.Read(Index, ref blob, ref bb);
+            IntVariable = data.DestVariable.Read(Index, ref blob, ref bb);
+            FloatVariable = data.SrcVariable.Read(Index, ref blob, ref bb);
             String = data.String.ToString();
             IntArray = data.IntArray.ToArray();
             LongValue = data.Long;

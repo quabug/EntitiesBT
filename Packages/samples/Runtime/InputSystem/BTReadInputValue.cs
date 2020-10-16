@@ -12,12 +12,12 @@ namespace EntitiesBT.Extensions.InputSystem
         where T : unmanaged
         where U : struct, IReadInputValueNode
     {
-        public VariableProperty<T> Output;
+        public VariablePropertyReader<T> Output;
 
         protected override unsafe void Build(ref U data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             base.Build(ref data, builder, tree);
-            ref var output = ref UnsafeUtility.AsRef<BlobVariable<T>>(data.OutputPtr);
+            ref var output = ref UnsafeUtility.AsRef<BlobVariableReader<T>>(data.OutputPtr);
             Output.Allocate(ref builder, ref output, this, tree);
         }
     }
@@ -29,7 +29,7 @@ namespace EntitiesBT.Extensions.InputSystem
     
     public struct ReadInputValueNode<TNodeData, TValue>
         where TNodeData : struct, IReadInputValueNode
-        where TValue : struct
+        where TValue : unmanaged
     {
         public static unsafe NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
@@ -38,8 +38,8 @@ namespace EntitiesBT.Extensions.InputSystem
             var inputValue = index.ReadInputActionValue<TNodeData, TValue, TNodeBlob, TBlackboard>(ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
             ref var data = ref blob.GetNodeData<TNodeData, TNodeBlob>(index);
-            ref var output = ref UnsafeUtility.AsRef<BlobVariable<TValue>>(data.OutputPtr);
-            output.GetDataRef(index, ref blob, ref bb) = inputValue.Value;
+            ref var output = ref UnsafeUtility.AsRef<BlobVariableWriter<TValue>>(data.OutputPtr);
+            output.Write(index, ref blob, ref bb, inputValue.Value);
             return NodeState.Success;
         }
     }

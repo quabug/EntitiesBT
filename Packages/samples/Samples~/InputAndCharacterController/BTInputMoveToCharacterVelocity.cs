@@ -10,36 +10,36 @@ namespace EntitiesBT.Samples
     public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
     {
         [SerializeReference, SerializeReferenceButton]
-        public SingleProperty SpeedProperty;
+        public ISinglePropertyReader SpeedPropertyReader;
         
         [SerializeReference, SerializeReferenceButton]
-        public float2Property InputMoveProperty;
+        public IFloat2PropertyReader InputMovePropertyReader;
         
         [SerializeReference, SerializeReferenceButton]
-        public float3Property OutputVelocityProperty;
+        public IFloat3PropertyReader OutputVelocityPropertyReader;
 
         protected override void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            SpeedProperty.Allocate(ref builder, ref data.Speed, this, tree);
-            InputMoveProperty.Allocate(ref builder, ref data.InputMove, this, tree);
-            OutputVelocityProperty.Allocate(ref builder, ref data.OutputVelocity, this, tree);
+            SpeedPropertyReader.Allocate(ref builder, ref data.Speed, this, tree);
+            InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
+            OutputVelocityPropertyReader.Allocate(ref builder, ref data.OutputVelocity, this, tree);
         }
     }
 
     [BehaviorNode("B4559A1E-392B-4B8C-A074-B323AB31EEA7")]
     public struct InputMoveToCharacterVelocityNode : INodeData
     {
-        [ReadOnly] public BlobVariable<float> Speed;
-        [ReadOnly] public BlobVariable<float2> InputMove;
-        public BlobVariable<float3> OutputVelocity;
+        [ReadOnly] public BlobVariableReader<float> Speed;
+        [ReadOnly] public BlobVariableReader<float2> InputMove;
+        public BlobVariableReader<float3> OutputVelocity;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var input = InputMove.GetData(index, ref blob, ref bb);
+            var input = InputMove.Read(index, ref blob, ref bb);
             var direction = new Vector3(input.x, 0, input.y).normalized;
-            var speed = Speed.GetData(index, ref blob, ref bb);
+            var speed = Speed.Read(index, ref blob, ref bb);
             OutputVelocity.GetDataRef(index, ref blob, ref bb) = direction * speed;
             return NodeState.Success;
         }

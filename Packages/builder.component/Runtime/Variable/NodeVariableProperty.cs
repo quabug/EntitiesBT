@@ -22,7 +22,7 @@ namespace EntitiesBT.Variable
     }
     
     // TODO: check loop ref?
-    public class NodeVariableProperty<T> : VariableProperty<T> where T : unmanaged
+    public class NodeVariablePropertyReader<T> : VariablePropertyReader<T> where T : unmanaged
     {
         private struct DynamicNodeRefData
         {
@@ -34,7 +34,7 @@ namespace EntitiesBT.Variable
         [VariableNodeObject("NodeObject")] public string ValueFieldName;
         public bool AccessRuntimeData = true;
         
-        public override void Allocate(ref BlobBuilder builder, ref BlobVariable<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        public override void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             var index = Array.FindIndex(tree, node => ReferenceEquals(node.Value, NodeObject));
             if (!NodeObject || index < 0)
@@ -63,7 +63,7 @@ namespace EntitiesBT.Variable
             var fieldType = fieldInfo.FieldType;
             if (fieldType == typeof(T))
                 blobVariable.VariableId = AccessRuntimeData ? _ID_RUNTIME_NODE : _ID_DEFAULT_NODE;
-            else if (fieldType == typeof(BlobVariable<T>))
+            else if (fieldType == typeof(BlobVariableReader<T>))
                 blobVariable.VariableId = AccessRuntimeData ? _ID_RUNTIME_NODE_VARIABLE : _ID_DEFAULT_NODE_VARIABLE;
             else
             {
@@ -72,13 +72,13 @@ namespace EntitiesBT.Variable
             }
         }
 
-        static NodeVariableProperty()
+        static NodeVariablePropertyReader()
         {
-            var type = typeof(NodeVariableProperty<T>);
-            VariableRegisters<T>.Register(_ID_RUNTIME_NODE, type.Getter("GetRuntimeNodeData"), type.Getter("GetRuntimeNodeDataRef"));
-            VariableRegisters<T>.Register(_ID_DEFAULT_NODE, type.Getter("GetDefaultNodeData"), type.Getter("GetDefaultNodeDataRef"));
-            VariableRegisters<T>.Register(_ID_DEFAULT_NODE_VARIABLE, type.Getter("GetDefaultNodeVariable"), type.Getter("GetDefaultNodeVariableRef"));
-            VariableRegisters<T>.Register(_ID_RUNTIME_NODE_VARIABLE, type.Getter("GetRuntimeNodeVariable"), type.Getter("GetRuntimeNodeVariableRef"));
+            var type = typeof(NodeVariablePropertyReader<T>);
+            VariableReaderRegisters<T>.Register(_ID_RUNTIME_NODE, type.Getter("GetRuntimeNodeData"), type.Getter("GetRuntimeNodeDataRef"));
+            VariableReaderRegisters<T>.Register(_ID_DEFAULT_NODE, type.Getter("GetDefaultNodeData"), type.Getter("GetDefaultNodeDataRef"));
+            VariableReaderRegisters<T>.Register(_ID_DEFAULT_NODE_VARIABLE, type.Getter("GetDefaultNodeVariable"), type.Getter("GetDefaultNodeVariableRef"));
+            VariableReaderRegisters<T>.Register(_ID_RUNTIME_NODE_VARIABLE, type.Getter("GetRuntimeNodeVariable"), type.Getter("GetRuntimeNodeVariableRef"));
         }
 
         private static readonly int _ID_RUNTIME_NODE = new Guid("220681AA-D884-4E87-90A8-5A8657A734BD").GetHashCode();
@@ -88,7 +88,7 @@ namespace EntitiesBT.Variable
         private static readonly int _ID_DEFAULT_NODE_VARIABLE = new Guid("A98E0FBF-EF5D-4AFC-9997-0E08A569574D").GetHashCode();
         
         [Preserve]
-        private static T GetRuntimeNodeData<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static T GetRuntimeNodeData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -96,7 +96,7 @@ namespace EntitiesBT.Variable
         }
         
         [Preserve]
-        private static ref T GetRuntimeNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static ref T GetRuntimeNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -104,7 +104,7 @@ namespace EntitiesBT.Variable
         }
         
         [Preserve]
-        private static T GetDefaultNodeData<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static T GetDefaultNodeData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -112,7 +112,7 @@ namespace EntitiesBT.Variable
         }
         
         [Preserve]
-        private static ref T GetDefaultNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static ref T GetDefaultNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -120,7 +120,7 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve]
-        private static unsafe ref T GetValue(ref BlobVariable<T> blobVariable, Func<int, IntPtr> ptrFunc)
+        private static unsafe ref T GetValue(ref BlobVariableReader<T> blobVariable, Func<int, IntPtr> ptrFunc)
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = ptrFunc(data.Index);
@@ -128,46 +128,46 @@ namespace EntitiesBT.Variable
         }
         
         [Preserve]
-        private static unsafe T GetRuntimeNodeVariable<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static unsafe T GetRuntimeNodeVariable<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = blob.GetRuntimeDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
-            return variable.GetData(index, ref blob, ref bb);
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariableReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            return variable.Read(index, ref blob, ref bb);
         }
         
         [Preserve]
-        private static unsafe ref T GetRuntimeNodeVariableRef<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static unsafe ref T GetRuntimeNodeVariableRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = blob.GetRuntimeDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariableReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return ref variable.GetDataRef(index, ref blob, ref bb);
         }
         
         [Preserve]
-        private static unsafe T GetDefaultNodeVariable<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static unsafe T GetDefaultNodeVariable<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = blob.GetDefaultDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
-            return variable.GetData(index, ref blob, ref bb);
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariableReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            return variable.Read(index, ref blob, ref bb);
         }
         
         [Preserve]
-        private static unsafe ref T GetDefaultNodeVariableRef<TNodeBlob, TBlackboard>(ref BlobVariable<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static unsafe ref T GetDefaultNodeVariableRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = blob.GetDefaultDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariable<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariableReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return ref variable.GetDataRef(index, ref blob, ref bb);
         }
     }
