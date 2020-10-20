@@ -18,24 +18,23 @@ namespace EntitiesBT.Variable
     }
     
     [Serializable]
-    public class ScriptableObjectVariablePropertyReader<T> : VariablePropertyReader<T> where T : unmanaged
+    public class ScriptableObjectVariablePropertyReader<T> : IVariablePropertyReader<T> where T : unmanaged
     {
-        public override int VariablePropertyTypeId => ID;
-        
         public ScriptableObject ScriptableObject;
         
         [VariableScriptableObjectValue("ScriptableObject")]
         public string ScriptableObjectValueName;
-        
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+
+        public void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
+            blobVariable.VariableId = ID;
             var type = ScriptableObject.GetType();
             FieldInfo fieldInfo = null;
             PropertyInfo propertyInfo = null;
             if (ScriptableObject != null)
-                fieldInfo = type.GetField(ScriptableObjectValueName, FIELD_BINDING_FLAGS);
+                fieldInfo = type.GetField(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
             if (fieldInfo == null)
-                propertyInfo = type.GetProperty(ScriptableObjectValueName, FIELD_BINDING_FLAGS);
+                propertyInfo = type.GetProperty(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
 
             if ((fieldInfo == null || fieldInfo.FieldType != typeof(T))
                 && (propertyInfo == null || !propertyInfo.CanRead || propertyInfo.PropertyType != typeof(T)))

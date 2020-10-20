@@ -1,10 +1,6 @@
-using System;
-using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
-using Unity.Assertions;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
 namespace EntitiesBT.Variable

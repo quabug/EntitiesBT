@@ -13,7 +13,7 @@ namespace EntitiesBT.Variable
     public class VariableComponentDataAttribute : PropertyAttribute {}
 
     [Serializable]
-    public class ComponentVariablePropertyReader<T> : VariablePropertyReader<T> where T : unmanaged
+    public class ComponentVariablePropertyReader<T> : IVariablePropertyReader<T> where T : unmanaged
     {
         public struct DynamicComponentData
         {
@@ -28,15 +28,14 @@ namespace EntitiesBT.Variable
             public T LocalValue;
         }
 
-        public override int VariablePropertyTypeId => CopyToLocalNode ? COPYTOLOCAL_ID : DYNAMIC_ID;
-
         [VariableComponentData] public string ComponentValueName;
 
         [Tooltip("Will read component data into local node and never write back into component data. (Force `ReadOnly` access)")]
         public bool CopyToLocalNode;
 
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        public void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
+            blobVariable.VariableId = CopyToLocalNode ? COPYTOLOCAL_ID : DYNAMIC_ID;
             var data = GetTypeHashAndFieldOffset(ComponentValueName);
             if (data.Type != typeof(T) || data.Hash == 0)
             {

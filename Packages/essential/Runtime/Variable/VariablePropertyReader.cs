@@ -19,23 +19,10 @@ namespace EntitiesBT.Variable
         );
     }
 
-    public abstract class VariablePropertyReader<T> : IVariablePropertyReader<T> where T : unmanaged
-    {
-        public const BindingFlags FIELD_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public;
-        
-        public virtual void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, [NotNull] INodeDataBuilder self, [NotNull] ITreeNode<INodeDataBuilder>[] tree)
-        {
-            blobVariable.VariableId = VariablePropertyTypeId;
-            AllocateData(ref builder, ref blobVariable, self, tree);
-        }
-        protected virtual void AllocateData(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree) {}
-        public virtual int VariablePropertyTypeId => 0;
-    }
-
     public static class VariablePropertyExtensions
     {
         public static unsafe void Allocate<T>(
-            this VariablePropertyReader<T> variable
+            this IVariablePropertyReader<T> variable
           , ref BlobBuilder builder
           , void* blobVariablePtr
           , [NotNull] INodeDataBuilder self
@@ -55,7 +42,7 @@ namespace EntitiesBT.Variable
         
         public static readonly Lazy<Type[]> VARIABLE_PROPERTY_TYPES = new Lazy<Type[]>(() =>
         {
-            var variableAssembly = typeof(VariablePropertyReader<>).Assembly;
+            var variableAssembly = typeof(IVariablePropertyReader<>).Assembly;
             var variableAssemblyName = variableAssembly.GetName().Name;
             return AppDomain
                 .CurrentDomain
@@ -66,18 +53,9 @@ namespace EntitiesBT.Variable
                 .Where(type => !type.IsAbstract
                                && type.IsGenericType
                                && type.GetGenericArguments().Length == 1
-                               && type.IsSubclassOfRawGeneric(typeof(VariablePropertyReader<>))
+                               && typeof(IVariablePropertyReader<>).IsAssignableFrom(type)
                 ).ToArray()
             ;
         });
-        
-        private static bool IsSubclassOfRawGeneric(this Type type, Type generic) {
-            while (type != null && type != typeof(object)) {
-                var cur = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
-                if (generic == cur) return true;
-                type = type.BaseType;
-            }
-            return false;
-        }
     }
 }

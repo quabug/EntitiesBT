@@ -3,11 +3,11 @@ namespace EntitiesBT.Variable
 
 // public class SingleCustomVariableProperty : EntitiesBT.Variable.CustomVariableProperty<System.Single>, SingleProperty { }
 
-public interface INt32PropertyReader : EntitiesBT.Variable.IVariablePropertyReader<System.Int32> { }
-public class Int32CustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<System.Int32>, INt32PropertyReader { }
+public interface Int32PropertyReader : EntitiesBT.Variable.IVariablePropertyReader<System.Int32> { }
+public class Int32CustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<System.Int32>, Int32PropertyReader { }
 
-public interface INt64PropertyReader : EntitiesBT.Variable.IVariablePropertyReader<System.Int64> { }
-public class Int64CustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<System.Int64>, INt64PropertyReader { }
+public interface Int64PropertyReader : EntitiesBT.Variable.IVariablePropertyReader<System.Int64> { }
+public class Int64CustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<System.Int64>, Int64PropertyReader { }
 
 public interface IFloat2PropertyReader : EntitiesBT.Variable.IVariablePropertyReader<Unity.Mathematics.float2> { }
 public class Float2NodeVariablePropertyReader : EntitiesBT.Variable.NodeVariablePropertyReader<Unity.Mathematics.float2>, IFloat2PropertyReader { }

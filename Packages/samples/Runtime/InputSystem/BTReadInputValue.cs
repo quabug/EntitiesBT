@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
 using Unity.Collections.LowLevel.Unsafe;
@@ -12,7 +9,7 @@ namespace EntitiesBT.Extensions.InputSystem
         where T : unmanaged
         where U : struct, IReadInputValueNode
     {
-        public VariablePropertyReader<T> Output;
+        public IVariablePropertyReader<T> Output;
 
         protected override unsafe void Build(ref U data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

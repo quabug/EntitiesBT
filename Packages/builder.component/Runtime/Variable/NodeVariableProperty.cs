@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
@@ -22,7 +21,7 @@ namespace EntitiesBT.Variable
     }
     
     // TODO: check loop ref?
-    public class NodeVariablePropertyReader<T> : VariablePropertyReader<T> where T : unmanaged
+    public class NodeVariablePropertyReader<T> : IVariablePropertyReader<T> where T : unmanaged
     {
         private struct DynamicNodeRefData
         {
@@ -34,7 +33,7 @@ namespace EntitiesBT.Variable
         [VariableNodeObject("NodeObject")] public string ValueFieldName;
         public bool AccessRuntimeData = true;
         
-        public override void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        public void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             var index = Array.FindIndex(tree, node => ReferenceEquals(node.Value, NodeObject));
             if (!NodeObject || index < 0)
@@ -50,7 +49,7 @@ namespace EntitiesBT.Variable
                 return;
             }
 
-            var fieldInfo = nodeType.GetField(ValueFieldName, FIELD_BINDING_FLAGS);
+            var fieldInfo = nodeType.GetField(ValueFieldName, BindingFlags.Instance | BindingFlags.Public);
             if (fieldInfo == null)
             {
                 Debug.LogError($"Invalid `ValueFieldName` {ValueFieldName}", (UnityEngine.Object)self);

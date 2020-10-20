@@ -54,7 +54,7 @@ namespace EntitiesBT.Builder.Visual
         [Pure]
         public static IVariablePropertyReader<T> ToVariablePropertyReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
         {
-            return ToVariableProperty(port, instance, definition, () => new GraphVariablePropertyReader<T>(port));
+            return ToVariablePropertyReader(port, instance, definition, () => new GraphVariablePropertyReader<T>(port));
         }
         //
         // [Pure]
@@ -74,7 +74,7 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        private static IVariablePropertyReader<T> ToVariableProperty<T>(
+        private static IVariablePropertyReader<T> ToVariablePropertyReader<T>(
             InputDataPort port
           , [NotNull] GraphInstance instance
           , [NotNull] GraphDefinition definition

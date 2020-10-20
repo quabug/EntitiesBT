@@ -6,13 +6,13 @@ using UnityEngine.Scripting;
 namespace EntitiesBT.Variable
 {
     [Serializable]
-    public class CustomVariablePropertyReader<T> : VariablePropertyReader<T> where T : unmanaged
+    public class CustomVariablePropertyReader<T> : IVariablePropertyReader<T> where T : unmanaged
     {
-        public override int VariablePropertyTypeId => ID;
         public T CustomValue;
 
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        public void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
+            blobVariable.VariableId = ID;
             builder.Allocate(ref blobVariable, CustomValue);
         }
 

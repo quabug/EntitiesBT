@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using EntitiesBT.Variable;
@@ -10,18 +9,18 @@ using UnityEngine.Scripting;
 
 namespace EntitiesBT.Builder.Visual
 {
-    public class GraphVariablePropertyReader<T> : VariablePropertyReader<T> where T : unmanaged
+    public class GraphVariablePropertyReader<T> : IVariablePropertyReader<T> where T : unmanaged
     {
         private readonly InputDataPort _port;
-        public override int VariablePropertyTypeId => ID;
 
         public GraphVariablePropertyReader(InputDataPort port)
         {
             _port = port;
         }
 
-        protected override void AllocateData(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        public void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
+            blobVariable.VariableId = ID;
             builder.Allocate(ref blobVariable, _port);
         }
 
