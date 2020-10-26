@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using EntitiesBT.Core;
 using EntitiesBT.Editor;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using UnityEditor;
 
@@ -48,11 +48,11 @@ namespace EntitiesBT.Builder.Visual.Editor
     }
 
     [Serializable]
-    public class VisualCodeGeneratorBlobVariableField : INodeDataFieldCodeGenerator
+    public class VisualCodeGeneratorBlobVariantField : INodeDataFieldCodeGenerator
     {
         public bool ShouldGenerate(FieldInfo fi)
         {
-            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariableReader<>);
+            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariantReader<>);
         }
 
         public string GenerateField(FieldInfo fi)
@@ -66,7 +66,7 @@ namespace EntitiesBT.Builder.Visual.Editor
         {
             var type = fi.FieldType.GenericTypeArguments[0];
             var isReadOnly = fi.GetCustomAttribute<ReadOnlyAttribute>() != null;
-            return $"@this.{fi.Name}.ToVariableProperty{(isReadOnly ? "ReadOnly" : "ReadWrite")}<{type.FullName}>(instance, definition).Allocate(ref blobBuilder, ref data.{fi.Name}, self, builders);";
+            return $"@this.{fi.Name}.ToVariant{(isReadOnly ? "ReadOnly" : "ReadWrite")}<{type.FullName}>(instance, definition).Allocate(ref blobBuilder, ref data.{fi.Name}, self, builders);";
         }
     }
 }

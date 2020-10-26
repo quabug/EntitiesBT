@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using JetBrains.Annotations;
 using Runtime;
 using Unity.Assertions;
@@ -52,9 +52,8 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static IVariablePropertyReader<T> ToVariablePropertyReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
-        {
-            return ToVariablePropertyReader(port, instance, definition, () => new GraphVariableProperty.Reader<T>(port));
+        public static IVariantReader<T> ToVariantReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged {
+            return ToVariantReader(port, instance, definition, () => new GraphVariant.Reader<T>(port));
         }
         //
         // [Pure]
@@ -64,21 +63,21 @@ namespace EntitiesBT.Builder.Visual
         // }
 
         [Pure]
-        private static unsafe IVariablePropertyReader<T> ToConstVariable<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged
+        private static unsafe IVariantReader<T> ToConstVariant<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged
         {
             T data;
             void* ptr = &data;
             var value = instance.ReadValue(port);
             Value.SetPtrToValue(ptr, value.Type, value);
-            return new LocalVariableProperty.Reader<T> {Value = data};
+            return new LocalVariant.Reader<T> {Value = data};
         }
 
         [Pure]
-        private static IVariablePropertyReader<T> ToVariablePropertyReader<T>(
+        private static IVariantReader<T> ToVariantReader<T>(
             InputDataPort port
           , [NotNull] GraphInstance instance
           , [NotNull] GraphDefinition definition
-          , [NotNull] Func<IVariablePropertyReader<T>> createGraphVariable
+          , [NotNull] Func<IVariantReader<T>> createGraphVariant
         ) where T : unmanaged
         {
             var inputPortIndex = (int)port.Port.Index;
@@ -89,16 +88,16 @@ namespace EntitiesBT.Builder.Visual
             Assert.IsTrue(nodeIndex < definition.NodeTable.Count);
             var dataNode = definition.NodeTable[nodeIndex];
 
-            if (dataNode is IVisualVariablePropertyNode propertyNode)
-                return propertyNode.GetVariableProperty<T>(dataIndex, instance, definition);
+            if (dataNode is IVisualVariantNode propertyNode)
+                return propertyNode.GetVariant<T>(dataIndex, instance, definition);
 
-            if (dataNode is IVisualVariablePropertyNode<T> genericPropertyNode)
-                return genericPropertyNode.GetVariableProperty(instance, definition);
+            if (dataNode is IVisualVariantNode<T> genericPropertyNode)
+                return genericPropertyNode.GetVariant(instance, definition);
 
             if (dataNode is IConstantNode)
-                return ToConstVariable<T>(instance, port);
+                return ToConstVariant<T>(instance, port);
 
-            return createGraphVariable();
+            return createGraphVariant();
         }
 
         // copy from `GraphInstance.GetComponentFieldDescription`

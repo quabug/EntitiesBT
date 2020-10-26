@@ -3,17 +3,17 @@ using System.Linq;
 using EntitiesBT.Core;
 using Unity.Entities;
 
-namespace EntitiesBT.Variable
+namespace EntitiesBT.Variant
 {
-    public struct BlobVariableReader<T> : IRuntimeComponentAccessor where T : struct
+    public struct BlobVariantReader<T> : IRuntimeComponentAccessor where T : struct
     {
-        internal BlobVariable Value;
+        internal BlobVariant Value;
 
         public T Read<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            return VariableRegisters<T>.GetReader<TNodeBlob, TBlackboard>(Value.VariableId)(ref Value, index, ref blob, ref bb);
+            return VariantRegisters<T>.GetReader<TNodeBlob, TBlackboard>(Value.VariantId)(ref Value, index, ref blob, ref bb);
         }
 
         public IEnumerable<ComponentType> AccessTypes =>

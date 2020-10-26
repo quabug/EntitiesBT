@@ -1,15 +1,15 @@
 using System;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Builder.Visual
 {
-    public static class DynamicComponentVariableProperty
+    public static class DynamicComponentVariant
     {
         [Serializable]
-        public class Reader<T> : IVariablePropertyReader<T> where T : unmanaged
+        public class Reader<T> : IVariantReader<T> where T : unmanaged
         {
             private readonly ulong _stableHash;
             private readonly int _offset;
@@ -20,10 +20,10 @@ namespace EntitiesBT.Builder.Visual
                 _offset = offset;
             }
 
-            public void Allocate(ref BlobBuilder builder, ref BlobVariable blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
-                blobVariable.VariableId = GuidHashCode(ComponentVariableProperty.GUID);
-                builder.Allocate(ref blobVariable, new ComponentVariableProperty.DynamicComponentData{StableHash = _stableHash, Offset = _offset});
+                blobVariant.VariantId = GuidHashCode(ComponentVariant.GUID);
+                builder.Allocate(ref blobVariant, new ComponentVariant.DynamicComponentData{StableHash = _stableHash, Offset = _offset});
             }
         }
     }

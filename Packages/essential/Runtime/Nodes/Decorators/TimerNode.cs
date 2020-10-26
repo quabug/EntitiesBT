@@ -1,7 +1,7 @@
 using System;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 
 namespace EntitiesBT.Nodes
 {
@@ -9,8 +9,8 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("46540F67-6145-4433-9A3A-E470992B952E", BehaviorNodeType.Decorate)]
     public struct TimerNode : INodeData
     {
-        public BlobVariableReader<float> CountdownSecondsReader;
-        public BlobVariableWriter<float> CountdownSecondsWriter;
+        public BlobVariantReader<float> CountdownSecondsReader;
+        public BlobVariantWriter<float> CountdownSecondsWriter;
         public NodeState BreakReturnState;
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]

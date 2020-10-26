@@ -9,7 +9,7 @@ using Unity.Assertions;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
-namespace EntitiesBT.Variable
+namespace EntitiesBT.Variant
 {
     public static class Utilities
     {
@@ -75,7 +75,7 @@ namespace EntitiesBT.Variable
             return _VALUE_TYPE_LOOKUP.Value[valueType];
         }
         
-        public static void Allocate<TValue>(this BlobBuilder builder, ref BlobVariable blob, TValue value) where TValue : struct
+        public static void Allocate<TValue>(this BlobBuilder builder, ref BlobVariant blob, TValue value) where TValue : struct
         {
             ref var blobPtr = ref ToBlobPtr<TValue>(ref blob.MetaDataOffsetPtr);
             ref var blobValue = ref builder.Allocate(ref blobPtr);
@@ -83,20 +83,20 @@ namespace EntitiesBT.Variable
         }
 
         public static void Allocate<T>(
-            this IVariableProperty property
+            this IVariant property
           , ref BlobBuilder builder
-          , ref BlobVariableReader<T> blobVariable
+          , ref BlobVariantReader<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : struct => property.Allocate(ref builder, ref blobVariable.Value, self, tree);
+        ) where T : struct => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
 
         public static void Allocate<T>(
-            this IVariableProperty property
+            this IVariant property
           , ref BlobBuilder builder
-          , ref BlobVariableWriter<T> blobVariable
+          , ref BlobVariantWriter<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : struct => property.Allocate(ref builder, ref blobVariable.Value, self, tree);
+        ) where T : struct => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
 
         public static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : struct
         {
@@ -104,17 +104,17 @@ namespace EntitiesBT.Variable
         }
 
         public static unsafe void Allocate<T>(
-            this IVariablePropertyReader<T> variable
+            this IVariantReader<T> variant
           , ref BlobBuilder builder
-          , void* blobVariablePtr
+          , void* blobVariantPtr
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged
         {
-            variable.Allocate(ref builder, ref UnsafeUtility.AsRef<BlobVariable>(blobVariablePtr), self, tree);
+            variant.Allocate(ref builder, ref UnsafeUtility.AsRef<BlobVariant>(blobVariantPtr), self, tree);
         }
 
-        public static MethodInfo GetVariableMethodInfo(Type type, string name)
+        public static MethodInfo GetVariantMethodInfo(Type type, string name)
         {
             var methodInfo = type.GetMethod(name, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             Assert.IsTrue(methodInfo.IsGenericMethod);
@@ -163,7 +163,7 @@ namespace EntitiesBT.Variable
         //     }
         // }
 
-        public static bool IsReader(Type type) => typeof(IVariablePropertyReader<>).IsAssignableFrom(type);
-        public static bool IsWriter(Type type) => typeof(IVariablePropertyWriter<>).IsAssignableFrom(type);
+        public static bool IsReader(Type type) => typeof(IVariantReader<>).IsAssignableFrom(type);
+        public static bool IsWriter(Type type) => typeof(IVariantWriter<>).IsAssignableFrom(type);
     }
 }

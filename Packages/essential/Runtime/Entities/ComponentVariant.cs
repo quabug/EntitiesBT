@@ -6,14 +6,14 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
-using static EntitiesBT.Variable.Utilities;
+using static EntitiesBT.Variant.Utilities;
 
-namespace EntitiesBT.Variable
+namespace EntitiesBT.Variant
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class VariableComponentDataAttribute : PropertyAttribute {}
+    public class VariantComponentDataAttribute : PropertyAttribute {}
 
-    public static class ComponentVariableProperty
+    public static class ComponentVariant
     {
         public const string GUID = "8E5CDB60-17DB-498A-B925-2094062769AB";
 
@@ -24,28 +24,28 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve, AccessorMethod(GUID)]
-        private static IEnumerable<ComponentType> GetDynamicAccess(ref BlobVariable blobVariable)
+        private static IEnumerable<ComponentType> GetDynamicAccess(ref BlobVariant blobVariant)
         {
-            var hash = blobVariable.Value<DynamicComponentData>().StableHash;
+            var hash = blobVariant.Value<DynamicComponentData>().StableHash;
             var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(hash);
             return ComponentType.FromTypeIndex(typeIndex).Yield();
         }
 
         [Serializable]
-        public class Reader<T> : IVariablePropertyReader<T> where T : struct
+        public class Reader<T> : IVariantReader<T> where T : struct
         {
-            [VariableComponentData] public string ComponentValueName;
+            [VariantComponentData] public string ComponentValueName;
 
-            public void Allocate(ref BlobBuilder builder, ref BlobVariable blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
-                blobVariable.VariableId = GuidHashCode(GUID);
+                blobVariant.VariantId = GuidHashCode(GUID);
                 var data = GetTypeHashAndFieldOffset(ComponentValueName);
                 if (data.Type != typeof(T) || data.Hash == 0)
                 {
-                    Debug.LogError($"ComponentVariable({ComponentValueName}) is not valid, fallback to ConstantValue", (UnityEngine.Object)self);
+                    Debug.LogError($"ComponentVariant({ComponentValueName}) is not valid, fallback to ConstantValue", (UnityEngine.Object)self);
                     throw new ArgumentException();
                 }
-                builder.Allocate(ref blobVariable, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
+                builder.Allocate(ref blobVariant, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
             }
 
             private static unsafe ref T GetComponentValue(ulong stableHash, int offset, Func<Type, IntPtr> getDataPtr)
@@ -58,20 +58,20 @@ namespace EntitiesBT.Variable
             }
 
             [Preserve, ReaderMethod(GUID)]
-            private static T GetData<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            private static T GetData<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
                 where TNodeBlob : struct, INodeBlob
                 where TBlackboard : struct, IBlackboard
             {
-                ref var data = ref blobVariable.Value<DynamicComponentData>();
+                ref var data = ref blobVariant.Value<DynamicComponentData>();
                 return GetComponentValue(data.StableHash, data.Offset, bb.GetDataPtrRO);
             }
 
             [Preserve, RefReaderMethod(GUID)]
-            private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
                 where TNodeBlob : struct, INodeBlob
                 where TBlackboard : struct, IBlackboard
             {
-                ref var data = ref blobVariable.Value<DynamicComponentData>();
+                ref var data = ref blobVariant.Value<DynamicComponentData>();
                 return ref GetComponentValue(data.StableHash, data.Offset, bb.GetDataPtrRW);
             }
         }

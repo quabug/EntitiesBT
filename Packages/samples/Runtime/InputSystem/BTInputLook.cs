@@ -1,6 +1,6 @@
 using System;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,7 +9,7 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputLook : BTInputActionBase<InputLookNode>
     {
-        public IVariablePropertyWriter<float2> Output;
+        public IVariantWriter<float2> Output;
 
         protected override void Build(ref InputLookNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
@@ -22,7 +22,7 @@ namespace EntitiesBT.Extensions.InputSystem
     public struct InputLookNode : IInputActionNodeData
     {
         public Guid ActionId { get; set; }
-        public BlobVariableWriter<float2> Output;
+        public BlobVariantWriter<float2> Output;
         
         [ReadOnly(typeof(InputActionAssetComponent))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)

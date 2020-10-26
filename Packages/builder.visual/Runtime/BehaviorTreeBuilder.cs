@@ -5,7 +5,7 @@ using System.Reflection;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using JetBrains.Annotations;
 using Runtime;
 using Unity.Assertions;
@@ -69,14 +69,14 @@ namespace EntitiesBT.Builder.Visual
         INodeDataBuilder GetBuilder([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
     }
 
-    public interface IVisualVariablePropertyNode : INode
+    public interface IVisualVariantNode : INode
     {
-        IVariablePropertyReader<T> GetVariableProperty<T>(int dataIndex, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged;
+        IVariantReader<T> GetVariant<T>(int dataIndex, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged;
     }
 
-    public interface IVisualVariablePropertyNode<T> : INode where T : unmanaged
+    public interface IVisualVariantNode<T> : INode where T : unmanaged
     {
-        IVariablePropertyReader<T> GetVariableProperty([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
+        IVariantReader<T> GetVariant([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
     }
 
     public readonly struct VisualBuilder<T> : INodeDataBuilder where T : struct, INodeData

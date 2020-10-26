@@ -7,16 +7,16 @@ using Unity.Entities;
 
 namespace EntitiesBT.Builder.Visual.Editor
 {
-    [Serializable, ComponentNodeSearcher("EntitiesBT/Variable/")]
-    class VisualVariableComponentModel : DotsNodeModel<VisualVariableComponent>, IReferenceComponentTypes
+    [Serializable, ComponentNodeSearcher("EntitiesBT/Variant/")]
+    class VisualVariantComponentModel : DotsNodeModel<VisualVariantComponent>, IReferenceComponentTypes
     {
         Type ComponentType => TypedNode.Type.TypeIndex == -1 ? null : TypeManager.GetType(TypedNode.Type.TypeIndex);
-        public override string Title => "Visual Variable " + (TypedNode.Type.TypeIndex == -1 ? "<Unknown Component>" : ComponentType.Name);
+        public override string Title => "Visual Variant " + (TypedNode.Type.TypeIndex == -1 ? "<Unknown Component>" : ComponentType.Name);
         public override IReadOnlyDictionary<string, List<PortMetaData>> PortCustomData =>
             new Dictionary<string, List<PortMetaData>>
         {
             {
-                nameof(VisualVariableComponent.ComponentData),
+                nameof(VisualVariantComponent.ComponentData),
                 TypedNode.Type.TypeIndex == -1 ? new List<PortMetaData>() : ComponentType.ToPortMetaData().ToList()
             }
         };

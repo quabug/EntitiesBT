@@ -3,24 +3,24 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 
 namespace EntitiesBT.Editor
 {
-    [CustomPropertyDrawer(typeof(VariableScriptableObjectValueAttribute))]
-    public class VariableScriptableObjectValueAttributeDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(VariantScriptableObjectValueAttribute))]
+    public class VariantScriptableObjectValueAttributeDrawer : PropertyDrawer
     {
         private object _scriptableObject;
         private string[] _options = new string[0];
         private Type _genericType;
-        private VariableScriptableObjectValueAttribute _attribute;
+        private VariantScriptableObjectValueAttribute _attribute;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (property.propertyType == SerializedPropertyType.String)
             {
                 if (_genericType == null) _genericType = this.GetGenericType();
-                if (_attribute == null) _attribute = (VariableScriptableObjectValueAttribute)attribute;
+                if (_attribute == null) _attribute = (VariantScriptableObjectValueAttribute)attribute;
                 var scriptableObject = property.GetSiblingFieldValue(_attribute.ScriptableObjectFieldName);
                 if (!Equals(scriptableObject, _scriptableObject))
                 {

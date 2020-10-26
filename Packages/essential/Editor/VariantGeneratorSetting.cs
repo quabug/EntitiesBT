@@ -2,44 +2,45 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using EntitiesBT.Variant;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorUtility;
 
 namespace EntitiesBT.Editor
 {
-    [CreateAssetMenu(fileName = "VariablesGeneratorSetting", menuName = "EntitiesBT/VariableGeneratorSetting")]
-    public class VariablesGeneratorSetting : ScriptableObject
+    [CreateAssetMenu(fileName = "VariantGeneratorSetting", menuName = "EntitiesBT/VariantGeneratorSetting")]
+    public class VariantGeneratorSetting : ScriptableObject
     {
         public string[] Types;
-        public string Filename = "VariableProperties";
-        public string Namespace = "EntitiesBT.Variable";
+        public string Filename =  "VariantProperties";
+        public string Namespace = $"{nameof(EntitiesBT)}.{nameof(EntitiesBT.Variant)}";
 
         [ContextMenu("CreateScript")]
         public void CreateScript()
         {
             var filePath = SaveFilePanel("Save Script", Directory, Filename, "cs");
-            VariableGenerator.CreateScript(filePath, Namespace, Types);
+            VariantGenerator.CreateScript(filePath, Namespace, Types);
         }
         
         [ContextMenu("CreateScript-InterfaceOnly")]
         public void CreateInterfaceScript()
         {
             var filePath = SaveFilePanel("Save Script", Directory, $"{Filename}-Interface", "cs");
-            VariableGenerator.CreateScriptInterfaceOnly(filePath, Namespace, Types);
+            VariantGenerator.CreateScriptInterfaceOnly(filePath, Namespace, Types);
         }
         
         [ContextMenu("CreateScript-ClassesOnly")]
         public void CreateClassesScript()
         {
             var filePath = SaveFilePanel("Save Script", Directory, $"{Filename}-Classes", "cs");
-            VariableGenerator.CreateScriptClassOnly(filePath, Namespace, Types);
+            VariantGenerator.CreateScriptClassOnly(filePath, Namespace, Types);
         }
 
         public string Directory => Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
     }
     
-    public static class VariableGenerator
+    public static class VariantGenerator
     {
         public static void CreateScript(string filepath, string @namespace, string[] types)
         {
@@ -91,15 +92,15 @@ namespace EntitiesBT.Editor
             }
             AssetDatabase.Refresh();
         }
-        
+
         public static string CreateInterface(Type type, string suffix = "Property")
         {
-            return $"public interface {type.Name}{suffix} : EntitiesBT.Variable.IVariableProperty<{type.FullName}> {{ }}";
+            return $"public interface {type.Name}{suffix} : {typeof(IVariantReader<>).FullName.ExcludeGeneric()}<{type.FullName}> {{ }}";
         }
 
-        public static string CreateClass(Type valueType, Type variablePropertyType, string suffix = "Property")
+        public static string CreateClass(Type valueType, Type variantType, string suffix = "Property")
         {
-            return $"public class {valueType.Name}{variablePropertyType.Name.Split('`')[0]} : {variablePropertyType.FullName.Split('`')[0]}<{valueType.FullName}>, {valueType.Name}{suffix} {{ }}";
+            return $"public class {valueType.Name}{variantType.Name.ExcludeGeneric()} : {variantType.FullName.ExcludeGeneric()}<{valueType.FullName}>, {valueType.Name}{suffix} {{ }}";
         }
 
         public static string NamespaceBegin(string @namespace)

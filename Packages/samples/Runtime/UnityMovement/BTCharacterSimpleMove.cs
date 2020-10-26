@@ -1,6 +1,6 @@
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -25,7 +25,7 @@ namespace EntitiesBT.Extensions.UnityMovement
     public struct CharacterSimpleMoveNode : INodeData
     {
         public bool IsLocal;
-        public BlobVariableReader<float3> Velocity;
+        public BlobVariantReader<float3> Velocity;
 
         [ReadWrite(typeof(CharacterController))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
@@ -130,5 +131,7 @@ namespace EntitiesBT.Editor
          //     }
          //     return false;
          // }
+
+        [Pure] internal static string ExcludeGeneric(this string typeName) => typeName.Split('`')[0];
     }
 }

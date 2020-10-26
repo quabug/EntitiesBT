@@ -1,6 +1,6 @@
 using System;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ namespace EntitiesBT.Extensions.InputSystem
     public struct ReadInputVector2Node : IReadInputValueNode
     {
         public Guid ActionId { get; set; }
-        public BlobVariableReader<Vector2> Output;
+        public BlobVariantReader<Vector2> Output;
         public unsafe void* OutputPtr => UnsafeUtility.AddressOf(ref Output);
 
         [ReadOnly(typeof(InputActionAssetComponent))]

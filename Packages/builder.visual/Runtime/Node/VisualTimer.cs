@@ -3,7 +3,7 @@ using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using Runtime;
 using Unity.Entities;
-using static EntitiesBT.Variable.Utilities;
+using static EntitiesBT.Variant.Utilities;
 
 namespace EntitiesBT.Builder.Visual
 {
@@ -36,7 +36,7 @@ namespace EntitiesBT.Builder.Visual
             void BuildImpl(BlobBuilder blobBuilder, ref TimerNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.BreakReturnState = @this.BreakReturnState;
-                @this.CountdownSeconds.ToVariablePropertyReader<float>(instance, definition)
+                @this.CountdownSeconds.ToVariantReader<float>(instance, definition)
                     .Allocate(ref blobBuilder, ref data.CountdownSecondsReader, self, builders)
                 ;
             }

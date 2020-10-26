@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    [CustomPropertyDrawer(typeof(VariableComponentDataAttribute))]
-    public class VariableComponentDataAttributeDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(VariantComponentDataAttribute))]
+    public class VariantComponentDataAttributeDrawer : PropertyDrawer
     {
         private string[] _options;
         private Type _genericType;
@@ -19,7 +19,7 @@ namespace EntitiesBT.Editor
                 if (_genericType == null) _genericType = this.GetGenericType();
                 if (_options == null)
                 {
-                    _options = Variable.Utilities.GetComponentFields(_genericType)
+                    _options = Variant.Utilities.GetComponentFields(_genericType)
                         .Select(data => data.Name)
                         .ToArray()
                     ;

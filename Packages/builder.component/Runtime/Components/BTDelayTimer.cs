@@ -1,14 +1,14 @@
 // automatically generate from `NodeComponentTemplateCode.cs`
 using EntitiesBT.Core;
 using Unity.Entities;
-using static EntitiesBT.Variable.Utilities;
+using static EntitiesBT.Variant.Utilities;
 
 namespace EntitiesBT.Components
 {
     public class BTDelayTimer : BTNode<EntitiesBT.Nodes.DelayTimerNode>
     {
-        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variable.ISinglePropertyReader TimerSecondsReader;
-        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variable.ISinglePropertyWriter TimerSecondsWriter;
+        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variant.ISinglePropertyReader TimerSecondsReader;
+        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variant.ISinglePropertyWriter TimerSecondsWriter;
 
         protected override void Build(ref EntitiesBT.Nodes.DelayTimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

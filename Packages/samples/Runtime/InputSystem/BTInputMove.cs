@@ -1,6 +1,6 @@
 using System;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -23,7 +23,7 @@ namespace EntitiesBT.Extensions.InputSystem
     public struct InputMoveNode : IInputActionNodeData
     {
         public Guid ActionId { get; set; }
-        public BlobVariableWriter<float2> Output;
+        public BlobVariantWriter<float2> Output;
         
         [ReadOnly(typeof(InputActionAssetComponent))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)

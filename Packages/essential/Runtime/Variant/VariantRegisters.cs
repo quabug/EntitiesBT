@@ -6,9 +6,9 @@ using System.Reflection;
 using EntitiesBT.Core;
 using Unity.Entities;
 using static EntitiesBT.Core.Utilities;
-using static EntitiesBT.Variable.Utilities;
+using static EntitiesBT.Variant.Utilities;
 
-namespace EntitiesBT.Variable
+namespace EntitiesBT.Variant
 {
     public class MethodIdAttribute : Attribute
     {
@@ -40,9 +40,9 @@ namespace EntitiesBT.Variable
         public AccessorMethodAttribute(string id) : base(id) {}
     }
 
-    internal static class VariableRegisters
+    internal static class VariantRegisters
     {
-        internal delegate IEnumerable<ComponentType> GetComponentAccessFunc(ref BlobVariable variable);
+        internal delegate IEnumerable<ComponentType> GetComponentAccessFunc(ref BlobVariant variant);
         internal static readonly IReadOnlyDictionary<int, MethodInfo> READERS;
         internal static readonly IReadOnlyDictionary<int, MethodInfo> REF_READERS;
         internal static readonly IReadOnlyDictionary<int, MethodInfo> WRTIERS;
@@ -52,9 +52,9 @@ namespace EntitiesBT.Variable
             return ACCESSORS.TryGetValue(entryId, out var func) ? func : GetComponentAccessDefault;
         }
 
-        private static IEnumerable<ComponentType> GetComponentAccessDefault(ref BlobVariable _) => Enumerable.Empty<ComponentType>();
+        private static IEnumerable<ComponentType> GetComponentAccessDefault(ref BlobVariant _) => Enumerable.Empty<ComponentType>();
 
-        static VariableRegisters()
+        static VariantRegisters()
         {
             var readers = new Dictionary<int, MethodInfo>();
             var refReaders = new Dictionary<int, MethodInfo>();
@@ -91,7 +91,7 @@ namespace EntitiesBT.Variable
         }
     }
 
-    public static class VariableRegisters<T> where T : struct
+    public static class VariantRegisters<T> where T : struct
     {
         private static IReadOnlyDictionary<int, TDelegate> MakeRegisterDictionary<TDelegate, TNodeBlob, TBlackboard>(
             IReadOnlyDictionary<int, MethodInfo> methodInfoMap
@@ -113,12 +113,12 @@ namespace EntitiesBT.Variable
             return new ReadOnlyDictionary<int, TDelegate>(map);
         }
 
-        public delegate T ReadFunc<TNodeBlob, TBlackboard>(ref BlobVariable variable, int nodeIndex, ref TNodeBlob blob, ref TBlackboard bb)
+        public delegate T ReadFunc<TNodeBlob, TBlackboard>(ref BlobVariant variant, int nodeIndex, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         ;
 
-        public delegate ref T ReadRefFunc<TNodeBlob, TBlackboard>(ref BlobVariable variable, int nodeIndex, ref TNodeBlob blob, ref TBlackboard bb)
+        public delegate ref T ReadRefFunc<TNodeBlob, TBlackboard>(ref BlobVariant variant, int nodeIndex, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         ;
@@ -139,7 +139,7 @@ namespace EntitiesBT.Variable
             where TBlackboard : struct, IBlackboard
         {
             public static readonly IReadOnlyDictionary<int, ReadFunc<TNodeBlob, TBlackboard>> READERS =
-                MakeRegisterDictionary<ReadFunc<TNodeBlob, TBlackboard>, TNodeBlob, TBlackboard>(VariableRegisters.READERS);
+                MakeRegisterDictionary<ReadFunc<TNodeBlob, TBlackboard>, TNodeBlob, TBlackboard>(VariantRegisters.READERS);
         }
 
         // optimize: convert method info into delegate to increase performance on calling.
@@ -148,10 +148,10 @@ namespace EntitiesBT.Variable
             where TBlackboard : struct, IBlackboard
         {
             public static readonly IReadOnlyDictionary<int, ReadRefFunc<TNodeBlob, TBlackboard>> READERS =
-                MakeRegisterDictionary<ReadRefFunc<TNodeBlob, TBlackboard>, TNodeBlob, TBlackboard>(VariableRegisters.REF_READERS);
+                MakeRegisterDictionary<ReadRefFunc<TNodeBlob, TBlackboard>, TNodeBlob, TBlackboard>(VariantRegisters.REF_READERS);
         }
 
-        public delegate void WriteFunc<TNodeBlob, TBlackboard>(ref BlobVariable variable, int nodeIndex, ref TNodeBlob blob, ref TBlackboard bb, T value)
+        public delegate void WriteFunc<TNodeBlob, TBlackboard>(ref BlobVariant variant, int nodeIndex, ref TNodeBlob blob, ref TBlackboard bb, T value)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         ;
@@ -167,7 +167,7 @@ namespace EntitiesBT.Variable
             where TBlackboard : struct, IBlackboard
         {
             public static readonly IReadOnlyDictionary<int, WriteFunc<TNodeBlob, TBlackboard>> WRITERS =
-                MakeRegisterDictionary<WriteFunc<TNodeBlob, TBlackboard>, TNodeBlob, TBlackboard>(VariableRegisters.WRTIERS);
+                MakeRegisterDictionary<WriteFunc<TNodeBlob, TBlackboard>, TNodeBlob, TBlackboard>(VariantRegisters.WRTIERS);
         }
     }
 }

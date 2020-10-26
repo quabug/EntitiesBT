@@ -1,14 +1,13 @@
 using System.Collections.Generic;
-using EntitiesBT.Core;
 using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
-namespace EntitiesBT.Variable
+namespace EntitiesBT.Variant
 {
-    public struct BlobVariable
+    public struct BlobVariant
     {
-        public int VariableId;
+        public int VariantId;
         public int MetaDataOffsetPtr;
 
         [Pure]
@@ -17,6 +16,6 @@ namespace EntitiesBT.Variable
 
         [Pure]
         public IEnumerable<ComponentType> GetComponentAccessList() =>
-            VariableRegisters.GetComponentAccess(VariableId)(ref this);
+            VariantRegisters.GetComponentAccess(VariantId)(ref this);
     }
 }

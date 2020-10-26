@@ -6,36 +6,35 @@ using UnityEngine;
 using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 
-namespace EntitiesBT.Variable
+namespace EntitiesBT.Variant
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class VariableScriptableObjectValueAttribute : PropertyAttribute
+    public class VariantScriptableObjectValueAttribute : PropertyAttribute
     {
         public string ScriptableObjectFieldName;
 
-        public VariableScriptableObjectValueAttribute(string scriptableObjectFieldName)
+        public VariantScriptableObjectValueAttribute(string scriptableObjectFieldName)
         {
             ScriptableObjectFieldName = scriptableObjectFieldName;
         }
     }
 
 
-    public static class ScriptableObjectVariableProperty
+    public static class ScriptableObjectVariant
     {
-        private const string _GUID = "B14A224A-7ADF-4E03-8240-60DE620FF946";
-        public static int ID => GuidHashCode(_GUID);
+        public const string GUID = "B14A224A-7ADF-4E03-8240-60DE620FF946";
 
         [Serializable]
-        public class Reader<T> : IVariablePropertyReader<T> where T : unmanaged
+        public class Reader<T> : IVariantReader<T> where T : unmanaged
         {
             public ScriptableObject ScriptableObject;
 
-            [VariableScriptableObjectValue("ScriptableObject")]
+            [VariantScriptableObjectValue("ScriptableObject")]
             public string ScriptableObjectValueName;
 
-            public void Allocate(ref BlobBuilder builder, ref BlobVariable blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
-                blobVariable.VariableId = ID;
+                blobVariant.VariantId = GuidHashCode(GUID);
                 var type = ScriptableObject.GetType();
                 FieldInfo fieldInfo = null;
                 PropertyInfo propertyInfo = null;
@@ -52,15 +51,15 @@ namespace EntitiesBT.Variable
                 }
 
                 var value = fieldInfo?.GetValue(ScriptableObject) ?? propertyInfo?.GetValue(ScriptableObject);
-                builder.Allocate(ref blobVariable, (T) value);
+                builder.Allocate(ref blobVariant, (T) value);
             }
 
-            [Preserve, ReaderMethod(_GUID)]
-            private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            [Preserve, ReaderMethod(GUID)]
+            private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
                 where TNodeBlob : struct, INodeBlob
                 where TBlackboard : struct, IBlackboard
             {
-                return ref blobVariable.Value<T>();
+                return ref blobVariant.Value<T>();
             }
         }
     }
