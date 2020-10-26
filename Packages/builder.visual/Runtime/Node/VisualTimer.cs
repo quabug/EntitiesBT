@@ -3,6 +3,7 @@ using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using Runtime;
 using Unity.Entities;
+using static EntitiesBT.Variable.Utilities;
 
 namespace EntitiesBT.Builder.Visual
 {

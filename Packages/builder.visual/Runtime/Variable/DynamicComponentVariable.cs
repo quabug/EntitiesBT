@@ -2,31 +2,29 @@ using System;
 using EntitiesBT.Core;
 using EntitiesBT.Variable;
 using Unity.Entities;
+using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Builder.Visual
 {
-    [Serializable]
-    public class DynamicComponentVariablePropertyReader<T> : IVariablePropertyReader<T> where T : unmanaged
+    public static class DynamicComponentVariableProperty
     {
-        private readonly bool _useRef;
-        private readonly ulong _stableHash;
-        private readonly int _offset;
-
-        public DynamicComponentVariablePropertyReader(ulong stableHash, int offset, bool useRef = false)
+        [Serializable]
+        public class Reader<T> : IVariablePropertyReader<T> where T : unmanaged
         {
-            _useRef = useRef;
-            _stableHash = stableHash;
-            _offset = offset;
-        }
+            private readonly ulong _stableHash;
+            private readonly int _offset;
 
-        public void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            blobVariable.VariableId = _useRef
-                 ? ComponentVariablePropertyReader<T>.DYNAMIC_ID
-                 : ComponentVariablePropertyReader<T>.COPYTOLOCAL_ID
-             ;
-            if (_useRef) builder.Allocate(ref blobVariable, new ComponentVariablePropertyReader<T>.DynamicComponentData{StableHash = _stableHash, Offset = _offset});
-            else builder.Allocate(ref blobVariable, new ComponentVariablePropertyReader<T>.CopyToLocalComponentData{StableHash = _stableHash, Offset = _offset, LocalValue = default});
+            public Reader(ulong stableHash, int offset)
+            {
+                _stableHash = stableHash;
+                _offset = offset;
+            }
+
+            public void Allocate(ref BlobBuilder builder, ref BlobVariable blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            {
+                blobVariable.VariableId = GuidHashCode(ComponentVariableProperty.GUID);
+                builder.Allocate(ref blobVariable, new ComponentVariableProperty.DynamicComponentData{StableHash = _stableHash, Offset = _offset});
+            }
         }
     }
 }

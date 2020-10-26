@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using static EntitiesBT.Variable.VariablePropertyExtensions;
 using static UnityEditor.EditorUtility;
 
 namespace EntitiesBT.Editor
@@ -52,8 +51,8 @@ namespace EntitiesBT.Editor
                     if (types.Contains(type.FullName))
                     {
                         writer.WriteLine(CreateInterface(type));
-                        foreach (var propertyType in VARIABLE_PROPERTY_TYPES.Value)
-                            writer.WriteLine(CreateClass(type, propertyType));
+                        // foreach (var propertyType in VARIABLE_PROPERTY_TYPES.Value)
+                        //     writer.WriteLine(CreateClass(type, propertyType));
                         writer.WriteLine();
                     }
                 }
@@ -84,8 +83,8 @@ namespace EntitiesBT.Editor
                 {
                     if (types.Contains(type.FullName))
                     {
-                        foreach (var propertyType in VARIABLE_PROPERTY_TYPES.Value)
-                            writer.WriteLine(CreateClass(type, propertyType));
+                        // foreach (var propertyType in VARIABLE_PROPERTY_TYPES.Value)
+                        //     writer.WriteLine(CreateClass(type, propertyType));
                     }
                 }
                 writer.WriteLine(NamespaceEnd());

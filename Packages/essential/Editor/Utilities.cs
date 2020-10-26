@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public static class Utility
+    public static class Utilities
     {
          private static MethodInfo _PROPERTY_VERIFY_METHOD;
          private static MethodInfo _PROPERTY_SET_VALUE_METHOD;
 
-         static Utility()
+         static Utilities()
          {
              const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
              _PROPERTY_VERIFY_METHOD = typeof(SerializedProperty).GetMethod("Verify", flags);

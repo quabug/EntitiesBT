@@ -33,7 +33,7 @@ namespace EntitiesBT.Variable
         [VariableNodeObject("NodeObject")] public string ValueFieldName;
         public bool AccessRuntimeData = true;
         
-        public void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        public void Allocate(ref BlobBuilder builder, ref BlobVariable blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
         {
             var index = Array.FindIndex(tree, node => ReferenceEquals(node.Value, NodeObject));
             if (!NodeObject || index < 0)
@@ -71,15 +71,6 @@ namespace EntitiesBT.Variable
             }
         }
 
-        static NodeVariablePropertyReader()
-        {
-            var type = typeof(NodeVariablePropertyReader<T>);
-            VariableReaderRegisters<T>.Register(_ID_RUNTIME_NODE, type.Getter("GetRuntimeNodeData"));
-            VariableReaderRegisters<T>.Register(_ID_DEFAULT_NODE, type.Getter("GetDefaultNodeData"));
-            VariableReaderRegisters<T>.Register(_ID_DEFAULT_NODE_VARIABLE, type.Getter("GetDefaultNodeVariable"));
-            VariableReaderRegisters<T>.Register(_ID_RUNTIME_NODE_VARIABLE, type.Getter("GetRuntimeNodeVariable"));
-        }
-
         private static readonly int _ID_RUNTIME_NODE = new Guid("220681AA-D884-4E87-90A8-5A8657A734BD").GetHashCode();
         private static readonly int _ID_DEFAULT_NODE = new Guid("743FABC9-77E6-4C2B-A475-ADED2A3B96AD").GetHashCode();
         
@@ -87,7 +78,7 @@ namespace EntitiesBT.Variable
         private static readonly int _ID_DEFAULT_NODE_VARIABLE = new Guid("A98E0FBF-EF5D-4AFC-9997-0E08A569574D").GetHashCode();
         
         [Preserve]
-        private static T GetRuntimeNodeData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static T GetRuntimeNodeData<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -95,7 +86,7 @@ namespace EntitiesBT.Variable
         }
         
         [Preserve]
-        private static ref T GetRuntimeNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static ref T GetRuntimeNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -103,7 +94,7 @@ namespace EntitiesBT.Variable
         }
         
         [Preserve]
-        private static T GetDefaultNodeData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static T GetDefaultNodeData<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -111,7 +102,7 @@ namespace EntitiesBT.Variable
         }
         
         [Preserve]
-        private static ref T GetDefaultNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static ref T GetDefaultNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -119,7 +110,7 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve]
-        private static unsafe ref T GetValue(ref BlobVariableReader<T> blobVariable, Func<int, IntPtr> ptrFunc)
+        private static unsafe ref T GetValue(ref BlobVariable blobVariable, Func<int, IntPtr> ptrFunc)
         {
             ref var data = ref blobVariable.Value<DynamicNodeRefData>();
             var ptr = ptrFunc(data.Index);
@@ -127,7 +118,7 @@ namespace EntitiesBT.Variable
         }
         
         [Preserve]
-        private static unsafe T GetRuntimeNodeVariable<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static unsafe T GetRuntimeNodeVariable<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
@@ -138,7 +129,7 @@ namespace EntitiesBT.Variable
         }
 
         [Preserve]
-        private static unsafe T GetDefaultNodeVariable<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static unsafe T GetDefaultNodeVariable<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {

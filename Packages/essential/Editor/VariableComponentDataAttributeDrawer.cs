@@ -19,7 +19,7 @@ namespace EntitiesBT.Editor
                 if (_genericType == null) _genericType = this.GetGenericType();
                 if (_options == null)
                 {
-                    _options = Variable.Utility.GetComponentFields(_genericType)
+                    _options = Variable.Utilities.GetComponentFields(_genericType)
                         .Select(data => data.Name)
                         .ToArray()
                     ;

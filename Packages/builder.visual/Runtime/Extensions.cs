@@ -54,7 +54,7 @@ namespace EntitiesBT.Builder.Visual
         [Pure]
         public static IVariablePropertyReader<T> ToVariablePropertyReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
         {
-            return ToVariablePropertyReader(port, instance, definition, () => new GraphVariablePropertyReader<T>(port));
+            return ToVariablePropertyReader(port, instance, definition, () => new GraphVariableProperty.Reader<T>(port));
         }
         //
         // [Pure]
@@ -70,7 +70,7 @@ namespace EntitiesBT.Builder.Visual
             void* ptr = &data;
             var value = instance.ReadValue(port);
             Value.SetPtrToValue(ptr, value.Type, value);
-            return new CustomVariablePropertyReader<T> {CustomValue = data};
+            return new LocalVariableProperty.Reader<T> {Value = data};
         }
 
         [Pure]

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using JetBrains.Annotations;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -114,8 +115,9 @@ namespace EntitiesBT.Core
             }
         }
 
-        public static readonly Lazy<Type[]> BEHAVIOR_TREE_ASSEMBLY_TYPES = new Lazy<Type[]>(() =>
-            typeof(VirtualMachine).Assembly.GetTypesIncludeReference().ToArray()
+        public static readonly Lazy<IReadOnlyCollection<Type>> BEHAVIOR_TREE_ASSEMBLY_TYPES = new Lazy<IReadOnlyCollection<Type>>(
+            () => new ReadOnlyCollection<Type>(typeof(VirtualMachine).Assembly.GetTypesIncludeReference().ToArray())
+          , LazyThreadSafetyMode.PublicationOnly
         );
 
         public static IEnumerable<Type> GetTypesIncludeReference(this Assembly assembly)
@@ -153,5 +155,8 @@ namespace EntitiesBT.Core
 
             return friendlyName;
         }
+
+        [Pure] public static int GuidHashCode(string guid) => GuidHashCode(Guid.Parse(guid));
+        [Pure] public static int GuidHashCode(Guid guid) => guid.GetHashCode();
     }
 }

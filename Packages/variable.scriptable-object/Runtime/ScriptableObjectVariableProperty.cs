@@ -3,6 +3,8 @@ using System.Reflection;
 using EntitiesBT.Core;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Scripting;
+using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variable
 {
@@ -16,57 +18,50 @@ namespace EntitiesBT.Variable
             ScriptableObjectFieldName = scriptableObjectFieldName;
         }
     }
-    
-    [Serializable]
-    public class ScriptableObjectVariablePropertyReader<T> : IVariablePropertyReader<T> where T : unmanaged
+
+
+    public static class ScriptableObjectVariableProperty
     {
-        public ScriptableObject ScriptableObject;
-        
-        [VariableScriptableObjectValue("ScriptableObject")]
-        public string ScriptableObjectValueName;
+        private const string _GUID = "B14A224A-7ADF-4E03-8240-60DE620FF946";
+        public static int ID => GuidHashCode(_GUID);
 
-        public void Allocate(ref BlobBuilder builder, ref BlobVariableReader<T> blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        [Serializable]
+        public class Reader<T> : IVariablePropertyReader<T> where T : unmanaged
         {
-            blobVariable.VariableId = ID;
-            var type = ScriptableObject.GetType();
-            FieldInfo fieldInfo = null;
-            PropertyInfo propertyInfo = null;
-            if (ScriptableObject != null)
-                fieldInfo = type.GetField(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
-            if (fieldInfo == null)
-                propertyInfo = type.GetProperty(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
+            public ScriptableObject ScriptableObject;
 
-            if ((fieldInfo == null || fieldInfo.FieldType != typeof(T))
-                && (propertyInfo == null || !propertyInfo.CanRead || propertyInfo.PropertyType != typeof(T)))
+            [VariableScriptableObjectValue("ScriptableObject")]
+            public string ScriptableObjectValueName;
+
+            public void Allocate(ref BlobBuilder builder, ref BlobVariable blobVariable, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
-                Debug.LogError($"{ScriptableObject.name}.{ScriptableObjectValueName} is not valid");
-                throw new ArgumentException();
+                blobVariable.VariableId = ID;
+                var type = ScriptableObject.GetType();
+                FieldInfo fieldInfo = null;
+                PropertyInfo propertyInfo = null;
+                if (ScriptableObject != null)
+                    fieldInfo = type.GetField(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
+                if (fieldInfo == null)
+                    propertyInfo = type.GetProperty(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
+
+                if ((fieldInfo == null || fieldInfo.FieldType != typeof(T))
+                    && (propertyInfo == null || !propertyInfo.CanRead || propertyInfo.PropertyType != typeof(T)))
+                {
+                    Debug.LogError($"{ScriptableObject.name}.{ScriptableObjectValueName} is not valid");
+                    throw new ArgumentException();
+                }
+
+                var value = fieldInfo?.GetValue(ScriptableObject) ?? propertyInfo?.GetValue(ScriptableObject);
+                builder.Allocate(ref blobVariable, (T) value);
             }
 
-            var value = fieldInfo?.GetValue(ScriptableObject) ?? propertyInfo?.GetValue(ScriptableObject);
-            builder.Allocate(ref blobVariable, (T) value);
-        }
-
-        static ScriptableObjectVariablePropertyReader()
-        {
-            var type = typeof(ScriptableObjectVariablePropertyReader<T>);
-            VariableReaderRegisters<T>.Register(ID, type.Getter("GetData"));
-        }
-
-        public static readonly int ID = new Guid("B3668D2B-DC57-45F9-B71C-BF578E3EEF88").GetHashCode();
-        
-        private static T GetData<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-            return blobVariable.Value<T>();
-        }
-        
-        private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariableReader<T> blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-            return ref blobVariable.Value<T>();
+            [Preserve, ReaderMethod(_GUID)]
+            private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariable blobVariable, int index, ref TNodeBlob blob, ref TBlackboard bb)
+                where TNodeBlob : struct, INodeBlob
+                where TBlackboard : struct, IBlackboard
+            {
+                return ref blobVariable.Value<T>();
+            }
         }
     }
 }

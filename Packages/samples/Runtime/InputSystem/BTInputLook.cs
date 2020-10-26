@@ -9,7 +9,7 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputLook : BTInputActionBase<InputLookNode>
     {
-        public VariablePropertyWriter<float2> Output;
+        public IVariablePropertyWriter<float2> Output;
 
         protected override void Build(ref InputLookNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

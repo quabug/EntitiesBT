@@ -3,10 +3,10 @@ namespace EntitiesBT.Variable
 {
 
 public interface ISinglePropertyReader : EntitiesBT.Variable.IVariablePropertyReader<System.Single> { }
-public class SingleCustomVariablePropertyReader : EntitiesBT.Variable.CustomVariablePropertyReader<System.Single>, ISinglePropertyReader { }
-public class SingleComponentVariablePropertyReader : EntitiesBT.Variable.ComponentVariablePropertyReader<System.Single>, ISinglePropertyReader { }
+public class SingleLocalVariablePropertyReader : EntitiesBT.Variable.LocalVariableProperty.Reader<System.Single>, ISinglePropertyReader { }
+// public class SingleComponentVariablePropertyReader : EntitiesBT.Variable.ComponentVariablePropertyReader<System.Single>, ISinglePropertyReader { }
 public class SingleNodeVariablePropertyReader : EntitiesBT.Variable.NodeVariablePropertyReader<System.Single>, ISinglePropertyReader { }
-public class SingleScriptableObjectVariablePropertyReader : EntitiesBT.Variable.ScriptableObjectVariablePropertyReader<System.Single>, ISinglePropertyReader { }
+public class SingleScriptableObjectVariablePropertyReader : EntitiesBT.Variable.ScriptableObjectVariableProperty.Reader<System.Single>, ISinglePropertyReader { }
 
 public interface ISinglePropertyWriter : EntitiesBT.Variable.IVariablePropertyWriter<System.Single> { }
 
