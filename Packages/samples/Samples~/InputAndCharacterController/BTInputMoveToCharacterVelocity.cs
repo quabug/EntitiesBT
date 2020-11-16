@@ -1,6 +1,6 @@
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,8 +9,8 @@ namespace EntitiesBT.Samples
 {
     public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
     {
-        [SerializeReference, SerializeReferenceButton]
-        public ISinglePropertyReader SpeedPropertyReader;
+        // [SerializeReference, SerializeReferenceButton]
+        // public ISingleVariantReader SpeedPropertyReader;
         
         [SerializeReference, SerializeReferenceButton]
         public IFloat2PropertyReader InputMovePropertyReader;
@@ -20,7 +20,7 @@ namespace EntitiesBT.Samples
 
         protected override void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            SpeedPropertyReader.Allocate(ref builder, ref data.Speed, this, tree);
+            // SpeedPropertyReader.Allocate(ref builder, ref data.Speed, this, tree);
             InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
             OutputVelocityPropertyWriter.Allocate(ref builder, ref data.OutputVelocity, this, tree);
         }
@@ -29,9 +29,9 @@ namespace EntitiesBT.Samples
     [BehaviorNode("B4559A1E-392B-4B8C-A074-B323AB31EEA7")]
     public struct InputMoveToCharacterVelocityNode : INodeData
     {
-        public BlobVariableReader<float> Speed;
-        public BlobVariableReader<float2> InputMove;
-        public BlobVariableWriter<float3> OutputVelocity;
+        public BlobVariantReader<float> Speed;
+        public BlobVariantReader<float2> InputMove;
+        public BlobVariantWriter<float3> OutputVelocity;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

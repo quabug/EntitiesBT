@@ -1,7 +1,7 @@
 ﻿using System;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Runtime;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -25,10 +25,10 @@ namespace EntitiesBT.Builder.Visual
 
             void BuildImpl(BlobBuilder blobBuilder, ref VisualEntityRotateNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
-                @this.Axis.ToVariablePropertyReader<float3>(instance, definition)
+                @this.Axis.ToVariantReader<float3>(instance, definition)
                     .Allocate(ref blobBuilder, ref data.Axis, self, builders)
                 ;
-                @this.RadianPerSecond.ToVariablePropertyReader<float>(instance, definition)
+                @this.RadianPerSecond.ToVariantReader<float>(instance, definition)
                     .Allocate(ref blobBuilder, ref data.RadianPerSecond, self, builders)
                 ;
             }
@@ -41,8 +41,8 @@ namespace EntitiesBT.Builder.Visual
     [BehaviorNode("6A4E0F98-7305-439B-A68C-CA42AAC51C34")]
     public struct VisualEntityRotateNode : INodeData
     {
-        [ReadOnly] public BlobVariableReader<float3> Axis;
-        [ReadOnly] public BlobVariableReader<float> RadianPerSecond;
+        public BlobVariantReader<float3> Axis;
+        public BlobVariantReader<float> RadianPerSecond;
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         [ReadWrite(typeof(Rotation))]

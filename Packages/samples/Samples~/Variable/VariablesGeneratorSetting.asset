@@ -22,3 +22,5 @@ MonoBehaviour:
   - UnityEngine.Quaternion
   Filename: VariableProperties
   Namespace: EntitiesBT.Sample
+  Assembly: {fileID: 5897886265953266890, guid: 4285913d8daed4d6fb1061c793376ad4,
+    type: 3}

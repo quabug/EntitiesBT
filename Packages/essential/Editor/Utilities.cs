@@ -10,15 +10,15 @@ namespace EntitiesBT.Editor
 {
     public static class Utilities
     {
-         private static MethodInfo _PROPERTY_VERIFY_METHOD;
-         private static MethodInfo _PROPERTY_SET_VALUE_METHOD;
+         // private static MethodInfo _PROPERTY_VERIFY_METHOD;
+         // private static MethodInfo _PROPERTY_SET_VALUE_METHOD;
 
-         static Utilities()
-         {
-             const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-             _PROPERTY_VERIFY_METHOD = typeof(SerializedProperty).GetMethod("Verify", flags);
-             _PROPERTY_SET_VALUE_METHOD = typeof(SerializedProperty).GetMethod("SetManagedReferenceValueInternal", flags);
-         }
+         // static Utilities()
+         // {
+         //     const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+         //     _PROPERTY_VERIFY_METHOD = typeof(SerializedProperty).GetMethod(nameof(Verify), flags);
+         //     _PROPERTY_SET_VALUE_METHOD = typeof(SerializedProperty).GetMethod(nameof(SetManagedReferenceValueInternal), flags);
+         // }
          
          public static (object field, FieldInfo fieldInfo) GetTargetField(this SerializedProperty property)
          {
@@ -132,6 +132,12 @@ namespace EntitiesBT.Editor
          //     return false;
          // }
 
-        [Pure] internal static string ExcludeGeneric(this string typeName) => typeName.Split('`')[0];
+        [Pure] internal static string ToCodeName(this string typeName) =>
+            typeName.Split('`').First().Replace('+', '.')
+        ;
+
+        [Pure] internal static string ToShortNameWithInnerClass(this string typeName) =>
+            typeName.Split('`').First().Split('.').Last().Replace("+", "")
+        ;
     }
 }

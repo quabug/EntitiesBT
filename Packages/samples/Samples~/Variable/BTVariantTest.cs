@@ -2,28 +2,28 @@ using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
-    public class BTVariablesTest : BTNode<VariablesTestNode>
+    public class BTVariantTest : BTNode<VariablesTestNode>
     {
-        [SerializeReference, SerializeReferenceButton] public Int64PropertyReader LongVariable;
+        [SerializeReference, SerializeReferenceButton] public Int64VariantReader LongVariable;
         public string String;
         public int[] IntArray;
-        [SerializeReference, SerializeReferenceButton] public Int32PropertyWriter DestVariable;
-        [SerializeReference, SerializeReferenceButton] public ISinglePropertyReader SrcVariable;
+        [SerializeReference, SerializeReferenceButton] public Int32VariantWriter DestVariable;
+        [SerializeReference, SerializeReferenceButton] public SingleVariantReader SrcVariable;
         public long LongValue;
 
         protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            LongVariable.Allocate(ref builder, ref data.LongVariable, this, tree);
+            LongVariable.Allocate(ref builder, ref data.LongVariant, this, tree);
             builder.AllocateString(ref data.String, String);
             builder.AllocateArray(ref data.IntArray, IntArray);
-            DestVariable.Allocate(ref builder, ref data.DestVariable, this, tree);
-            SrcVariable.Allocate(ref builder, ref data.SrcVariable, this, tree);
+            DestVariable.Allocate(ref builder, ref data.DestVariant, this, tree);
+            SrcVariable.Allocate(ref builder, ref data.SrcVariant, this, tree);
             data.Long = LongValue;
         }
     }
@@ -31,18 +31,18 @@ namespace EntitiesBT.Sample
     [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
     public struct VariablesTestNode : INodeData
     {
-        [Optional] public BlobVariableReader<long> LongVariable;
+        [Optional] public BlobVariantReader<long> LongVariant;
         public BlobString String;
         public BlobArray<int> IntArray;
-        public BlobVariableWriter<int> DestVariable;
-        public BlobVariableReader<float> SrcVariable;
+        public BlobVariantWriter<int> DestVariant;
+        public BlobVariantReader<float> SrcVariant;
         public long Long;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            DestVariable.Write(index, ref blob, ref bb, (int)SrcVariable.Read(index, ref blob, ref bb));
+            DestVariant.Write(index, ref blob, ref bb, (int)SrcVariant.Read(index, ref blob, ref bb));
             return NodeState.Success;
         }
 
@@ -67,9 +67,9 @@ namespace EntitiesBT.Sample
             var blob = Blob;
             var bb = Blackboard.Value;
             ref var data = ref blob.GetNodeData<VariablesTestNode, NodeBlobRef>(Index);
-            LongVariable = data.LongVariable.Read(Index, ref blob, ref bb);
+            LongVariable = data.LongVariant.Read(Index, ref blob, ref bb);
             // IntVariable = data.DestVariable.Read(Index, ref blob, ref bb);
-            FloatVariable = data.SrcVariable.Read(Index, ref blob, ref bb);
+            FloatVariable = data.SrcVariant.Read(Index, ref blob, ref bb);
             String = data.String.ToString();
             IntArray = data.IntArray.ToArray();
             LongValue = data.Long;

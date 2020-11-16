@@ -121,47 +121,35 @@ namespace EntitiesBT.Variant
             Assert.AreEqual(2, methodInfo.GetGenericArguments().Length);
             return methodInfo;
         }
-        //
-        // // TODO: move to reader extension
-        // public static readonly Lazy<Type[]> VARIABLE_PROPERTY_TYPES = new Lazy<Type[]>(() =>
-        // {
-        //     var variableAssembly = typeof(IVariablePropertyReader<>).Assembly;
-        //     var variableAssemblyName = variableAssembly.GetName().Name;
-        //     return AppDomain
-        //         .CurrentDomain
-        //         .GetAssemblies()
-        //         .Where(assembly => assembly.GetReferencedAssemblies().Any(name => name.Name == variableAssemblyName))
-        //         .Append(variableAssembly)
-        //         .SelectMany(assembly => assembly.GetTypesWithoutException())
-        //         .Where(type => !type.IsAbstract
-        //                        && type.IsGenericType
-        //                        && type.GetGenericArguments().Length == 1
-        //                        && typeof(IVariablePropertyReader<>).IsAssignableFrom(type)
-        //         ).ToArray()
-        //     ;
-        // });
-        //
-        // public static IEnumerable<Type> VARIABLE_PROPERTY_TYPES
-        // {
-        //     get
-        //     {
-        //         var variableAssembly = typeof(VariableRegisters<>).Assembly;
-        //         var variableAssemblyName = variableAssembly.GetName().Name;
-        //         return AppDomain
-        //             .CurrentDomain
-        //             .GetAssemblies()
-        //             .Where(assembly => assembly.GetReferencedAssemblies().Any(name => name.Name == variableAssemblyName))
-        //             .Append(variableAssembly)
-        //             .SelectMany(assembly => assembly.GetTypesWithoutException())
-        //             .Where(type => !type.IsAbstract
-        //                            && type.IsGenericType
-        //                            && type.GetGenericArguments().Length == 1
-        //                            && (IsReader(type) || IsWriter(type))
-        //             )
-        //         ;
-        //
-        //     }
-        // }
+
+        // TODO: move to reader extension?
+        public static readonly Lazy<IReadOnlyCollection<Type>> VARIANT_READER_TYPES =
+            new Lazy<IReadOnlyCollection<Type>>(GetVariantTypes(typeof(IVariantReader<>)));
+
+        // TODO: move to reader extension?
+        public static readonly Lazy<IReadOnlyCollection<Type>> VARIANT_WRITER_TYPES =
+            new Lazy<IReadOnlyCollection<Type>>(GetVariantTypes(typeof(IVariantWriter<>)));
+
+        private static Func<IReadOnlyCollection<Type>> GetVariantTypes(Type @interface)
+        {
+            return () =>
+            {
+                var variableAssembly = @interface.Assembly;
+                var variableAssemblyName = variableAssembly.GetName().Name;
+                return AppDomain
+                    .CurrentDomain
+                    .GetAssemblies()
+                    .Where(assembly => assembly.GetReferencedAssemblies().Any(name => name.Name == variableAssemblyName))
+                    .Append(variableAssembly)
+                    .SelectMany(assembly => assembly.GetTypesWithoutException())
+                    .Where(type => !type.IsAbstract
+                                   && type.IsGenericType
+                                   && type.GetGenericArguments().Length == 1
+                                   && @interface.IsAssignableFromGeneric(type))
+                    .ToArray()
+                ;
+            };
+        }
 
         public static bool IsReader(Type type) => typeof(IVariantReader<>).IsAssignableFrom(type);
         public static bool IsWriter(Type type) => typeof(IVariantWriter<>).IsAssignableFrom(type);

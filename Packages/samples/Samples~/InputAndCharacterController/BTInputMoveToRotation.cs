@@ -1,6 +1,6 @@
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -25,8 +25,8 @@ namespace EntitiesBT.Samples
     [BehaviorNode("2164B3CA-C12E-4C86-9F80-F45A99124FAD")]
     public struct InputMoveToRotationNode : INodeData
     {
-        public BlobVariableReader<float2> InputMove;
-        public BlobVariableWriter<quaternion> OutputDirection;
+        public BlobVariantReader<float2> InputMove;
+        public BlobVariantWriter<quaternion> OutputDirection;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

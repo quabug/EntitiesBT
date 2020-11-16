@@ -158,5 +158,20 @@ namespace EntitiesBT.Core
 
         [Pure] public static int GuidHashCode(string guid) => GuidHashCode(Guid.Parse(guid));
         [Pure] public static int GuidHashCode(Guid guid) => guid.GetHashCode();
+
+        // https://stackoverflow.com/a/5461399
+        [Pure]
+        public static bool IsAssignableFromGeneric(this Type genericType, Type givenType)
+        {
+            while (true)
+            {
+                var interfaceTypes = givenType.GetInterfaces();
+                if (interfaceTypes.Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == genericType)) return true;
+                if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType) return true;
+                var baseType = givenType.BaseType;
+                if (baseType == null) return false;
+                givenType = baseType;
+            }
+        }
     }
 }
