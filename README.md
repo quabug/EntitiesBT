@@ -67,7 +67,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 
 ## HowTo
 ### Installation
-Requirement: Unity >= 2020.1 and entities package >= 0.14.0-preview.19
+Requirement: Unity >= 2020.2 and entities package >= 0.14.0-preview.19
 
 Install the packages either by
 
