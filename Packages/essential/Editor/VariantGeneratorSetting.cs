@@ -21,17 +21,20 @@ namespace EntitiesBT.Editor
         public AssemblyDefinitionAsset Assembly;
         private string _assemblyName => Assembly?.Deserialize().name;
         private Assembly _assembly => AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(assembly => assembly.GetName().Name == _assemblyName);
+        private ISet<Assembly> _referenceAssemblies;
 
         [ContextMenu("CreateScript")]
         public void CreateScript()
         {
+            RecursiveFindReferences();
             var filePath = SaveFilePanel("Save Script", Directory, Filename, "cs");
-            VariantGenerator.CreateScript(filePath, Namespace, Types, _assembly);
+            VariantGenerator.CreateScript(filePath, Namespace, Types, IsReferenceType);
         }
 
         [ContextMenu("CreateScript-InterfaceOnly")]
         public void CreateInterfaceScript()
         {
+            RecursiveFindReferences();
             var filePath = SaveFilePanel("Save Script", Directory, $"{Filename}-Interface", "cs");
             VariantGenerator.CreateScriptInterfaceOnly(filePath, Namespace, Types);
         }
@@ -39,16 +42,36 @@ namespace EntitiesBT.Editor
         [ContextMenu("CreateScript-ClassesOnly")]
         public void CreateClassesScript()
         {
+            RecursiveFindReferences();
             var filePath = SaveFilePanel("Save Script", Directory, $"{Filename}-Classes", "cs");
-            VariantGenerator.CreateScriptClassOnly(filePath, Namespace, Types);
+            VariantGenerator.CreateScriptClassOnly(filePath, Namespace, Types, IsReferenceType);
         }
 
-        public string Directory => Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
+        private string Directory => Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
+
+        private void RecursiveFindReferences()
+        {
+            _referenceAssemblies = new HashSet<Assembly>();
+            RecursiveFindReferences(_assembly);
+
+            void RecursiveFindReferences(Assembly assembly)
+            {
+                if (assembly == null || _referenceAssemblies.Contains(assembly)) return;
+                _referenceAssemblies.Add(assembly);
+                foreach (var referenceAssemblyName in assembly.GetReferencedAssemblies())
+                {
+                    var referenceAssembly = AppDomain.CurrentDomain.Load(referenceAssemblyName);
+                    RecursiveFindReferences(referenceAssembly);
+                }
+            }
+        }
+
+        private bool IsReferenceType(Type type) => _referenceAssemblies.Contains(type.Assembly);
     }
 
     public static class VariantGenerator
     {
-        public static void CreateScript(string filepath, string @namespace, string[] types, Assembly assembly)
+        public static void CreateScript(string filepath, string @namespace, string[] types, Predicate<Type> isReferenceType)
         {
             using (var writer = new StreamWriter(filepath))
             {
@@ -57,8 +80,8 @@ namespace EntitiesBT.Editor
                 {
                     if (types.Contains(type.FullName))
                     {
-                        writer.CreateReaderVariants(type, assembly);
-                        writer.CreateWriterVariants(type, assembly);
+                        writer.CreateReaderVariants(type, isReferenceType);
+                        writer.CreateWriterVariants(type, isReferenceType);
                     }
                 }
                 writer.WriteLine(NamespaceEnd());
@@ -66,29 +89,20 @@ namespace EntitiesBT.Editor
             AssetDatabase.Refresh();
         }
 
-        public static void CreateReaderVariants(this StreamWriter writer, Type valueType, Assembly assembly = null, string suffix = "VariantReader")
+        public static void CreateReaderVariants(this StreamWriter writer, Type valueType, Predicate<Type> isReferenceType = null, string suffix = "VariantReader")
         {
             writer.WriteLine(CreateInterface(valueType, typeof(IVariantReader<>), suffix));
-            foreach (var propertyType in VARIANT_READER_TYPES.Value.Where(type => type.IsReferenceType(assembly)))
+            foreach (var propertyType in VARIANT_READER_TYPES.Value.Where(type => isReferenceType == null || isReferenceType(type)))
                 writer.WriteLine(CreateClass(valueType, propertyType, suffix));
             writer.WriteLine();
         }
 
-        public static void CreateWriterVariants(this StreamWriter writer, Type valueType, Assembly assembly = null, string suffix = "VariantWriter")
+        public static void CreateWriterVariants(this StreamWriter writer, Type valueType, Predicate<Type> isReferenceType = null, string suffix = "VariantWriter")
         {
             writer.WriteLine(CreateInterface(valueType, typeof(IVariantWriter<>), suffix));
-            foreach (var propertyType in VARIANT_WRITER_TYPES.Value.Where(type => type.IsReferenceType(assembly)))
+            foreach (var propertyType in VARIANT_WRITER_TYPES.Value.Where(type => isReferenceType == null || isReferenceType(type)))
                 writer.WriteLine(CreateClass(valueType, propertyType, suffix));
             writer.WriteLine();
-        }
-
-        private static bool IsReferenceType(this Type type, Assembly assembly)
-        {
-            return assembly != null
-                   && (type.Assembly == assembly
-                       || assembly.GetReferencedAssemblies().Any(name => name == type.Assembly.GetName())
-                   )
-                ;
         }
 
         public static void CreateScriptInterfaceOnly(string filepath, string @namespace, params string[] types)
@@ -107,7 +121,7 @@ namespace EntitiesBT.Editor
             AssetDatabase.Refresh();
         }
 
-        public static void CreateScriptClassOnly(string filepath, string @namespace, string[] types, Assembly assembly = null)
+        public static void CreateScriptClassOnly(string filepath, string @namespace, string[] types, Predicate<Type> isReferenceType = null)
         {
             using (var writer = new StreamWriter(filepath))
             {
@@ -116,9 +130,9 @@ namespace EntitiesBT.Editor
                 {
                     if (types.Contains(type.FullName))
                     {
-                        foreach (var propertyType in VARIANT_READER_TYPES.Value.Where(t => t.IsReferenceType(assembly)))
+                        foreach (var propertyType in VARIANT_READER_TYPES.Value.Where(t => isReferenceType == null || isReferenceType(t)))
                             writer.WriteLine(CreateClass(type, propertyType));
-                        foreach (var propertyType in VARIANT_WRITER_TYPES.Value.Where(t => t.IsReferenceType(assembly)))
+                        foreach (var propertyType in VARIANT_WRITER_TYPES.Value.Where(t => isReferenceType == null || isReferenceType(t)))
                             writer.WriteLine(CreateClass(type, propertyType));
                     }
                 }
