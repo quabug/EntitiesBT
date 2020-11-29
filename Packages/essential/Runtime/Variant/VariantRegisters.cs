@@ -23,12 +23,6 @@ namespace EntitiesBT.Variant
     }
 
     [AttributeUsage(AttributeTargets.Method)]
-    public class RefReaderMethodAttribute : MethodIdAttribute
-    {
-        public RefReaderMethodAttribute(string guid) : base(guid) {}
-    }
-
-    [AttributeUsage(AttributeTargets.Method)]
     public class WriterMethodAttribute : MethodIdAttribute
     {
         public WriterMethodAttribute(string id) : base(id) {}
@@ -45,7 +39,7 @@ namespace EntitiesBT.Variant
         internal delegate IEnumerable<ComponentType> GetComponentAccessFunc(ref BlobVariant variant);
         internal static readonly IReadOnlyDictionary<int, MethodInfo> READERS;
         internal static readonly IReadOnlyDictionary<int, MethodInfo> REF_READERS;
-        internal static readonly IReadOnlyDictionary<int, MethodInfo> WRTIERS;
+        internal static readonly IReadOnlyDictionary<int, MethodInfo> WRITERS;
         internal static readonly IReadOnlyDictionary<int, GetComponentAccessFunc> ACCESSORS;
         public static GetComponentAccessFunc GetComponentAccess(int entryId)
         {
@@ -69,10 +63,8 @@ namespace EntitiesBT.Variant
                 switch (attribute)
                 {
                 case ReaderMethodAttribute reader:
-                    readers.Add(reader.ID, methodInfo);
-                    break;
-                case RefReaderMethodAttribute refReader:
-                    refReaders.Add(refReader.ID, methodInfo);
+                    if (methodInfo.ReturnType.IsByRef) refReaders.Add(reader.ID, methodInfo);
+                    else readers.Add(reader.ID, methodInfo);
                     break;
                 case WriterMethodAttribute writer:
                     writers.Add(writer.ID, methodInfo);
@@ -86,7 +78,7 @@ namespace EntitiesBT.Variant
             }
             READERS = new ReadOnlyDictionary<int, MethodInfo>(readers);
             REF_READERS = new ReadOnlyDictionary<int, MethodInfo>(refReaders);
-            WRTIERS = new ReadOnlyDictionary<int, MethodInfo>(writers);
+            WRITERS = new ReadOnlyDictionary<int, MethodInfo>(writers);
             ACCESSORS = new ReadOnlyDictionary<int, GetComponentAccessFunc>(accessors);
         }
     }
@@ -167,7 +159,7 @@ namespace EntitiesBT.Variant
             where TBlackboard : struct, IBlackboard
         {
             public static readonly IReadOnlyDictionary<int, WriteFunc<TNodeBlob, TBlackboard>> WRITERS =
-                MakeRegisterDictionary<WriteFunc<TNodeBlob, TBlackboard>, TNodeBlob, TBlackboard>(VariantRegisters.WRTIERS);
+                MakeRegisterDictionary<WriteFunc<TNodeBlob, TBlackboard>, TNodeBlob, TBlackboard>(VariantRegisters.WRITERS);
         }
     }
 }

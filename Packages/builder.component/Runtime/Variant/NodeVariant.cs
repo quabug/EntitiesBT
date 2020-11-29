@@ -23,7 +23,6 @@ namespace EntitiesBT.Variant
 
     public static class NodeVariant
     {
-
         public const string ID_RUNTIME_NODE = "220681AA-D884-4E87-90A8-5A8657A734BD";
         public const string ID_DEFAULT_NODE = "743FABC9-77E6-4C2B-A475-ADED2A3B96AD";
         public const string ID_RUNTIME_NODE_VARIABLE = "7DE6DCA5-71DF-4145-91A6-17EB813B9DEB";
@@ -39,57 +38,15 @@ namespace EntitiesBT.Variant
             }
 
             public BTNode NodeObject;
-            [VariantNodeObject("NodeObject")] public string ValueFieldName;
-            public bool AccessRuntimeData = true;
+            [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
 
             public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
-                var index = Array.FindIndex(tree, node => ReferenceEquals(node.Value, NodeObject));
-                if (!NodeObject || index < 0)
-                {
-                    Debug.LogError($"Invalid `NodeObject` {NodeObject}", (UnityEngine.Object)self);
-                    throw new ArgumentException();
-                }
-
-                var nodeType = VirtualMachine.GetNodeType(NodeObject.NodeId);
-                if (string.IsNullOrEmpty(ValueFieldName) && nodeType == typeof(T))
-                {
-                    builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = 0});
-                    return;
-                }
-
-                var fieldInfo = nodeType.GetField(ValueFieldName, BindingFlags.Instance | BindingFlags.Public);
-                if (fieldInfo == null)
-                {
-                    Debug.LogError($"Invalid `ValueFieldName` {ValueFieldName}", (UnityEngine.Object)self);
-                    throw new ArgumentException();
-                }
-
-                var fieldOffset = Marshal.OffsetOf(nodeType, ValueFieldName).ToInt32();
-                builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = fieldOffset});
-
-                var fieldType = fieldInfo.FieldType;
-                if (fieldType == typeof(T))
-                    blobVariant.VariantId = GuidHashCode(AccessRuntimeData ? ID_RUNTIME_NODE : ID_DEFAULT_NODE);
-                else if (fieldType == typeof(BlobVariantReader<T>))
-                    blobVariant.VariantId = GuidHashCode(AccessRuntimeData ? ID_RUNTIME_NODE_VARIABLE : ID_DEFAULT_NODE_VARIABLE);
-                else
-                {
-                    Debug.LogError($"Invalid type of `ValueFieldName` {ValueFieldName} {fieldType}", (UnityEngine.Object)self);
-                    throw new ArgumentException();
-                }
+                Allocate<T>(ref builder, ref blobVariant, self, tree, NodeObject, ValueFieldName);
             }
 
             [Preserve, ReaderMethod(ID_RUNTIME_NODE)]
-            private static T GetRuntimeNodeData<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
-                where TNodeBlob : struct, INodeBlob
-                where TBlackboard : struct, IBlackboard
-            {
-                return GetRuntimeNodeDataRef(ref blobVariant, index, ref blob, ref bb);
-            }
-
-            [Preserve, RefReaderMethod(ID_RUNTIME_NODE)]
-            private static ref T GetRuntimeNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            private static ref T GetRuntimeNodeData<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
                 where TNodeBlob : struct, INodeBlob
                 where TBlackboard : struct, IBlackboard
             {
@@ -97,15 +54,7 @@ namespace EntitiesBT.Variant
             }
 
             [Preserve, ReaderMethod(ID_DEFAULT_NODE)]
-            private static T GetDefaultNodeData<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
-                where TNodeBlob : struct, INodeBlob
-                where TBlackboard : struct, IBlackboard
-            {
-                return GetDefaultNodeDataRef(ref blobVariant, index, ref blob, ref bb);
-            }
-
-            [Preserve, RefReaderMethod(ID_DEFAULT_NODE)]
-            private static ref T GetDefaultNodeDataRef<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            private static ref T GetDefaultNodeData<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
                 where TNodeBlob : struct, INodeBlob
                 where TBlackboard : struct, IBlackboard
             {
@@ -144,9 +93,76 @@ namespace EntitiesBT.Variant
 
         public class Writer<T> : IVariantWriter<T> where T : unmanaged
         {
+            public BTNode NodeObject;
+            [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
+
             public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
-                throw new NotImplementedException();
+                Allocate<T>(ref builder, ref blobVariant, self, tree, NodeObject, ValueFieldName);
+            }
+
+            [Preserve, WriterMethod(ID_RUNTIME_NODE)]
+            private static void WriteFunc<TNodeBlob, TBlackboard>(ref BlobVariant variant, int nodeIndex,
+                ref TNodeBlob blob, ref TBlackboard bb, T value)
+                where TNodeBlob : struct, INodeBlob
+                where TBlackboard : struct, IBlackboard
+            {
+
+            }
+        }
+
+        private struct DynamicNodeRefData
+        {
+            public int Index;
+            public int Offset;
+        }
+
+        private static void Allocate<T>(
+            ref BlobBuilder builder
+            , ref BlobVariant blobVariant
+            , INodeDataBuilder self
+            , ITreeNode<INodeDataBuilder>[] tree
+            , BTNode nodeObject
+            , string valueFieldName
+        ) where T : unmanaged
+        {
+            var index = Array.FindIndex(tree, node => ReferenceEquals(node.Value, nodeObject));
+            if (!nodeObject || index < 0)
+            {
+                Debug.LogError($"Invalid `NodeObject` {nodeObject}", (UnityEngine.Object)self);
+                throw new ArgumentException();
+            }
+
+            var nodeType = VirtualMachine.GetNodeType(nodeObject.NodeId);
+            if (string.IsNullOrEmpty(valueFieldName) && nodeType == typeof(T))
+            {
+                builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = 0});
+                return;
+            }
+
+            var fieldInfo = nodeType.GetField(valueFieldName, BindingFlags.Instance | BindingFlags.Public);
+            if (fieldInfo == null)
+            {
+                Debug.LogError($"Invalid `ValueFieldName` {valueFieldName}", (UnityEngine.Object)self);
+                throw new ArgumentException();
+            }
+
+            var fieldOffset = Marshal.OffsetOf(nodeType, valueFieldName).ToInt32();
+            builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = fieldOffset});
+
+            var fieldType = fieldInfo.FieldType;
+            if (fieldType == typeof(T))
+            {
+                blobVariant.VariantId = GuidHashCode(ID_RUNTIME_NODE);
+            }
+            else if (fieldType == typeof(BlobVariantReader<T>))
+            {
+                blobVariant.VariantId = GuidHashCode(ID_RUNTIME_NODE_VARIABLE);
+            }
+            else
+            {
+                Debug.LogError($"Invalid type of `ValueFieldName` {valueFieldName} {fieldType}", (UnityEngine.Object)self);
+                throw new ArgumentException();
             }
         }
     }

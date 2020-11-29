@@ -62,7 +62,7 @@ namespace EntitiesBT.Core
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 if (attribute == null) continue;
-                if (NODES.ContainsKey(attribute.Id)) throw new DuplicateNameException($"Node {type}[{attribute.Id}] already registered");
+                if (nodes.ContainsKey(attribute.Id)) throw new DuplicateNameException($"Node {type}[{attribute.Id}] already registered");
 
                 nodes[attribute.Id] = new Node(
                     type
@@ -124,18 +124,20 @@ namespace EntitiesBT.Core
             public TickFunc Tick;
         }
         
-        internal static readonly Dictionary<int, Node> NODES = new Dictionary<int, Node>();
+        internal static readonly IReadOnlyDictionary<int, Node> NODES;
 
         static MetaNodeRegister()
         {
+            var nodes = new Dictionary<int, Node>();
             foreach (var type in MetaNodeRegister.NODES.Values.Select(node => node.Type))
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
-                NODES[attribute.Id] = new Node {
+                nodes[attribute.Id] = new Node {
                   Reset = CreateDelegate<ResetFunc>("Reset", type)
                   , Tick = CreateDelegate<TickFunc>("Tick", type)
                 };
             }
+            NODES = new ReadOnlyDictionary<int, Node>(nodes);
             
             T CreateDelegate<T>(string methodName, Type type) where T : Delegate
             {

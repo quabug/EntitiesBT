@@ -29,7 +29,7 @@ namespace EntitiesBT.Variant
         {
             public ScriptableObject ScriptableObject;
 
-            [VariantScriptableObjectValue("ScriptableObject")]
+            [VariantScriptableObjectValue(nameof(ScriptableObject))]
             public string ScriptableObjectValueName;
 
             public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
@@ -60,14 +60,6 @@ namespace EntitiesBT.Variant
                 where TBlackboard : struct, IBlackboard
             {
                 return ref blobVariant.Value<T>();
-            }
-        }
-
-        public class Writer<T> : IVariantWriter<T> where T : unmanaged
-        {
-            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
-            {
-                throw new NotImplementedException();
             }
         }
     }

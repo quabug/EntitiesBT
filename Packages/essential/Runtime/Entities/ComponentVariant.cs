@@ -66,7 +66,7 @@ namespace EntitiesBT.Variant
                 return GetComponentValue(data.StableHash, data.Offset, bb.GetDataPtrRO);
             }
 
-            [Preserve, RefReaderMethod(GUID)]
+            [Preserve, ReaderMethod(GUID)]
             private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
                 where TNodeBlob : struct, INodeBlob
                 where TBlackboard : struct, IBlackboard
