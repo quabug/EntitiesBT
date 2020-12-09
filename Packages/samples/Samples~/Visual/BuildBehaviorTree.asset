@@ -853,6 +853,12 @@ MonoBehaviour:
         CountdownSeconds:
           Port:
             Index: 17
+        CountdownSecondsOutput:
+          Port:
+            Index: 18
+        OnCountdownSeconds:
+          Port:
+            Index: 19
         BreakReturnState: 0
     0000002D:
       type: {class: FloatConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
@@ -864,13 +870,19 @@ MonoBehaviour:
       data:
         Parent:
           Port:
-            Index: 19
+            Index: 21
         Child:
           Port:
-            Index: 20
+            Index: 22
         CountdownSeconds:
           Port:
-            Index: 21
+            Index: 23
+        CountdownSecondsOutput:
+          Port:
+            Index: 24
+        OnCountdownSeconds:
+          Port:
+            Index: 25
         BreakReturnState: 0
     0000002F:
       type: {class: Vector3Constant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
@@ -887,13 +899,13 @@ MonoBehaviour:
       data:
         Parent:
           Port:
-            Index: 22
+            Index: 26
         Axis:
           Port:
-            Index: 23
+            Index: 27
         RadianPerSecond:
           Port:
-            Index: 24
+            Index: 28
     00000032:
       type: {class: Vector3Constant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -909,23 +921,23 @@ MonoBehaviour:
       data:
         Parent:
           Port:
-            Index: 26
+            Index: 30
         Axis:
           Port:
-            Index: 27
+            Index: 31
         RadianPerSecond:
           Port:
-            Index: 28
+            Index: 32
     00000035:
       type: {class: VisualForever, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
       data:
         BreakStates: 0
         Parent:
           Port:
-            Index: 30
+            Index: 34
         Child:
           Port:
-            Index: 31
+            Index: 35
     00000036:
       type: {class: FloatConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -946,32 +958,32 @@ MonoBehaviour:
       data:
         Input1:
           Port:
-            Index: 33
+            Index: 37
         Input2:
           Port:
-            Index: 34
+            Index: 38
           DataCount: 1
         Result:
           Port:
-            Index: 35
+            Index: 39
     0000003A:
       type: {class: GetComponent, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         GameObject:
           Port:
-            Index: 36
+            Index: 40
         m_ComponentType:
           TypeHash: 7294190330952046741
         ComponentData:
           Port:
-            Index: 37
+            Index: 41
           DataCount: 3
     0000003B:
       type: {class: This, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         ThisPort:
           Port:
-            Index: 40
+            Index: 44
     0000003C:
       type: {class: StringConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -982,13 +994,13 @@ MonoBehaviour:
       data:
         BehaviorTreeEntity:
           Port:
-            Index: 41
+            Index: 45
         BehaviorTree:
           Port:
-            Index: 42
+            Index: 46
         DebugName:
           Port:
-            Index: 43
+            Index: 47
         Thread: 0
         AutoCreation: -1
     0000003E:
@@ -1006,13 +1018,13 @@ MonoBehaviour:
       data:
         Min:
           Port:
-            Index: 45
+            Index: 49
         Max:
           Port:
-            Index: 46
+            Index: 50
         Result:
           Port:
-            Index: 47
+            Index: 51
     00000041:
       type: {class: FloatConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -1028,13 +1040,13 @@ MonoBehaviour:
       data:
         Min:
           Port:
-            Index: 50
+            Index: 54
         Max:
           Port:
-            Index: 51
+            Index: 55
         Result:
           Port:
-            Index: 52
+            Index: 56
     00000044:
       type: {class: FloatConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -1050,31 +1062,31 @@ MonoBehaviour:
       data:
         Input1:
           Port:
-            Index: 55
+            Index: 59
         Input2:
           Port:
-            Index: 56
+            Index: 60
           DataCount: 1
         Result:
           Port:
-            Index: 57
+            Index: 61
     00000047:
       type: {class: SetComponent, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Set:
           Port:
-            Index: 59
+            Index: 63
         OnSet:
           Port:
-            Index: 60
+            Index: 64
         GameObject:
           Port:
-            Index: 61
+            Index: 65
         m_ComponentType:
           TypeHash: 7294190330952046741
         ComponentData:
           Port:
-            Index: 62
+            Index: 66
           DataCount: 3
 --- !u!114 &5369497826926515657
 MonoBehaviour:
@@ -1090,7 +1102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Definition:
     id: 0
-  HashCode: 2593991984
+  HashCode: 1049600304
   references:
     version: 1
     00000000:
@@ -1142,7 +1154,7 @@ MonoBehaviour:
           PortName: Input
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 14
+          DataIndex: 16
           NodeId:
             m_NodeIndex: 1
           PortName: BehaviorTreeEntity
@@ -1232,13 +1244,25 @@ MonoBehaviour:
           PortName: Child
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 5
+          DataIndex: 6
           NodeId:
             m_NodeIndex: 8
           PortName: CountdownSeconds
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 5
+          DataIndex: 0
+          NodeId:
+            m_NodeIndex: 8
+          PortName: CountdownSecondsOutput
+        - IsDataPort: 0
+          IsOutputPort: 1
+          DataIndex: 0
+          NodeId:
+            m_NodeIndex: 8
+          PortName: OnCountdownSeconds
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 6
           NodeId:
             m_NodeIndex: 9
           PortName: ValuePort
@@ -1256,10 +1280,22 @@ MonoBehaviour:
           PortName: Child
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 9
+          DataIndex: 11
           NodeId:
             m_NodeIndex: 10
           PortName: CountdownSeconds
+        - IsDataPort: 1
+          IsOutputPort: 1
+          DataIndex: 0
+          NodeId:
+            m_NodeIndex: 10
+          PortName: CountdownSecondsOutput
+        - IsDataPort: 0
+          IsOutputPort: 1
+          DataIndex: 0
+          NodeId:
+            m_NodeIndex: 10
+          PortName: OnCountdownSeconds
         - IsDataPort: 0
           IsOutputPort: 0
           DataIndex: 0
@@ -1268,19 +1304,19 @@ MonoBehaviour:
           PortName: Parent
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 6
+          DataIndex: 8
           NodeId:
             m_NodeIndex: 11
           PortName: Axis
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 19
+          DataIndex: 21
           NodeId:
             m_NodeIndex: 11
           PortName: RadianPerSecond
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 6
+          DataIndex: 8
           NodeId:
             m_NodeIndex: 12
           PortName: ValuePort
@@ -1292,19 +1328,19 @@ MonoBehaviour:
           PortName: Parent
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 7
+          DataIndex: 9
           NodeId:
             m_NodeIndex: 13
           PortName: Axis
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 22
+          DataIndex: 24
           NodeId:
             m_NodeIndex: 13
           PortName: RadianPerSecond
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 7
+          DataIndex: 9
           NodeId:
             m_NodeIndex: 14
           PortName: ValuePort
@@ -1322,31 +1358,31 @@ MonoBehaviour:
           PortName: Child
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 8
+          DataIndex: 10
           NodeId:
             m_NodeIndex: 16
           PortName: ValuePort
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 8
+          DataIndex: 10
           NodeId:
             m_NodeIndex: 17
           PortName: Input1
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 12
+          DataIndex: 14
           NodeId:
             m_NodeIndex: 17
           PortName: Input2
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 9
+          DataIndex: 11
           NodeId:
             m_NodeIndex: 17
           PortName: Result
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 13
+          DataIndex: 15
           NodeId:
             m_NodeIndex: 18
           PortName: GameObject
@@ -1364,19 +1400,19 @@ MonoBehaviour:
           PortName: ComponentData
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 12
+          DataIndex: 14
           NodeId:
             m_NodeIndex: 18
           PortName: ComponentData
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 13
+          DataIndex: 15
           NodeId:
             m_NodeIndex: 19
           PortName: ThisPort
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 14
+          DataIndex: 16
           NodeId:
             m_NodeIndex: 20
           PortName: BehaviorTreeEntity
@@ -1388,97 +1424,97 @@ MonoBehaviour:
           PortName: BehaviorTree
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 15
+          DataIndex: 17
           NodeId:
             m_NodeIndex: 20
           PortName: DebugName
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 15
+          DataIndex: 17
           NodeId:
             m_NodeIndex: 21
           PortName: ValuePort
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 17
+          DataIndex: 19
           NodeId:
             m_NodeIndex: 22
           PortName: Min
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 18
+          DataIndex: 20
           NodeId:
             m_NodeIndex: 22
           PortName: Max
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 16
+          DataIndex: 18
           NodeId:
             m_NodeIndex: 22
           PortName: Result
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 17
+          DataIndex: 19
           NodeId:
             m_NodeIndex: 23
           PortName: ValuePort
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 18
+          DataIndex: 20
           NodeId:
             m_NodeIndex: 24
           PortName: ValuePort
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 20
+          DataIndex: 22
           NodeId:
             m_NodeIndex: 25
           PortName: Min
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 21
+          DataIndex: 23
           NodeId:
             m_NodeIndex: 25
           PortName: Max
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 19
+          DataIndex: 21
           NodeId:
             m_NodeIndex: 25
           PortName: Result
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 20
+          DataIndex: 22
           NodeId:
             m_NodeIndex: 26
           PortName: ValuePort
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 21
+          DataIndex: 23
           NodeId:
             m_NodeIndex: 27
           PortName: ValuePort
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 16
+          DataIndex: 18
           NodeId:
             m_NodeIndex: 28
           PortName: Input1
         - IsDataPort: 1
           IsOutputPort: 0
-          DataIndex: 23
+          DataIndex: 25
           NodeId:
             m_NodeIndex: 28
           PortName: Input2
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 22
+          DataIndex: 24
           NodeId:
             m_NodeIndex: 28
           PortName: Result
         - IsDataPort: 1
           IsOutputPort: 1
-          DataIndex: 23
+          DataIndex: 25
           NodeId:
             m_NodeIndex: 29
           PortName: ValuePort
@@ -1524,7 +1560,9 @@ MonoBehaviour:
         - m_NodeIndex: 3
         - m_NodeIndex: 4
         - m_NodeIndex: 6
+        - m_NodeIndex: 0
         - m_NodeIndex: 9
+        - m_NodeIndex: 0
         - m_NodeIndex: 12
         - m_NodeIndex: 14
         - m_NodeIndex: 16
@@ -1543,7 +1581,7 @@ MonoBehaviour:
         - m_NodeIndex: 27
         - m_NodeIndex: 28
         - m_NodeIndex: 29
-        TriggerTable: 0000000001000000000000000f000000130000000000000016000000000000001a000000000000000d000000000000001e00000000000000
+        TriggerTable: 0000000001000000000000000f00000015000000000000001a000000000000001e000000000000000d000000000000002200000000000000
         VariableInitValues: []
         Strings:
         - '[BT] Rotate'
@@ -1654,6 +1692,12 @@ MonoBehaviour:
         CountdownSeconds:
           Port:
             Index: 17
+        CountdownSecondsOutput:
+          Port:
+            Index: 18
+        OnCountdownSeconds:
+          Port:
+            Index: 19
         BreakReturnState: 0
     00000009:
       type: {class: ConstantFloat, ns: Runtime, asm: Unity.VisualScripting.Ecs}
@@ -1661,43 +1705,27 @@ MonoBehaviour:
         Value: 1
         ValuePort:
           Port:
-            Index: 18
+            Index: 20
     0000000A:
       type: {class: VisualTimer, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
       data:
         Parent:
           Port:
-            Index: 19
+            Index: 21
         Child:
           Port:
-            Index: 20
+            Index: 22
         CountdownSeconds:
           Port:
-            Index: 21
-        BreakReturnState: 0
-    0000000B:
-      type: {class: VisualEntityRotate, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Sample.Visual}
-      data:
-        Parent:
-          Port:
-            Index: 22
-        Axis:
-          Port:
             Index: 23
-        RadianPerSecond:
+        CountdownSecondsOutput:
           Port:
             Index: 24
-    0000000C:
-      type: {class: ConstantFloat3, ns: Runtime, asm: Unity.VisualScripting.Ecs}
-      data:
-        Value:
-          x: 0
-          y: 1
-          z: 0
-        ValuePort:
+        OnCountdownSeconds:
           Port:
             Index: 25
-    0000000D:
+        BreakReturnState: 0
+    0000000B:
       type: {class: VisualEntityRotate, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Sample.Visual}
       data:
         Parent:
@@ -1709,6 +1737,28 @@ MonoBehaviour:
         RadianPerSecond:
           Port:
             Index: 28
+    0000000C:
+      type: {class: ConstantFloat3, ns: Runtime, asm: Unity.VisualScripting.Ecs}
+      data:
+        Value:
+          x: 0
+          y: 1
+          z: 0
+        ValuePort:
+          Port:
+            Index: 29
+    0000000D:
+      type: {class: VisualEntityRotate, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Sample.Visual}
+      data:
+        Parent:
+          Port:
+            Index: 30
+        Axis:
+          Port:
+            Index: 31
+        RadianPerSecond:
+          Port:
+            Index: 32
     0000000E:
       type: {class: ConstantFloat3, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
@@ -1718,67 +1768,67 @@ MonoBehaviour:
           z: 0
         ValuePort:
           Port:
-            Index: 29
+            Index: 33
     0000000F:
       type: {class: VisualForever, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
       data:
         BreakStates: 0
         Parent:
           Port:
-            Index: 30
+            Index: 34
         Child:
           Port:
-            Index: 31
+            Index: 35
     00000010:
       type: {class: ConstantFloat, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 5
         ValuePort:
           Port:
-            Index: 32
+            Index: 36
     00000011:
       type: {class: AddFloatFloat, ns: Runtime.Mathematics, asm: Unity.VisualScripting.Ecs}
       data:
         Input1:
           Port:
-            Index: 33
+            Index: 37
         Input2:
           Port:
-            Index: 34
+            Index: 38
           DataCount: 1
         Result:
           Port:
-            Index: 35
+            Index: 39
     00000012:
       type: {class: GetComponent, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         GameObject:
           Port:
-            Index: 36
+            Index: 40
         m_ComponentType:
           TypeHash: 7294190330952046741
         ComponentData:
           Port:
-            Index: 37
+            Index: 41
           DataCount: 3
     00000013:
       type: {class: This, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         ThisPort:
           Port:
-            Index: 40
+            Index: 44
     00000014:
       type: {class: BehaviorTreeBuilder, ns: EntitiesBT.Builder.Visual, asm: EntitiesBT.Builder.Visual}
       data:
         BehaviorTreeEntity:
           Port:
-            Index: 41
+            Index: 45
         BehaviorTree:
           Port:
-            Index: 42
+            Index: 46
         DebugName:
           Port:
-            Index: 43
+            Index: 47
         Thread: 0
         AutoCreation: -1
     00000015:
@@ -1789,94 +1839,94 @@ MonoBehaviour:
           StorageType: 1
         ValuePort:
           Port:
-            Index: 44
+            Index: 48
     00000016:
       type: {class: RandomFloat, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Min:
           Port:
-            Index: 45
+            Index: 49
         Max:
           Port:
-            Index: 46
+            Index: 50
         Result:
           Port:
-            Index: 47
+            Index: 51
     00000017:
       type: {class: ConstantFloat, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 1
         ValuePort:
           Port:
-            Index: 48
+            Index: 52
     00000018:
       type: {class: ConstantFloat, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 5
         ValuePort:
           Port:
-            Index: 49
+            Index: 53
     00000019:
       type: {class: RandomFloat, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Min:
           Port:
-            Index: 50
+            Index: 54
         Max:
           Port:
-            Index: 51
+            Index: 55
         Result:
           Port:
-            Index: 52
+            Index: 56
     0000001A:
       type: {class: ConstantFloat, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 0
         ValuePort:
           Port:
-            Index: 53
+            Index: 57
     0000001B:
       type: {class: ConstantFloat, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 1
         ValuePort:
           Port:
-            Index: 54
+            Index: 58
     0000001C:
       type: {class: MultiplyFloatFloat, ns: Runtime.Mathematics, asm: Unity.VisualScripting.Ecs}
       data:
         Input1:
           Port:
-            Index: 55
+            Index: 59
         Input2:
           Port:
-            Index: 56
+            Index: 60
           DataCount: 1
         Result:
           Port:
-            Index: 57
+            Index: 61
     0000001D:
       type: {class: ConstantFloat, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Value: 2
         ValuePort:
           Port:
-            Index: 58
+            Index: 62
     0000001E:
       type: {class: SetComponent, ns: Runtime, asm: Unity.VisualScripting.Ecs}
       data:
         Set:
           Port:
-            Index: 59
+            Index: 63
         OnSet:
           Port:
-            Index: 60
+            Index: 64
         GameObject:
           Port:
-            Index: 61
+            Index: 65
         m_ComponentType:
           TypeHash: 7294190330952046741
         ComponentData:
           Port:
-            Index: 62
+            Index: 66
           DataCount: 3

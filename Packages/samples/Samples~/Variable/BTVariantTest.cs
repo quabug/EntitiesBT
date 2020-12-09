@@ -10,20 +10,20 @@ namespace EntitiesBT.Sample
 {
     public class BTVariantTest : BTNode<VariablesTestNode>
     {
-        [SerializeReference, SerializeReferenceButton] public Int64VariantReader LongVariable;
+        [SerializeReference, SerializeReferenceButton] public Int64VariantReader LongReader;
         public string String;
         public int[] IntArray;
-        [SerializeReference, SerializeReferenceButton] public Int32VariantWriter DestVariable;
-        [SerializeReference, SerializeReferenceButton] public SingleVariantReader SrcVariable;
+        [SerializeReference, SerializeReferenceButton] public Int64VariantWriter LongWriter;
+        [SerializeReference, SerializeReferenceButton] public SingleVariantReader SingleReader;
         public long LongValue;
 
         protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            LongVariable.Allocate(ref builder, ref data.LongVariant, this, tree);
+            LongReader.Allocate(ref builder, ref data.LongReader, this, tree);
             builder.AllocateString(ref data.String, String);
             builder.AllocateArray(ref data.IntArray, IntArray);
-            DestVariable.Allocate(ref builder, ref data.DestVariant, this, tree);
-            SrcVariable.Allocate(ref builder, ref data.SrcVariant, this, tree);
+            LongWriter.Allocate(ref builder, ref data.LongWriter, this, tree);
+            SingleReader.Allocate(ref builder, ref data.SingleReader, this, tree);
             data.Long = LongValue;
         }
     }
@@ -31,18 +31,18 @@ namespace EntitiesBT.Sample
     [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
     public struct VariablesTestNode : INodeData
     {
-        [Optional] public BlobVariantReader<long> LongVariant;
+        [Optional] public BlobVariantReader<long> LongReader;
         public BlobString String;
         public BlobArray<int> IntArray;
-        public BlobVariantWriter<int> DestVariant;
-        public BlobVariantReader<float> SrcVariant;
+        public BlobVariantWriter<long> LongWriter;
+        public BlobVariantReader<float> SingleReader;
         public long Long;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            DestVariant.Write(index, ref blob, ref bb, (int)SrcVariant.Read(index, ref blob, ref bb));
+            LongWriter.Write(index, ref blob, ref bb, (int)SingleReader.Read(index, ref blob, ref bb));
             return NodeState.Success;
         }
 
@@ -57,6 +57,7 @@ namespace EntitiesBT.Sample
     {
         public long LongVariable;
         public string String;
+
         public int[] IntArray;
         // public int IntVariable;
         public float FloatVariable;
@@ -67,9 +68,9 @@ namespace EntitiesBT.Sample
             var blob = Blob;
             var bb = Blackboard.Value;
             ref var data = ref blob.GetNodeData<VariablesTestNode, NodeBlobRef>(Index);
-            LongVariable = data.LongVariant.Read(Index, ref blob, ref bb);
+            LongVariable = data.LongReader.Read(Index, ref blob, ref bb);
             // IntVariable = data.DestVariable.Read(Index, ref blob, ref bb);
-            FloatVariable = data.SrcVariant.Read(Index, ref blob, ref bb);
+            FloatVariable = data.SingleReader.Read(Index, ref blob, ref bb);
             String = data.String.ToString();
             IntArray = data.IntArray.ToArray();
             LongValue = data.Long;
