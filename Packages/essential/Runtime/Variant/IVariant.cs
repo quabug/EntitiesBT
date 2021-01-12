@@ -13,6 +13,6 @@ namespace EntitiesBT.Variant
         );
     }
 
-    public interface IVariantReader<T> : IVariant where T : struct {}
-    public interface IVariantWriter<T> : IVariant where T : struct {}
+    public interface IVariantReader<T> : IVariant where T : unmanaged {}
+    public interface IVariantWriter<T> : IVariant where T : unmanaged {}
 }

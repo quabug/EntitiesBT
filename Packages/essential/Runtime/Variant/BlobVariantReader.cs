@@ -13,7 +13,10 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            return VariantRegisters<T>.GetReader<TNodeBlob, TBlackboard>(Value.VariantId)(ref Value, index, ref blob, ref bb);
+            return VariantRegisters<T>.TryGetValue<TNodeBlob, TBlackboard>(Value.VariantId, out var reader)
+                ? reader(ref Value, index, ref blob, ref bb)
+                : VariantRegisters<T>.GetRefReader<TNodeBlob, TBlackboard>(Value.VariantId)(ref Value, index, ref blob, ref bb)
+            ;
         }
 
         public IEnumerable<ComponentType> AccessTypes =>

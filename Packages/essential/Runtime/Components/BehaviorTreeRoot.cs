@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace EntitiesBT.Components
 {
-    [RequiresEntityConversion]
     public class BehaviorTreeRoot : MonoBehaviour, IConvertGameObjectToEntity
     {
         [SerializeReference, SerializeReferenceButton] private IBehaviorTreeSource _source = default;

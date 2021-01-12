@@ -24,6 +24,15 @@ namespace EntitiesBT.Variant
     {
         public const string GUID = "B14A224A-7ADF-4E03-8240-60DE620FF946";
 
+        [Preserve, ReaderMethod(GUID)]
+        private static ref T GetDataRef<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where T : unmanaged
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            return ref blobVariant.Value<T>();
+        }
+
         [Serializable]
         public class Reader<T> : IVariantReader<T> where T : unmanaged
         {
@@ -52,14 +61,6 @@ namespace EntitiesBT.Variant
 
                 var value = fieldInfo?.GetValue(ScriptableObject) ?? propertyInfo?.GetValue(ScriptableObject);
                 builder.Allocate(ref blobVariant, (T) value);
-            }
-
-            [Preserve, ReaderMethod(GUID)]
-            private static ref T GetDataRef<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
-                where TNodeBlob : struct, INodeBlob
-                where TBlackboard : struct, IBlackboard
-            {
-                return ref blobVariant.Value<T>();
             }
         }
     }

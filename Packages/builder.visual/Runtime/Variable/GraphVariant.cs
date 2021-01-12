@@ -23,30 +23,31 @@ namespace EntitiesBT.Builder.Visual
                 blobVariant.VariantId = GuidHashCode(GUID);
                 builder.Allocate(ref blobVariant, _port);
             }
+        }
 
-            [Preserve, ReaderMethod(GUID)]
-            private static unsafe T GetData<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
-                where TNodeBlob : struct, INodeBlob
-                where TBlackboard : struct, IBlackboard
-            {
-                ref var port = ref blobVariant.Value<InputDataPort>();
-                var behaviorTree = bb.GetData<CurrentBehaviorTreeComponent>().RefValue.BehaviorTree;
-                // HACK: how to support multiple worlds?
-                var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-                var graphInstance = entityManager.GetComponentObject<GraphInstanceComponent>(behaviorTree).Value;
+        [Preserve, ReaderMethod(GUID)]
+        private static unsafe T GetData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where T : unmanaged
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            ref var port = ref blobVariant.Value<InputDataPort>();
+            var behaviorTree = bb.GetData<CurrentBehaviorTreeComponent>().RefValue.BehaviorTree;
+            // HACK: how to support multiple worlds?
+            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+            var graphInstance = entityManager.GetComponentObject<GraphInstanceComponent>(behaviorTree).Value;
 
-                T data;
-                void* ptr = &data;
-                var value = graphInstance.ReadValue(port);
-                Value.SetPtrToValue(ptr, value.Type, value);
-                return data;
-            }
+            T data;
+            void* ptr = &data;
+            var value = graphInstance.ReadValue(port);
+            Value.SetPtrToValue(ptr, value.Type, value);
+            return data;
+        }
 
-            [Preserve, AccessorMethod(GUID)]
-            IEnumerable<ComponentType> GetComponentAccess(ref BlobVariantReader<T> variant)
-            {
-                return ComponentType.ReadOnly<CurrentBehaviorTreeComponent>().Yield();
-            }
+        [Preserve, AccessorMethod(GUID)]
+        private static IEnumerable<ComponentType> GetComponentAccess(ref BlobVariant variant)
+        {
+            return ComponentType.ReadOnly<CurrentBehaviorTreeComponent>().Yield();
         }
     }
 }

@@ -151,7 +151,7 @@ namespace EntitiesBT.Variant
             };
         }
 
-        public static bool IsReader(Type type) => typeof(IVariantReader<>).IsAssignableFrom(type);
-        public static bool IsWriter(Type type) => typeof(IVariantWriter<>).IsAssignableFrom(type);
+        public static bool IsReader(Type type) => typeof(IVariantReader<>).IsAssignableFromGeneric(type);
+        public static bool IsWriter(Type type) => typeof(IVariantWriter<>).IsAssignableFromGeneric(type);
     }
 }
