@@ -190,7 +190,7 @@ namespace EntitiesBT.Variant
             where TBlackboard : struct, IBlackboard
             => ReaderRegisters<TNodeBlob, TBlackboard>.READERS[entryId];
 
-        public static bool TryGetValue<TNodeBlob, TBlackboard>(int entryId, out ReadFunc<TNodeBlob, TBlackboard> value)
+        public static bool TryGetReader<TNodeBlob, TBlackboard>(int entryId, out ReadFunc<TNodeBlob, TBlackboard> value)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
             => ReaderRegisters<TNodeBlob, TBlackboard>.READERS.TryGetValue(entryId, out value);
@@ -227,6 +227,11 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
             => WriterRegisters<TNodeBlob, TBlackboard>.WRITERS[entryId];
+
+        public static bool TryGetWriter<TNodeBlob, TBlackboard>(int entryId, out WriteFunc<TNodeBlob, TBlackboard> writer)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+            => WriterRegisters<TNodeBlob, TBlackboard>.WRITERS.TryGetValue(entryId, out writer);
 
         // optimize: convert writer method info into delegate to increase performance on calling.
         private static class WriterRegisters<TNodeBlob, TBlackboard>

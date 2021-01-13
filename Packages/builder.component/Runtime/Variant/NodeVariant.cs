@@ -57,22 +57,17 @@ namespace EntitiesBT.Variant
             }
         }
 
-        [Preserve, WriterMethod(ID_RUNTIME_NODE)]
-        private static void WriteFunc<T, TNodeBlob, TBlackboard>(ref BlobVariant variant, int nodeIndex, ref TNodeBlob blob, ref TBlackboard bb, T value)
-            where T : unmanaged
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-            // TODO
-        }
-
         [Preserve, WriterMethod(ID_RUNTIME_NODE_VARIABLE)]
-        private static void WriteVariableFunc<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb, T value)
+        private static unsafe void WriteVariableFunc<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb, T value)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            // TODO
+            ref var data = ref blobVariant.Value<DynamicNodeRefData>();
+            var ptr = blob.GetRuntimeDataPtr(data.Index);
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariantReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            // TODO: check writable on editor?
+            variable.Value.WriteWithRefFallback(index, ref blob, ref bb, value);
         }
 
         [Preserve, ReaderMethod(ID_RUNTIME_NODE)]

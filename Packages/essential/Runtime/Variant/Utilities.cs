@@ -88,7 +88,7 @@ namespace EntitiesBT.Variant
           , ref BlobVariantReader<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : struct => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
 
         public static void Allocate<T>(
             this IVariant property
@@ -96,7 +96,7 @@ namespace EntitiesBT.Variant
           , ref BlobVariantWriter<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : struct => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
 
         public static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : struct
         {
