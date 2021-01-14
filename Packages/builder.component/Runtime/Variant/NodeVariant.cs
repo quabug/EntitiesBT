@@ -24,19 +24,13 @@ namespace EntitiesBT.Variant
     public static class NodeVariant
     {
         public const string ID_RUNTIME_NODE = "220681AA-D884-4E87-90A8-5A8657A734BD";
-        public const string ID_DEFAULT_NODE = "743FABC9-77E6-4C2B-A475-ADED2A3B96AD";
+        // public const string ID_DEFAULT_NODE = "743FABC9-77E6-4C2B-A475-ADED2A3B96AD";
         public const string ID_RUNTIME_NODE_VARIABLE = "7DE6DCA5-71DF-4145-91A6-17EB813B9DEB";
-        public const string ID_DEFAULT_NODE_VARIABLE = "A98E0FBF-EF5D-4AFC-9997-0E08A569574D";
+        // public const string ID_DEFAULT_NODE_VARIABLE = "A98E0FBF-EF5D-4AFC-9997-0E08A569574D";
 
         // TODO: check loop ref?
         public class Reader<T> : IVariantReader<T> where T : unmanaged
         {
-            private struct DynamicNodeRefData
-            {
-                public int Index;
-                public int Offset;
-            }
-
             public BTNode NodeObject;
             [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
 
@@ -79,14 +73,14 @@ namespace EntitiesBT.Variant
             return ref GetValue<T>(ref blobVariant, blob.GetRuntimeDataPtr);
         }
 
-        [Preserve, ReaderMethod(ID_DEFAULT_NODE)]
-        private static ref T GetDefaultNodeData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
-            where T : unmanaged
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-            return ref GetValue<T>(ref blobVariant, blob.GetDefaultDataPtr);
-        }
+        // [Preserve, ReaderMethod(ID_DEFAULT_NODE)]
+        // private static ref T GetDefaultNodeData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        //     where T : unmanaged
+        //     where TNodeBlob : struct, INodeBlob
+        //     where TBlackboard : struct, IBlackboard
+        // {
+        //     return ref GetValue<T>(ref blobVariant, blob.GetDefaultDataPtr);
+        // }
 
         private static unsafe ref T GetValue<T>(ref BlobVariant blobVariant, Func<int, IntPtr> ptrFunc) where T : unmanaged
         {
@@ -107,17 +101,17 @@ namespace EntitiesBT.Variant
             return variable.Read(index, ref blob, ref bb);
         }
 
-        [Preserve, ReaderMethod(ID_DEFAULT_NODE_VARIABLE)]
-        private static unsafe T GetDefaultNodeVariable<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
-            where T : unmanaged
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-            ref var data = ref blobVariant.Value<DynamicNodeRefData>();
-            var ptr = blob.GetDefaultDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariantReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
-            return variable.Read(index, ref blob, ref bb);
-        }
+        // [Preserve, ReaderMethod(ID_DEFAULT_NODE_VARIABLE)]
+        // private static unsafe T GetDefaultNodeVariable<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        //     where T : unmanaged
+        //     where TNodeBlob : struct, INodeBlob
+        //     where TBlackboard : struct, IBlackboard
+        // {
+        //     ref var data = ref blobVariant.Value<DynamicNodeRefData>();
+        //     var ptr = blob.GetDefaultDataPtr(data.Index);
+        //     ref var variable = ref UnsafeUtility.AsRef<BlobVariantReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+        //     return variable.Read(index, ref blob, ref bb);
+        // }
 
         private struct DynamicNodeRefData
         {

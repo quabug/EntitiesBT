@@ -25,6 +25,7 @@ MonoBehaviour:
   - id: 4
   - id: 5
   - id: 6
+  - id: 7
   references:
     version: 1
     00000000:
@@ -44,12 +45,20 @@ MonoBehaviour:
     00000004:
       type: {class: BlobArrayFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
     00000005:
-      type: {class: BlobVariableFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+      type: {class: BlobVariantReaderFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
       data:
-        ShouldGenerateVariableInterface: 1
-        VariableInterfaceDirectory: Variable
-        VariableInterfaceNamespace: EntitiesBT.Variable
-        VariablePropertyNameSuffix: Property
+        ShouldGenerateVariantInterface: 1
+        VariantInterfaceDirectory: Variant
+        VariantInterfaceNamespace: EntitiesBT.Variant
+        VariantPropertyNameSuffix: Variant
         Generator: {fileID: 11400000}
     00000006:
+      type: {class: BlobVariantWriterFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+      data:
+        ShouldGenerateVariantInterface: 1
+        VariantInterfaceDirectory: Variant
+        VariantInterfaceNamespace: EntitiesBT.Variant
+        VariantPropertyNameSuffix: Variant
+        Generator: {fileID: 11400000}
+    00000007:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}

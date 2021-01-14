@@ -32,6 +32,14 @@ namespace EntitiesBT.Variant
             return VariantRegisters<T>.GetReader<TNodeBlob, TBlackboard>(blobVariant.VariantId)(ref blobVariant, index, ref blob, ref bb);
         }
 
+        public static ref T ReadRef<T, TNodeBlob, TBlackboard>(this ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where T : unmanaged
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            return ref VariantRegisters<T>.GetRefReader<TNodeBlob, TBlackboard>(blobVariant.VariantId)(ref blobVariant, index, ref blob, ref bb);
+        }
+
         public static T ReadWithRefFallback<T, TNodeBlob, TBlackboard>(this ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
