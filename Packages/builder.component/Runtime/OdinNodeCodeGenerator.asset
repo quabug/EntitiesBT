@@ -20,12 +20,11 @@ MonoBehaviour:
   - id: 1
   _excludedNodes:
   - id: 2
-  - id: 3
   _fieldCodeGenerators:
+  - id: 3
   - id: 4
   - id: 5
   - id: 6
-  - id: 7
   references:
     version: 1
     00000000:
@@ -36,18 +35,12 @@ MonoBehaviour:
         Assemblies:
         - {fileID: 5897886265953266890, guid: c7babe7561eb244059259745ef27b866, type: 3}
     00000002:
-      type: {class: TypeValidatorWithFullName, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
-      data:
-        TypeFullNames:
-        - EntitiesBT.Nodes.ZeroNode
+      type: {class: TypeValidatorWithoutBlobVariant, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
     00000003:
-      type: {class: TypeValidatorWithoutBlobVariable, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
-    00000004:
       type: {class: BlobStringFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
-    00000005:
+    00000004:
       type: {class: BlobArrayFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
+    00000005:
+      type: {class: BlobVariantFieldCodeGeneratorForOdin, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
     00000006:
-      type: {class: BlobVariableFieldCodeGeneratorForOdin, ns: EntitiesBT.Editor,
-        asm: EntitiesBT.Components.Editor}
-    00000007:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
