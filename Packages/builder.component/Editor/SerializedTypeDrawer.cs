@@ -19,8 +19,7 @@ namespace EntitiesBT.Editor
                 if (_options == null)
                 {
                     var baseType = ((SerializedTypeAttribute) attribute).BaseType;
-                    var types = AppDomain.CurrentDomain
-                        .GetAssemblies()
+                    var types = Core.Utilities.ALL_ASSEMBLIES.Value
                         .SelectMany(assembly => assembly.GetTypesWithoutException())
                     ;
                     if (baseType != null)

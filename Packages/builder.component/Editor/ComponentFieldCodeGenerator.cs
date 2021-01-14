@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using UnityEditor;
+using UnityEditorInternal;
 
 namespace EntitiesBT.Editor
 {
@@ -54,6 +57,16 @@ namespace EntitiesBT.Editor
         public string VariantInterfaceNamespace = "EntitiesBT.Variant";
         public string VariantPropertyNameSuffix = "Variant";
         public NodeCodeGenerator Generator;
+        public AssemblyDefinitionAsset Assembly;
+
+        private ISet<Assembly> _referenceAssemblies;
+
+        protected bool IsReferenceType(Type type)
+        {
+            _referenceAssemblies ??= Assembly.ToAssembly().FindReferenceAssemblies();
+            return _referenceAssemblies.Contains(type.Assembly);
+        }
+
         protected string Suffix => $"{VariantType}{VariantPropertyNameSuffix}";
 
         protected abstract string VariantType { get; }
@@ -75,7 +88,6 @@ namespace EntitiesBT.Editor
             stringBuilder.AppendLine($"public {VariantInterfaceNamespace}.{valueType.Name}{Suffix} {fi.Name};");
             return stringBuilder.ToString();
         }
-
 
         public string GenerateBuild(FieldInfo fi)
         {
@@ -100,7 +112,7 @@ namespace EntitiesBT.Editor
                 {
                     writer.WriteLine(HEAD_LINE);
                     writer.WriteLine(VariantGenerator.NamespaceBegin(VariantInterfaceNamespace));
-                    writer.CreateReaderVariants(valueType, null, Suffix);
+                    writer.CreateReaderVariants(valueType, IsReferenceType, Suffix);
                     writer.WriteLine(VariantGenerator.NamespaceEnd());
                 }
             }
@@ -124,7 +136,7 @@ namespace EntitiesBT.Editor
                 {
                     writer.WriteLine(HEAD_LINE);
                     writer.WriteLine(VariantGenerator.NamespaceBegin(VariantInterfaceNamespace));
-                    writer.CreateWriterVariants(valueType, null, Suffix);
+                    writer.CreateWriterVariants(valueType, IsReferenceType, Suffix);
                     writer.WriteLine(VariantGenerator.NamespaceEnd());
                 }
             }

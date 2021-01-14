@@ -52,6 +52,8 @@ MonoBehaviour:
         VariantInterfaceNamespace: EntitiesBT.Variant
         VariantPropertyNameSuffix: Variant
         Generator: {fileID: 11400000}
+        Assembly: {fileID: 5897886265953266890, guid: c7babe7561eb244059259745ef27b866,
+          type: 3}
     00000006:
       type: {class: BlobVariantWriterFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
       data:
@@ -60,5 +62,7 @@ MonoBehaviour:
         VariantInterfaceNamespace: EntitiesBT.Variant
         VariantPropertyNameSuffix: Variant
         Generator: {fileID: 11400000}
+        Assembly: {fileID: 5897886265953266890, guid: c7babe7561eb244059259745ef27b866,
+          type: 3}
     00000007:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}

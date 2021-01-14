@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
@@ -139,5 +140,12 @@ namespace EntitiesBT.Editor
         [Pure] internal static string ToShortNameWithInnerClass(this string typeName) =>
             typeName.Split('`').First().Split('.').Last().Replace("+", "")
         ;
+
+
+        public static Assembly ToAssembly([NotNull] this AssemblyDefinitionAsset assembly)
+        {
+            var name = assembly.Deserialize().name;
+            return Core.Utilities.ALL_ASSEMBLIES.Value.FirstOrDefault(assembly => assembly.GetName().Name == name);
+        }
     }
 }

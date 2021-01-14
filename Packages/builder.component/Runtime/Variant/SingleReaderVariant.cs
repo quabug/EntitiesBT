@@ -3,8 +3,6 @@ namespace EntitiesBT.Variant
 {
 
 public interface SingleReaderVariant : EntitiesBT.Variant.IVariantReader<System.Single> { }
-// public class SingleDynamicComponentVariantReader : EntitiesBT.Builder.Visual.DynamicComponentVariant.Reader<System.Single>, SingleReaderVariant { }
-// public class SingleGraphVariantReader : EntitiesBT.Builder.Visual.GraphVariant.Reader<System.Single>, SingleReaderVariant { }
 public class SingleNodeVariantReader : EntitiesBT.Variant.NodeVariant.Reader<System.Single>, SingleReaderVariant { }
 public class SingleComponentVariantReader : EntitiesBT.Variant.ComponentVariant.Reader<System.Single>, SingleReaderVariant { }
 public class SingleLocalVariantReader : EntitiesBT.Variant.LocalVariant.Reader<System.Single>, SingleReaderVariant { }

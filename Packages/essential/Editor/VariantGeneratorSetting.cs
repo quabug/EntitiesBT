@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using UnityEditor;
 using UnityEditorInternal;
@@ -19,8 +20,6 @@ namespace EntitiesBT.Editor
         public string Filename =  "VariantProperties";
         public string Namespace = $"{nameof(EntitiesBT)}.{nameof(Variant)}";
         public AssemblyDefinitionAsset Assembly;
-        private string _assemblyName => Assembly?.Deserialize().name;
-        private Assembly _assembly => AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(assembly => assembly.GetName().Name == _assemblyName);
         private ISet<Assembly> _referenceAssemblies;
 
         [ContextMenu("CreateScript")]
@@ -51,19 +50,7 @@ namespace EntitiesBT.Editor
 
         private void RecursiveFindReferences()
         {
-            _referenceAssemblies = new HashSet<Assembly>();
-            RecursiveFindReferences(_assembly);
-
-            void RecursiveFindReferences(Assembly assembly)
-            {
-                if (assembly == null || _referenceAssemblies.Contains(assembly)) return;
-                _referenceAssemblies.Add(assembly);
-                foreach (var referenceAssemblyName in assembly.GetReferencedAssemblies())
-                {
-                    var referenceAssembly = AppDomain.CurrentDomain.Load(referenceAssemblyName);
-                    RecursiveFindReferences(referenceAssembly);
-                }
-            }
+            _referenceAssemblies = Assembly.ToAssembly().FindReferenceAssemblies();
         }
 
         private bool IsReferenceType(Type type) => _referenceAssemblies.Contains(type.Assembly);
@@ -166,10 +153,7 @@ namespace EntitiesBT.Editor
         }
 
         private static readonly Lazy<IEnumerable<Type>> _VALUE_TYPES = new Lazy<IEnumerable<Type>>(() =>
-            AppDomain
-                .CurrentDomain
-                .GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
+            Core.Utilities.ALL_TYPES.Value
                 .Where(type => type != typeof(void))
                 .Where(type => type.IsPrimitive || type.IsValueType && type.HasSerializableAttribute())
         );

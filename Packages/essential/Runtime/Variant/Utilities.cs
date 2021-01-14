@@ -136,9 +136,7 @@ namespace EntitiesBT.Variant
             {
                 var variableAssembly = @interface.Assembly;
                 var variableAssemblyName = variableAssembly.GetName().Name;
-                return AppDomain
-                    .CurrentDomain
-                    .GetAssemblies()
+                return Core.Utilities.ALL_ASSEMBLIES.Value
                     .Where(assembly => assembly.GetReferencedAssemblies().Any(name => name.Name == variableAssemblyName))
                     .Append(variableAssembly)
                     .SelectMany(assembly => assembly.GetTypesWithoutException())

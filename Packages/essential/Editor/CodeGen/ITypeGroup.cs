@@ -20,7 +20,7 @@ namespace EntitiesBT.Editor
             get
             {
                 var assemblyNames = Assemblies.Select(asm => asm.Deserialize().name);
-                return AppDomain.CurrentDomain.GetAssemblies()
+                return Core.Utilities.ALL_ASSEMBLIES.Value
                     .Where(assembly => assemblyNames.Contains(assembly.GetName().Name))
                     .SelectMany(assembly => assembly.GetTypes())
                 ;

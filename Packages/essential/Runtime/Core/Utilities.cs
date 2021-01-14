@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using JetBrains.Annotations;
 using Unity.Mathematics;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace EntitiesBT.Core
@@ -115,6 +116,14 @@ namespace EntitiesBT.Core
             }
         }
 
+        public static readonly Lazy<IReadOnlyCollection<Assembly>> ALL_ASSEMBLIES = new Lazy<IReadOnlyCollection<Assembly>>(
+            () => new ReadOnlyCollection<Assembly>(AppDomain.CurrentDomain.GetAssemblies())
+        );
+
+        public static readonly Lazy<IReadOnlyCollection<Type>> ALL_TYPES = new Lazy<IReadOnlyCollection<Type>>(
+            () => new ReadOnlyCollection<Type>(ALL_ASSEMBLIES.Value.SelectMany(assembly => assembly.GetTypes()).ToArray())
+        );
+
         public static readonly Lazy<IReadOnlyCollection<Type>> BEHAVIOR_TREE_ASSEMBLY_TYPES = new Lazy<IReadOnlyCollection<Type>>(
             () => new ReadOnlyCollection<Type>(typeof(VirtualMachine).Assembly.GetTypesIncludeReference().ToArray())
           , LazyThreadSafetyMode.PublicationOnly
@@ -123,14 +132,31 @@ namespace EntitiesBT.Core
         public static IEnumerable<Type> GetTypesIncludeReference(this Assembly assembly)
         {
             var assemblyName = assembly.GetName().Name;
-            return AppDomain
-                .CurrentDomain
-                .GetAssemblies()
+            return ALL_ASSEMBLIES.Value
                 .Where(asm => asm.GetReferencedAssemblies().Any(name => name.Name == assemblyName))
                 .Append(assembly)
                 .SelectMany(asm => asm.GetTypesWithoutException())
                 .Distinct()
             ;
+        }
+
+        [Pure]
+        public static ISet<Assembly> FindReferenceAssemblies([NotNull] this Assembly assembly)
+        {
+            var assemblies = new HashSet<Assembly>();
+            FindReferences(assembly);
+            return assemblies;
+
+            void FindReferences(Assembly asm)
+            {
+                if (asm == null || assemblies.Contains(asm)) return;
+                assemblies.Add(asm);
+                foreach (var referenceAssemblyName in asm.GetReferencedAssemblies())
+                {
+                    var referenceAssembly = AppDomain.CurrentDomain.Load(referenceAssemblyName);
+                    FindReferences(referenceAssembly);
+                }
+            }
         }
 
         public static string GetFriendlyName(this Type type)
