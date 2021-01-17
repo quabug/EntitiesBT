@@ -30,7 +30,7 @@ namespace EntitiesBT.Variant
             [VariantScriptableObjectValue(nameof(ScriptableObject))]
             public string ScriptableObjectValueName;
 
-            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public unsafe void* Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
                 var type = ScriptableObject.GetType();
@@ -49,13 +49,13 @@ namespace EntitiesBT.Variant
                 }
 
                 var value = fieldInfo?.GetValue(ScriptableObject) ?? propertyInfo?.GetValue(ScriptableObject);
-                builder.Allocate(ref blobVariant, (T) value);
+                return builder.Allocate(ref blobVariant, (T) value);
             }
         }
 
         public const string GUID = "B14A224A-7ADF-4E03-8240-60DE620FF946";
 
-        [Preserve, ReaderMethod(GUID)]
+        [Preserve, RefReaderMethod(GUID)]
         private static ref T GetDataRef<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob

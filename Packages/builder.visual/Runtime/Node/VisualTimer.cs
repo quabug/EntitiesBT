@@ -37,7 +37,7 @@ namespace EntitiesBT.Builder.Visual
             {
                 data.BreakReturnState = @this.BreakReturnState;
                 @this.CountdownSeconds.ToVariantReader<float>(instance, definition)
-                    .Allocate(ref blobBuilder, ref data.CountdownSecondsReader, self, builders)
+                    .Allocate(ref blobBuilder, ref data.CountdownSeconds, self, builders)
                 ;
             }
         }

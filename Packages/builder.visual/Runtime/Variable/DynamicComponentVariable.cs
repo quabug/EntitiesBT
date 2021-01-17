@@ -20,10 +20,10 @@ namespace EntitiesBT.Builder.Visual
                 _offset = offset;
             }
 
-            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public unsafe void* Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
                 blobVariant.VariantId = GuidHashCode(ComponentVariant.GUID);
-                builder.Allocate(ref blobVariant, new ComponentVariant.DynamicComponentData{StableHash = _stableHash, Offset = _offset});
+                return builder.Allocate(ref blobVariant, new ComponentVariant.DynamicComponentData{StableHash = _stableHash, Offset = _offset});
             }
         }
     }

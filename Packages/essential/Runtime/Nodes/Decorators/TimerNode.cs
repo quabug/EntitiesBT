@@ -9,8 +9,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("46540F67-6145-4433-9A3A-E470992B952E", BehaviorNodeType.Decorate)]
     public struct TimerNode : INodeData
     {
-        public BlobVariantReader<float> CountdownSecondsReader;
-        public BlobVariantWriter<float> CountdownSecondsWriter;
+        public BlobVariantReaderAndWriter<float> CountdownSeconds;
         public NodeState BreakReturnState;
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
@@ -18,14 +17,14 @@ namespace EntitiesBT.Nodes
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var countdown = CountdownSecondsReader.Read(index, ref blob, ref bb);
+            var countdown = CountdownSeconds.Read(index, ref blob, ref bb);
             if (countdown <= 0f) return 0;
 
             var childState = index.TickChild(ref blob, ref bb);
             if (BreakReturnState.HasFlagFast(childState)) return childState;
 
             countdown -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;
-            CountdownSecondsWriter.Write(index, ref blob, ref bb, countdown);
+            CountdownSeconds.Write(index, ref blob, ref bb, countdown);
             return countdown <= 0f ? NodeState.Success : NodeState.Running;
         }
 

@@ -305,22 +305,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CountdownSecondsReader:
+  CountdownSeconds:
     id: 0
-  CountdownSecondsWriter:
-    id: 1
   BreakReturnState: 0
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        Value: 2
-    00000001:
-      type: {class: SingleNodeVariantWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        NodeObject: {fileID: 826321042}
-        ValueFieldName: CountdownSecondsReader
+        Value: 1
 --- !u!1 &916918465
 GameObject:
   m_ObjectHideFlags: 0
@@ -679,19 +672,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7278b7460714ee38d430757bc239563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CountdownSecondsReader:
+  CountdownSeconds:
     id: 0
-  CountdownSecondsWriter:
-    id: 1
   BreakReturnState: 0
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        Value: 2
-    00000001:
-      type: {class: SingleNodeVariantWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        NodeObject: {fileID: 2120679090}
-        ValueFieldName: CountdownSecondsReader
+        Value: 1

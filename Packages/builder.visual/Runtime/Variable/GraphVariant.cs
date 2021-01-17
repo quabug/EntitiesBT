@@ -18,10 +18,10 @@ namespace EntitiesBT.Builder.Visual
             private readonly InputDataPort _port;
             public Reader(InputDataPort port) => _port = port;
 
-            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public unsafe void* Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
-                builder.Allocate(ref blobVariant, _port);
+                return builder.Allocate(ref blobVariant, _port);
             }
         }
 

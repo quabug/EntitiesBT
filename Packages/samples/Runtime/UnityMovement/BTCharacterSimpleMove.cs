@@ -14,7 +14,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         [SerializeReference, SerializeReferenceButton]
         public IFloat3PropertyReader VelocityPropertyReader;
 
-        protected override void Build(ref CharacterSimpleMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref CharacterSimpleMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             data.IsLocal = IsLocal;
             VelocityPropertyReader.Allocate(ref builder, ref data.Velocity, this, tree);

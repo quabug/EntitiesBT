@@ -1,6 +1,5 @@
 using System;
 using EntitiesBT.Core;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Scripting;
@@ -14,20 +13,23 @@ namespace EntitiesBT.Variant
     public static class LocalVariant
     {
         [Serializable]
-        public class Reader<T> : IVariantReader<T> where T : unmanaged
+        public class Any<T> : IVariant where T : unmanaged
         {
             public T Value;
 
-            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public unsafe void* Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
-                builder.Allocate(ref blobVariant, Value);
+                return builder.Allocate(ref blobVariant, Value);
             }
         }
 
+        [Serializable] public class Reader<T> : Any<T>, IVariantReader<T> where T : unmanaged {}
+        [Serializable] public class ReaderAndWriter<T> : Any<T>, IVariantReaderAndWriter<T> where T : unmanaged {}
+
         public const string GUID = "BF510555-7E38-49BB-BDC1-E4A85A174EEC";
 
-        [Preserve, ReaderMethod(GUID)]
+        [Preserve, RefReaderMethod(GUID)]
         private static ref T Read<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob

@@ -12,7 +12,7 @@ namespace EntitiesBT.Extensions.InputSystem
         [SerializeReference, SerializeReferenceButton]
         public IFloat2PropertyWriter Output;
 
-        protected override void Build(ref InputMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref InputMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             base.Build(ref data, builder, tree);
             Output.Allocate(ref builder, ref data.Output, this, tree);

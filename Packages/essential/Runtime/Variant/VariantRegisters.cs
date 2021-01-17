@@ -7,7 +7,6 @@ using EntitiesBT.Core;
 using Unity.Entities;
 using UnityEngine.Assertions;
 using static EntitiesBT.Core.Utilities;
-using static EntitiesBT.Variant.Utilities;
 
 namespace EntitiesBT.Variant
 {
@@ -24,15 +23,21 @@ namespace EntitiesBT.Variant
     }
 
     [AttributeUsage(AttributeTargets.Method)]
+    public class RefReaderMethodAttribute : MethodIdAttribute
+    {
+        public RefReaderMethodAttribute(string guid) : base(guid) {}
+    }
+
+    [AttributeUsage(AttributeTargets.Method)]
     public class WriterMethodAttribute : MethodIdAttribute
     {
-        public WriterMethodAttribute(string id) : base(id) {}
+        public WriterMethodAttribute(string guid) : base(guid) {}
     }
 
     [AttributeUsage(AttributeTargets.Method)]
     public class AccessorMethodAttribute : MethodIdAttribute
     {
-        public AccessorMethodAttribute(string id) : base(id) {}
+        public AccessorMethodAttribute(string guid) : base(guid) {}
     }
 
     internal static class VariantRegisters
@@ -64,18 +69,21 @@ namespace EntitiesBT.Variant
             {
                 switch (attribute)
                 {
-                case ReaderMethodAttribute reader:
-                    ValidateReaderMethod(methodInfo);
-                    if (methodInfo.ReturnType.IsByRef) refReaders.Add(reader.ID, methodInfo);
-                    else readers.Add(reader.ID, methodInfo);
+                case ReaderMethodAttribute _:
+                    ValidateReaderMethod(methodInfo, isRef: false);
+                    readers.Add(attribute.ID, methodInfo);
                     break;
-                case WriterMethodAttribute writer:
+                case RefReaderMethodAttribute _:
+                    ValidateReaderMethod(methodInfo, isRef: true);
+                    refReaders.Add(attribute.ID, methodInfo);
+                    break;
+                case WriterMethodAttribute _:
                     ValidateWriterMethod(methodInfo);
-                    writers.Add(writer.ID, methodInfo);
+                    writers.Add(attribute.ID, methodInfo);
                     break;
-                case AccessorMethodAttribute accessor:
+                case AccessorMethodAttribute _:
                     ValidateAccessorMethod(methodInfo);
-                    accessors.Add(accessor.ID, (GetComponentAccessFunc)methodInfo.CreateDelegate(typeof(GetComponentAccessFunc)));
+                    accessors.Add(attribute.ID, (GetComponentAccessFunc)methodInfo.CreateDelegate(typeof(GetComponentAccessFunc)));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -126,7 +134,7 @@ namespace EntitiesBT.Variant
             Assert.IsFalse(parameters[4].ParameterType.IsByRef, methodMessage);
         }
 
-        static void ValidateReaderMethod(MethodInfo methodInfo)
+        static void ValidateReaderMethod(MethodInfo methodInfo, bool isRef)
         {
             // static ref T Read<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
 
@@ -137,6 +145,7 @@ namespace EntitiesBT.Variant
             Assert.AreEqual(3, genericArguments.Length, methodMessage);
 
             var returnType = methodInfo.ReturnType;
+            Assert.AreEqual(isRef, returnType.IsByRef, methodMessage);
             if (returnType.IsByRef) returnType = returnType.GetElementType();
             Assert.AreEqual(genericArguments[0], returnType, methodMessage);
 

@@ -14,7 +14,7 @@ namespace EntitiesBT.DebugView
 
             var blob = Blob;
             var bb = Blackboard.Value;
-            DelayTime = blob.GetNodeData<DelayTimerNode, NodeBlobRef>(Index).TimerSecondsReader.Read(Index, ref blob, ref bb);
+            // DelayTime = blob.GetNodeData<DelayTimerNode, NodeBlobRef>(Index).TimerSecondsReader.Read(Index, ref blob, ref bb);
         }
     }
 }

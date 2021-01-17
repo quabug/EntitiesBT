@@ -61,17 +61,17 @@ namespace EntitiesBT.Editor
 
         private ISet<Assembly> _referenceAssemblies;
 
-        protected bool IsReferenceType(Type type)
+        private bool IsReferenceType(Type type)
         {
             _referenceAssemblies ??= Assembly.ToAssembly().FindReferenceAssemblies();
             return _referenceAssemblies.Contains(type.Assembly);
         }
 
-        protected string Suffix => $"{VariantType}{VariantPropertyNameSuffix}";
+        private string Suffix => $"{VariantType}{VariantPropertyNameSuffix}";
 
         protected abstract string VariantType { get; }
         protected abstract Type FieldType { get; }
-        protected abstract void GenerateVariantInterface(Type valueType);
+        protected abstract void CreateVariants(StreamWriter writer, Type valueType, Predicate<Type> isReferenceType, string suffix);
 
         public bool ShouldGenerate(FieldInfo fi)
         {
@@ -93,54 +93,46 @@ namespace EntitiesBT.Editor
         {
             return $"{fi.Name}.Allocate(ref builder, ref data.{fi.Name}, Self, tree);";
         }
+
+        private void GenerateVariantInterface(Type valueType)
+        {
+            var directory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(Generator)) + "/" + VariantInterfaceDirectory;
+            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+
+            var filepath = $"{directory}/{valueType.Name}{Suffix}.cs";
+            if (!File.Exists(filepath) || File.ReadLines(filepath).FirstOrDefault() == HEAD_LINE)
+            {
+                using var writer = new StreamWriter(filepath);
+                writer.WriteLine(HEAD_LINE);
+                writer.WriteLine(VariantGenerator.NamespaceBegin(VariantInterfaceNamespace));
+                CreateVariants(writer, valueType, IsReferenceType, Suffix);
+                writer.WriteLine(VariantGenerator.NamespaceEnd());
+            }
+        }
     }
 
     public class BlobVariantReaderFieldCodeGenerator : BlobVariantFieldCodeGenerator
     {
         protected override string VariantType => "Reader";
         protected override Type FieldType => typeof(BlobVariantReader<>);
-
-        protected override void GenerateVariantInterface(Type valueType)
-        {
-            var directory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(Generator)) + "/" + VariantInterfaceDirectory;
-            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-
-            var filepath = $"{directory}/{valueType.Name}{Suffix}.cs";
-            if (!File.Exists(filepath) || File.ReadLines(filepath).FirstOrDefault() == HEAD_LINE)
-            {
-                using (var writer = new StreamWriter(filepath))
-                {
-                    writer.WriteLine(HEAD_LINE);
-                    writer.WriteLine(VariantGenerator.NamespaceBegin(VariantInterfaceNamespace));
-                    writer.CreateReaderVariants(valueType, IsReferenceType, Suffix);
-                    writer.WriteLine(VariantGenerator.NamespaceEnd());
-                }
-            }
-        }
+        protected override void CreateVariants(StreamWriter writer, Type valueType, Predicate<Type> isReferenceType, string suffix)
+            => writer.CreateReaderVariants(valueType, isReferenceType, suffix);
     }
 
     public class BlobVariantWriterFieldCodeGenerator : BlobVariantFieldCodeGenerator
     {
         protected override string VariantType => "Writer";
         protected override Type FieldType => typeof(BlobVariantWriter<>);
+        protected override void CreateVariants(StreamWriter writer, Type valueType, Predicate<Type> isReferenceType, string suffix)
+            => writer.CreateWriterVariants(valueType, isReferenceType, suffix);
+    }
 
-        protected override void GenerateVariantInterface(Type valueType)
-        {
-            var directory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(Generator)) + "/" + VariantInterfaceDirectory;
-            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-
-            var filepath = $"{directory}/{valueType.Name}{Suffix}.cs";
-            if (!File.Exists(filepath) || File.ReadLines(filepath).FirstOrDefault() == HEAD_LINE)
-            {
-                using (var writer = new StreamWriter(filepath))
-                {
-                    writer.WriteLine(HEAD_LINE);
-                    writer.WriteLine(VariantGenerator.NamespaceBegin(VariantInterfaceNamespace));
-                    writer.CreateWriterVariants(valueType, IsReferenceType, Suffix);
-                    writer.WriteLine(VariantGenerator.NamespaceEnd());
-                }
-            }
-        }
+    public class BlobVariantReaderAndWriterFieldCodeGenerator : BlobVariantFieldCodeGenerator
+    {
+        protected override string VariantType => "ReaderAndWriter";
+        protected override Type FieldType => typeof(BlobVariantReaderAndWriter<>);
+        protected override void CreateVariants(StreamWriter writer, Type valueType, Predicate<Type> isReferenceType, string suffix)
+            => writer.CreateReaderAndWriterVariants(valueType, isReferenceType, suffix);
     }
 
     public class BlobVariantFieldCodeGeneratorForOdin : INodeDataFieldCodeGenerator

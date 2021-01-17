@@ -92,6 +92,14 @@ namespace EntitiesBT.Editor
             writer.WriteLine();
         }
 
+        public static void CreateReaderAndWriterVariants(this StreamWriter writer, Type valueType, Predicate<Type> isReferenceType = null, string suffix = "VariantReaderAndWriter")
+        {
+            writer.WriteLine(CreateInterface(valueType, typeof(IVariantReaderAndWriter<>), suffix));
+            foreach (var propertyType in VARIANT_READER_AND_WRITER_TYPES.Value.Where(type => isReferenceType == null || isReferenceType(type)))
+                writer.WriteLine(CreateClass(valueType, propertyType, suffix));
+            writer.WriteLine();
+        }
+
         public static void CreateScriptInterfaceOnly(string filepath, string @namespace, params string[] types)
         {
             using (var writer = new StreamWriter(filepath))
@@ -135,7 +143,7 @@ namespace EntitiesBT.Editor
 
         private static string CreateClass(Type valueType, Type variantType, string suffix = "Variant", string classNameSuffix = null)
         {
-            classNameSuffix = classNameSuffix ?? variantType.FullName.ToShortNameWithInnerClass();
+            classNameSuffix ??= variantType.FullName.ToShortNameWithInnerClass();
             var className = $"{valueType.Name}{classNameSuffix}";
             var baseClassName = $"{variantType.FullName.ToCodeName()}<{valueType.FullName}>";
             var interfaceName = $"{valueType.Name}{suffix}";

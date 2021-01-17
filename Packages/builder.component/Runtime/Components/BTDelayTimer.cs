@@ -7,14 +7,11 @@ namespace EntitiesBT.Components
 {
     public class BTDelayTimer : BTNode<EntitiesBT.Nodes.DelayTimerNode>
     {
-        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variant.SingleReaderVariant TimerSecondsReader;
-
-        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variant.SingleWriterVariant TimerSecondsWriter;
+        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variant.SingleReaderAndWriterVariant TimerSeconds;
 
         protected override void Build(ref EntitiesBT.Nodes.DelayTimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            TimerSecondsReader.Allocate(ref builder, ref data.TimerSecondsReader, Self, tree);
-            TimerSecondsWriter.Allocate(ref builder, ref data.TimerSecondsWriter, Self, tree);
+            TimerSeconds.Allocate(ref builder, ref data.TimerSeconds, Self, tree);
         }
     }
 }

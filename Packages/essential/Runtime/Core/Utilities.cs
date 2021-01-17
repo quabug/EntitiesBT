@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Threading;
 using JetBrains.Annotations;
 using Unity.Mathematics;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace EntitiesBT.Core

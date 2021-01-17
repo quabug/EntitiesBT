@@ -13,6 +13,8 @@ namespace EntitiesBT.Variant
         public int VariantId;
         public int MetaDataOffsetPtr;
 
+        public static BlobVariant INVALID = new BlobVariant {VariantId = 0, MetaDataOffsetPtr = 0};
+
         [Pure]
         public ref TValue Value<TValue>() where TValue : struct =>
             ref UnsafeUtility.As<int, BlobPtr<TValue>>(ref MetaDataOffsetPtr).Value;

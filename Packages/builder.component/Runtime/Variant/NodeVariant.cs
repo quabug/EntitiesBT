@@ -21,35 +21,27 @@ namespace EntitiesBT.Variant
         }
     }
 
-    public static class NodeVariant
+    public class NodeVariant
     {
-        public const string ID_RUNTIME_NODE = "220681AA-D884-4E87-90A8-5A8657A734BD";
-        // public const string ID_DEFAULT_NODE = "743FABC9-77E6-4C2B-A475-ADED2A3B96AD";
-        public const string ID_RUNTIME_NODE_VARIABLE = "7DE6DCA5-71DF-4145-91A6-17EB813B9DEB";
-        // public const string ID_DEFAULT_NODE_VARIABLE = "A98E0FBF-EF5D-4AFC-9997-0E08A569574D";
-
         // TODO: check loop ref?
-        public class Reader<T> : IVariantReader<T> where T : unmanaged
+        [Serializable]
+        public class Any<T> : IVariant where T : unmanaged
         {
             public BTNode NodeObject;
             [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
 
-            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public unsafe void* Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
-                Allocate<T>(ref builder, ref blobVariant, self, tree, NodeObject, ValueFieldName);
+                return Allocate<T>(ref builder, ref blobVariant, self, tree, NodeObject, ValueFieldName);
             }
         }
 
-        public class Writer<T> : IVariantWriter<T> where T : unmanaged
-        {
-            public BTNode NodeObject;
-            [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
+        [Serializable] public class Reader<T> : Any<T>, IVariantReader<T> where T : unmanaged {}
+        [Serializable] public class Writer<T> : Any<T>, IVariantWriter<T> where T : unmanaged {}
+        [Serializable] public class ReaderAndWriter<T> : Any<T>, IVariantReaderAndWriter<T> where T : unmanaged {}
 
-            public void Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
-            {
-                Allocate<T>(ref builder, ref blobVariant, self, tree, NodeObject, ValueFieldName);
-            }
-        }
+        public const string ID_RUNTIME_NODE = "220681AA-D884-4E87-90A8-5A8657A734BD";
+        public const string ID_RUNTIME_NODE_VARIABLE = "7DE6DCA5-71DF-4145-91A6-17EB813B9DEB";
 
         [Preserve, WriterMethod(ID_RUNTIME_NODE_VARIABLE)]
         private static unsafe void WriteVariableFunc<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb, T value)
@@ -64,29 +56,13 @@ namespace EntitiesBT.Variant
             variable.Value.WriteWithRefFallback(index, ref blob, ref bb, value);
         }
 
-        [Preserve, ReaderMethod(ID_RUNTIME_NODE)]
+        [Preserve, RefReaderMethod(ID_RUNTIME_NODE)]
         private static ref T GetRuntimeNodeData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
             return ref GetValue<T>(ref blobVariant, blob.GetRuntimeDataPtr);
-        }
-
-        // [Preserve, ReaderMethod(ID_DEFAULT_NODE)]
-        // private static ref T GetDefaultNodeData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
-        //     where T : unmanaged
-        //     where TNodeBlob : struct, INodeBlob
-        //     where TBlackboard : struct, IBlackboard
-        // {
-        //     return ref GetValue<T>(ref blobVariant, blob.GetDefaultDataPtr);
-        // }
-
-        private static unsafe ref T GetValue<T>(ref BlobVariant blobVariant, Func<int, IntPtr> ptrFunc) where T : unmanaged
-        {
-            ref var data = ref blobVariant.Value<DynamicNodeRefData>();
-            var ptr = ptrFunc(data.Index);
-            return ref UnsafeUtility.AsRef<T>(IntPtr.Add(ptr, data.Offset).ToPointer());
         }
 
         [Preserve, ReaderMethod(ID_RUNTIME_NODE_VARIABLE)]
@@ -101,17 +77,12 @@ namespace EntitiesBT.Variant
             return variable.Read(index, ref blob, ref bb);
         }
 
-        // [Preserve, ReaderMethod(ID_DEFAULT_NODE_VARIABLE)]
-        // private static unsafe T GetDefaultNodeVariable<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
-        //     where T : unmanaged
-        //     where TNodeBlob : struct, INodeBlob
-        //     where TBlackboard : struct, IBlackboard
-        // {
-        //     ref var data = ref blobVariant.Value<DynamicNodeRefData>();
-        //     var ptr = blob.GetDefaultDataPtr(data.Index);
-        //     ref var variable = ref UnsafeUtility.AsRef<BlobVariantReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
-        //     return variable.Read(index, ref blob, ref bb);
-        // }
+        private static unsafe ref T GetValue<T>(ref BlobVariant blobVariant, Func<int, IntPtr> ptrFunc) where T : unmanaged
+        {
+            ref var data = ref blobVariant.Value<DynamicNodeRefData>();
+            var ptr = ptrFunc(data.Index);
+            return ref UnsafeUtility.AsRef<T>(IntPtr.Add(ptr, data.Offset).ToPointer());
+        }
 
         private struct DynamicNodeRefData
         {
@@ -119,7 +90,7 @@ namespace EntitiesBT.Variant
             public int Offset;
         }
 
-        private static void Allocate<T>(
+        private static unsafe void* Allocate<T>(
             ref BlobBuilder builder
             , ref BlobVariant blobVariant
             , INodeDataBuilder self
@@ -137,10 +108,7 @@ namespace EntitiesBT.Variant
 
             var nodeType = VirtualMachine.GetNodeType(nodeObject.NodeId);
             if (string.IsNullOrEmpty(valueFieldName) && nodeType == typeof(T))
-            {
-                builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = 0});
-                return;
-            }
+                return builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = 0});
 
             var fieldInfo = nodeType.GetField(valueFieldName, BindingFlags.Instance | BindingFlags.Public);
             if (fieldInfo == null)
@@ -148,9 +116,6 @@ namespace EntitiesBT.Variant
                 Debug.LogError($"Invalid `ValueFieldName` {valueFieldName}", (UnityEngine.Object)self);
                 throw new ArgumentException();
             }
-
-            var fieldOffset = Marshal.OffsetOf(nodeType, valueFieldName).ToInt32();
-            builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = fieldOffset});
 
             var fieldType = fieldInfo.FieldType;
             if (fieldType == typeof(T))
@@ -166,6 +131,9 @@ namespace EntitiesBT.Variant
                 Debug.LogError($"Invalid type of `ValueFieldName` {valueFieldName} {fieldType}", (UnityEngine.Object)self);
                 throw new ArgumentException();
             }
+
+            var fieldOffset = Marshal.OffsetOf(nodeType, valueFieldName).ToInt32();
+            return builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = fieldOffset});
         }
     }
 }

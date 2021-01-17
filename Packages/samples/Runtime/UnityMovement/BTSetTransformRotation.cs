@@ -12,7 +12,7 @@ namespace EntitiesBT.Extensions.UnityMovement
         [SerializeReference, SerializeReferenceButton]
         public IQuaternionPropertyReader RotationPropertyReader;
 
-        protected override void Build(ref SetTransformRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref SetTransformRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             RotationPropertyReader.Allocate(ref builder, ref data.RotationProperty, this, tree);
         }

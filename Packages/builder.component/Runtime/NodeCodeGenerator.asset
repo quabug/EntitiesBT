@@ -26,6 +26,7 @@ MonoBehaviour:
   - id: 5
   - id: 6
   - id: 7
+  - id: 8
   references:
     version: 1
     00000000:
@@ -65,4 +66,15 @@ MonoBehaviour:
         Assembly: {fileID: 5897886265953266890, guid: c7babe7561eb244059259745ef27b866,
           type: 3}
     00000007:
+      type: {class: BlobVariantReaderAndWriterFieldCodeGenerator, ns: EntitiesBT.Editor,
+        asm: EntitiesBT.Components.Editor}
+      data:
+        ShouldGenerateVariantInterface: 1
+        VariantInterfaceDirectory: Variant
+        VariantInterfaceNamespace: EntitiesBT.Variant
+        VariantPropertyNameSuffix: Variant
+        Generator: {fileID: 11400000}
+        Assembly: {fileID: 5897886265953266890, guid: c7babe7561eb244059259745ef27b866,
+          type: 3}
+    00000008:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}

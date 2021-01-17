@@ -11,7 +11,7 @@ namespace EntitiesBT.Extensions.InputSystem
     {
         public IVariantWriter<float2> Output;
 
-        protected override void Build(ref InputLookNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref InputLookNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             base.Build(ref data, builder, tree);
             Output.Allocate(ref builder, ref data.Output, this, tree);
