@@ -33,7 +33,7 @@ namespace EntitiesBT.Builder.Visual
             var @this = this;
             return new VisualBuilder<TimerNode>(BuildImpl, Child.ToBuilderNode(instance, definition));
 
-            void BuildImpl(BlobBuilder blobBuilder, ref TimerNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
+            unsafe void BuildImpl(BlobBuilder blobBuilder, ref TimerNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.BreakReturnState = @this.BreakReturnState;
                 @this.CountdownSeconds.ToVariantReader<float>(instance, definition)

@@ -99,7 +99,7 @@ namespace EntitiesBT.Variant
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
 
-        public static unsafe void Allocate<T>(
+        public static unsafe void* Allocate<T>(
             this IVariant property
           , ref BlobBuilder builder
           , ref BlobVariantReaderAndWriter<T> blobVariant
@@ -112,6 +112,7 @@ namespace EntitiesBT.Variant
             // HACK: set meta data of writer as same as reader's
             ref var writerMetaPtr = ref ToBlobPtr<byte>(ref blobVariant.Writer.Value.MetaDataOffsetPtr);
             builder.SetPointer(ref writerMetaPtr, ref UnsafeUtility.AsRef<byte>(metaDataPtr));
+            return metaDataPtr;
         }
 
         public static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : struct

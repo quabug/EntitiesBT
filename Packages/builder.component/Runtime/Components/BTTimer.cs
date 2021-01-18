@@ -7,12 +7,20 @@ namespace EntitiesBT.Components
 {
     public class BTTimer : BTNode<EntitiesBT.Nodes.TimerNode>
     {
-        [UnityEngine.SerializeReference, SerializeReferenceButton] public EntitiesBT.Variant.SingleReaderAndWriterVariant CountdownSeconds;
+        public EntitiesBT.Variant.SingleSerializedReaderAndWriterVariant CountdownSeconds;
 
         public EntitiesBT.Core.NodeState BreakReturnState;
-        protected override void Build(ref EntitiesBT.Nodes.TimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref EntitiesBT.Nodes.TimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            CountdownSeconds.Allocate(ref builder, ref data.CountdownSeconds, Self, tree);
+            if (CountdownSeconds.IsLinked)
+            {
+                CountdownSeconds.ReaderAndWriter.Allocate(ref builder, ref data.CountdownSeconds, Self, tree);
+            }
+            else
+            {
+                CountdownSeconds.Reader.Allocate(ref builder, ref data.CountdownSeconds.Reader, Self, tree);
+                CountdownSeconds.Writer.Allocate(ref builder, ref data.CountdownSeconds.Writer, Self, tree);
+            }
             data.BreakReturnState = BreakReturnState;
         }
     }
