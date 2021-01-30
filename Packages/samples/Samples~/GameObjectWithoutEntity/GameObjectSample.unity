@@ -306,21 +306,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    _isLinked: 1
-    _readerAndWriter:
+    IsLinked: 0
+    Reader:
       id: 0
-    _reader:
-      id: 1
-    _writer:
-      id: 1
+    Writer:
+      id: 0
+    ReaderAndWriter:
+      id: 0
   BreakReturnState: 0
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        Value: 2
-    00000001:
       type: {class: , ns: , asm: }
 --- !u!1 &916918465
 GameObject:
@@ -681,19 +677,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    _isLinked: 1
-    _readerAndWriter:
+    IsLinked: 0
+    Reader:
       id: 0
-    _reader:
+    Writer:
       id: 1
-    _writer:
+    ReaderAndWriter:
       id: 1
   BreakReturnState: 0
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: SingleNodeVariantReader, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        Value: 2
+        NodeObject: {fileID: 0}
+        ValueFieldName: 
     00000001:
       type: {class: , ns: , asm: }
