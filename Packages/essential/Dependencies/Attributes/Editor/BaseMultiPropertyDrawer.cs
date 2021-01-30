@@ -7,7 +7,7 @@ namespace EntitiesBT.Attributes.Editor
 {
     public abstract class BaseMultiPropertyDrawer : IMultiPropertyDrawer
     {
-        public MultiPropertyDecoratorAttribute Decorator { protected get; set; }
+        public MultiPropertyAttribute Decorator { protected get; set; }
         public IReadOnlyList<IMultiPropertyDrawer> SortedDrawers { protected get; set; }
         public int AttributeIndex { get; set; }
         public FieldInfo FieldInfo { protected get; set; }
@@ -21,6 +21,11 @@ namespace EntitiesBT.Attributes.Editor
         {
             OnGUISelf(position, property, label);
             NextDrawer?.OnGUI(position, property, label);
+        }
+
+        public virtual float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            return EditorGUI.GetPropertyHeight(property, true);
         }
 
         protected virtual void OnGUISelf(Rect position, SerializedProperty property, GUIContent label) {}

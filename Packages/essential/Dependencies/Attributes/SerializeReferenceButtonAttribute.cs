@@ -3,8 +3,8 @@
 namespace EntitiesBT.Attributes
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public class SerializeReferenceButtonAttribute : MultiPropertyDecoratorAttribute
+    public class SerializeReferenceButtonAttribute : MultiPropertyAttribute
     {
-        public SerializeReferenceButtonAttribute() => Order = int.MaxValue;
+        public SerializeReferenceButtonAttribute() => order = int.MaxValue;
     }
 }

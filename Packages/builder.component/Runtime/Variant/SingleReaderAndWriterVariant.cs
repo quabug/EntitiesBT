@@ -18,20 +18,17 @@ public class SingleSerializedReaderAndWriterVariant
     public bool IsLinked = true;
 
     [SerializeReference]
-    [MultiProperty]
-    [DisableIf(nameof(IsLinked), false)]
+    [HideIf(nameof(IsLinked), false)]
     [SerializeReferenceButton]
     public SingleReaderAndWriterVariant ReaderAndWriter;
 
     [SerializeReference]
-    [MultiProperty]
-    [DisableIf(nameof(IsLinked))]
+    [HideIf(nameof(IsLinked))]
     [SerializeReferenceButton]
     public SingleReaderVariant Reader;
 
     [SerializeReference]
-    [MultiProperty]
-    [DisableIf(nameof(IsLinked))]
+    [HideIf(nameof(IsLinked))]
     [SerializeReferenceButton]
     public SingleWriterVariant Writer;
 }

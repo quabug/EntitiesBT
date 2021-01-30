@@ -5,13 +5,15 @@ using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Attributes.Editor
 {
     public static class MultiPropertyDrawerRegister
     {
-        public delegate void OnGUIFunc(Rect position, UnityEditor.SerializedProperty property, GUIContent label);
+        public delegate void DrawFunc(Rect position, UnityEditor.SerializedProperty property, GUIContent label);
+        public delegate float GetHeightFunc(SerializedProperty property, GUIContent label);
 
         private class DrawerEntry : IEquatable<DrawerEntry>
         {
@@ -65,21 +67,32 @@ namespace EntitiesBT.Attributes.Editor
                 if (type.IsGenericType) return null;
                 if (!typeof(IMultiPropertyDrawer).IsAssignableFrom(type)) return null;
                 var attribute = type.GetCustomAttribute<CustomMultiPropertyDrawerAttribute>();
-                if (!typeof(MultiPropertyDecoratorAttribute).IsAssignableFrom(attribute.Type))
+                if (!typeof(MultiPropertyAttribute).IsAssignableFrom(attribute.Type))
                 {
-                    Debug.LogError($"{attribute.GetType().FullName}.{nameof(attribute.Type)} must be a type of {nameof(MultiPropertyDecoratorAttribute)}");
+                    Debug.LogError($"{attribute.GetType().FullName}.{nameof(attribute.Type)} must be a type of {nameof(MultiPropertyAttribute)}");
                     return null;
                 }
                 return attribute;
             }
         }
 
-        internal static IReadOnlyList<IMultiPropertyDrawer> GetOrCreateDrawers([NotNull] FieldInfo fieldInfo)
+        internal static GetHeightFunc GetHeight([NotNull] FieldInfo fieldInfo)
+        {
+            return (property, label) => GetOrCreateDrawer(fieldInfo).FirstOrDefault()?.GetPropertyHeight(property, label)
+                                        ?? EditorGUI.GetPropertyHeight(property, true);
+        }
+
+        internal static DrawFunc DrawMultiProperty([NotNull] FieldInfo fieldInfo)
+        {
+            return (position, property, label) => GetOrCreateDrawer(fieldInfo).FirstOrDefault()?.OnGUI(position, property, label);
+        }
+
+        private static IReadOnlyList<IMultiPropertyDrawer> GetOrCreateDrawer([NotNull] FieldInfo fieldInfo)
         {
             if (_drawers.TryGetValue(fieldInfo, out var drawerList)) return drawerList;
             var attributes = fieldInfo
-                .GetCustomAttributes<MultiPropertyDecoratorAttribute>()
-                .OrderBy(attribute => attribute.Order)
+                .GetCustomAttributes<MultiPropertyAttribute>()
+                .OrderBy(attribute => attribute.order)
                 .ToArray()
             ;
             var drawers = new List<IMultiPropertyDrawer>(attributes.Length);

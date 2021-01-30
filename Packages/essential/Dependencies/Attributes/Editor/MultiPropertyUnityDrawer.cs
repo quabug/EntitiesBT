@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,13 +8,12 @@ namespace EntitiesBT.Attributes.Editor
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUI.GetPropertyHeight(property, true);
+            return MultiPropertyDrawerRegister.GetHeight(fieldInfo)(property, label);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            var drawers = MultiPropertyDrawerRegister.GetOrCreateDrawers(fieldInfo);
-            drawers.FirstOrDefault()?.OnGUI(position, property, label);
+            MultiPropertyDrawerRegister.DrawMultiProperty(fieldInfo)(position, property, label);
         }
     }
 }

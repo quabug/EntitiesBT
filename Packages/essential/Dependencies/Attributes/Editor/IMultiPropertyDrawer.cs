@@ -7,10 +7,12 @@ namespace EntitiesBT.Attributes.Editor
 {
     public interface IMultiPropertyDrawer
     {
-        MultiPropertyDecoratorAttribute Decorator { set; }
+        MultiPropertyAttribute Decorator { set; }
         IReadOnlyList<IMultiPropertyDrawer> SortedDrawers { set; }
         int AttributeIndex { set; }
         FieldInfo FieldInfo { set; }
+
         void OnGUI(Rect position, SerializedProperty property, GUIContent label);
+        float GetPropertyHeight(SerializedProperty property, GUIContent label);
     }
 }

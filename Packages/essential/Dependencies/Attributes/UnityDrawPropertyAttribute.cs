@@ -1,7 +1,7 @@
 namespace EntitiesBT.Attributes
 {
-    public class UnityDrawPropertyAttribute : MultiPropertyDecoratorAttribute
+    public class UnityDrawPropertyAttribute : MultiPropertyAttribute
     {
-        public UnityDrawPropertyAttribute() => Order = int.MaxValue;
+        public UnityDrawPropertyAttribute() => order = int.MaxValue;
     }
 }
