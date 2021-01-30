@@ -10,10 +10,10 @@ namespace EntitiesBT.Attributes.Editor
         {
             var attribute = (DisableIfAttribute) Decorator;
             var shouldDisable = (bool) property.GetSiblingFieldValue(attribute.ConditionFieldName) == attribute.Value;
-            var originalEnabled = GUI.enabled;
-            GUI.enabled = !shouldDisable;
-            base.OnGUI(position, property, label);
-            GUI.enabled = originalEnabled;
+            using (new EditorGUI.DisabledScope(shouldDisable))
+            {
+                base.OnGUI(position, property, label);
+            }
         }
     }
 }
