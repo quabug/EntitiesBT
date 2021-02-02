@@ -78,7 +78,7 @@ namespace EntitiesBT.Editor
             return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == FieldType;
         }
 
-        public string GenerateField(FieldInfo fi)
+        public virtual string GenerateField(FieldInfo fi)
         {
             var valueType = fi.FieldType.GetGenericArguments()[0];
             if (ShouldGenerateVariantInterface) GenerateVariantInterface(valueType);
@@ -89,12 +89,12 @@ namespace EntitiesBT.Editor
             return stringBuilder.ToString();
         }
 
-        public string GenerateBuild(FieldInfo fi)
+        public virtual string GenerateBuild(FieldInfo fi)
         {
             return $"{fi.Name}.Allocate(ref builder, ref data.{fi.Name}, Self, tree);";
         }
 
-        private void GenerateVariantInterface(Type valueType)
+        protected void GenerateVariantInterface(Type valueType)
         {
             var directory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(Generator)) + "/" + VariantInterfaceDirectory;
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
@@ -133,6 +133,13 @@ namespace EntitiesBT.Editor
         protected override Type FieldType => typeof(BlobVariantReaderAndWriter<>);
         protected override void CreateVariants(StreamWriter writer, Type valueType, Predicate<Type> isReferenceType, string suffix)
             => writer.CreateReaderAndWriterVariants(valueType, isReferenceType, suffix);
+
+        public override string GenerateField(FieldInfo fi)
+        {
+            var valueType = fi.FieldType.GetGenericArguments()[0];
+            if (ShouldGenerateVariantInterface) GenerateVariantInterface(valueType);
+            return $"public {VariantInterfaceNamespace}.{valueType.Name}SerializedReaderAndWriterVariant {fi.Name};";
+        }
     }
 
     public class BlobVariantFieldCodeGeneratorForOdin : INodeDataFieldCodeGenerator

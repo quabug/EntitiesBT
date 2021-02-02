@@ -16,6 +16,7 @@ namespace EntitiesBT.Editor
             var className = string.IsNullOrEmpty(classNameOverride) ? nodeType.Name : classNameOverride;
             return $@"{Header}
 using EntitiesBT.Core;
+using EntitiesBT.Attributes;
 using Unity.Entities;
 using static EntitiesBT.Variant.Utilities;
 
@@ -24,7 +25,7 @@ namespace EntitiesBT.Components
     public class {className} : BTNode<{nodeType.FullName}>
     {{
         {string.Join(Environment.NewLine + "        ", fieldStrings)}
-        protected override void Build(ref {nodeType.FullName} data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref {nodeType.FullName} data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {{
             {string.Join(Environment.NewLine + "            ", buildStrings)}
         }}

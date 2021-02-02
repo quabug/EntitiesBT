@@ -306,12 +306,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    IsLinked: 1
-    ReaderAndWriter:
+    _isLinked: 1
+    _readerAndWriter:
       id: 0
-    Reader:
+    _reader:
       id: 1
-    Writer:
+    _writer:
       id: 1
   BreakReturnState: 0
   references:
@@ -681,13 +681,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    IsLinked: 1
-    ReaderAndWriter:
+    _isLinked: 1
+    _readerAndWriter:
       id: 0
-    Reader:
+    _reader:
       id: 1
-    Writer:
-      id: 2
+    _writer:
+      id: 1
   BreakReturnState: 0
   references:
     version: 1
@@ -696,9 +696,4 @@ MonoBehaviour:
       data:
         Value: 2
     00000001:
-      type: {class: SingleNodeVariantReader, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        NodeObject: {fileID: 0}
-        ValueFieldName: 
-    00000002:
       type: {class: , ns: , asm: }

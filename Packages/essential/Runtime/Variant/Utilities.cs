@@ -115,6 +115,19 @@ namespace EntitiesBT.Variant
             return metaDataPtr;
         }
 
+        public static unsafe void* Allocate<T>(
+            this ISerializedReaderAndWriter<T> property
+          , ref BlobBuilder builder
+          , ref BlobVariantReaderAndWriter<T> blobVariant
+          , [NotNull] INodeDataBuilder self
+          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
+        ) where T : unmanaged
+        {
+            if (property.IsLinked) return property.ReaderAndWriter.Allocate(ref builder, ref blobVariant, self, tree);
+            property.Writer.Allocate(ref builder, ref blobVariant.Writer, self, tree);
+            return property.Reader.Allocate(ref builder, ref blobVariant.Reader, self, tree);
+        }
+
         public static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : struct
         {
             return ref UnsafeUtility.As<int, BlobPtr<T>>(ref offsetPtr);
