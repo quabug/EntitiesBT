@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,39 +118,11 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &170728737
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 170728738}
-  m_Layer: 0
-  m_Name: Directional Light (Missing Prefab)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &170728738
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 170728737}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &327906296
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,41 +152,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  LongVariable:
+  LongReader:
     id: 0
   String: aabbbcccc
   IntArray: a00c0000020000002000000004000000b3150000
-  DestVariable:
+  LongWriter:
     id: 1
-  SrcVariable:
+  SingleReader:
     id: 2
   LongValue: 23333
+  SingleReaderAndWriter:
+    _isLinked: 1
+    _readerAndWriter:
+      id: 3
+    _reader:
+      id: 4
+    _writer:
+      id: 4
   references:
     version: 1
     00000000:
-      type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: Int64ComponentVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
         ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
-        CopyToLocalNode: 0
     00000001:
-      type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: Int64ComponentVariantWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.OutputValue
-        CopyToLocalNode: 0
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
     00000002:
-      type: {class: SingleComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: SingleScriptableObjectVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.InputValue
-        CopyToLocalNode: 0
+        ScriptableObject: {fileID: 11400000, guid: cee16ca8c8b594efb867f66c8d699937,
+          type: 2}
+        ScriptableObjectValueName: FloatValue
+    00000003:
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      data:
+        Value: 123
+    00000004:
+      type: {class: , ns: , asm: }
 --- !u!4 &327906298
 Transform:
   m_ObjectHideFlags: 0
@@ -229,184 +205,6 @@ Transform:
   m_Father: {fileID: 1723425237}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &332438388
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 332438390}
-  - component: {fileID: 332438389}
-  m_Layer: 0
-  m_Name: BTVariablesTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &332438389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332438388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  LongVariable:
-    id: 0
-  String: aabbbcccc
-  IntArray: a00c0000020000002000000004000000b3150000
-  DestVariable:
-    id: 1
-  SrcVariable:
-    id: 2
-  LongValue: 23333
-  references:
-    version: 1
-    00000000:
-      type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
-      data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
-        CopyToLocalNode: 0
-    00000001:
-      type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
-      data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.OutputValue
-        CopyToLocalNode: 0
-    00000002:
-      type: {class: SingleComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
-      data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.InputValue
-        CopyToLocalNode: 0
---- !u!4 &332438390
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332438388}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1427302887}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &455006537
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 455006542}
-  - component: {fileID: 455006541}
-  - component: {fileID: 455006540}
-  - component: {fileID: 455006539}
-  - component: {fileID: 455006538}
-  m_Layer: 0
-  m_Name: GameObject (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &455006538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455006537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac828a561a46d4c2e8c8930610ee3eb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InputValue: 0
-  OutputValue: 0
-  LongValue: 0
---- !u!114 &455006539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455006537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConversionMode: 1
---- !u!114 &455006540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455006537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 535cc0336ffb441b9aa72e1fe9000207, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _source:
-    id: 0
-  _thread: 0
-  _autoCreateTypes: 7
-  _order: 0
-  _debugName: 
-  references:
-    version: 1
-    00000000:
-      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
-      data:
-        Root: {fileID: 1427302886}
-        AutoDestroy: 1
---- !u!114 &455006541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455006537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &455006542
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455006537}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1427302887}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1392768645
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,10 +214,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1392768648}
-  - component: {fileID: 1392768647}
   - component: {fileID: 1392768646}
   - component: {fileID: 1392768649}
   - component: {fileID: 1392768650}
+  - component: {fileID: 1392768647}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -461,7 +259,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1392768645}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a2ab8ec6dbb43bfb676e8bbc62663ef, type: 3}
+  m_Script: {fileID: 11500000, guid: f1870774babe4d9c83c487cce9fe3130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1392768648
@@ -477,7 +275,7 @@ Transform:
   m_Children:
   - {fileID: 1723425237}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1392768649
 MonoBehaviour:
@@ -504,64 +302,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac828a561a46d4c2e8c8930610ee3eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputValue: 0
-  OutputValue: 0
-  LongValue: 0
---- !u!1 &1427302885
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1427302887}
-  - component: {fileID: 1427302886}
-  m_Layer: 0
-  m_Name: BTSequence
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1427302886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1427302885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  _recursiveResetStatesBeforeTick: 0
---- !u!4 &1427302887
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1427302885}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 332438390}
-  - {fileID: 1754363720}
-  m_Father: {fileID: 455006542}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  InputValue: 123
+  OutputValue: 333
+  LongValue: 222
 --- !u!1 &1568700988
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,7 +386,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1667038667
 GameObject:
@@ -688,41 +431,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  LongVariable:
+  LongReader:
     id: 0
-  String: 
+  String: 43242131
   IntArray: 
-  DestVariable:
+  LongWriter:
     id: 1
-  SrcVariable:
+  SingleReader:
     id: 2
   LongValue: 44332
+  SingleReaderAndWriter:
+    _isLinked: 0
+    _readerAndWriter:
+      id: 3
+    _reader:
+      id: 4
+    _writer:
+      id: 5
   references:
     version: 1
     00000000:
-      type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
-      data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
-        CopyToLocalNode: 0
-    00000001:
-      type: {class: Int32CustomVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
-      data:
-        CustomValue: 0
-    00000002:
-      type: {class: SingleNodeVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: Int64NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
         NodeObject: {fileID: 327906297}
-        ValueFieldName: SrcVariable
-        AccessRuntimeData: 1
+        ValueFieldName: Long
+    00000001:
+      type: {class: Int64NodeVariantWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      data:
+        NodeObject: {fileID: 327906297}
+        ValueFieldName: Long
+    00000002:
+      type: {class: SingleComponentVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      data:
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.InputValue
+    00000003:
+      type: {class: , ns: , asm: }
+    00000004:
+      type: {class: SingleNodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      data:
+        NodeObject: {fileID: 327906297}
+        ValueFieldName: SingleReader
+    00000005:
+      type: {class: SingleNodeVariantWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      data:
+        NodeObject: {fileID: 327906297}
+        ValueFieldName: SingleReader
 --- !u!1 &1723425236
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,92 +521,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   _recursiveResetStatesBeforeTick: 0
---- !u!1 &1754363719
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1754363720}
-  - component: {fileID: 1754363721}
-  m_Layer: 0
-  m_Name: BTVariablesTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1754363720
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1754363719}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1427302887}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1754363721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1754363719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  LongVariable:
-    id: 0
-  String: 
-  IntArray: 
-  DestVariable:
-    id: 1
-  SrcVariable:
-    id: 2
-  LongValue: 44332
-  references:
-    version: 1
-    00000000:
-      type: {class: Int64ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
-      data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
-        CopyToLocalNode: 0
-    00000001:
-      type: {class: Int32ComponentVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
-      data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.OutputValue
-        CopyToLocalNode: 0
-    00000002:
-      type: {class: SingleNodeVariableProperty, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
-      data:
-        NodeObject: {fileID: 332438389}
-        ValueFieldName: SrcVariable
-        AccessRuntimeData: 1

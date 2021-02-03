@@ -17,15 +17,17 @@ namespace EntitiesBT.Sample
         [SerializeReference, SerializeReferenceButton] public Int64VariantWriter LongWriter;
         [SerializeReference, SerializeReferenceButton] public SingleVariantReader SingleReader;
         public long LongValue;
+        public SingleSerializedReaderAndWriterVariant SingleReaderAndWriter;
 
-        protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            // LongReader.Allocate(ref builder, ref data.LongReader, this, tree);
-            // builder.AllocateString(ref data.String, String);
-            // builder.AllocateArray(ref data.IntArray, IntArray);
-            // LongWriter.Allocate(ref builder, ref data.LongWriter, this, tree);
-            // SingleReader.Allocate(ref builder, ref data.SingleReader, this, tree);
-            // data.Long = LongValue;
+            LongReader.Allocate(ref builder, ref data.LongReader, this, tree);
+            builder.AllocateString(ref data.String, String);
+            builder.AllocateArray(ref data.IntArray, IntArray);
+            LongWriter.Allocate(ref builder, ref data.LongWriter, this, tree);
+            SingleReader.Allocate(ref builder, ref data.SingleReader, this, tree);
+            data.Long = LongValue;
+            SingleReaderAndWriter.Allocate(ref builder, ref data.SingleReaderAndWriter, this, tree);
         }
     }
     
