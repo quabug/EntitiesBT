@@ -1,10 +1,11 @@
 {
     "name": "EntitiesBT.Sample.Variable",
+    "rootNamespace": "",
     "references": [
         "GUID:c7babe7561eb244059259745ef27b866",
         "GUID:734d92eba21c94caba915361bd5ac177",
-        "GUID:73106583b323919458c1e05166706ce3",
-        "GUID:d8b63aba1907145bea998dd612889d6b"
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:abe4851e67df59644865a60dae54a845"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

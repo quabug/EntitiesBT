@@ -39,11 +39,6 @@
       "path": "Samples~/Variable"
     },
     {
-      "displayName": "[Sample] visual",
-      "description": "visual builder",
-      "path": "Samples~/Visual"
-    },
-    {
       "displayName": "[Test] tests",
       "description": "test cases of behavior tree",
       "path": "Test~"

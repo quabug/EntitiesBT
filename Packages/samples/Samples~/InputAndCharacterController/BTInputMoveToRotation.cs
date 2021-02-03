@@ -1,3 +1,4 @@
+using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
@@ -17,8 +18,8 @@ namespace EntitiesBT.Samples
 
         protected override void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
-            OutputDirectionPropertyWriter.Allocate(ref builder, ref data.OutputDirection, this, tree);
+            // InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
+            // OutputDirectionPropertyWriter.Allocate(ref builder, ref data.OutputDirection, this, tree);
         }
     }
 

@@ -25,12 +25,12 @@ namespace EntitiesBT.Builder.Visual
 
             void BuildImpl(BlobBuilder blobBuilder, ref VisualEntityRotateNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
-                @this.Axis.ToVariantReader<float3>(instance, definition)
-                    .Allocate(ref blobBuilder, ref data.Axis, self, builders)
-                ;
-                @this.RadianPerSecond.ToVariantReader<float>(instance, definition)
-                    .Allocate(ref blobBuilder, ref data.RadianPerSecond, self, builders)
-                ;
+                // @this.Axis.ToVariantReader<float3>(instance, definition)
+                //     .Allocate(ref blobBuilder, ref data.Axis, self, builders)
+                // ;
+                // @this.RadianPerSecond.ToVariantReader<float>(instance, definition)
+                //     .Allocate(ref blobBuilder, ref data.RadianPerSecond, self, builders)
+                // ;
             }
         }
 

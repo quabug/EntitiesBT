@@ -69,6 +69,8 @@ namespace EntitiesBT.Editor
                     {
                         writer.CreateReaderVariants(type, isReferenceType);
                         writer.CreateWriterVariants(type, isReferenceType);
+                        writer.CreateReaderAndWriterVariants(type, isReferenceType);
+                        writer.CreateSerializedReaderAndWriterVariant(type);
                     }
                 }
                 writer.WriteLine(NamespaceEnd());
@@ -97,15 +99,19 @@ namespace EntitiesBT.Editor
             writer.WriteLine(CreateInterface(valueType, typeof(IVariantReaderAndWriter<>), suffix));
             foreach (var propertyType in VARIANT_READER_AND_WRITER_TYPES.Value.Where(type => isReferenceType == null || isReferenceType(type)))
                 writer.WriteLine(CreateClass(valueType, propertyType, suffix));
-            writer.CreateSerializedReaderAndWriterVariant(valueType);
             writer.WriteLine();
         }
 
-        public static void CreateSerializedReaderAndWriterVariant(this StreamWriter writer, Type valueType)
+        public static void CreateSerializedReaderAndWriterVariant(this StreamWriter writer
+            , Type valueType
+            , string readerAndWriterSuffix = "VariantReaderAndWriter"
+            , string readerSuffix = "VariantReader"
+            , string writerSuffix = "VariantWriter"
+        )
         {
             writer.Write($@"
 [System.Serializable]
-public class {valueType.Name}SerializedReaderAndWriterVariant : ISerializedReaderAndWriter<{valueType.FullName}>
+public class {valueType.Name}SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedReaderAndWriter<{valueType.FullName}>
 {{
     [UnityEngine.SerializeField]
     private bool _isLinked = true;
@@ -114,20 +120,20 @@ public class {valueType.Name}SerializedReaderAndWriterVariant : ISerializedReade
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked), false)]
     [EntitiesBT.Attributes.SerializeReferenceButton]
-    private {valueType.Name}ReaderAndWriterVariant _readerAndWriter;
-    public IVariantReaderAndWriter<{valueType.FullName}> ReaderAndWriter => _readerAndWriter;
+    private {valueType.Name}{readerAndWriterSuffix} _readerAndWriter;
+    public EntitiesBT.Variant.IVariantReaderAndWriter<{valueType.FullName}> ReaderAndWriter => _readerAndWriter;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
     [EntitiesBT.Attributes.SerializeReferenceButton]
-    private {valueType.Name}ReaderVariant _reader;
-    public IVariantReader<{valueType.FullName}> Reader => _reader;
+    private {valueType.Name}{readerSuffix} _reader;
+    public EntitiesBT.Variant.IVariantReader<{valueType.FullName}> Reader => _reader;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
     [EntitiesBT.Attributes.SerializeReferenceButton]
-    private {valueType.Name}WriterVariant _writer;
-    public IVariantWriter<{valueType.FullName}> Writer => _writer;
+    private {valueType.Name}{writerSuffix} _writer;
+    public EntitiesBT.Variant.IVariantWriter<{valueType.FullName}> Writer => _writer;
 }}
 ");
         }

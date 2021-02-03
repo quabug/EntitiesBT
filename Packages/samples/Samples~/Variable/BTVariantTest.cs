@@ -1,3 +1,4 @@
+using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
@@ -19,12 +20,12 @@ namespace EntitiesBT.Sample
 
         protected override void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            LongReader.Allocate(ref builder, ref data.LongReader, this, tree);
-            builder.AllocateString(ref data.String, String);
-            builder.AllocateArray(ref data.IntArray, IntArray);
-            LongWriter.Allocate(ref builder, ref data.LongWriter, this, tree);
-            SingleReader.Allocate(ref builder, ref data.SingleReader, this, tree);
-            data.Long = LongValue;
+            // LongReader.Allocate(ref builder, ref data.LongReader, this, tree);
+            // builder.AllocateString(ref data.String, String);
+            // builder.AllocateArray(ref data.IntArray, IntArray);
+            // LongWriter.Allocate(ref builder, ref data.LongWriter, this, tree);
+            // SingleReader.Allocate(ref builder, ref data.SingleReader, this, tree);
+            // data.Long = LongValue;
         }
     }
     
@@ -36,6 +37,7 @@ namespace EntitiesBT.Sample
         public BlobArray<int> IntArray;
         public BlobVariantWriter<long> LongWriter;
         public BlobVariantReader<float> SingleReader;
+        public BlobVariantReaderAndWriter<float> SingleReaderAndWriter;
         public long Long;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)

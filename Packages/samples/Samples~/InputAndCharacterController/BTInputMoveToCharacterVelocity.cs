@@ -1,3 +1,4 @@
+using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
@@ -21,8 +22,8 @@ namespace EntitiesBT.Samples
         protected override void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             // SpeedPropertyReader.Allocate(ref builder, ref data.Speed, this, tree);
-            InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
-            OutputVelocityPropertyWriter.Allocate(ref builder, ref data.OutputVelocity, this, tree);
+            // InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
+            // OutputVelocityPropertyWriter.Allocate(ref builder, ref data.OutputVelocity, this, tree);
         }
     }
 
