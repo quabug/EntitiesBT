@@ -128,7 +128,7 @@ namespace EntitiesBT.Variant
             return property.Reader.Allocate(ref builder, ref blobVariant.Reader, self, tree);
         }
 
-        public static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : struct
+        public static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : unmanaged
         {
             return ref UnsafeUtility.As<int, BlobPtr<T>>(ref offsetPtr);
         }

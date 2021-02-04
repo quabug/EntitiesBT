@@ -8,7 +8,7 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTReadInputValue<T, U> : BTInputActionBase<U>
         where T : unmanaged
-        where U : struct, IReadInputValueNode
+        where U : unmanaged, IReadInputValueNode
     {
         public IVariantReader<T> Output;
 

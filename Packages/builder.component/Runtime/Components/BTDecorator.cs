@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Components
 {
-    public class BTDecorator<T> : BTNode<T> where T : struct, INodeData
+    public class BTDecorator<T> : BTNode<T> where T : unmanaged, INodeData
     {
         [SerializeField] private bool _shouldRerunOnceOnError = true;
 

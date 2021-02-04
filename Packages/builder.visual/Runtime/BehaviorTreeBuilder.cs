@@ -79,7 +79,7 @@ namespace EntitiesBT.Builder.Visual
         IVariantReader<T> GetVariant([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
     }
 
-    public readonly struct VisualBuilder<T> : INodeDataBuilder where T : struct, INodeData
+    public readonly struct VisualBuilder<T> : INodeDataBuilder where T : unmanaged, INodeData
     {
         public delegate void BuildImpl(BlobBuilder blobBuilder, ref T data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders);
         private readonly BuildImpl _buildImpl;
