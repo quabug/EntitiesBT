@@ -27,12 +27,14 @@ namespace EntitiesBT.Editor
                 var nodeObject = (BTNode)property.GetSiblingFieldValue(_attribute.NodeObjectFieldName);
                 if (!Equals(nodeObject, _nodeObject))
                 {
+                    var readerType = typeof(BlobVariantReader<>).MakeGenericType(_genericType);
+                    var rwType = typeof(BlobVariantReaderAndWriter<>).MakeGenericType(_genericType);
                     _nodeObject = nodeObject;
                     _options = nodeObject == null
                         ? new string[0]
                         : VirtualMachine.GetNodeType(nodeObject.NodeId)
                             .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                            .Where(fi => fi.FieldType == _genericType || fi.FieldType == typeof(BlobVariantReader<>).MakeGenericType(_genericType))
+                            .Where(fi => fi.FieldType == _genericType || fi.FieldType == readerType || fi.FieldType == rwType)
                             .Select(fi => fi.Name)
                             .ToArray()
                     ;

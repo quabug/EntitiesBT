@@ -166,31 +166,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe11e62dd054dd5a7b238f1de6db4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedProperty:
+  SpeedPropertyReader:
     id: 0
-  InputMoveProperty:
+  InputMovePropertyReader:
     id: 1
-  OutputVelocityProperty:
-    id: 2
+  OutputVelocityPropertyWriter:
+    _isLinked: 1
+    _readerAndWriter:
+      id: 2
+    _reader:
+      id: 3
+    _writer:
+      id: 3
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        CustomValue: 2
+        Value: 2
     00000001:
-      type: {class: float2NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: float2NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
         NodeObject: {fileID: 1332110029}
         ValueFieldName: Output
-        AccessRuntimeData: 1
     00000002:
-      type: {class: float3CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: float3LocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        CustomValue:
+        Value:
           x: 0
           y: 0
           z: 0
+    00000003:
+      type: {class: , ns: , asm: }
 --- !u!1 &9309917
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +346,7 @@ GameObject:
   - component: {fileID: 119268660}
   - component: {fileID: 119268661}
   m_Layer: 0
-  m_Name: BTCheckInputActionPhase
+  m_Name: BTCheckInputPhase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,9 +375,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 119268659}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c99708fe15b495f9094f9e55dcd2904, type: 3}
+  m_Script: {fileID: 11500000, guid: 789b644df054407e9a9be7cebb6a63d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InputAction: {fileID: -1456999755813938659, guid: e11489ceb77624896bddc0c72ce3be71,
+    type: 3}
+  Phase: 2
 --- !u!1 &254321803
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,16 +622,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsLocal: 0
-  VelocityProperty:
+  VelocityPropertyReader:
     id: 0
   references:
     version: 1
     00000000:
-      type: {class: float3NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: float3NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
         NodeObject: {fileID: 775125229}
         ValueFieldName: OutputVelocity
-        AccessRuntimeData: 1
 --- !u!1 &551306013
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,31 +757,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe11e62dd054dd5a7b238f1de6db4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedProperty:
+  SpeedPropertyReader:
     id: 0
-  InputMoveProperty:
+  InputMovePropertyReader:
     id: 1
-  OutputVelocityProperty:
-    id: 2
+  OutputVelocityPropertyWriter:
+    _isLinked: 1
+    _readerAndWriter:
+      id: 2
+    _reader:
+      id: 3
+    _writer:
+      id: 3
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        CustomValue: 5
+        Value: 4
     00000001:
-      type: {class: float2NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: float2NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
         NodeObject: {fileID: 1332110029}
         ValueFieldName: Output
-        AccessRuntimeData: 1
     00000002:
-      type: {class: float3CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: float3LocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        CustomValue:
+        Value:
           x: 0
           y: 0
           z: 0
+    00000003:
+      type: {class: , ns: , asm: }
 --- !u!1 &866069044
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,16 +878,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c415565511944df690f9499120783f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationProperty:
+  RotationReader:
     id: 0
   references:
     version: 1
     00000000:
-      type: {class: quaternionNodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: quaternionNodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
         NodeObject: {fileID: 1160618947}
         ValueFieldName: OutputDirection
-        AccessRuntimeData: 1
 --- !u!1 &1000532614
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,6 +1045,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &1158782358
@@ -1089,27 +1105,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9262fcbd9912476da18353a7aa96fb58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputMoveProperty:
+  InputMovePropertyReader:
     id: 0
-  OutputDirectionProperty:
-    id: 1
+  OutputDirectionPropertyWriter:
+    _isLinked: 1
+    _readerAndWriter:
+      id: 1
+    _reader:
+      id: 2
+    _writer:
+      id: 2
   references:
     version: 1
     00000000:
-      type: {class: float2NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: float2NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
         NodeObject: {fileID: 1332110029}
         ValueFieldName: Output
-        AccessRuntimeData: 1
     00000001:
-      type: {class: quaternionCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: quaternionLocalVariantReaderAndWriter, ns: EntitiesBT.Sample,
+        asm: EntitiesBT.Sample.Variable}
       data:
-        CustomValue:
+        Value:
           value:
             x: 0
             y: 0
             z: 0
             w: 0
+    00000002:
+      type: {class: , ns: , asm: }
 --- !u!1 &1164989512
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,18 +1354,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6e4272953848828585238a7109ee00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputAction: {fileID: -1215874993465502569, guid: e11489ceb77624896bddc0c72ce3be71,
+  InputAction: {fileID: -7458149306784309407, guid: e11489ceb77624896bddc0c72ce3be71,
     type: 3}
   Output:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   references:
     version: 1
     00000000:
-      type: {class: float2CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: float2LocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        CustomValue:
+        Value:
           x: 0
           y: 0
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!1 &1348624634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1433,17 +1465,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsLocal: 1
-  VelocityProperty:
+  VelocityPropertyReader:
     id: 0
   references:
     version: 1
     00000000:
-      type: {class: float3CustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: float3LocalVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
-        CustomValue:
+        Value:
           x: 0
           y: 0
-          z: 10
+          z: 8
 --- !u!1 &1454846012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,6 +1659,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1472767151
 Canvas:
   m_ObjectHideFlags: 0
@@ -1809,16 +1842,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsLocal: 0
-  VelocityProperty:
+  VelocityPropertyReader:
     id: 0
   references:
     version: 1
     00000000:
-      type: {class: float3NodeVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Sample.Variable}
+      type: {class: float3NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
       data:
         NodeObject: {fileID: 2282878}
         ValueFieldName: OutputVelocity
-        AccessRuntimeData: 1
 --- !u!1 &1736258349
 GameObject:
   m_ObjectHideFlags: 0

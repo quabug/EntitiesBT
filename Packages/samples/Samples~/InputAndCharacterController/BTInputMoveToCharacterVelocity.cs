@@ -1,29 +1,30 @@
 using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
+using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using SingleVariantReader = EntitiesBT.Sample.SingleVariantReader;
 
 namespace EntitiesBT.Samples
 {
     public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
     {
-        // [SerializeReference, SerializeReferenceButton]
-        // public ISingleVariantReader SpeedPropertyReader;
+        [SerializeReference, SerializeReferenceButton]
+        public SingleVariantReader SpeedPropertyReader;
         
         [SerializeReference, SerializeReferenceButton]
-        public IFloat2PropertyReader InputMovePropertyReader;
+        public float2VariantReader InputMovePropertyReader;
         
-        [SerializeReference, SerializeReferenceButton]
-        public IFloat3PropertyWriter OutputVelocityPropertyWriter;
+        public float3SerializedReaderAndWriterVariant OutputVelocityPropertyWriter;
 
-        protected override void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            // SpeedPropertyReader.Allocate(ref builder, ref data.Speed, this, tree);
-            // InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
-            // OutputVelocityPropertyWriter.Allocate(ref builder, ref data.OutputVelocity, this, tree);
+            SpeedPropertyReader.Allocate(ref builder, ref data.Speed, this, tree);
+            InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
+            OutputVelocityPropertyWriter.Allocate(ref builder, ref data.OutputVelocity, this, tree);
         }
     }
 
@@ -32,7 +33,7 @@ namespace EntitiesBT.Samples
     {
         public BlobVariantReader<float> Speed;
         public BlobVariantReader<float2> InputMove;
-        public BlobVariantWriter<float3> OutputVelocity;
+        public BlobVariantReaderAndWriter<float3> OutputVelocity;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

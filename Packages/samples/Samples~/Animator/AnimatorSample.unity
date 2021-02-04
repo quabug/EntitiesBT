@@ -657,21 +657,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimerSecondsReader:
-    id: 0
-  TimerSecondsWriter:
-    id: 1
+  TimerSeconds:
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
         Value: 2
     00000001:
-      type: {class: SingleNodeVariantWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        NodeObject: {fileID: 876631837}
-        ValueFieldName: TimerSecondsReader
+      type: {class: , ns: , asm: }
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -798,21 +799,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimerSecondsReader:
-    id: 0
-  TimerSecondsWriter:
-    id: 1
+  TimerSeconds:
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        Value: 3
+        Value: 2
     00000001:
-      type: {class: SingleNodeVariantWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        NodeObject: {fileID: 1219867602}
-        ValueFieldName: TimerSecondsReader
+      type: {class: , ns: , asm: }
 --- !u!1 &1365720264
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,18 +1120,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimerSecondsReader:
-    id: 0
-  TimerSecondsWriter:
-    id: 1
+  TimerSeconds:
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
         Value: 1
     00000001:
-      type: {class: SingleNodeVariantWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        NodeObject: {fileID: 2107458203}
-        ValueFieldName: TimerSecondsReader
+      type: {class: , ns: , asm: }

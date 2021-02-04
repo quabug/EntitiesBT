@@ -1,5 +1,6 @@
 using System;
 using EntitiesBT.Core;
+using static EntitiesBT.Extensions.InputSystem.InputExtensions;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
@@ -15,7 +16,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var isTriggered = index.IsInputActionTriggered<IsInputActionTriggeredNode, TNodeBlob, TBlackboard>(ref blob, ref bb);
+            var isTriggered = IsInputActionTriggered<IsInputActionTriggeredNode, TNodeBlob, TBlackboard>(index, ref blob, ref bb);
             return isTriggered ? NodeState.Success : NodeState.Failure;
         }
 

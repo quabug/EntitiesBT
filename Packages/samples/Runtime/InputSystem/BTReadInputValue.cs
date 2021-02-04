@@ -2,6 +2,7 @@ using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using static EntitiesBT.Extensions.InputSystem.InputExtensions;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
@@ -32,7 +33,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var inputValue = index.ReadInputActionValue<TNodeData, TValue, TNodeBlob, TBlackboard>(ref blob, ref bb);
+            var inputValue = ReadInputActionValue<TNodeData, TValue, TNodeBlob, TBlackboard>(index, ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
             ref var data = ref blob.GetNodeData<TNodeData, TNodeBlob>(index);
             ref var output = ref UnsafeUtility.AsRef<BlobVariantWriter<TValue>>(data.OutputPtr);

@@ -41,9 +41,9 @@ namespace EntitiesBT.Variant
         [Serializable] public class ReaderAndWriter<T> : Any<T>, IVariantReaderAndWriter<T> where T : unmanaged {}
 
         public const string ID_RUNTIME_NODE = "220681AA-D884-4E87-90A8-5A8657A734BD";
-        public const string ID_RUNTIME_NODE_VARIABLE = "7DE6DCA5-71DF-4145-91A6-17EB813B9DEB";
+        public const string ID_RUNTIME_NODE_VARIANT = "7DE6DCA5-71DF-4145-91A6-17EB813B9DEB";
 
-        [Preserve, WriterMethod(ID_RUNTIME_NODE_VARIABLE)]
+        [Preserve, WriterMethod(ID_RUNTIME_NODE_VARIANT)]
         private static unsafe void WriteVariableFunc<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb, T value)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
@@ -65,7 +65,7 @@ namespace EntitiesBT.Variant
             return ref GetValue<T>(ref blobVariant, blob.GetRuntimeDataPtr);
         }
 
-        [Preserve, ReaderMethod(ID_RUNTIME_NODE_VARIABLE)]
+        [Preserve, ReaderMethod(ID_RUNTIME_NODE_VARIANT)]
         private static unsafe T GetRuntimeNodeVariable<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
@@ -122,9 +122,9 @@ namespace EntitiesBT.Variant
             {
                 blobVariant.VariantId = GuidHashCode(ID_RUNTIME_NODE);
             }
-            else if (fieldType == typeof(BlobVariantReader<T>))
+            else if (fieldType == typeof(BlobVariantReader<T>) || fieldType == typeof(BlobVariantReaderAndWriter<T>))
             {
-                blobVariant.VariantId = GuidHashCode(ID_RUNTIME_NODE_VARIABLE);
+                blobVariant.VariantId = GuidHashCode(ID_RUNTIME_NODE_VARIANT);
             }
             else
             {
@@ -133,6 +133,8 @@ namespace EntitiesBT.Variant
             }
 
             var fieldOffset = Marshal.OffsetOf(nodeType, valueFieldName).ToInt32();
+            if (fieldType == typeof(BlobVariantReaderAndWriter<T>))
+                fieldOffset += Marshal.OffsetOf(typeof(BlobVariantReaderAndWriter<T>) , nameof(BlobVariantReaderAndWriter<T>.Reader)).ToInt32();
             return builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = fieldOffset});
         }
     }

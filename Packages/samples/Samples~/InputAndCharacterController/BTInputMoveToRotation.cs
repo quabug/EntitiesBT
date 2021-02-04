@@ -1,6 +1,7 @@
 using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
+using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -11,15 +12,14 @@ namespace EntitiesBT.Samples
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
         [SerializeReference, SerializeReferenceButton]
-        public IFloat2PropertyReader InputMovePropertyReader;
+        public float2VariantReader InputMovePropertyReader;
         
-        [SerializeReference, SerializeReferenceButton]
-        public IQuaternionPropertyWriter OutputDirectionPropertyWriter;
+        public quaternionSerializedReaderAndWriterVariant OutputDirectionPropertyWriter;
 
-        protected override void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            // InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
-            // OutputDirectionPropertyWriter.Allocate(ref builder, ref data.OutputDirection, this, tree);
+            InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
+            OutputDirectionPropertyWriter.Allocate(ref builder, ref data.OutputDirection, this, tree);
         }
     }
 
@@ -27,7 +27,7 @@ namespace EntitiesBT.Samples
     public struct InputMoveToRotationNode : INodeData
     {
         public BlobVariantReader<float2> InputMove;
-        public BlobVariantWriter<quaternion> OutputDirection;
+        public BlobVariantReaderAndWriter<quaternion> OutputDirection;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

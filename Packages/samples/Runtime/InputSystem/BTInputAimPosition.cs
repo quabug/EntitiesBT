@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using static EntitiesBT.Extensions.InputSystem.InputExtensions;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
@@ -28,7 +28,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var inputValue = index.ReadInputActionValue<InputAimPositionNode, Vector2, TNodeBlob, TBlackboard>(ref blob, ref bb);
+            var inputValue = ReadInputActionValue<InputAimPositionNode, Vector2, TNodeBlob, TBlackboard>(index, ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
             bb.GetDataRef<BTInputAimPositionData>().Value = inputValue.Value;
             return NodeState.Success;

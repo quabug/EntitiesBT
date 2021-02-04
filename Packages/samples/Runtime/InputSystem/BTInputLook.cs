@@ -4,6 +4,7 @@ using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using static EntitiesBT.Extensions.InputSystem.InputExtensions;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
@@ -29,7 +30,7 @@ namespace EntitiesBT.Extensions.InputSystem
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var inputValue = index.ReadInputActionValue<InputLookNode, Vector2, TNodeBlob, TBlackboard>(ref blob, ref bb);
+            var inputValue = ReadInputActionValue<InputLookNode, Vector2, TNodeBlob, TBlackboard>(index, ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
             Output.Write(index, ref blob, ref bb, inputValue.Value);
             return NodeState.Success;
