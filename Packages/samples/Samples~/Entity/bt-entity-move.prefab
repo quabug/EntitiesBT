@@ -45,14 +45,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   BreakReturnState: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CustomValue: 1
+        Value: 1
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!1 &7154796705611245648
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,14 +106,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   BreakReturnState: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CustomValue: 1
+        Value: 1
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!1 &7154796705739208521
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,14 +211,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   BreakReturnState: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CustomValue: 1
+        Value: 1
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!1 &7154796705978280124
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,14 +364,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   BreakReturnState: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CustomValue: 1
+        Value: 1
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!1 &7154796706415700004
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,14 +573,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   BreakReturnState: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CustomValue: 1
+        Value: 1
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!1 &7154796706839227953
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,11 +770,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownSeconds:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   BreakReturnState: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CustomValue: 1
+        Value: 1
+    00000001:
+      type: {class: , ns: , asm: }
