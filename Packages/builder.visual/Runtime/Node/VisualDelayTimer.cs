@@ -16,8 +16,8 @@ namespace EntitiesBT.Builder.Visual
         [PortDescription("")] public InputTriggerPort Parent;
         
 
-        [PortDescription(Runtime.ValueType.Float)] public InputDataPort InputTimerSeconds;
-        [PortDescription(Runtime.ValueType.Float)] public OutputDataPort OutputTimerSeconds;
+        [PortDescription(Runtime.ValueType.Float, "TimerSeconds")] public InputDataPort InputTimerSeconds;
+        [PortDescription(Runtime.ValueType.Float, "TimerSeconds")] public OutputDataPort OutputTimerSeconds;
         public bool IsLinkedTimerSeconds;
 
         public INodeDataBuilder GetBuilder(GraphInstance instance, GraphDefinition definition)

@@ -65,9 +65,9 @@ namespace EntitiesBT.Builder.Visual.Editor
             if (variantType == typeof(BlobVariantWriter<>))
                 return $"[PortDescription(Runtime.ValueType.{valueType})] public OutputDataPort {fi.Name};";
 
-            return $"[PortDescription(Runtime.ValueType.{valueType})] public InputDataPort Input{fi.Name};"
+            return $"[PortDescription(Runtime.ValueType.{valueType}, \"{fi.Name}\")] public InputDataPort Input{fi.Name};"
                 + Environment.NewLine + "        "
-                + $"[PortDescription(Runtime.ValueType.{valueType})] public OutputDataPort Output{fi.Name};"
+                + $"[PortDescription(Runtime.ValueType.{valueType}, \"{fi.Name}\")] public OutputDataPort Output{fi.Name};"
                 + Environment.NewLine + "        "
                 + $"public bool IsLinked{fi.Name};"
             ;
