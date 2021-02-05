@@ -18,7 +18,9 @@ _____      _   _ _   _           ______ _____
 >       - [Attach behavior tree onto Entity](#attach-behavior-tree-onto-entity)
 >       - [Serialization](#serialization)
 >       - [Thread control](#thread-control)
->       - [Variable Property](#variable-property)
+>       - [Variant](#variant)
+>         - [Variant Types](#variant-types)
+>         - [Variant Sources](#variant-sources)
 >       - [Multiple trees](#multiple-trees)
 >     - [Debug](#debug)
 >     - [Custom behavior node](#custom-behavior-node)
@@ -77,10 +79,10 @@ modify `Packages/manifest.json` as below
 {
   "dependencies": {
     ...
-    "com.quabug.entities-bt.essential": "0.21.2",
-    "com.quabug.entities-bt.builder.component": "0.21.3",
-    "com.quabug.entities-bt.debug.component-viewer": "0.21.2",
-    "com.quabug.entities-bt.variable.scriptable-object": "0.21.1"
+    "com.quabug.entities-bt.essential": "1.0.0",
+    "com.quabug.entities-bt.builder.component": "1.0.0",
+    "com.quabug.entities-bt.debug.component-viewer": "1.0.0",
+    "com.quabug.entities-bt.variable.scriptable-object": "1.0.0"
   },
   "scopedRegistries": [
     {
@@ -122,73 +124,75 @@ openupm add com.quabug.entities-bt.variable.scriptable-object
 - Controlled by Behavior Tree: Running on job threads by default, but will switch to main thread once meet decorator of [`RunOnMainThread`](Packages/essential/Runtime/Nodes/Decorators/RunOnMainThreadNode.cs)
 <img width="300" alt="" src="https://user-images.githubusercontent.com/683655/72407836-cdc63900-379b-11ea-8979-605e725ab0f7.png" />
 
-#### Variable Property
-Fetch data from different sources.
-- [`CustomVariableProperty`](Packages/essential/Runtime/Variable/CustomVariableProperty.cs): regular variable, custom value will save into `NodeData`.
+#### Variant
+##### Variant Types
+- `BlobVariantReader`: read-only variant
+- `BlobVariantWriter`: write-only variant
+- `BlobVariantReaderAndWriter`: read-write variant, able to link to same source.
 
-<img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950074-7764aa80-6944-11ea-9ea7-0697ad5a6da5.gif">
+##### Variant Sources
+- `LocalVariant`: regular variable, custom value will save into `NodeData`.
 
-- [`ComponentVariableProperty`](Packages/essential/Runtime/Entities/ComponentVariableProperty.cs): fetch data from `Component` on `Entity`
+- `ComponentVariant`: fetch data from `Component` on `Entity`
   - _Component Value Name_: which value should be access from component
   - _Copy To Local Node_: Will read component data into local node and never write back into component data. (Force `ReadOnly` access)
 
-<img width="600" src="https://user-images.githubusercontent.com/683655/77412835-69f26900-6df9-11ea-95d8-13fef4f1142d.gif">
-
-- [`NodeVariableProperty`](Packages/builder.component/Runtime/Variable/NodeVariableProperty.cs): fetch data from blob of another node
+- `NodeVariant`: fetch data from blob of another node
   - _Node Object_: another node should be access by this variable, must be in the same behavior tree.
   - _Value Field Name_: the name of data field in another node.
   - _Access Runtime Data_:
     - false: will copy data to local blob node while building, value change of _Node Object_ won't effect variable once build.
     - true: will access data field of _Node Object_ at runtime, something like reference value of _Node Object_.
 
-<img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950091-7cc1f500-6944-11ea-994b-5307f08169a2.gif">
-
-- [`ScriptableObjectVariableProperty`](Packages/variable.scriptable-object/Runtime/ScriptableObjectVariableProperty.cs): fetch data from field of `ScriptableObject`.
+- `ScriptableObjectVariant`
   - _Scriptable Object_: target SO.
   - _Scriptable Object Value_: target field.
 
-<img width="600" alt="" src="https://user-images.githubusercontent.com/683655/76950097-7df32200-6944-11ea-8902-650987d58827.gif">
-
 ##### Code Example
 ``` c#
-    public class BTVariableNode : BTNode<VariableNode>
+    public class BTVariantNode : BTNode<VariantNode>
     {
-        // have to generate an interface of `Int32Property` to make it possible to serialize and display by Unity.
+        // have to generate an interface of `Int32VariantReader` to make it possible to serialize and display by Unity.
         // see "Generate specific types` below
         [SerializeReference, SerializeReferenceButton] // neccessary for editor
-        public Int32Property IntVariable; // an `int` variable property
+        public Int32VariantReader IntReader; // an `int` variant reader
 
-        protected override void Build(ref VariableNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        public SingleSerializedReaderAndWriterVariant FloatRW;
+
+        protected override unsafe void Build(ref VariantNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            // save `Int32Property` as `BlobVariable<int>` of `VariableNode`
-            IntVariable.Allocate(ref builder, ref data.Variable, this, tree);
+            // save `Int32VariantReader` as `BlobVariantReader<int>` of `VariantNode`
+            IntReader.Allocate(ref builder, ref data.IntVariant, this, tree);
+            FloatRW.Allocate(ref builder, ref data.FloatVariant, this, tree);
         }
     }
-    
+
     [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
-    public struct VariableNode : INodeData
+    public struct VariantNode : INodeData
     {
-        public BlobVariable<int> IntBlobVariable;
+        public BlobVariantReader<int> IntVariant;
+        public BlobVariantReaderAndWriter<float> FloatVariant;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var intVariable = IntBlobVariable.GetData(index, ref blob, ref blackboard); // get variable value
-            ref var intVariable = ref IntBlobVariable.GetDataRef(index, ref blob, ref blackboard); // get variable ref value
+            var intVariant = IntVariant.Read(index, ref blob, ref blackboard); // get variable value
+            var floatVariant = FloatVariant.Read(index, ref blob, ref blackboard);
+            FloatVariant.Write(index, ref blob, ref blackboard, floatVariant + 1);
             return NodeState.Success;
         }
-        
+
         public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {}
     }
 ```
-##### Generate specific types of `VariableProperty<T>`
+##### Generate specific types of `IVariant<T>`
 Generic `VariableProperty<T>` cannot be serialized in Unity, since `[SerializeReference]` is not allowed for a generic type.
-A specific type of `VariableProperty<T>` must be declared before use.
-- First create a _Scriptable Object_ of _VariableGeneratorSetting_
+A specific type of `IVariant<T>` must be declared before use.
+- First create a _Scriptable Object_ of _VariantGeneratorSetting_
 <img width="800" alt="Snipaste_2020-03-18_18-57-30" src="https://user-images.githubusercontent.com/683655/76953861-6159e880-694a-11ea-8fbc-33a83b181ebf.png">
 
 - Fill which _Types_ you want to use as variable property.
@@ -332,11 +336,14 @@ Behavior tree need some extra information for generating `EntityQuery`.
 ``` c#
 public struct SomeNode : INodeData
 {
-    // add an `optional`, `readonly` or `readwrite` attribute to mark an access type of `BlobVariable`
-    // `readwrite` by default.
-    [EntitiesBT.Core.Optional] BlobVariable<int> IntVariable;
-    [EntitiesBT.Core.ReadOnly] BlobVariable<float> FloatVariable;
-    [EntitiesBT.Core.ReadWrite] BlobVariable<double> FloatVariable;
+    // read-only access
+    BlobVariantReader<int> IntVariable;
+    
+    // read-write access (there's no write-only access)
+    BlobVariantWriter<float> FloatVariable;
+    
+    // read-write access
+    BlobVariantReaderAndWriter<double> FloatVariable;
 
     // declare right access types for `Tick` method
     [EntitiesBT.Core.ReadWrite(typeof(ReadWriteComponentData))]
