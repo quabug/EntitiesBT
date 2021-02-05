@@ -11,7 +11,7 @@ namespace EntitiesBT.Builder.Visual
         public TypeReference Type;
         public OutputDataMultiPort ComponentData;
 
-        public IVariantReader<T> GetVariant<T>(int dataIndex, GraphInstance instance, GraphDefinition definition) where T : unmanaged
+        public IVariantReader<T> GetVariantReader<T>(int dataIndex, GraphInstance instance, GraphDefinition definition) where T : unmanaged
         {
             for (uint i = 0; i < ComponentData.GetDataCount(); i++)
             {

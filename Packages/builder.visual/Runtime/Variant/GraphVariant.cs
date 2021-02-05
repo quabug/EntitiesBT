@@ -26,7 +26,7 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Preserve, ReaderMethod(GUID)]
-        private static unsafe T GetData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        private static T GetData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
@@ -36,12 +36,7 @@ namespace EntitiesBT.Builder.Visual
             // HACK: how to support multiple worlds?
             var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             var graphInstance = entityManager.GetComponentObject<GraphInstanceComponent>(behaviorTree).Value;
-
-            T data;
-            void* ptr = &data;
-            var value = graphInstance.ReadValue(port);
-            Value.SetPtrToValue(ptr, value.Type, value);
-            return data;
+            return graphInstance.ReadValue<T>(port);
         }
 
         [Preserve, AccessorMethod(GUID)]

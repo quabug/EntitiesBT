@@ -71,12 +71,12 @@ namespace EntitiesBT.Builder.Visual
 
     public interface IVisualVariantNode : INode
     {
-        IVariantReader<T> GetVariant<T>(int dataIndex, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged;
+        IVariantReader<T> GetVariantReader<T>(int dataIndex, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged;
     }
 
     public interface IVisualVariantNode<T> : INode where T : unmanaged
     {
-        IVariantReader<T> GetVariant([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
+        IVariantReader<T> GetVariantReader([NotNull] GraphInstance instance, [NotNull] GraphDefinition definition);
     }
 
     public readonly struct VisualBuilder<T> : INodeDataBuilder where T : unmanaged, INodeData
