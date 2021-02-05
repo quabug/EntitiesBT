@@ -22,16 +22,19 @@ namespace EntitiesBT.Entities
         protected override void OnUpdate()
         {
             var ecb = _entityCommandBufferSystem.CreateCommandBuffer();
-            
+
+            // create
             Entities
                 .WithoutBurst()
                 .WithNone<LastTargetComponent>()
                 .ForEach((Entity entity, in BlackboardDataQuery query, in BehaviorTreeComponent bt, in BehaviorTreeTargetComponent target, in BehaviorTreeOrderComponent order) =>
                 {
-                    ecb.AddComponent(entity, new LastTargetComponent {Target = target.Value, Blob = bt.Blob});
-                    BindBehaviorTree(ecb, entity, bt, query, target.Value, order.Value);
+                    var blob = new NodeBlobRef(bt.Blob.BlobRef.Clone());
+                    ecb.AddComponent(entity, new LastTargetComponent {Target = target.Value, Blob = blob});
+                    BindBehaviorTree(ecb, entity, bt, query, target.Value, order.Value, blob);
                 }).Run();
-            
+
+            // update
             Entities
                 .WithoutBurst()
                 .WithChangeFilter<BehaviorTreeTargetComponent>()
@@ -40,11 +43,12 @@ namespace EntitiesBT.Entities
                     if (lastTarget.Target != target.Value)
                     {
                         UnbindBehaviorTree(lastTarget.Target, lastTarget.Blob);
-                        BindBehaviorTree(ecb, entity, bt, query, target.Value, order.Value);
+                        BindBehaviorTree(ecb, entity, bt, query, target.Value, order.Value, lastTarget.Blob);
                         lastTarget.Target = target.Value;
                     }
                 }).Run();
-            
+
+            // delete
             Entities
                 .WithoutBurst()
                 .WithNone<BehaviorTreeTargetComponent>()
@@ -58,7 +62,7 @@ namespace EntitiesBT.Entities
             _entityCommandBufferSystem.AddJobHandleForProducer(Dependency);
         }
 
-        void BindBehaviorTree(EntityCommandBuffer ecb, in Entity entity, in BehaviorTreeComponent bt, in BlackboardDataQuery query, in Entity target, in int order)
+        void BindBehaviorTree(EntityCommandBuffer ecb, in Entity entity, in BehaviorTreeComponent bt, in BlackboardDataQuery query, in Entity target, int order, NodeBlobRef blob)
         {
             if (bt.AutoCreation != AutoCreateType.None)
             {
@@ -93,7 +97,7 @@ namespace EntitiesBT.Entities
             var element = new BehaviorTreeBufferElement
             {
                 Order = order
-              , NodeBlob = bt.Blob
+              , NodeBlob = blob
               , QueryMask = EntityManager.GetEntityQueryMask(query.Query)
               , RuntimeThread = bt.Thread.ToRuntimeThread()
               , BehaviorTree = entity
