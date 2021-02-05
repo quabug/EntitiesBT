@@ -116,7 +116,7 @@ namespace EntitiesBT.Variant
         }
 
         public static unsafe void* Allocate<T>(
-            this ISerializedReaderAndWriter<T> property
+            this ISerializedVariantReaderAndWriter<T> property
           , ref BlobBuilder builder
           , ref BlobVariantReaderAndWriter<T> blobVariant
           , [NotNull] INodeDataBuilder self

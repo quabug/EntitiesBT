@@ -2,6 +2,7 @@
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using EntitiesBT.Components;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using System;
 using Runtime;
@@ -21,7 +22,7 @@ namespace EntitiesBT.Builder.Visual
         {
             var @this = this;
             return new VisualBuilder<EntitiesBT.Nodes.StateReverseNode>(BuildImpl, Children.ToBuilderNode(instance, definition));
-            void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.StateReverseNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
+            unsafe void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.StateReverseNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 
             }

@@ -9,7 +9,7 @@ public class SingleLocalVariantReaderAndWriter : EntitiesBT.Variant.LocalVariant
 
 
 [System.Serializable]
-public class SingleSerializedReaderAndWriterVariant : ISerializedReaderAndWriter<System.Single>
+public class SingleSerializedReaderAndWriterVariant : ISerializedVariantReaderAndWriter<System.Single>
 {
     [UnityEngine.SerializeField]
     private bool _isLinked = true;

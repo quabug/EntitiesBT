@@ -12,6 +12,20 @@ using Unity.Mathematics;
 
 namespace EntitiesBT.Builder.Visual
 {
+    public readonly struct DataPortReaderAndWriter
+    {
+        public readonly bool IsLinked;
+        public readonly InputDataPort Input;
+        public readonly OutputDataPort Output;
+
+        public DataPortReaderAndWriter(bool isLinked, InputDataPort input, OutputDataPort output)
+        {
+            IsLinked = isLinked;
+            Input = input;
+            Output = output;
+        }
+    }
+
     public static class BehaviorTreeBuilderExtension
     {
         [Pure]
@@ -52,15 +66,22 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static IVariantReader<T> ToVariantReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged {
+        public static IVariantReader<T> ToVariantReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        {
             return ToVariantReader(port, instance, definition, () => new GraphVariant.Reader<T>(port));
         }
-        //
-        // [Pure]
-        // public static IVariablePropertyReader<T> ToVariablePropertyReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
-        // {
-        //     return ToVariableProperty(port, instance, definition, () => ToConstVariable<T>(instance, port));
-        // }
+
+        [Pure]
+        public static IVariantWriter<T> ToVariantWriter<T>(this OutputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        {
+            throw new NotImplementedException();
+        }
+
+        [Pure]
+        public static ISerializedVariantReaderAndWriter<T> ToVariantReaderAndWriter<T>(this in DataPortReaderAndWriter port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        {
+            throw new NotImplementedException();
+        }
 
         [Pure]
         private static unsafe IVariantReader<T> ToConstVariant<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged
@@ -115,7 +136,7 @@ namespace EntitiesBT.Builder.Visual
             return null;
         }
 
-        public static Runtime.ValueType ToRunTimeValueType(this Type type)
+        public static Runtime.ValueType ToRunTimeValueType([NotNull] this Type type)
         {
             if (type == typeof(bool)) return Runtime.ValueType.Bool;
             if (type == typeof(int)) return Runtime.ValueType.Int;

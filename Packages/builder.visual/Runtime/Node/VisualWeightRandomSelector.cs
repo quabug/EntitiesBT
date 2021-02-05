@@ -2,6 +2,7 @@
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using EntitiesBT.Components;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using System;
 using Runtime;
@@ -22,7 +23,7 @@ namespace EntitiesBT.Builder.Visual
         {
             var @this = this;
             return new VisualBuilder<EntitiesBT.Nodes.WeightRandomSelectorNode>(BuildImpl, Children.ToBuilderNode(instance, definition));
-            void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.WeightRandomSelectorNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
+            unsafe void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.WeightRandomSelectorNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.Sum = Sum;
                 blobBuilder.AllocateArray(ref data.Weights, Weights);

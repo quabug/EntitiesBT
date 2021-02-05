@@ -111,7 +111,7 @@ namespace EntitiesBT.Editor
         {
             writer.Write($@"
 [System.Serializable]
-public class {valueType.Name}SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedReaderAndWriter<{valueType.FullName}>
+public class {valueType.Name}SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantReaderAndWriter<{valueType.FullName}>
 {{
     [UnityEngine.SerializeField]
     private bool _isLinked = true;
