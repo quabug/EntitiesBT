@@ -140,27 +140,4 @@ namespace EntitiesBT.Editor
 
         private delegate void CreateVariants(StreamWriter writer, Type valueType, Predicate<Type> isReferenceType, string suffix);
     }
-
-    public class BlobVariantFieldCodeGeneratorForOdin : INodeDataFieldCodeGenerator
-    {
-        public bool ShouldGenerate(FieldInfo fi)
-        {
-            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariantReader<>);
-        }
-
-        public string GenerateField(FieldInfo fi)
-        {
-            var variantType = fi.FieldType.GetGenericArguments()[0];
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("[OdinSerialize, NonSerialized]");
-            stringBuilder.Append("        ");
-            stringBuilder.AppendLine($"public EntitiesBT.Variant.VariantProperty<{variantType.FullName}> {fi.Name};");
-            return stringBuilder.ToString();
-        }
-
-        public string GenerateBuild(FieldInfo fi)
-        {
-            return $"{fi.Name}.Allocate(ref builder, ref data.{fi.Name}, Self, tree);";
-        }
-    }
 }

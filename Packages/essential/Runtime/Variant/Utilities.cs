@@ -108,7 +108,7 @@ namespace EntitiesBT.Variant
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged
         {
-            var metaDataPtr = property.Allocate(ref builder, ref blobVariant.Reader, self, tree);
+            var metaDataPtr = property.Allocate(ref builder, ref blobVariant.Reader.Value, self, tree);
             blobVariant.Writer.Value.VariantId = blobVariant.Reader.Value.VariantId;
             // HACK: set meta data of writer as same as reader's
             ref var writerMetaPtr = ref ToBlobPtr<byte>(ref blobVariant.Writer.Value.MetaDataOffsetPtr);
