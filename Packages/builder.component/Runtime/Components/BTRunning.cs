@@ -9,7 +9,7 @@ namespace EntitiesBT.Components
     public class BTRunning : BTNode<EntitiesBT.Nodes.RunningNode>
     {
         
-        protected override unsafe void Build(ref EntitiesBT.Nodes.RunningNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(ref EntitiesBT.Nodes.RunningNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             
         }

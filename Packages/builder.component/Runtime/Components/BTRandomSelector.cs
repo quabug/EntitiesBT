@@ -9,7 +9,7 @@ namespace EntitiesBT.Components
     public class BTRandomSelector : BTNode<EntitiesBT.Nodes.RandomSelectorNode>
     {
         
-        protected override unsafe void Build(ref EntitiesBT.Nodes.RandomSelectorNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(ref EntitiesBT.Nodes.RandomSelectorNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             
         }

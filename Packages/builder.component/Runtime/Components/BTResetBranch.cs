@@ -9,7 +9,7 @@ namespace EntitiesBT.Components
     public class BTResetBranch : BTNode<EntitiesBT.Nodes.ResetBranchNode>
     {
         
-        protected override unsafe void Build(ref EntitiesBT.Nodes.ResetBranchNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(ref EntitiesBT.Nodes.ResetBranchNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             
         }

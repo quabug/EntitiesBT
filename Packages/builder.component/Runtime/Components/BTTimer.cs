@@ -10,7 +10,7 @@ namespace EntitiesBT.Components
     {
         public EntitiesBT.Variant.SingleSerializedReaderAndWriterVariant CountdownSeconds;
         public EntitiesBT.Core.NodeState BreakReturnState;
-        protected override unsafe void Build(ref EntitiesBT.Nodes.TimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(ref EntitiesBT.Nodes.TimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             CountdownSeconds.Allocate(ref builder, ref data.CountdownSeconds, Self, tree);
             data.BreakReturnState = BreakReturnState;

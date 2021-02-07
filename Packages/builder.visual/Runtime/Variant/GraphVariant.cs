@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
@@ -18,7 +19,7 @@ namespace EntitiesBT.Builder.Visual
             private readonly InputDataPort _port;
             public Reader(InputDataPort port) => _port = port;
 
-            public unsafe void* Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
                 return builder.Allocate(ref blobVariant, _port);

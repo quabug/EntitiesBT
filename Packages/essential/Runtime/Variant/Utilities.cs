@@ -75,32 +75,33 @@ namespace EntitiesBT.Variant
             return _VALUE_TYPE_LOOKUP.Value[valueType];
         }
         
-        public static unsafe void* Allocate<TValue>(this BlobBuilder builder, ref BlobVariant blob, TValue value) where TValue : unmanaged
+        public static unsafe IntPtr Allocate<TValue>(this BlobBuilder builder, ref BlobVariant blob, TValue value) where TValue : unmanaged
         {
             ref var blobPtr = ref ToBlobPtr<TValue>(ref blob.MetaDataOffsetPtr);
             ref var blobValue = ref builder.Allocate(ref blobPtr);
             blobValue = value;
-            return UnsafeUtility.AddressOf(ref blobValue);
+            var ptr = UnsafeUtility.AddressOf(ref blobValue);
+            return new IntPtr(ptr);
         }
 
-        public static unsafe void* Allocate<T>(
-            this IVariant property
+        public static IntPtr Allocate<T>(
+            this IVariantReader<T> property
           , ref BlobBuilder builder
           , ref BlobVariantReader<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
 
-        public static unsafe void* Allocate<T>(
-            this IVariant property
+        public static IntPtr Allocate<T>(
+            this IVariantWriter<T> property
           , ref BlobBuilder builder
           , ref BlobVariantWriter<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
 
-        public static unsafe void* Allocate<T>(
-            this IVariant property
+        public static unsafe IntPtr Allocate<T>(
+            this IVariantReaderAndWriter<T> property
           , ref BlobBuilder builder
           , ref BlobVariantReaderAndWriter<T> blobVariant
           , [NotNull] INodeDataBuilder self
@@ -111,11 +112,11 @@ namespace EntitiesBT.Variant
             blobVariant.Writer.Value.VariantId = blobVariant.Reader.Value.VariantId;
             // HACK: set meta data of writer as same as reader's
             ref var writerMetaPtr = ref ToBlobPtr<byte>(ref blobVariant.Writer.Value.MetaDataOffsetPtr);
-            builder.SetPointer(ref writerMetaPtr, ref UnsafeUtility.AsRef<byte>(metaDataPtr));
+            builder.SetPointer(ref writerMetaPtr, ref UnsafeUtility.AsRef<byte>(metaDataPtr.ToPointer()));
             return metaDataPtr;
         }
 
-        public static unsafe void* Allocate<T>(
+        public static IntPtr Allocate<T>(
             this ISerializedVariantReaderAndWriter<T> property
           , ref BlobBuilder builder
           , ref BlobVariantReaderAndWriter<T> blobVariant

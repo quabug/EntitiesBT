@@ -10,7 +10,7 @@ namespace EntitiesBT.Components
     {
         public System.Single CountdownSeconds;
         public EntitiesBT.Core.NodeState BreakStates;
-        protected override unsafe void Build(ref EntitiesBT.Nodes.RepeatDurationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(ref EntitiesBT.Nodes.RepeatDurationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             data.CountdownSeconds = CountdownSeconds;
             data.BreakStates = BreakStates;

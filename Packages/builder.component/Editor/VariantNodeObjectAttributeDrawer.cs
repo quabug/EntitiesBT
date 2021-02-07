@@ -13,7 +13,7 @@ namespace EntitiesBT.Editor
     [CustomPropertyDrawer(typeof(VariantNodeObjectAttribute))]
     public class VariantNodeObjectAttributeDrawer : PropertyDrawer
     {
-        private BTNode _nodeObject;
+        private INodeDataBuilder _nodeObject;
         private string[] _options = new string[0];
         private Type _genericType;
         private VariantNodeObjectAttribute _attribute;
@@ -24,7 +24,7 @@ namespace EntitiesBT.Editor
             {
                 if (_genericType == null) _genericType = this.GetGenericType();
                 if (_attribute == null) _attribute = (VariantNodeObjectAttribute)attribute;
-                var nodeObject = (BTNode)property.GetSiblingFieldValue(_attribute.NodeObjectFieldName);
+                var nodeObject = (INodeDataBuilder)property.GetSiblingFieldValue(_attribute.NodeObjectFieldName);
                 if (!Equals(nodeObject, _nodeObject))
                 {
                     var readerType = typeof(BlobVariantReader<>).MakeGenericType(_genericType);

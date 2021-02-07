@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using EntitiesBT.Attributes;
 using EntitiesBT.Core;
@@ -22,6 +23,10 @@ namespace EntitiesBT.Components
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
+            TextAsset text = new TextAsset();
+            var reader = new StringReader(text.text);
+            reader.ReadLine();
+
             var blob = new NodeBlobRef(_source.GetBlobAsset());
             var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
             VirtualMachine.Reset(ref blob, ref bb);

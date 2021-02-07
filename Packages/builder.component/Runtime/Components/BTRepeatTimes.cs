@@ -10,7 +10,7 @@ namespace EntitiesBT.Components
     {
         public System.Int32 TickTimes;
         public EntitiesBT.Core.NodeState BreakStates;
-        protected override unsafe void Build(ref EntitiesBT.Nodes.RepeatTimesNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(ref EntitiesBT.Nodes.RepeatTimesNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             data.TickTimes = TickTimes;
             data.BreakStates = BreakStates;
