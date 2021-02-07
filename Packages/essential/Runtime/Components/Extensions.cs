@@ -60,7 +60,7 @@ namespace EntitiesBT.Components
             _CREATE_REFERENCE = (builder, type, allocator) => createReference.MakeGenericMethod(type).Invoke(null, new object[] {builder, allocator});
         }
         
-        public static unsafe void* ConstructRootPtr<T>(this BlobBuilder builder) where T : struct
+        public static unsafe void* ConstructRootPtr<T>(this BlobBuilder builder) where T : unmanaged
         {
             return UnsafeUtility.AddressOf(ref builder.ConstructRoot<T>());
         }
@@ -72,13 +72,13 @@ namespace EntitiesBT.Components
             return Pointer.Unbox(ptr);
         }
 
-        public static void AllocateArray<T>(ref this BlobBuilder builder, ref BlobArray<T> blobArray, IList<T> sourceArray) where T : struct
+        public static void AllocateArray<T>(ref this BlobBuilder builder, ref BlobArray<T> blobArray, IList<T> sourceArray) where T : unmanaged
         {
             var array = builder.Allocate(ref blobArray, sourceArray.Count);
             for (var i = 0; i < sourceArray.Count; i++) array[i] = sourceArray[i];
         }
 
-        public static BlobAssetReference CreateReference<T>(this BlobBuilder builder, Allocator allocator = Allocator.Temp) where T : struct
+        public static BlobAssetReference CreateReference<T>(this BlobBuilder builder, Allocator allocator = Allocator.Temp) where T : unmanaged
         {
             var @ref = builder.CreateBlobAssetReference<T>(allocator);
             return BlobAssetReference.Create(@ref);

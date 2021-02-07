@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace EntitiesBT.Components
 {
-    public abstract class BTVirtualNode<T> : INodeDataBuilder where T : struct, INodeData
+    public abstract class BTVirtualNode<T> : INodeDataBuilder where T : unmanaged, INodeData
     {
         public virtual int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
         public virtual INodeDataBuilder Self => this;
@@ -37,7 +37,7 @@ namespace EntitiesBT.Components
         public IEnumerable<INodeDataBuilder> Children => _self.Children;
     }
     
-    public class BTVirtualDecorator<T> : BTVirtualNode<T> where T : struct, INodeData
+    public class BTVirtualDecorator<T> : BTVirtualNode<T> where T : unmanaged, INodeData
     {
         private readonly IEnumerable<INodeDataBuilder> _children;
         public BTVirtualDecorator(INodeDataBuilder child) => _children = new BTVirtualRealSelf(child).Yield();

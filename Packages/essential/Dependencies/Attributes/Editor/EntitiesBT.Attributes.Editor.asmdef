@@ -1,0 +1,19 @@
+{
+    "name": "EntitiesBT.Attributes.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:abe4851e67df59644865a60dae54a845",
+        "GUID:c7babe7561eb244059259745ef27b866"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

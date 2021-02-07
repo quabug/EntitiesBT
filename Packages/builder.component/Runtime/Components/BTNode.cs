@@ -89,7 +89,7 @@ namespace EntitiesBT.Components
 #endif
     }
     
-    public abstract class BTNode<T> : BTNode where T : struct, INodeData
+    public abstract class BTNode<T> : BTNode where T : unmanaged, INodeData
     {
         protected override Type NodeType => typeof(T);
 

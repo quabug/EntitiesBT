@@ -127,7 +127,7 @@ namespace EntitiesBT.Entities
         }
 
         [Pure]
-        public static unsafe BlobAssetReference<T> Clone<T>(this BlobAssetReference<T> @this) where T : struct
+        public static unsafe BlobAssetReference<T> Clone<T>(this BlobAssetReference<T> @this) where T : unmanaged
         {
             var untypedRef = BlobAssetReference.Create(@this);
             return BlobAssetReference<T>.Create(untypedRef.GetUnsafePtr(), untypedRef.Length);

@@ -1,1 +1,0 @@
-This package posted on [unity forum](https://forum.unity.com/threads/serializereference-genericserializedreferenceinspectorui.813366/) written by (TextusGames)[https://forum.unity.com/members/textusgames.1228963/]

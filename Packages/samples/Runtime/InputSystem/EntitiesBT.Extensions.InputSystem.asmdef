@@ -1,14 +1,15 @@
 {
     "name": "EntitiesBT.Extensions.InputSystem",
+    "rootNamespace": "",
     "references": [
         "GUID:75469ad4d38634e559750d17036d5f7c",
         "GUID:c7babe7561eb244059259745ef27b866",
         "GUID:734d92eba21c94caba915361bd5ac177",
         "GUID:d8b63aba1907145bea998dd612889d6b",
         "GUID:8819f35a0fc84499b990e90a4ca1911f",
-        "GUID:73106583b323919458c1e05166706ce3",
         "GUID:e0cd26848372d4e5c891c569017e11f1",
-        "GUID:4285913d8daed4d6fb1061c793376ad4"
+        "GUID:4285913d8daed4d6fb1061c793376ad4",
+        "GUID:abe4851e67df59644865a60dae54a845"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

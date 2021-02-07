@@ -32,7 +32,8 @@ MonoBehaviour:
     00000001:
       type: {class: TypeGroupAssemblies, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
       data:
-        Assemblies: []
+        Assemblies:
+        - {fileID: 5897886265953266890, guid: c7babe7561eb244059259745ef27b866, type: 3}
     00000002:
       type: {class: TypeValidatorWithFullName, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}
       data:
@@ -45,7 +46,7 @@ MonoBehaviour:
       type: {class: VisualCodeGenBlobArray, ns: EntitiesBT.Builder.Visual.Editor,
         asm: EntitiesBT.Builder.Visual.Editor}
     00000005:
-      type: {class: VisualCodeGeneratorBlobVariableField, ns: EntitiesBT.Builder.Visual.Editor,
+      type: {class: VisualCodeGeneratorBlobVariantField, ns: EntitiesBT.Builder.Visual.Editor,
         asm: EntitiesBT.Builder.Visual.Editor}
     00000006:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}

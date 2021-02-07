@@ -22,6 +22,7 @@ namespace EntitiesBT.Builder.Visual.Editor
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using EntitiesBT.Components;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using System;
 using Runtime;
@@ -41,7 +42,7 @@ namespace EntitiesBT.Builder.Visual
         {{
             var @this = this;
             return new VisualBuilder<{nodeType.FullName}>(BuildImpl, {(hasChildren ? "Children.ToBuilderNode(instance, definition)" : "null")});
-            void BuildImpl(BlobBuilder blobBuilder, ref {nodeType.FullName} data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
+            unsafe void BuildImpl(BlobBuilder blobBuilder, ref {nodeType.FullName} data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {{
                 {string.Join(Environment.NewLine + "                ", buildStrings)}
             }}

@@ -130,7 +130,7 @@ LightingSettings:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Settings.lighting
-  serializedVersion: 2
+  serializedVersion: 3
   m_GIWorkflowMode: 1
   m_EnableBakedLightmaps: 1
   m_EnableRealtimeLightmaps: 0
@@ -152,7 +152,7 @@ LightingSettings:
   m_MixedBakeMode: 2
   m_LightmapsBakeMode: 1
   m_FilterMode: 1
-  m_LightmapParameters: {fileID: 0}
+  m_LightmapParameters: {fileID: 15204, guid: 0000000000000000f000000000000000, type: 0}
   m_ExportTrainingData: 0
   m_TrainingDataDestination: TrainingData
   m_RealtimeResolution: 2
@@ -169,7 +169,7 @@ LightingSettings:
   m_PVREnvironmentReferencePointCount: 2048
   m_LightProbeSampleCountMultiplier: 4
   m_PVRBounces: 2
-  m_PVRRussianRouletteStartBounce: 2
+  m_PVRMinBounces: 1
   m_PVREnvironmentMIS: 0
   m_PVRFilteringMode: 2
   m_PVRDenoiserTypeDirect: 0
@@ -597,6 +597,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &705507995
@@ -657,13 +658,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerSeconds:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CustomValue: 1
+        Value: 2
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -791,13 +800,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerSeconds:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CustomValue: 1
+        Value: 2
+    00000001:
+      type: {class: , ns: , asm: }
 --- !u!1 &1365720264
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,10 +1121,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerSeconds:
-    id: 0
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   references:
     version: 1
     00000000:
-      type: {class: SingleCustomVariableProperty, ns: EntitiesBT.Variable, asm: EntitiesBT.Runtime}
+      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CustomValue: 3
+        Value: 1
+    00000001:
+      type: {class: , ns: , asm: }

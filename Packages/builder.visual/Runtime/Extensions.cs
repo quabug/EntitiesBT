@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using JetBrains.Annotations;
 using Runtime;
 using Unity.Assertions;
@@ -12,6 +12,36 @@ using Unity.Mathematics;
 
 namespace EntitiesBT.Builder.Visual
 {
+    public readonly struct DataPortReaderAndWriter
+    {
+        public readonly bool IsLinked;
+        public readonly InputDataPort Input;
+        public readonly OutputDataPort Output;
+
+        public DataPortReaderAndWriter(bool isLinked, InputDataPort input, OutputDataPort output)
+        {
+            IsLinked = isLinked;
+            Input = input;
+            Output = output;
+        }
+    }
+
+    public readonly struct SerializedVisualReaderAndWriter<T> : ISerializedVariantReaderAndWriter<T> where T : unmanaged
+    {
+        public bool IsLinked { get; }
+        public IVariantReaderAndWriter<T> ReaderAndWriter { get; }
+        public IVariantReader<T> Reader { get; }
+        public IVariantWriter<T> Writer { get; }
+
+        public SerializedVisualReaderAndWriter(bool isLinked, IVariantReaderAndWriter<T> readerAndWriter, IVariantReader<T> reader, IVariantWriter<T> writer)
+        {
+            IsLinked = isLinked;
+            ReaderAndWriter = readerAndWriter;
+            Reader = reader;
+            Writer = writer;
+        }
+    }
+
     public static class BehaviorTreeBuilderExtension
     {
         [Pure]
@@ -52,34 +82,73 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static IVariableProperty<T> ToVariablePropertyReadOnly<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        public static IVariantReader<T> ToVariantReader<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
         {
-            return ToVariableProperty(port, instance, definition, () => new GraphVariableProperty<T>(port));
+            return ToVariantReader(port, instance, definition, () => new GraphVariant.Reader<T>(port));
         }
 
         [Pure]
-        public static IVariableProperty<T> ToVariablePropertyReadWrite<T>(this InputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        public static IVariantWriter<T> ToVariantWriter<T>(this OutputDataPort port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
         {
-            return ToVariableProperty(port, instance, definition, () => ToConstVariable<T>(instance, port));
+            throw new NotImplementedException();
         }
 
         [Pure]
-        private static unsafe IVariableProperty<T> ToConstVariable<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged
+        public static ISerializedVariantReaderAndWriter<T> ToVariantReaderAndWriter<T>(this in DataPortReaderAndWriter port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        {
+            if (!port.IsLinked) throw new NotImplementedException();
+            return new SerializedVisualReaderAndWriter<T>(true, ToLocalReaderAndWriter<T>(instance, port.Input), null, null);
+        }
+
+        [Pure]
+        private static IVariantReader<T> ToLocalReader<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged
+        {
+            return new LocalVariant.Reader<T> {Value = ReadValue<T>(instance, port)};
+        }
+
+        [Pure]
+        private static IVariantReaderAndWriter<T> ToLocalReaderAndWriter<T>([NotNull] GraphInstance instance, InputDataPort port) where T : unmanaged
+        {
+            return new LocalVariant.ReaderAndWriter<T> {Value = ReadValue<T>(instance, port)};
+        }
+
+        [Pure]
+        public static unsafe T ReadValue<T>([NotNull] this GraphInstance instance, InputDataPort port) where T : unmanaged
         {
             T data;
             void* ptr = &data;
             var value = instance.ReadValue(port);
             Value.SetPtrToValue(ptr, value.Type, value);
-            return new CustomVariableProperty<T> {CustomValue = data};
+            return data;
         }
 
         [Pure]
-        private static IVariableProperty<T> ToVariableProperty<T>(
+        private static IVariantReader<T> ToVariantReader<T>(
             InputDataPort port
           , [NotNull] GraphInstance instance
           , [NotNull] GraphDefinition definition
-          , [NotNull] Func<IVariableProperty<T>> createGraphVariable
+          , [NotNull] Func<IVariantReader<T>> createGraphVariant
         ) where T : unmanaged
+        {
+            var (dataNode, dataIndex) = GetDataNode(port, definition);
+
+            if (dataNode is IVisualVariantNode propertyNode)
+                return propertyNode.GetVariantReader<T>(dataIndex, instance, definition);
+
+            if (dataNode is IVisualVariantNode<T> genericPropertyNode)
+                return genericPropertyNode.GetVariantReader(instance, definition);
+
+            if (dataNode is IConstantNode)
+                return ToLocalReader<T>(instance, port);
+
+            return createGraphVariant();
+        }
+
+        [Pure]
+        private static (INode node, int index) GetDataNode(
+            InputDataPort port
+          , [NotNull] GraphDefinition definition
+        )
         {
             var inputPortIndex = (int)port.Port.Index;
             Assert.IsTrue(inputPortIndex < definition.PortInfoTable.Count);
@@ -87,18 +156,7 @@ namespace EntitiesBT.Builder.Visual
             Assert.IsTrue(dataIndex < definition.DataPortTable.Count);
             var nodeIndex = (int)definition.DataPortTable[dataIndex].GetIndex();
             Assert.IsTrue(nodeIndex < definition.NodeTable.Count);
-            var dataNode = definition.NodeTable[nodeIndex];
-
-            if (dataNode is IVisualVariablePropertyNode propertyNode)
-                return propertyNode.GetVariableProperty<T>(dataIndex, instance, definition);
-
-            if (dataNode is IVisualVariablePropertyNode<T> genericPropertyNode)
-                return genericPropertyNode.GetVariableProperty(instance, definition);
-
-            if (dataNode is IConstantNode)
-                return ToConstVariable<T>(instance, port);
-
-            return createGraphVariable();
+            return (definition.NodeTable[nodeIndex], nodeIndex);
         }
 
         // copy from `GraphInstance.GetComponentFieldDescription`
@@ -116,7 +174,7 @@ namespace EntitiesBT.Builder.Visual
             return null;
         }
 
-        public static Runtime.ValueType ToRunTimeValueType(this Type type)
+        public static Runtime.ValueType ToRunTimeValueType([NotNull] this Type type)
         {
             if (type == typeof(bool)) return Runtime.ValueType.Bool;
             if (type == typeof(int)) return Runtime.ValueType.Int;

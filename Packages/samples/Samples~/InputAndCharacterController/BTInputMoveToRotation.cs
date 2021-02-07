@@ -1,6 +1,8 @@
+using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Sample;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -10,33 +12,32 @@ namespace EntitiesBT.Samples
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
         [SerializeReference, SerializeReferenceButton]
-        public float2Property InputMoveProperty;
+        public float2VariantReader InputMovePropertyReader;
         
-        [SerializeReference, SerializeReferenceButton]
-        public quaternionProperty OutputDirectionProperty;
+        public quaternionSerializedReaderAndWriterVariant OutputDirectionPropertyWriter;
 
-        protected override void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            InputMoveProperty.Allocate(ref builder, ref data.InputMove, this, tree);
-            OutputDirectionProperty.Allocate(ref builder, ref data.OutputDirection, this, tree);
+            InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
+            OutputDirectionPropertyWriter.Allocate(ref builder, ref data.OutputDirection, this, tree);
         }
     }
 
     [BehaviorNode("2164B3CA-C12E-4C86-9F80-F45A99124FAD")]
     public struct InputMoveToRotationNode : INodeData
     {
-        [ReadOnly] public BlobVariable<float2> InputMove;
-        public BlobVariable<quaternion> OutputDirection;
+        public BlobVariantReader<float2> InputMove;
+        public BlobVariantReaderAndWriter<quaternion> OutputDirection;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var move = InputMove.GetData(index, ref blob, ref bb);
+            var move = InputMove.Read(index, ref blob, ref bb);
             if (math.lengthsq(move) <= math.FLT_MIN_NORMAL) return NodeState.Success;
             
             var direction = quaternion.LookRotationSafe(new float3(move.x, 0, move.y), math.up());
-            OutputDirection.GetDataRef(index, ref blob, ref bb) = direction;
+            OutputDirection.Write(index, ref blob, ref bb, direction);
             return NodeState.Success;
         }
 

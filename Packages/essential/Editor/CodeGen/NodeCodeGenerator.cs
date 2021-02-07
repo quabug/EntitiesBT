@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using EntitiesBT.Attributes;
 using EntitiesBT.Core;
 using Unity.Assertions;
 using UnityEditor;

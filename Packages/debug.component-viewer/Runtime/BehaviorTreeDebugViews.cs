@@ -25,7 +25,7 @@ namespace EntitiesBT.DebugView
     }
     
     [BehaviorTreeDebugViewGeneric]
-    public class BTDebugView<T> : BTDebugView where T : struct, INodeData
+    public class BTDebugView<T> : BTDebugView where T : unmanaged, INodeData
     {
         public T DefaultData;
         public T RuntimeData;

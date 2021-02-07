@@ -668,22 +668,22 @@ MonoBehaviour:
       data:
         Input:
           Port:
-            Index: 10
+            Index: 1
         BehaviorTreeEntity:
           Port:
-            Index: 11
+            Index: 2
         TargetEntity:
           Port:
-            Index: 12
+            Index: 3
         Order:
           Port:
-            Index: 13
+            Index: 4
         CloneBehaviorTree:
           Port:
-            Index: 14
+            Index: 5
         Debug:
           Port:
-            Index: 15
+            Index: 6
     00000024:
       type: {class: IntConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -704,22 +704,22 @@ MonoBehaviour:
       data:
         Input:
           Port:
-            Index: 19
+            Index: 1
         BehaviorTreeEntity:
           Port:
-            Index: 20
+            Index: 2
         TargetEntity:
           Port:
-            Index: 21
+            Index: 3
         Order:
           Port:
-            Index: 22
+            Index: 4
         CloneBehaviorTree:
           Port:
-            Index: 23
+            Index: 5
         Debug:
           Port:
-            Index: 24
+            Index: 6
     00000028:
       type: {class: IntConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -740,22 +740,22 @@ MonoBehaviour:
       data:
         Input:
           Port:
-            Index: 28
+            Index: 1
         BehaviorTreeEntity:
           Port:
-            Index: 29
+            Index: 2
         TargetEntity:
           Port:
-            Index: 30
+            Index: 3
         Order:
           Port:
-            Index: 31
+            Index: 4
         CloneBehaviorTree:
           Port:
-            Index: 32
+            Index: 5
         Debug:
           Port:
-            Index: 33
+            Index: 6
     0000002C:
       type: {class: BooleanConstant, ns: UnityEditor.GraphToolsFoundation.Overdrive.BasicModel,
         asm: Unity.GraphTools.Foundation.Overdrive.Editor}
@@ -766,10 +766,10 @@ MonoBehaviour:
       data:
         Enabled:
           Port:
-            Index: 37
+            Index: 1
         Output:
           Port:
-            Index: 38
+            Index: 2
     0000002E:
       type: {class: , ns: , asm: }
 --- !u!114 &2231197237016266728
@@ -786,7 +786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Definition:
     id: 0
-  HashCode: 267026844
+  HashCode: 1647079356
   references:
     version: 1
     00000000:

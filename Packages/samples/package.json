@@ -1,16 +1,15 @@
 {
   "name": "com.quabug.entities-bt.samples",
   "description": "Behavior Tree for Unity Entities - Samples",
-  "version": "0.21.9",
-  "unity": "2020.1",
+  "version": "1.0.0",
+  "unity": "2020.2",
   "displayName": "EntitiesBT - Samples",
   "type": "sample",
   "dependencies": {
     "com.unity.inputsystem": "1.0.0",
     "com.unity.rendering.hybrid": "0.8.0-preview.19",
-    "com.quabug.entities-bt.builder.component": "0.21.5",
-    "com.quabug.entities-bt.debug.component-viewer": "0.21.4",
-    "com.quabug.entities-bt.builder.visual": "0.4.0"
+    "com.quabug.entities-bt.builder.component": "1.0.0",
+    "com.quabug.entities-bt.debug.component-viewer": "1.0.0"
   },
   "samples": [
     {
@@ -37,11 +36,6 @@
       "displayName": "[Sample] variable",
       "description": "variable value from variant source",
       "path": "Samples~/Variable"
-    },
-    {
-      "displayName": "[Sample] visual",
-      "description": "visual builder",
-      "path": "Samples~/Visual"
     },
     {
       "displayName": "[Test] tests",

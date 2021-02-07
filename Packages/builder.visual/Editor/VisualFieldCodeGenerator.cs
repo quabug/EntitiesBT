@@ -1,13 +1,8 @@
 using System;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using EntitiesBT.Core;
 using EntitiesBT.Editor;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 using Unity.Entities;
-using UnityEditor;
 
 namespace EntitiesBT.Builder.Visual.Editor
 {
@@ -48,25 +43,47 @@ namespace EntitiesBT.Builder.Visual.Editor
     }
 
     [Serializable]
-    public class VisualCodeGeneratorBlobVariableField : INodeDataFieldCodeGenerator
+    public class VisualCodeGeneratorBlobVariantField : INodeDataFieldCodeGenerator
     {
         public bool ShouldGenerate(FieldInfo fi)
         {
-            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobVariable<>);
+            if (!fi.FieldType.IsGenericType) return false;
+            var type = fi.FieldType.GetGenericTypeDefinition();
+            return type == typeof(BlobVariantReader<>)
+                   || type == typeof(BlobVariantWriter<>)
+                   || type == typeof(BlobVariantReaderAndWriter<>)
+               ;
         }
 
         public string GenerateField(FieldInfo fi)
         {
             var type = fi.FieldType.GenericTypeArguments[0];
             var valueType = type.ToRunTimeValueType();
-            return $"[PortDescription(Runtime.ValueType.{valueType})] public InputDataPort {fi.Name};";
+            var variantType = fi.FieldType.GetGenericTypeDefinition();
+            if (variantType == typeof(BlobVariantReader<>))
+                return $"[PortDescription(Runtime.ValueType.{valueType})] public InputDataPort {fi.Name};";
+            if (variantType == typeof(BlobVariantWriter<>))
+                return $"[PortDescription(Runtime.ValueType.{valueType})] public OutputDataPort {fi.Name};";
+
+            return $"[PortDescription(Runtime.ValueType.{valueType}, \"{fi.Name}\")] public InputDataPort Input{fi.Name};"
+                + Environment.NewLine + "        "
+                + $"[PortDescription(Runtime.ValueType.{valueType}, \"{fi.Name}\")] public OutputDataPort Output{fi.Name};"
+                + Environment.NewLine + "        "
+                + $"public bool IsLinked{fi.Name};"
+            ;
         }
 
         public string GenerateBuild(FieldInfo fi)
         {
             var type = fi.FieldType.GenericTypeArguments[0];
-            var isReadOnly = fi.GetCustomAttribute<ReadOnlyAttribute>() != null;
-            return $"@this.{fi.Name}.ToVariableProperty{(isReadOnly ? "ReadOnly" : "ReadWrite")}<{type.FullName}>(instance, definition).Allocate(ref blobBuilder, ref data.{fi.Name}, self, builders);";
+            if (type == typeof(BlobVariantReader<>)) return BuildScript(fi.Name, fi.Name, "Reader");
+            if (type == typeof(BlobVariantWriter<>)) return BuildScript(fi.Name, fi.Name, "Writer");
+            return $"new {nameof(DataPortReaderAndWriter)}(@this.IsLinked{fi.Name}, @this.Input{fi.Name}, @this.Output{fi.Name}).ToVariantReaderAndWriter<{type.FullName}>(instance, definition).Allocate(ref blobBuilder, ref data.{fi.Name}, self, builders);";
+
+            string BuildScript(string fieldName, string dataFieldName, string variantSuffix)
+            {
+                return $"@this.{fieldName}.ToVariant{variantSuffix}<{type.FullName}>(instance, definition).Allocate(ref blobBuilder, ref data.{dataFieldName}, self, builders);";
+            }
         }
     }
 }

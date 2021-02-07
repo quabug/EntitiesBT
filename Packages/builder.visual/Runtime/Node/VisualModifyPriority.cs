@@ -2,6 +2,7 @@
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using EntitiesBT.Components;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using System;
 using Runtime;
@@ -23,7 +24,7 @@ namespace EntitiesBT.Builder.Visual
         {
             var @this = this;
             return new VisualBuilder<EntitiesBT.Nodes.ModifyPriorityNode>(BuildImpl, null);
-            void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.ModifyPriorityNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
+            unsafe void BuildImpl(BlobBuilder blobBuilder, ref EntitiesBT.Nodes.ModifyPriorityNode data, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] builders)
             {
                 data.PrioritySelectorIndex = PrioritySelectorIndex;
                 data.WeightIndex = WeightIndex;

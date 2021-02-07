@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
@@ -7,7 +8,6 @@ using UnityEngine;
 
 namespace EntitiesBT.Builder.Visual
 {
-    [RequiresEntityConversion]
     public class BehaviorTreeEntity : MonoBehaviour, IConvertGameObjectToEntity
     {
         [SerializeReference, SerializeReferenceButton] private IBehaviorTreeSource _source = default;

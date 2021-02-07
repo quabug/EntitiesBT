@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using EntitiesBT.Variable;
+using EntitiesBT.Variant;
 
 namespace EntitiesBT.Editor
 {
@@ -21,13 +21,13 @@ namespace EntitiesBT.Editor
         }
     }
 
-    public class TypeValidatorWithoutBlobVariable : ITypeValidator
+    public class TypeValidatorWithoutBlobVariant : ITypeValidator
     {
         public bool Verify(Type node)
         {
             var fields = node.GetFields(BindingFlags.Public | BindingFlags.Instance);
             return !fields.Select(fi => fi.FieldType)
-                .Any(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BlobVariable<>))
+                .Any(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BlobVariantReader<>))
             ;
         }
     }

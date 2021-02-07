@@ -1,18 +1,20 @@
 using System;
+using EntitiesBT.Attributes;
 using EntitiesBT.Core;
-using EntitiesBT.Variable;
+using EntitiesBT.Sample;
+using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using static EntitiesBT.Extensions.InputSystem.InputExtensions;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputMove : BTInputActionBase<InputMoveNode>
     {
-        [SerializeReference, SerializeReferenceButton]
-        public float2Property Output;
+        public float2SerializedReaderAndWriterVariant Output;
 
-        protected override void Build(ref InputMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override unsafe void Build(ref InputMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             base.Build(ref data, builder, tree);
             Output.Allocate(ref builder, ref data.Output, this, tree);
@@ -23,16 +25,16 @@ namespace EntitiesBT.Extensions.InputSystem
     public struct InputMoveNode : IInputActionNodeData
     {
         public Guid ActionId { get; set; }
-        public BlobVariable<float2> Output;
+        public BlobVariantReaderAndWriter<float2> Output;
         
         [ReadOnly(typeof(InputActionAssetComponent))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            var inputValue = index.ReadInputActionValue<InputMoveNode, Vector2, TNodeBlob, TBlackboard>(ref blob, ref bb);
+            var inputValue = ReadInputActionValue<InputMoveNode, Vector2, TNodeBlob, TBlackboard>(index, ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
-            Output.GetDataRef(index, ref blob, ref bb) = inputValue.Value;
+            Output.Write(index, ref blob, ref bb, inputValue.Value);
             return NodeState.Success;
         }
 

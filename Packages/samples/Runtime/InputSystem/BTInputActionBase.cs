@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
-    public class BTInputActionBase<TNode> : BTNode<TNode> where TNode : struct, IInputActionNodeData
+    public class BTInputActionBase<TNode> : BTNode<TNode> where TNode : unmanaged, IInputActionNodeData
     {
         public InputActionReference InputAction;
         

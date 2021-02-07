@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using EntitiesBT.Variable;
-using Unity.Entities;
+using EntitiesBT.Variant;
 
 namespace EntitiesBT.Nodes
 {
@@ -11,15 +9,16 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("2F6009D3-1314-42E6-8E52-4AEB7CDDB4CD")]
     public struct DelayTimerNode : INodeData
     {
-        [ReadWrite] public BlobVariable<float> TimerSeconds;
+        public BlobVariantReaderAndWriter<float> TimerSeconds;
 
         [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            ref var timer = ref TimerSeconds.GetDataRef(index, ref blob, ref bb);
+            var timer = TimerSeconds.Read(index, ref blob, ref bb);
             timer -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;
+            TimerSeconds.Write(index, ref blob, ref bb, timer);
             return timer <= 0 ? NodeState.Success : NodeState.Running;
         }
 
