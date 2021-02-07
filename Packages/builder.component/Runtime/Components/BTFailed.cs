@@ -9,7 +9,7 @@ namespace EntitiesBT.Components
     public class BTFailed : BTNode<EntitiesBT.Nodes.FailedNode>
     {
         
-        protected override unsafe void Build(ref EntitiesBT.Nodes.FailedNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(ref EntitiesBT.Nodes.FailedNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             
         }

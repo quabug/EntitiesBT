@@ -9,7 +9,7 @@ namespace EntitiesBT.Components
     public class BTErrorRerunOnce : BTNode<EntitiesBT.Nodes.ErrorRerunOnceNode>
     {
         
-        protected override unsafe void Build(ref EntitiesBT.Nodes.ErrorRerunOnceNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(ref EntitiesBT.Nodes.ErrorRerunOnceNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             
         }

@@ -30,7 +30,7 @@ namespace EntitiesBT.Variant
             public BTNode NodeObject;
             [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
 
-            public unsafe void* Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public unsafe IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
                 return Allocate<T>(ref builder, ref blobVariant, self, tree, NodeObject, ValueFieldName);
             }
@@ -90,17 +90,17 @@ namespace EntitiesBT.Variant
             public int Offset;
         }
 
-        private static unsafe void* Allocate<T>(
+        private static IntPtr Allocate<T>(
             ref BlobBuilder builder
             , ref BlobVariant blobVariant
             , INodeDataBuilder self
             , ITreeNode<INodeDataBuilder>[] tree
-            , BTNode nodeObject
+            , INodeDataBuilder nodeObject
             , string valueFieldName
         ) where T : unmanaged
         {
             var index = Array.FindIndex(tree, node => ReferenceEquals(node.Value, nodeObject));
-            if (!nodeObject || index < 0)
+            if (nodeObject == null || index < 0)
             {
                 Debug.LogError($"Invalid `NodeObject` {nodeObject}", (UnityEngine.Object)self);
                 throw new ArgumentException();

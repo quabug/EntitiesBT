@@ -1,12 +1,12 @@
 {
   "name": "com.quabug.entities-bt.builder.visual",
   "description": "Behavior Tree for Unity Entities - Visual Builder",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "unity": "2020.2",
   "displayName": "EntitiesBT - Visual Builder",
   "dependencies": {
     "com.unity.visualscripting.entities": "0.5.0-preview.1",
-    "com.quabug.entities-bt.essential": "1.0.0",
-    "com.quabug.entities-bt.variable.scriptable-object": "1.0.0"
+    "com.quabug.entities-bt.essential": "1.0.1",
+    "com.quabug.entities-bt.variable.scriptable-object": "1.0.1"
   }
 }

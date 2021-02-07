@@ -25,7 +25,7 @@ namespace EntitiesBT.Components
     public class {className} : BTNode<{nodeType.FullName}>
     {{
         {string.Join(Environment.NewLine + "        ", fieldStrings)}
-        protected override unsafe void Build(ref {nodeType.FullName} data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(ref {nodeType.FullName} data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {{
             {string.Join(Environment.NewLine + "            ", buildStrings)}
         }}
