@@ -38,7 +38,7 @@ _____      _   _ _   _           ______ _____
 Behavior Tree framework based on and used for Unity Entities (DOTS)
 
 ## Why another Behavior Tree framework?
-While developing my new game by using Unity Entities, I found that the existing BT frameworks are not support Entities out of box and also lack of compatibility with plugins like [odin](https://odininspector.com/), so I decide to write my own.
+Existing BT frameworks are not support Entities out of box.
 
 ## Features
 - Actions are easy to read/write data from/to entity.
@@ -69,7 +69,7 @@ While developing my new game by using Unity Entities, I found that the existing 
 
 ## HowTo
 ### Installation
-Requirement: Unity >= 2020.1 and entities package >= 0.14.0-preview.19
+Requirement: Unity >= 2020.2 and entities package >= 0.14.0-preview.19
 
 Install the packages either by
 
@@ -190,7 +190,7 @@ openupm add com.quabug.entities-bt.variable.scriptable-object
     }
 ```
 ##### Generate specific types of `IVariant<T>`
-Generic `VariableProperty<T>` cannot be serialized in Unity, since `[SerializeReference]` is not allowed for a generic type.
+Generic `IVariant<T>` cannot be serialized in Unity, since `[SerializeReference]` is not allowed on a generic type.
 A specific type of `IVariant<T>` must be declared before use.
 - First create a _Scriptable Object_ of _VariantGeneratorSetting_
 <img width="800" alt="Snipaste_2020-03-18_18-57-30" src="https://user-images.githubusercontent.com/683655/76953861-6159e880-694a-11ea-8fbc-33a83b181ebf.png">
