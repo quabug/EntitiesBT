@@ -48,11 +48,7 @@ namespace EntitiesBT.Builder.Visual
             var query = blob.GetAccessTypes();
             var dataQuery = new BlackboardDataQuery(query, components => dstManager.CreateEntityQuery(components.ToArray()));
             dstManager.AddSharedComponentData(entity, dataQuery);
-            dstManager.AddComponentData(entity, new BehaviorTreeComponent
-            {
-                Blob = blob, Thread = Thread, AutoCreation = AutoCreation
-            });
-
+            dstManager.AddComponentData(entity, new BehaviorTreeComponent(blob, Thread, AutoCreation));
             dstManager.AddComponentObject(entity, new GraphInstanceComponent {Value = instance});
 
 #if UNITY_EDITOR

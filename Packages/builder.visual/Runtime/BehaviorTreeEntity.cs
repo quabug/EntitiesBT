@@ -35,11 +35,7 @@ namespace EntitiesBT.Builder.Visual
                 // dstManager.CreateEntityQuery(components.ToArray()));
                 World.DefaultGameObjectInjectionWorld.EntityManager.CreateEntityQuery(components.ToArray()));
             dstManager.AddSharedComponentData(entity, dataQuery);
-
-            dstManager.AddComponentData(entity, new BehaviorTreeComponent
-            {
-                Blob = blob, Thread = _thread, AutoCreation = _autoCreateTypes
-            });
+            dstManager.AddComponentData(entity, new BehaviorTreeComponent(blob, _thread, _autoCreateTypes));
         }
     }
 }

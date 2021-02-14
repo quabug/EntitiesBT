@@ -119,10 +119,7 @@ namespace EntitiesBT.Entities
 #endif
             dstManager.AddSharedComponentData(clone, query);
             var blob = new NodeBlobRef(comp.Blob.BlobRef.Clone());
-            dstManager.AddComponentData(clone, new BehaviorTreeComponent
-            {
-                Blob = blob, Thread = comp.Thread, AutoCreation = comp.AutoCreation
-            });
+            dstManager.AddComponentData(clone, new BehaviorTreeComponent(blob, comp.Thread, comp.AutoCreation));
             return clone;
         }
 

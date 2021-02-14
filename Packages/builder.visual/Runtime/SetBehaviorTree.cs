@@ -39,21 +39,21 @@ namespace EntitiesBT.Builder.Visual
 
             var order = ctx.ReadInt(Order);
 
-            if (!dstManager.HasComponent<BehaviorTreeBufferElement>(target))
-                dstManager.AddBuffer<BehaviorTreeBufferElement>(target);
-
             if (!dstManager.HasComponent<CurrentBehaviorTreeComponent>(target))
                 dstManager.AddComponent<CurrentBehaviorTreeComponent>(target);
 
+            if (!dstManager.HasComponent<BehaviorTreeBufferElement>(target))
+                dstManager.AddBuffer<BehaviorTreeBufferElement>(target);
+
             if (dstManager.HasComponent<BehaviorTreeTargetComponent>(behaviorTree))
-                dstManager.SetComponentData(behaviorTree, new BehaviorTreeTargetComponent {Value = target});
+                dstManager.SetComponentData(behaviorTree, new BehaviorTreeTargetComponent(target));
             else
-                dstManager.AddComponentData(behaviorTree, new BehaviorTreeTargetComponent {Value = target});
+                dstManager.AddComponentData(behaviorTree, new BehaviorTreeTargetComponent(target));
 
             if (dstManager.HasComponent<BehaviorTreeOrderComponent>(behaviorTree))
-                dstManager.SetComponentData(behaviorTree, new BehaviorTreeOrderComponent {Value = order});
+                dstManager.SetComponentData(behaviorTree, new BehaviorTreeOrderComponent(order));
             else
-                dstManager.AddComponentData(behaviorTree, new BehaviorTreeOrderComponent {Value = order});
+                dstManager.AddComponentData(behaviorTree, new BehaviorTreeOrderComponent(order));
 
             if (ctx.ReadBool(Debug) && !dstManager.HasComponent<BehaviorTreeDebug>(behaviorTree))
                 dstManager.AddComponentData(target, new BehaviorTreeDebug());

@@ -65,6 +65,16 @@ namespace EntitiesBT.Entities
         public EntityQueryMask QueryMask;
         public Entity BehaviorTree;
         public JobHandle Dependency;
+
+        public BehaviorTreeBufferElement(int order, BehaviorTreeRuntimeThread runtimeThread, NodeBlobRef nodeBlob, EntityQueryMask queryMask, Entity behaviorTree, JobHandle dependency)
+        {
+            Order = order;
+            RuntimeThread = runtimeThread;
+            NodeBlob = nodeBlob;
+            QueryMask = queryMask;
+            BehaviorTree = behaviorTree;
+            Dependency = dependency;
+        }
     }
 
     public struct CurrentBehaviorTreeComponent : IComponentData
@@ -74,20 +84,37 @@ namespace EntitiesBT.Entities
             ref UnsafeUtility.AsRef<BehaviorTreeBufferElement>(Value.ToPointer());
     }
 
-    public struct BehaviorTreeTargetComponent : IComponentData
+    public readonly struct BehaviorTreeTargetComponent : IComponentData
     {
-        public Entity Value;
+        public readonly Entity Value;
+
+        public BehaviorTreeTargetComponent(Entity value)
+        {
+            Value = value;
+        }
     }
 
-    public struct BehaviorTreeOrderComponent : IComponentData
+    public readonly struct BehaviorTreeOrderComponent : IComponentData
     {
-        public int Value;
+        public readonly int Value;
+
+        public BehaviorTreeOrderComponent(int value)
+        {
+            Value = value;
+        }
     }
     
-    public struct BehaviorTreeComponent : IComponentData
+    public readonly struct BehaviorTreeComponent : IComponentData
     {
-        public NodeBlobRef Blob;
-        public BehaviorTreeThread Thread;
-        public AutoCreateType AutoCreation;
+        public readonly NodeBlobRef Blob;
+        public readonly BehaviorTreeThread Thread;
+        public readonly AutoCreateType AutoCreation;
+
+        public BehaviorTreeComponent(NodeBlobRef blob, BehaviorTreeThread thread, AutoCreateType autoCreation)
+        {
+            Blob = blob;
+            Thread = thread;
+            AutoCreation = autoCreation;
+        }
     }
 }
