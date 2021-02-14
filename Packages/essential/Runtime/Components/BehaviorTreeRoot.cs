@@ -1,4 +1,3 @@
-using System.IO;
 using System.Linq;
 using EntitiesBT.Attributes;
 using EntitiesBT.Core;
@@ -23,10 +22,7 @@ namespace EntitiesBT.Components
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            TextAsset text = new TextAsset();
-            var reader = new StringReader(text.text);
-            reader.ReadLine();
-
+            // TODO: use `BlobAssetStore` to reuse same blob asset without building.
             var blob = new NodeBlobRef(_source.GetBlobAsset());
             var bb = new EntityBlackboard { Entity = entity, EntityManager = dstManager };
             VirtualMachine.Reset(ref blob, ref bb);
@@ -46,12 +42,9 @@ namespace EntitiesBT.Components
                 World.DefaultGameObjectInjectionWorld.EntityManager.CreateEntityQuery(components.ToArray()));
             dstManager.AddSharedComponentData(behaviorTreeEntity, dataQuery);
 
-            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeComponent
-            {
-                Blob = blob, Thread = _thread, AutoCreation = _autoCreateTypes
-            });
-            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeTargetComponent {Value = entity});
-            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeOrderComponent {Value = _order});
+            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeComponent(blob, _thread, _autoCreateTypes));
+            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeTargetComponent(entity));
+            dstManager.AddComponentData(behaviorTreeEntity, new BehaviorTreeOrderComponent(_order));
         }
     }
 }

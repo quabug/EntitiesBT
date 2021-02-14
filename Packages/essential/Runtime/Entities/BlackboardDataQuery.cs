@@ -7,7 +7,7 @@ using Unity.Entities;
 
 namespace EntitiesBT.Entities
 {
-    public struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
+    public readonly struct BlackboardDataQuery : ISharedComponentData, IEquatable<BlackboardDataQuery>
     {
         public ComponentTypeSet Set { get; }
         public EntityQuery Query { get; }

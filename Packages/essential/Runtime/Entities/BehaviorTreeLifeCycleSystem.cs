@@ -12,38 +12,32 @@ namespace EntitiesBT.Entities
             public NodeBlobRef Blob;
         }
 
-        private EntityCommandBufferSystem _entityCommandBufferSystem;
-
-        protected override void OnCreate()
-        {
-            _entityCommandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
-        }
-
+        // TODO: sync-points optimization?
         protected override void OnUpdate()
         {
-            var ecb = _entityCommandBufferSystem.CreateCommandBuffer();
-
             // create
             Entities
                 .WithoutBurst()
+                .WithStructuralChanges()
                 .WithNone<LastTargetComponent>()
                 .ForEach((Entity entity, in BlackboardDataQuery query, in BehaviorTreeComponent bt, in BehaviorTreeTargetComponent target, in BehaviorTreeOrderComponent order) =>
                 {
                     var blob = new NodeBlobRef(bt.Blob.BlobRef.Clone());
-                    ecb.AddComponent(entity, new LastTargetComponent {Target = target.Value, Blob = blob});
-                    BindBehaviorTree(ecb, entity, bt, query, target.Value, order.Value, blob);
+                    EntityManager.AddComponentData(entity, new LastTargetComponent {Target = target.Value, Blob = blob});
+                    BindBehaviorTree(entity, bt, query, target.Value, order.Value, blob);
                 }).Run();
 
             // update
             Entities
                 .WithoutBurst()
+                .WithStructuralChanges()
                 .WithChangeFilter<BehaviorTreeTargetComponent>()
                 .ForEach((Entity entity, ref LastTargetComponent lastTarget, in BlackboardDataQuery query, in BehaviorTreeComponent bt, in BehaviorTreeTargetComponent target, in BehaviorTreeOrderComponent order) =>
                 {
                     if (lastTarget.Target != target.Value)
                     {
-                        UnbindBehaviorTree(lastTarget.Target, lastTarget.Blob);
-                        BindBehaviorTree(ecb, entity, bt, query, target.Value, order.Value, lastTarget.Blob);
+                        UnbindBehaviorTree(entity, lastTarget.Target);
+                        BindBehaviorTree(entity, bt, query, target.Value, order.Value, lastTarget.Blob);
                         lastTarget.Target = target.Value;
                     }
                 }).Run();
@@ -51,18 +45,17 @@ namespace EntitiesBT.Entities
             // delete
             Entities
                 .WithoutBurst()
+                .WithStructuralChanges()
                 .WithNone<BehaviorTreeTargetComponent>()
                 .ForEach((Entity entity, in LastTargetComponent lastTarget) =>
             {
-                UnbindBehaviorTree(lastTarget.Target, lastTarget.Blob);
+                UnbindBehaviorTree(entity, lastTarget.Target);
                 lastTarget.Blob.BlobRef.Dispose();
-                ecb.RemoveComponent<LastTargetComponent>(entity);
+                EntityManager.RemoveComponent<LastTargetComponent>(entity);
             }).Run();
-            
-            _entityCommandBufferSystem.AddJobHandleForProducer(Dependency);
         }
 
-        void BindBehaviorTree(EntityCommandBuffer ecb, in Entity entity, in BehaviorTreeComponent bt, in BlackboardDataQuery query, in Entity target, int order, NodeBlobRef blob)
+        void BindBehaviorTree(Entity behaviorTreeEntity, in BehaviorTreeComponent bt, in BlackboardDataQuery query, Entity target, int order, NodeBlobRef blob)
         {
             if (bt.AutoCreation != AutoCreateType.None)
             {
@@ -80,46 +73,46 @@ namespace EntitiesBT.Entities
                         switch (typeInfo.Category)
                         {
                             case TypeManager.TypeCategory.ComponentData:
-                                ecb.AddComponent(target, componentType);
+                                EntityManager.AddComponent(target, componentType);
                                 break;
                             case TypeManager.TypeCategory.BufferData:
-                                ecb.AddBuffer(target, componentType);
+                                EntityManager.AddComponent(target, ComponentType.ReadWrite(componentType.TypeIndex));
                                 break;
                         }
                     }
                 }
             }
 
-            var buffers = EntityManager.GetBuffer<BehaviorTreeBufferElement>(target);
+            var buffer = EntityManager.GetBuffer<BehaviorTreeBufferElement>(target);
             var orderedIndex = 0;
             // TODO: binary search?
-            while (orderedIndex < buffers.Length && buffers[orderedIndex].Order < order) orderedIndex++;
+            while (orderedIndex < buffer.Length && buffer[orderedIndex].Order < order) orderedIndex++;
             var element = new BehaviorTreeBufferElement
-            {
-                Order = order
-              , NodeBlob = blob
-              , QueryMask = EntityManager.GetEntityQueryMask(query.Query)
-              , RuntimeThread = bt.Thread.ToRuntimeThread()
-              , BehaviorTree = entity
-              , Dependency = query.Query.GetDependency()
-            };
-            buffers.Insert(orderedIndex, element);
+            (
+                order
+              , bt.Thread.ToRuntimeThread()
+              , blob
+              , EntityManager.GetEntityQueryMask(query.Query)
+              , behaviorTreeEntity
+              , query.Query.GetDependency()
+            );
+            buffer.Insert(orderedIndex, element);
         }
 
-        void UnbindBehaviorTree(in Entity target, in NodeBlobRef blob)
+        void UnbindBehaviorTree(Entity behaviorTreeEntity, Entity targetEntity)
         {
-            if (!EntityManager.HasComponent<BehaviorTreeBufferElement>(target))
+            if (!EntityManager.HasComponent<BehaviorTreeBufferElement>(targetEntity))
             {
                 // TODO: log error message?
                 return;
             }
 
-            var buffers = EntityManager.GetBuffer<BehaviorTreeBufferElement>(target);
-            for (var i = buffers.Length - 1; i >= 0; i--)
+            var buffer = EntityManager.GetBuffer<BehaviorTreeBufferElement>(targetEntity);
+            for (var i = buffer.Length - 1; i >= 0; i--)
             {
-                if (buffers[i].NodeBlob == blob)
+                if (buffer[i].BehaviorTree == behaviorTreeEntity)
                 {
-                    buffers.RemoveAt(i);
+                    buffer.RemoveAt(i);
                     break;
                 }
             }
