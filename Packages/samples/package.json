@@ -1,7 +1,7 @@
 {
   "name": "com.quabug.entities-bt.samples",
   "description": "Behavior Tree for Unity Entities - Samples",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "unity": "2020.2",
   "displayName": "EntitiesBT - Samples",
   "type": "sample",
@@ -36,6 +36,11 @@
       "displayName": "[Sample] variable",
       "description": "variable value from variant source",
       "path": "Samples~/Variable"
+    },
+    {
+      "displayName": "[Sample] Runtime Entity Creation",
+      "description": "clone an entity at runtime",
+      "path": "Samples~/RuntimeEntityCreation"
     },
     {
       "displayName": "[Test] tests",
