@@ -34,7 +34,7 @@ namespace EntitiesBT.Editor
     {
         public bool ShouldGenerate(FieldInfo fi)
         {
-            return fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(BlobString);
+            return fi.FieldType == typeof(BlobString);
         }
 
         public string GenerateField(FieldInfo fi)
