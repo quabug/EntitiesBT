@@ -1,7 +1,7 @@
 {
   "name": "com.quabug.entities-bt.samples",
   "description": "Behavior Tree for Unity Entities - Samples",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "unity": "2020.2",
   "displayName": "EntitiesBT - Samples",
   "type": "sample",
@@ -29,7 +29,7 @@
       "path": "Samples~/Entity"
     },
     {
-      "displayName": "[Sample] input system & movement (NEED Odin Serializer)",
+      "displayName": "[Sample] input system & movement",
       "description": "sample of input system and unity movement extensions.",
       "path": "Samples~/InputAndCharacterController"
     },
