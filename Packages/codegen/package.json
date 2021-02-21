@@ -1,0 +1,17 @@
+{
+  "name": "com.quabug.entities-bt.codegen",
+  "description": "Behavior Tree for Unity Entities - ILCodeGen",
+  "version": "0.1.0",
+  "unity": "2020.2",
+  "displayName": "EntitiesBT - IL CodeGen",
+  "dependencies": {
+    "com.quabug.entities-bt.essential": "1.1.0"
+  },
+  "samples": [
+    {
+      "displayName": "[Test] tests",
+      "description": "test cases of il codegen",
+      "path": "Test~"
+    }
+  ]
+}

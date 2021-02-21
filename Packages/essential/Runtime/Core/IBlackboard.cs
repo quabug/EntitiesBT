@@ -6,24 +6,24 @@ namespace EntitiesBT.Core
     public interface IBlackboard
     {
         bool HasData<T>() where T : struct;
-        T GetData<T>() where T : struct;
-        ref T GetDataRef<T>() where T : struct;
+        T GetData<[ReadOnly(typeof(int))] T>() where T : struct;
+        ref T GetDataRef<[ReadWrite] T>() where T : struct;
 
         bool HasData(Type type);
-        IntPtr GetDataPtrRO(Type type);
-        IntPtr GetDataPtrRW(Type type);
+        IntPtr GetDataPtrRO([ReadOnly] Type type);
+        IntPtr GetDataPtrRW([ReadWrite] Type type);
         
-        T GetObject<T>() where T : class;
+        T GetObject<[ReadWrite] T>() where T : class;
     }
     
     public static class BlackboardExtensions
     {
-        public static DynamicBufferUnsafe<T> GetDynamicBufferUnsafeRO<T>(this IBlackboard blackboard) where T : struct, IBufferElementData
+        public static DynamicBufferUnsafe<T> GetDynamicBufferUnsafeRO<[ReadOnly] T>(this IBlackboard blackboard) where T : struct, IBufferElementData
         {
             return blackboard.GetDataPtrRO(typeof(T)).ToDynamicBufferUnsafe<T>();
         }
         
-        public static DynamicBufferUnsafe<T> GetDynamicBufferUnsafeRW<T>(this IBlackboard blackboard) where T : struct, IBufferElementData
+        public static DynamicBufferUnsafe<T> GetDynamicBufferUnsafeRW<[ReadWrite] T>(this IBlackboard blackboard) where T : struct, IBufferElementData
         {
             return blackboard.GetDataPtrRW(typeof(T)).ToDynamicBufferUnsafe<T>();
         }
