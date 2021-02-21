@@ -12,8 +12,6 @@ namespace EntitiesBT.CodeGen.Tests
     public class TestCodeGenForNode
     {
         private AssemblyDefinition _assembly;
-        private TypeDefinition _selfType;
-        private ModuleDefinition _module;
 
         [SetUp]
         public void SetUp()
@@ -28,8 +26,41 @@ namespace EntitiesBT.CodeGen.Tests
                 })
                 , ReflectionImporterProvider = new PostProcessorReflectionImporterProvider()
             });
-            _selfType = _assembly.FindTypeDefinition(GetType());
-            _module = _assembly.MainModule;
+        }
+
+        [Test]
+        public void should_avoid_generate_attributes_on_method_already_has_attributes()
+        {
+            var tick = typeof(TestManualNode).GetMethod("Tick", BindingFlags.Instance | BindingFlags.Public);
+            var tickRO = tick.GetCustomAttributes<ReadOnlyAttribute>();
+            var tickRW = tick.GetCustomAttributes<ReadWriteAttribute>();
+            Assert.AreEqual(0, tickRO.Count());
+            Assert.AreEqual(1, tickRW.Count());
+            // Assert.AreEqual(ComponentType.ReadWrite<ulong>(), tickRW.Single());
+
+            var reset = typeof(TestManualNode).GetMethod("Reset", BindingFlags.Instance | BindingFlags.Public);
+            var resetRO = reset.GetCustomAttributes<ReadOnlyAttribute>();
+            var resetRW = reset.GetCustomAttributes<ReadWriteAttribute>();
+            Assert.AreEqual(1, resetRO.Count());
+            Assert.AreEqual(0, resetRW.Count());
+            // Assert.AreEqual(ComponentType.ReadOnly<bool>(), resetRO.Single());
+        }
+
+        class TestManualNode : INodeData
+        {
+            [ReadWrite(typeof(ulong))]
+            public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb) where TNodeBlob : struct, INodeBlob where TBlackboard : struct, IBlackboard
+            {
+                bb.GetData<int>();
+                bb.GetDataPtrRW(typeof(float));
+                return NodeState.Success;
+            }
+
+            [ReadOnly(typeof(bool))]
+            public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb) where TNodeBlob : struct, INodeBlob where TBlackboard : struct, IBlackboard
+            {
+                bb.GetDataRef<float>();
+            }
         }
 
         [Test]
