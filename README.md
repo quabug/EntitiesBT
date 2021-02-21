@@ -380,7 +380,7 @@ make sure to mark outside method call with right access attributes to generate r
 
 ```c#
 
-public static Extension
+public static class Extension
 {
     [ReadOnly(typeof(FooComponent)), ReadWrite(typeof(BarComponent))]
     public static void Call<[ReadWrite] T, [ReadOnly] U>([ReadOnly] Type type) { /* ... */ }
