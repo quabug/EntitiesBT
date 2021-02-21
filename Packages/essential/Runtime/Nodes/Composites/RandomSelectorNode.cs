@@ -6,7 +6,6 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("BA0106CA-618F-409A-903A-973B89F1470A", BehaviorNodeType.Composite)]
     public struct RandomSelectorNode : INodeData
     {
-        [ReadWrite(typeof(BehaviorTreeRandom))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard

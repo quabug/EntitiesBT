@@ -15,7 +15,6 @@ namespace EntitiesBT.Extensions.InputSystem
         public BlobVariantReader<Vector2> Output;
         public unsafe void* OutputPtr => UnsafeUtility.AddressOf(ref Output);
 
-        [ReadOnly(typeof(InputActionAssetComponent))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard

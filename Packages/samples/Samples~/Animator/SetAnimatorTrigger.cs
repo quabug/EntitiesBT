@@ -22,7 +22,6 @@ namespace EntitiesBT.Sample
     {
         public int Value;
 
-        [ReadWrite(typeof(Animator))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
                 where TNodeBlob : struct, INodeBlob
                 where TBlackboard : struct, IBlackboard

@@ -25,7 +25,6 @@ namespace EntitiesBT.Extensions.UnityMovement
     {
         public BlobVariantReader<quaternion> RotationProperty;
         
-        [ReadWrite(typeof(Transform))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard

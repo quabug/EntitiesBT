@@ -10,7 +10,6 @@ namespace EntitiesBT.Nodes
         public float Sum;
         public BlobArray<float> Weights;
 
-        [ReadWrite(typeof(BehaviorTreeRandom))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard

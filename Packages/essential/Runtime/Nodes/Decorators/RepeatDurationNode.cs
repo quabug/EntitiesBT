@@ -11,7 +11,6 @@ namespace EntitiesBT.Nodes
         public float CountdownSeconds;
         public NodeState BreakStates;
 
-        [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard

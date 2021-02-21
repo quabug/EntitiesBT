@@ -1,0 +1,21 @@
+{
+    "name": "Unity.EntitiesBT.CodeGen",
+    "rootNamespace": "EntitiesBT.CodeGen.Editor",
+    "references": [
+        "GUID:c7babe7561eb244059259745ef27b866"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Mono.Cecil.dll",
+        "Mono.Cecil.Mdb.dll",
+        "Mono.Cecil.Pdb.dll",
+        "Mono.Cecil.Rocks.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -26,8 +26,6 @@ namespace EntitiesBT.Sample
     {
         public float3 Velocity;
 
-        [ReadOnly(typeof(BehaviorTreeTickDeltaTime))]
-        [ReadWrite(typeof(Translation))]
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard

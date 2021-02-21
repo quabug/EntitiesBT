@@ -13,7 +13,7 @@ namespace EntitiesBT.Core
         public ComponentAccessorAttribute([NotNull, ItemNotNull] Type[] types) => _types = types;
     }
 
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.GenericParameter, AllowMultiple = true)]
     public class ReadOnlyAttribute : ComponentAccessorAttribute
     {
         public ReadOnlyAttribute([NotNull, ItemNotNull] params Type[] types) : base(types) {}
@@ -21,7 +21,7 @@ namespace EntitiesBT.Core
             _types.Select(t => new ComponentType(t, ComponentType.AccessMode.ReadOnly));
     }
 
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.GenericParameter, AllowMultiple = true)]
     public class ReadWriteAttribute : ComponentAccessorAttribute
     {
         public ReadWriteAttribute([NotNull, ItemNotNull] params Type[] types) : base(types) {}
@@ -29,7 +29,7 @@ namespace EntitiesBT.Core
             _types.Select(t => new ComponentType(t, ComponentType.AccessMode.ReadWrite));
     }
 
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Field)]
     public class OptionalAttribute : ComponentAccessorAttribute
     {
         public OptionalAttribute() : base(Array.Empty<Type>()) {}
