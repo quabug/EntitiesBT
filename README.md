@@ -222,8 +222,6 @@ public struct EntityMoveNode : INodeData
 {
     public float3 Velocity; // node data saved in `INodeBlob`
     
-    [EntitiesBT.Core.ReadWrite(typeof(Translation))] // declare readwrite access of `Translation` component
-    [EntitiesBT.Core.ReadOnly(typeof(BehaviorTreeTickDeltaTime))] // declare readonly access of `BehaviorTreeTickDeltaTime` component
     public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
         where TNodeBlob : struct, INodeBlob
         where TBlackboard : struct, IBlackboard
@@ -345,26 +343,63 @@ public struct SomeNode : INodeData
     // read-write access
     BlobVariantReaderAndWriter<double> FloatVariable;
 
-    // declare right access types for `Tick` method
-    [EntitiesBT.Core.ReadWrite(typeof(ReadWriteComponentData))]
-    [EntitiesBT.Core.ReadOnly(typeof(ReadOnlyComponentData))]
+    // leave method attribute to be empty and will generate right access of this method
     public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
         where TNodeBlob : struct, INodeBlob
         where TBlackboard : struct, IBlackboard
     {
-        // access `ComponentData`s by variables or directly from `blackboard`
-        // ...
+        // generate `[ReadOnly(typeof(ReadOnlyComponent)]` on `Tick` method
+        bb.GetData<ReadOnlyComponent>();
+        
+        // generate `[ReadWrite(typeof(ReadWriteComponent)]` on `Tick` method
+        bb.GetDataRef<ReadWriteComponent>();
+        
         return NodeState.Success;
     }
 
-    // also declare right access types for `Reset` method if there's any
+    // or manually declare right access types for this method
     [EntitiesBT.Core.ReadWrite(typeof(ReadWriteComponentData))]
+    [EntitiesBT.Core.ReadOnly(typeof(ReadOnlyComponentData))]
     public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
         where TNodeBlob : struct, INodeBlob
         where TBlackboard : struct, IBlackboard
     {
-        // access `ComponentData`s by variables or directly from `blackboard`
+        // generate `[ReadOnly(typeof(ReadOnlyComponent)]` on `Reset` method
+        bb.GetData<ReadOnlyComponent>();
+        
+        // generate `[ReadWrite(typeof(ReadWriteComponent)]` on `Reset` method
+        bb.GetDataRef<ReadWriteComponent>();
+        
         // ...
+    }
+}
+```
+
+make sure to mark outside method call with right access attributes to generate right access type on `Tick` or `Reset` method of node
+
+```c#
+
+public static Extension
+{
+    [ReadOnly(typeof(FooComponent)), ReadWrite(typeof(BarComponent))]
+    public static void Call<[ReadWrite] T, [ReadOnly] U>([ReadOnly] Type type) { /* ... */ }
+}
+
+public struct SomeNode : INodeData
+{
+    // leave method attribute to be empty to generate automatically
+    public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
+        where TNodeBlob : struct, INodeBlob
+        where TBlackboard : struct, IBlackboard
+    {
+        // the following call will generate access attributes on `Tick` like below:
+        // [ReadOnly(typeof(FooComponent))]
+        // [ReadWrite(typeof(BarComponent))]
+        // [ReadWrite(typeof(int))]
+        // [ReadOnly(typeof(float))]
+        // [ReadOnly(typeof(long))]
+        Extension.Call<int, float>(typeof(long));
+        return NodeState.Success;
     }
 }
 ```
