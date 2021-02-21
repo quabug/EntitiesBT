@@ -6,6 +6,6 @@
   "displayName": "EntitiesBT - Essential",
   "dependencies": {
     "com.unity.entities": "0.14.0-preview.19",
-    "com.quabug.entities-bt.codegen": "0.1.0"
+    "com.quabug.entities-bt.codegen": "1.0.0"
   }
 }
