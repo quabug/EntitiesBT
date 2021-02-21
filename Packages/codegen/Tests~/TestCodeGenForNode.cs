@@ -11,23 +11,6 @@ namespace EntitiesBT.CodeGen.Tests
 {
     public class TestCodeGenForNode
     {
-        private AssemblyDefinition _assembly;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _assembly = AssemblyDefinition.ReadAssembly(GetType().Assembly.Location, new ReaderParameters
-            {
-                AssemblyResolver = new PostProcessorAssemblyResolver(new []
-                {
-                    typeof(INodeData).Assembly.Location
-                    , typeof(int).Assembly.Location
-                    , typeof(Console).Assembly.Location
-                })
-                , ReflectionImporterProvider = new PostProcessorReflectionImporterProvider()
-            });
-        }
-
         [Test]
         public void should_avoid_generate_attributes_on_method_already_has_attributes()
         {
