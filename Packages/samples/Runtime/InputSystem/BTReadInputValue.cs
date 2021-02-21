@@ -29,6 +29,7 @@ namespace EntitiesBT.Extensions.InputSystem
         where TNodeData : struct, IReadInputValueNode
         where TValue : unmanaged
     {
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public static unsafe NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard

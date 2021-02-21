@@ -1,7 +1,7 @@
 {
   "name": "com.quabug.entities-bt.samples",
   "description": "Behavior Tree for Unity Entities - Samples",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "unity": "2020.2",
   "displayName": "EntitiesBT - Samples",
   "type": "sample",
@@ -9,7 +9,8 @@
     "com.unity.inputsystem": "1.0.0",
     "com.unity.rendering.hybrid": "0.8.0-preview.19",
     "com.quabug.entities-bt.builder.component": "1.0.0",
-    "com.quabug.entities-bt.debug.component-viewer": "1.0.0"
+    "com.quabug.entities-bt.debug.component-viewer": "1.0.0",
+    "com.quabug.entities-bt.essential": "1.0.0"
   },
   "samples": [
     {

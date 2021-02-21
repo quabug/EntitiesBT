@@ -5,6 +5,7 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public static class InputExtensions
     {
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public static InputAction GetInputAction<TNodeData, TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
@@ -15,6 +16,7 @@ namespace EntitiesBT.Extensions.InputSystem
             return input.FindAction(data.ActionId);
         }
         
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public static InputActionMap GetInputActionMap<TNodeData, TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
@@ -25,6 +27,7 @@ namespace EntitiesBT.Extensions.InputSystem
             return input.FindActionMap(data.ActionId);
         }
 
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public static object ReadInputActionValueAsObject<TNodeData, TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
@@ -33,7 +36,8 @@ namespace EntitiesBT.Extensions.InputSystem
             var action = GetInputAction<TNodeData, TNodeBlob, TBlackboard>(index, ref blob, ref bb);
             return action?.ReadValueAsObject();
         }
-        
+
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public static TValue? ReadInputActionValue<TNodeData, TValue, TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
@@ -44,6 +48,7 @@ namespace EntitiesBT.Extensions.InputSystem
             return action?.ReadValue<TValue>();
         }
 
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public static InputActionPhase? GetInputActionPhase<TNodeData, TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
@@ -53,6 +58,7 @@ namespace EntitiesBT.Extensions.InputSystem
             return action?.phase;
         }
 
+        [ReadOnly(typeof(InputActionAssetComponent))]
         public static bool IsInputActionTriggered<TNodeData, TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
