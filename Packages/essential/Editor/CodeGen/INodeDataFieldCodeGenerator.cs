@@ -18,7 +18,7 @@ namespace EntitiesBT.Editor
 
         public string GenerateField(FieldInfo fi)
         {
-            return $"public {fi.FieldType.FullName} {fi.Name};";
+            return $"public {fi.FieldType.FullName.ToCodeName()} {fi.Name};";
         }
 
         public string GenerateBuild(FieldInfo fi)
