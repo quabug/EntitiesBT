@@ -80,7 +80,8 @@ modify `Packages/manifest.json` as below
 {
   "dependencies": {
     ...
-    "com.quabug.entities-bt.essential": "1.0.0",
+    "com.quabug.entities-bt.essential": "1.1.1",
+    "com.quabug.entities-bt.codegen": "1.0.0",
     "com.quabug.entities-bt.builder.component": "1.0.0",
     "com.quabug.entities-bt.debug.component-viewer": "1.0.0",
     "com.quabug.entities-bt.variable.scriptable-object": "1.0.0"
