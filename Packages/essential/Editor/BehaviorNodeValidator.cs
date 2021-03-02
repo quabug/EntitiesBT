@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
 using UnityEditor.Callbacks;
+using UnityEngine;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Editor
@@ -16,12 +17,25 @@ namespace EntitiesBT.Editor
             var dictionary = new Dictionary<int, (Type type, BehaviorNodeAttribute attribute)>(128);
             foreach (var type in BEHAVIOR_TREE_ASSEMBLY_TYPES.Value)
             {
+                if (type.IsInterface
+                    || type.IsAbstract
+                    || type.IsGenericType
+                    || !typeof(INodeData).IsAssignableFrom(type))
+                    continue;
+
                 var attributes = type.GetCustomAttributes(typeof(BehaviorNodeAttribute));
-                if (!attributes.Any()) continue;
-                
+                if (!attributes.Any())
+                {
+                    Debug.LogError($"{type.FullName} must have a BehaviorNodeAttribute");
+                    continue;
+                }
+
                 var behaviorNodeAttribute = attributes.First() as BehaviorNodeAttribute;
                 if (dictionary.TryGetValue(behaviorNodeAttribute.Id, out var other))
-                    throw new Exception($"{other.type.FullName} has same id {behaviorNodeAttribute.Id} with {type.FullName}");
+                {
+                    Debug.LogError($"{other.type.FullName} has same id {behaviorNodeAttribute.Id} with {type.FullName}");
+                    continue;
+                }
                 dictionary.Add(behaviorNodeAttribute.Id, (type, behaviorNodeAttribute));
             }
         }
