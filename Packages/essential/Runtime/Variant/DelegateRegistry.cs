@@ -112,14 +112,14 @@ namespace EntitiesBT.Variant
             var delegateType = typeof(TDelegate);
             DelegateRegistry.DELEGATE_METHOD_MAP.TryGetValue(delegateType, out delegateMap);
             if (delegateType.IsGenericType)
-                DelegateRegistry.DELEGATE_METHOD_MAP.TryGetValue(delegateType, out genericDelegateMap);
+                DelegateRegistry.DELEGATE_METHOD_MAP.TryGetValue(delegateType.GetGenericTypeDefinition(), out genericDelegateMap);
 
             var count = (delegateMap?.Count ?? 0) + (genericDelegateMap?.Count ?? 0);
             var map = new Dictionary<int, TDelegate>(count);
 
-            var genericArguments = delegateType.GetMethod("Invoke").GetGenericArguments();
-            FillMap(genericDelegateMap, methodInfo => methodInfo.MakeGenericMethod(genericArguments));
+            var genericArguments = delegateType.GetGenericArguments();
             FillMap(delegateMap, methodInfo => methodInfo);
+            FillMap(genericDelegateMap, methodInfo => methodInfo.MakeGenericMethod(genericArguments));
             DELEGATES = new ReadOnlyDictionary<int, TDelegate>(map);
 
             void FillMap(IReadOnlyDictionary<int, MethodInfo> idMethodMap, Func<MethodInfo, MethodInfo> createConcreteMethodInfo)
@@ -129,12 +129,15 @@ namespace EntitiesBT.Variant
                 foreach (var t in idMethodMap)
                 {
                     if (map.TryGetValue(t.Key, out var oldDelegate))
-                        Debug.Log($"Overwrite {delegateType.Name}[{t.Key}] from {oldDelegate.Method} to {t.Value}");
+                    {
+                        Debug.Log($"Skip {t.Value} @ {delegateType.Name}[{t.Key}], already have {oldDelegate}");
+                        continue;
+                    }
 
                     try
                     {
-                        var @delegate =
-                            (TDelegate) createConcreteMethodInfo(t.Value).CreateDelegate(typeof(TDelegate));
+                        var methodInfo = createConcreteMethodInfo(t.Value);
+                        var @delegate = (TDelegate) methodInfo.CreateDelegate(typeof(TDelegate));
                         map[t.Key] = @delegate;
                     }
                     catch
