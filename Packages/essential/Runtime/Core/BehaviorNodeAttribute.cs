@@ -18,7 +18,8 @@ namespace EntitiesBT.Core
         public Guid Guid { get; } 
         public int Id { get; }
         public BehaviorNodeType Type { get; }
-        
+        public bool Ignore = false;
+
         public BehaviorNodeAttribute([NotNull] string guid, BehaviorNodeType type = BehaviorNodeType.Action)
         {
             Type = type;
