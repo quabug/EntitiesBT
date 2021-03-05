@@ -15,8 +15,8 @@ namespace EntitiesBT.Variant
         );
     }
 
-    public interface IVariant<T> : IVariant where T : unmanaged {}
-    public interface IVariantReader<T> : IVariant<T> where T : unmanaged {}
-    public interface IVariantWriter<T> : IVariant<T> where T : unmanaged {}
-    public interface IVariantReaderAndWriter<T> : IVariant<T> where T : unmanaged {}
+    public interface IVariant<out T> : IVariant where T : unmanaged {}
+    public interface IVariantReader<out T> : IVariant<T> where T : unmanaged {}
+    public interface IVariantWriter<out T> : IVariant<T> where T : unmanaged {}
+    public interface IVariantReaderAndWriter<out T> : IVariant<T> where T : unmanaged {}
 }
