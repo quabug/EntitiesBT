@@ -29,9 +29,10 @@ namespace EntitiesBT.CodeGen.Tests
             // Assert.AreEqual(ComponentType.ReadOnly<bool>(), resetRO.Single());
         }
 
+        [BehaviorNode("E683A98D-96D3-4EFE-B5E4-250F92441B3B", Ignore = true)]
         class TestManualNode : INodeData
         {
-            [ReadWrite(typeof(ulong))]
+            [ReadWrite(typeof(double))]
             public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb) where TNodeBlob : struct, INodeBlob where TBlackboard : struct, IBlackboard
             {
                 bb.GetData<int>();
@@ -71,12 +72,14 @@ namespace EntitiesBT.CodeGen.Tests
         struct FooComponent : IComponentData {}
         struct BarComponent : IComponentData {}
 
+        [BehaviorNode("D4C33711-96CB-448B-BD6E-182271E2D69F", Ignore = true)]
         class TestNode : INodeData
         {
+
             public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb) where TNodeBlob : struct, INodeBlob where TBlackboard : struct, IBlackboard
             {
                 bb.GetData<FooComponent>();
-                bb.GetDataPtrRW(typeof(byte));
+                bb.GetDataPtrRW(typeof(double));
                 ReadOnlyCalli(typeof(int));
                 ReadOnlyCallvirt<float>();
                 ReadWriteBar();
@@ -88,7 +91,7 @@ namespace EntitiesBT.CodeGen.Tests
             {
                 ReadOnlyDelgate readOnlyDelegate = ReadOnlyCalli;
                 readOnlyDelegate(typeof(FooComponent));
-                ComplexCall<ulong, float>(0);
+                ComplexCall<long, float>(0);
             }
 
             delegate void ReadOnlyDelgate([ReadOnly] Type type);
@@ -102,7 +105,7 @@ namespace EntitiesBT.CodeGen.Tests
             [ReadWrite(typeof(long)), ReadOnly(typeof(ushort), typeof(uint))]
             public void ComplexCall<[ReadOnly] T, [ReadWrite] U>([ReadWrite] double d) {}
 
-            static void StaticCall([ReadOnly] ulong _) {}
+            static void StaticCall([ReadOnly] long _) {}
         }
     }
 }

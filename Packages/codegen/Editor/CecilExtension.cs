@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EntitiesBT.Core;
 using JetBrains.Annotations;
 using Mono.Cecil;
 using Mono.Collections.Generic;
@@ -177,5 +178,7 @@ namespace EntitiesBT.CodeGen.Editor
 	        }
 	        return name;
         }
+        public static bool IsINodeDataStruct(this TypeDefinition typeDefinition) =>
+            typeDefinition.TypeImplements(typeof(INodeData)) && typeDefinition.IsValueType();
     }
 }
