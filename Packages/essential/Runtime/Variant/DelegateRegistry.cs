@@ -6,23 +6,26 @@ using System.Reflection;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variant
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class RegisterDelegateClassAttribute : Attribute
+    public class RegisterDelegateClassAttribute : PreserveAttribute
     {
         public string Guid { get; }
         public RegisterDelegateClassAttribute([NotNull] string guid) => Guid = guid;
     }
 
     [AttributeUsage(AttributeTargets.Method)]
-    public class RegisterDelegateMethodAttribute : Attribute
+    public class RegisterDelegateMethodAttribute : PreserveAttribute
     {
         public Type DelegateType { get; }
         public string OverrideGuid = null;
         public RegisterDelegateMethodAttribute([NotNull] Type delegateType) => DelegateType = delegateType;
+        public RegisterDelegateMethodAttribute([NotNull] Type delegateType, string guid) =>
+            (DelegateType, OverrideGuid) = (delegateType, guid);
     }
 
     internal static class DelegateRegistry
