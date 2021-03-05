@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
@@ -20,8 +22,11 @@ namespace EntitiesBT.Variant
             ref UnsafeUtility.As<int, BlobPtr<TValue>>(ref MetaDataOffsetPtr).Value;
 
         [Pure]
-        public IEnumerable<ComponentType> GetComponentAccessList() =>
-            VariantRegisters.GetComponentAccess(VariantId)(ref this);
+        public IEnumerable<ComponentType> GetComponentAccessList()
+        {
+            var @delegate = DelegateRegistry<AccessorMethodAttribute.Delegate>.TryGetValue(VariantId);
+            return @delegate == null ? Enumerable.Empty<ComponentType>() : @delegate(ref this);
+        }
     }
 
     internal static class BlobVariantExtension
@@ -31,7 +36,11 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            return VariantRegisters<T>.GetReader<TNodeBlob, TBlackboard>(blobVariant.VariantId)(ref blobVariant, index, ref blob, ref bb);
+            var @delegate = DelegateRegistry<ReaderMethodAttribute.Delegate<T, TNodeBlob, TBlackboard>>
+                .TryGetValue(blobVariant .VariantId)
+            ;
+            Debug.Assert(@delegate != null, nameof(@delegate) + " != null");
+            return @delegate.Invoke(ref blobVariant, index, ref blob, ref bb);
         }
 
         public static ref T ReadRef<T, TNodeBlob, TBlackboard>(this ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
@@ -39,7 +48,11 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            return ref VariantRegisters<T>.GetRefReader<TNodeBlob, TBlackboard>(blobVariant.VariantId)(ref blobVariant, index, ref blob, ref bb);
+            var @delegate = DelegateRegistry<RefReaderMethodAttribute.Delegate<T, TNodeBlob, TBlackboard>>
+                .TryGetValue(blobVariant .VariantId)
+            ;
+            Debug.Assert(@delegate != null, nameof(@delegate) + " != null");
+            return ref @delegate(ref blobVariant, index, ref blob, ref bb);
         }
 
         public static T ReadWithRefFallback<T, TNodeBlob, TBlackboard>(this ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
@@ -47,10 +60,11 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            return VariantRegisters<T>.TryGetReader<TNodeBlob, TBlackboard>(blobVariant.VariantId, out var reader)
-                ? reader(ref blobVariant, index, ref blob, ref bb)
-                : VariantRegisters<T>.GetRefReader<TNodeBlob, TBlackboard>(blobVariant.VariantId)(ref blobVariant, index, ref blob, ref bb)
+            var reader = DelegateRegistry<ReaderMethodAttribute.Delegate<T, TNodeBlob, TBlackboard>>
+                .TryGetValue(blobVariant .VariantId)
             ;
+            if (reader != null) return reader(ref blobVariant, index, ref blob, ref bb);
+            return ReadRef<T, TNodeBlob, TBlackboard>(ref blobVariant, index, ref blob, ref bb);
         }
 
         public static void Write<T, TNodeBlob, TBlackboard>(this ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb, T value)
@@ -58,7 +72,11 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            VariantRegisters<T>.GetWriter<TNodeBlob, TBlackboard>(blobVariant.VariantId)(ref blobVariant, index, ref blob, ref bb, value);
+            var @delegate = DelegateRegistry<WriterMethodAttribute.Delegate<T, TNodeBlob, TBlackboard>>
+                .TryGetValue(blobVariant .VariantId)
+            ;
+            Debug.Assert(@delegate != null, nameof(@delegate) + " != null");
+            @delegate(ref blobVariant, index, ref blob, ref bb, value);
         }
 
         public static void WriteWithRefFallback<T, TNodeBlob, TBlackboard>(this ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb, T value)
@@ -66,10 +84,11 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            if (VariantRegisters<T>.TryGetWriter<TNodeBlob, TBlackboard>(blobVariant.VariantId, out var writer))
-                writer(ref blobVariant, index, ref blob, ref bb, value);
-            else
-                VariantRegisters<T>.GetRefReader<TNodeBlob, TBlackboard>(blobVariant.VariantId)(ref blobVariant, index, ref blob, ref bb) = value;
+            var writer = DelegateRegistry<WriterMethodAttribute.Delegate<T, TNodeBlob, TBlackboard>>
+                .TryGetValue(blobVariant .VariantId)
+            ;
+            if (writer != null) writer(ref blobVariant, index, ref blob, ref bb, value);
+            else ReadRef<T, TNodeBlob, TBlackboard>(ref blobVariant, index, ref blob, ref bb) = value;
         }
     }
 }

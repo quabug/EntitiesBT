@@ -13,8 +13,11 @@ namespace EntitiesBT.Variant
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class VariantComponentDataAttribute : PropertyAttribute {}
 
+    [VariantClass(GUID)]
     public static class ComponentVariant
     {
+        public const string GUID = "8E5CDB60-17DB-498A-B925-2094062769AB";
+
         [Serializable]
         public class Any<T> : IVariant where T : unmanaged
         {
@@ -37,15 +40,13 @@ namespace EntitiesBT.Variant
         [Serializable] public class Writer<T> : Any<T>, IVariantWriter<T> where T : unmanaged {}
         [Serializable] public class ReaderAndWriter<T> : Any<T>, IVariantReaderAndWriter<T> where T : unmanaged {}
 
-        public const string GUID = "8E5CDB60-17DB-498A-B925-2094062769AB";
-
         public struct DynamicComponentData
         {
             public ulong StableHash;
             public int Offset;
         }
 
-        [Preserve, AccessorMethod(GUID)]
+        [Preserve, AccessorMethod]
         private static IEnumerable<ComponentType> GetDynamicAccess(ref BlobVariant blobVariant)
         {
             var hash = blobVariant.Value<DynamicComponentData>().StableHash;
@@ -63,7 +64,7 @@ namespace EntitiesBT.Variant
             return ref UnsafeUtility.AsRef<T>(dataPtr.ToPointer());
         }
 
-        [Preserve, ReaderMethod(GUID)]
+        [Preserve, ReaderMethod]
         private static T GetData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
@@ -73,7 +74,7 @@ namespace EntitiesBT.Variant
             return GetComponentValue<T>(data.StableHash, data.Offset, bb.GetDataPtrRO);
         }
 
-        [Preserve, RefReaderMethod(GUID)]
+        [Preserve, RefReaderMethod]
         private static ref T GetDataRef<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
