@@ -61,7 +61,7 @@ namespace EntitiesBT.Core
             foreach (var type in BEHAVIOR_TREE_ASSEMBLY_TYPES.Value)
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
-                if (attribute == null) continue;
+                if (attribute == null || attribute.Ignore) continue;
                 if (nodes.ContainsKey(attribute.Id)) throw new DuplicateNameException($"Node {type}[{attribute.Id}] already registered");
 
                 nodes[attribute.Id] = new Node(
@@ -133,8 +133,8 @@ namespace EntitiesBT.Core
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
                 nodes[attribute.Id] = new Node {
-                  Reset = CreateDelegate<ResetFunc>("Reset", type)
-                  , Tick = CreateDelegate<TickFunc>("Tick", type)
+                  Reset = CreateDelegate<ResetFunc>(nameof(Reset), type)
+                  , Tick = CreateDelegate<TickFunc>(nameof(Tick), type)
                 };
             }
             NODES = new ReadOnlyDictionary<int, Node>(nodes);
