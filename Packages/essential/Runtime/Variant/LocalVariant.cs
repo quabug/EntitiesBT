@@ -2,7 +2,6 @@ using System;
 using EntitiesBT.Core;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variant
@@ -30,7 +29,7 @@ namespace EntitiesBT.Variant
         [Serializable] public class Reader<T> : Any<T>, IVariantReader<T> where T : unmanaged {}
         [Serializable] public class ReaderAndWriter<T> : Any<T>, IVariantReaderAndWriter<T> where T : unmanaged {}
 
-        [Preserve, RefReaderMethod]
+        [RefReaderMethod]
         private static ref T Read<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob

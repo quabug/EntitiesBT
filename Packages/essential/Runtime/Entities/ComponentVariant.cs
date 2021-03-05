@@ -4,7 +4,6 @@ using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 using static EntitiesBT.Variant.Utilities;
 
@@ -46,7 +45,7 @@ namespace EntitiesBT.Variant
             public int Offset;
         }
 
-        [Preserve, AccessorMethod]
+        [AccessorMethod]
         private static IEnumerable<ComponentType> GetDynamicAccess(ref BlobVariant blobVariant)
         {
             var hash = blobVariant.Value<DynamicComponentData>().StableHash;
@@ -64,7 +63,7 @@ namespace EntitiesBT.Variant
             return ref UnsafeUtility.AsRef<T>(dataPtr.ToPointer());
         }
 
-        [Preserve, ReaderMethod]
+        [ReaderMethod]
         private static T GetData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
@@ -74,7 +73,7 @@ namespace EntitiesBT.Variant
             return GetComponentValue<T>(data.StableHash, data.Offset, bb.GetDataPtrRO);
         }
 
-        [Preserve, RefReaderMethod]
+        [RefReaderMethod]
         private static ref T GetDataRef<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob

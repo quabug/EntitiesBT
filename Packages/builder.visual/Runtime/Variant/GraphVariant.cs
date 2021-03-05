@@ -5,7 +5,6 @@ using EntitiesBT.Entities;
 using EntitiesBT.Variant;
 using Runtime;
 using Unity.Entities;
-using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Builder.Visual
@@ -27,7 +26,7 @@ namespace EntitiesBT.Builder.Visual
             }
         }
 
-        [Preserve, ReaderMethod]
+        [ReaderMethod]
         private static T GetData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
@@ -41,7 +40,7 @@ namespace EntitiesBT.Builder.Visual
             return graphInstance.ReadValue<T>(port);
         }
 
-        [Preserve, AccessorMethod]
+        [AccessorMethod]
         private static IEnumerable<ComponentType> GetComponentAccess(ref BlobVariant variant)
         {
             return ComponentType.ReadOnly<CurrentBehaviorTreeComponent>().Yield();

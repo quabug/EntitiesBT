@@ -3,7 +3,6 @@ using System.Reflection;
 using EntitiesBT.Core;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variant
@@ -18,7 +17,6 @@ namespace EntitiesBT.Variant
             ScriptableObjectFieldName = scriptableObjectFieldName;
         }
     }
-
 
     [VariantClass(GUID)]
     public static class ScriptableObjectVariant
@@ -56,7 +54,7 @@ namespace EntitiesBT.Variant
             }
         }
 
-        [Preserve, RefReaderMethod]
+        [RefReaderMethod]
         private static ref T GetDataRef<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob

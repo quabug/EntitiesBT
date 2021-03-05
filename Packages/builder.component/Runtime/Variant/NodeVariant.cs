@@ -6,7 +6,6 @@ using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variant
@@ -44,7 +43,7 @@ namespace EntitiesBT.Variant
         [Serializable] public class Writer<T> : Any<T>, IVariantWriter<T> where T : unmanaged {}
         [Serializable] public class ReaderAndWriter<T> : Any<T>, IVariantReaderAndWriter<T> where T : unmanaged {}
 
-        [Preserve, WriterMethod]
+        [WriterMethod]
         private static unsafe void WriteVariableFunc<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb, T value)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
@@ -57,7 +56,7 @@ namespace EntitiesBT.Variant
             variable.Value.WriteWithRefFallback(index, ref blob, ref bb, value);
         }
 
-        [Preserve, RefReaderMethod(OverrideGuid = ID_RUNTIME_NODE)]
+        [RefReaderMethod(OverrideGuid = ID_RUNTIME_NODE)]
         private static ref T GetRuntimeNodeData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
@@ -66,7 +65,7 @@ namespace EntitiesBT.Variant
             return ref GetValue<T>(ref blobVariant, blob.GetRuntimeDataPtr);
         }
 
-        [Preserve, ReaderMethod]
+        [ReaderMethod]
         private static unsafe T GetRuntimeNodeVariable<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
