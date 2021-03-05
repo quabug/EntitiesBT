@@ -67,3 +67,5 @@ Assets/Plugins/Animancer/Examples.meta
 /Packages/samples/Samples
 /Packages/samples/Samples.meta
 !/Packages/samples/Samples~
+Assets/Plugins/
+Assets/Plugins.meta

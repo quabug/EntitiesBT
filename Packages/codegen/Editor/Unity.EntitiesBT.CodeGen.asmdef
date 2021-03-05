@@ -2,7 +2,8 @@
     "name": "Unity.EntitiesBT.CodeGen",
     "rootNamespace": "EntitiesBT.CodeGen.Editor",
     "references": [
-        "GUID:c7babe7561eb244059259745ef27b866"
+        "GUID:c7babe7561eb244059259745ef27b866",
+        "GUID:3d9288551f5f1b14b9fcbd11fd97a391"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

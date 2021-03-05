@@ -15,7 +15,7 @@ namespace EntitiesBT.CodeGen.Editor
         {
             Logger.Debug($"generate accessor attributes for {assemblyDefinition.Name}");
             var methods = assemblyDefinition.MainModule.GetAllTypes()
-                .Where(type => typeof(INodeData).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
+                .Where(type => type.IsClass && !type.IsAbstract && type.TypeImplements(typeof(INodeData)))
                 .SelectMany(FetchNodeDataMethods)
                 .Where(method => !method.CustomAttributes.FindAccessorAttributes().Any())
             ;
