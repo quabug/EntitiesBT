@@ -341,7 +341,8 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 965526204}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -365,10 +366,30 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: <Reader>k__BackingField
-      Entry: 6
+      Entry: 7
+      Data: 2|EntitiesBT.Components.Odin.OdinNodeVariant+Reader`1[[System.Single,
+        mscorlib]], EntitiesBT.Builder.Odin
+    - Name: NodeObject
+      Entry: 10
+      Data: 0
+    - Name: ValueFieldName
+      Entry: 1
+      Data: CountdownSeconds
+    - Name: 
+      Entry: 8
       Data: 
     - Name: <Writer>k__BackingField
+      Entry: 7
+      Data: 3|EntitiesBT.Components.Odin.OdinNodeVariant+Writer`1[[System.Single,
+        mscorlib]], EntitiesBT.Builder.Odin
+    - Name: NodeObject
       Entry: 6
+      Data: 
+    - Name: ValueFieldName
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: 
       Entry: 8
@@ -655,6 +676,94 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1875091321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1875091323}
+  - component: {fileID: 1875091322}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1875091322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875091321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ac10c6bcbcad6842bae19de20dde16f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: FooAndBar
+      Entry: 7
+      Data: 0|Bar`1[[System.Int32, mscorlib]], Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: FooOnly
+      Entry: 7
+      Data: 1|Foo`1[[System.Int32, mscorlib]], Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: <FooOnlyProperty>k__BackingField
+      Entry: 7
+      Data: 2|Foo`1[[System.Int32, mscorlib]], Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Container
+      Entry: 7
+      Data: 3|GenericContainer`1[[System.Int32, mscorlib]], Assembly-CSharp
+    - Name: FooAndBar
+      Entry: 7
+      Data: 4|Foo`1[[System.Int32, mscorlib]], Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: <FooOnly>k__BackingField
+      Entry: 7
+      Data: 5|Foo`1[[System.Int32, mscorlib]], Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+--- !u!4 &1875091323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875091321}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1880907817
 GameObject:
   m_ObjectHideFlags: 0

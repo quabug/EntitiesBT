@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +10,9 @@ using JetBrains.Annotations;
 
 namespace EntitiesBT.Components.Odin
 {
-    public static class OdinUtilities
+    public static class OdinEditorUtilities
     {
-#if UNITY_EDITOR
-        private static Dictionary<Type, string[]> _READABLE_FIELD_NAME_MAP = new Dictionary<Type, string[]>();
+        private static readonly Dictionary<Type, string[]> _READABLE_FIELD_NAME_MAP = new Dictionary<Type, string[]>();
 
         internal static IEnumerable<string> GetReadableFieldName<T>([CanBeNull] INodeDataBuilder builder)
             where T : unmanaged
@@ -37,6 +38,20 @@ namespace EntitiesBT.Components.Odin
             }
             return names;
         }
-#endif
+
+        internal static IEnumerable<Type> ToOdinVariantType<T>(this IEnumerable<Type> genericVariantTypes) where T : unmanaged =>
+            genericVariantTypes
+                .Where(type => type != typeof(NodeVariant.Any<>))
+                .Where(type => type != typeof(NodeVariant.Reader<>))
+                .Where(type => type != typeof(NodeVariant.Writer<>))
+                .Where(type => type != typeof(NodeVariant.ReaderAndWriter<>))
+                .Where(type => type != typeof(ScriptableObjectVariant.Reader<>))
+                .MakeGeneric<T>()
+            ;
+
+        internal static IEnumerable<Type> MakeGeneric<T>(this IEnumerable<Type> genericVariantTypes)
+            where T : unmanaged => genericVariantTypes.Select(type => type.MakeGenericType(typeof(T))).ToArray();
     }
 }
+
+#endif

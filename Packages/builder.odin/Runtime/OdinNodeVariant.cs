@@ -14,11 +14,13 @@ namespace EntitiesBT.Components.Odin
         public class Any<T> : IVariant where T : unmanaged
         {
             public INodeDataBuilder NodeObject;
-            [ValueDropdown(nameof(ValidFieldName))] public string ValueFieldName;
 
 #if UNITY_EDITOR
-            private IEnumerable<string> ValidFieldName => OdinUtilities.GetReadableFieldName<T>(NodeObject);
+            private IEnumerable<string> _validFieldName => OdinEditorUtilities.GetReadableFieldName<T>(NodeObject);
+            [ValueDropdown(nameof(_validFieldName))]
 #endif
+            public string ValueFieldName;
+
 
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self,
                 ITreeNode<INodeDataBuilder>[] tree)

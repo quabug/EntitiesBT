@@ -1,8 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using EntitiesBT.Components.Odin;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 
 namespace EntitiesBT.Editor
 {
@@ -22,22 +27,40 @@ namespace EntitiesBT.Editor
         {
             var variantType = fi.FieldType.GetGenericTypeDefinition();
             var valueType = fi.FieldType.GetGenericArguments()[0];
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("[OdinSerialize, NonSerialized]");
-            stringBuilder.Append("        ");
-            string variantInterfaceName = null;
+            var attributes = new List<string>
+            {
+                nameof(OdinSerializeAttribute)
+                , nameof(NonSerializedAttribute)
+                , nameof(HideReferenceObjectPickerAttribute)
+            };
+            Type serializedVariantType = null;
             if (variantType == typeof(BlobVariantReaderAndWriter<>))
-                variantInterfaceName = typeof(ISerializedVariantReaderAndWriter<>).Name;
+            {
+                serializedVariantType = typeof(OdinSerializedVariantReaderAndWriter<>);
+            }
             else if (variantType == typeof(BlobVariantReader<>))
-                variantInterfaceName = typeof(IVariantReader<>).Name;
+            {
+                attributes.Add(nameof(HideLabelAttribute));
+                serializedVariantType = typeof(OdinSerializedVariantReader<>);
+            }
             else if (variantType == typeof(BlobVariantWriter<>))
-                variantInterfaceName = typeof(IVariantWriter<>).Name;
+            {
+                attributes.Add(nameof(HideLabelAttribute));
+                serializedVariantType = typeof(OdinSerializedVariantWriter<>);
+            }
             else
+            {
                 throw new NotImplementedException($"Invalid type of variant {variantType}");
+            }
             // remove `1 from generic name
-            variantInterfaceName = variantInterfaceName.Substring(0, variantInterfaceName.Length - 2);
+            var serializedVariantName = serializedVariantType.Name.Substring(0, serializedVariantType.Name.Length - 2);
+            var serializedVariantNamespace = serializedVariantType.Namespace;
+            var serializedVariantTypeFullname = $"{serializedVariantNamespace}.{serializedVariantName}<{valueType.FullName}>";
 
-            stringBuilder.AppendLine($"public EntitiesBT.Variant.{variantInterfaceName}<{valueType.FullName}> {fi.Name};");
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"[{string.Join(", ", attributes)}]");
+            stringBuilder.AppendLine($"        public {serializedVariantTypeFullname} {fi.Name}");
+            stringBuilder.AppendLine($"            = new {serializedVariantTypeFullname}();");
             return stringBuilder.ToString();
         }
 

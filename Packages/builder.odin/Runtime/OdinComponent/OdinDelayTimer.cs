@@ -6,13 +6,15 @@ using Unity.Entities;
 using Sirenix.Serialization;
 using System;
 using EntitiesBT.Variant;
+using Sirenix.OdinInspector;
 
 namespace EntitiesBT.Components.Odin
 {
     public class OdinDelayTimer : OdinNode<EntitiesBT.Nodes.DelayTimerNode>
     {
-        [OdinSerialize, NonSerialized]
-        public EntitiesBT.Variant.ISerializedVariantReaderAndWriter<System.Single> TimerSeconds;
+        [OdinSerializeAttribute, NonSerializedAttribute, HideReferenceObjectPickerAttribute]
+        public EntitiesBT.Components.Odin.OdinSerializedVariantReaderAndWriter<System.Single> TimerSeconds
+            = new EntitiesBT.Components.Odin.OdinSerializedVariantReaderAndWriter<System.Single>();
 
         protected override void Build(ref EntitiesBT.Nodes.DelayTimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

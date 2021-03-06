@@ -22,6 +22,7 @@ using Unity.Entities;
 using Sirenix.Serialization;
 using System;
 using EntitiesBT.Variant;
+using Sirenix.OdinInspector;
 
 namespace EntitiesBT.Components.Odin
 {{

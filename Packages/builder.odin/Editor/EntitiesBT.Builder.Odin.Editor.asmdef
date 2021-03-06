@@ -3,13 +3,17 @@
     "rootNamespace": "EntitiesBT.Editor",
     "references": [
         "EntitiesBT.Editor",
-        "EntitiesBT.Runtime"
+        "EntitiesBT.Runtime",
+        "EntitiesBT.Builder.Odin"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        "Sirenix.Serialization.dll",
+        "Sirenix.OdinInspector.Attributes.dll"
+    ],
     "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],
