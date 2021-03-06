@@ -1,0 +1,17 @@
+{
+    "name": "EntitiesBT.Builder.Odin.Editor",
+    "rootNamespace": "EntitiesBT.Editor",
+    "references": [
+        "EntitiesBT.Editor",
+        "EntitiesBT.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
