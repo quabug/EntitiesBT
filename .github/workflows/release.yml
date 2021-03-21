@@ -26,6 +26,16 @@ jobs:
       with:
         upm_package_path: Packages/builder.component
         upm_tag_prefix: builder.component/v
+  upm-release-builder-odin:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: quabug/create-upm-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upm_package_path: Packages/builder.odin
+        upm_tag_prefix: builder.odin/v
   upm-release-debug-component-viewer:
     runs-on: ubuntu-latest
     steps:
