@@ -63,6 +63,7 @@ Existing BT frameworks are not support Entities out of box.
 - [essential](Packages/essential): essential part of entities behavior tree, any extension should depend on this package.
 - [codegen](Packages/codegen): automatically generate [entity query accesors](#entityquery) on the methods of nodes.
 - [builder.component](Packages/builder.component): build behavior tree data from unity components.
+- [builder.odin](Packages/builder.odin): advanced hierarchy builder based on Odin and its serializer.
 - [builder.visual](Packages/builder.visual): build and use behavior tree by graph of DOTS visual scripting (suspended).
 - [debug.component-viewer](Packages/debug.component-viewer): show selected entity with behavior tree as components in inspector of unity while running.
 - [variable.scriptable-object](Packages/variable.scriptable-object): extension for using scriptable object data as variable source of behavior tree node.

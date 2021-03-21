@@ -90,7 +90,7 @@ namespace EntitiesBT.Variant
             public int Offset;
         }
 
-        private static IntPtr Allocate<T>(
+        public static IntPtr Allocate<T>(
             ref BlobBuilder builder
             , ref BlobVariant blobVariant
             , INodeDataBuilder self

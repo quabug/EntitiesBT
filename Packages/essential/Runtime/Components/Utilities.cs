@@ -15,7 +15,13 @@ namespace EntitiesBT.Components
             for (var i = 0; i < transform.childCount; i++)
                 yield return transform.GetChild(i).gameObject;
         }
-        
+
+        [Pure]
+        public static IEnumerable<T> Children<T>(this Component parent)
+        {
+            return Children(parent.gameObject).Select(child => child.GetComponent<T>()).Where(child => child != null);
+        }
+
         [Pure]
         public static IEnumerable<T> Children<T>(this T parent) where T : Component
         {

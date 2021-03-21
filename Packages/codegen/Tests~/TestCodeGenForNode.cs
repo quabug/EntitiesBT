@@ -75,6 +75,7 @@ namespace EntitiesBT.CodeGen.Tests
         [BehaviorNode("D4C33711-96CB-448B-BD6E-182271E2D69F", Ignore = true)]
         class TestNode : INodeData
         {
+
             public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb) where TNodeBlob : struct, INodeBlob where TBlackboard : struct, IBlackboard
             {
                 bb.GetData<FooComponent>();

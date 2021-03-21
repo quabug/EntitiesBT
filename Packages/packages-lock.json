@@ -9,6 +9,14 @@
         "com.quabug.entities-bt.variable.scriptable-object": "1.0.1"
       }
     },
+    "com.quabug.entities-bt.builder.odin": {
+      "version": "file:builder.odin",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.quabug.entities-bt.builder.component": "1.0.2"
+      }
+    },
     "com.quabug.entities-bt.builder.visual": {
       "version": "file:builder.visual",
       "depth": 0,
@@ -39,7 +47,7 @@
       "source": "embedded",
       "dependencies": {
         "com.unity.entities": "0.14.0-preview.19",
-        "com.quabug.entities-bt.codegen": "1.0.1"
+        "com.quabug.entities-bt.codegen": "1.0.2"
       }
     },
     "com.quabug.entities-bt.samples": {
@@ -146,10 +154,12 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.5",
+      "version": "2.0.7",
       "depth": 0,
       "source": "registry",
-      "dependencies": {},
+      "dependencies": {
+        "com.unity.test-framework": "1.1.9"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.vscode": {

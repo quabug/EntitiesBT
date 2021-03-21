@@ -51,13 +51,12 @@ Assets/EntityCache.meta
 
 Assets/StreamingAssets/
 
-Assets/Plugins/Animancer/Examples/
-Assets/Plugins/Animancer/Examples.meta
 
-# OS
-.DS_Store
+Assets/Plugins/
+Assets/Plugins.meta
 
-!Packages/**/*
+
+!/Packages
 
 # linked directory
 /Packages/samples/Tests
@@ -67,3 +66,10 @@ Assets/Plugins/Animancer/Examples.meta
 /Packages/samples/Samples
 /Packages/samples/Samples.meta
 !/Packages/samples/Samples~
+
+/Packages/builder.odin/Sample
+/Packages/builder.odin/Sample.meta
+!/Packages/builder.odin/Samples~
+
+
+.DS_Store
