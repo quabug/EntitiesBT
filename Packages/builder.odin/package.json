@@ -6,5 +6,12 @@
   "displayName": "EntitiesBT - Odin Builder",
   "dependencies": {
     "com.quabug.entities-bt.builder.component": "1.0.2"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Sample",
+      "description": "Sample",
+      "path": "Sample~"
+    }
+  ]
 }
