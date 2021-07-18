@@ -73,3 +73,5 @@ Assets/Plugins.meta
 
 
 .DS_Store
+Packages/essential/Tests
+Packages/essential/Tests.meta
