@@ -1,0 +1,23 @@
+{
+    "name": "EntitiesBT.Variant.Expression.Tests",
+    "rootNamespace": "EntitiesBT.Tests",
+    "references": [
+        "GUID:c7babe7561eb244059259745ef27b866",
+        "GUID:6679f77e90ec1d540ab279146d203dbb",
+        "GUID:734d92eba21c94caba915361bd5ac177"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Moq.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

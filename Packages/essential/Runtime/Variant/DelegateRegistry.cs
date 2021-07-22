@@ -18,7 +18,7 @@ namespace EntitiesBT.Variant
         public RegisterDelegateClassAttribute([NotNull] string guid) => Guid = guid;
     }
 
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class RegisterDelegateMethodAttribute : PreserveAttribute
     {
         public Type DelegateType { get; }
@@ -145,7 +145,7 @@ namespace EntitiesBT.Variant
                     }
                     catch
                     {
-                        Debug.LogError($"Cannot create delegate {delegateType.Name} from {t.Value.Name}");
+                        Debug.LogError($"Cannot create delegate {delegateType.GetFriendlyName()} from {t.Value.Name}");
                     }
                 }
             }

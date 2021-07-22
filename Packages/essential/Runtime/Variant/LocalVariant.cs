@@ -37,5 +37,13 @@ namespace EntitiesBT.Variant
         {
             return ref blobVariant.Value<T>();
         }
+
+        [ReadWritePointerMethod]
+        private static unsafe IntPtr GetPointer<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            return new IntPtr(blobVariant.ValuePtr());
+        }
     }
 }

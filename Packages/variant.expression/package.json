@@ -1,0 +1,10 @@
+{
+  "name": "com.quabug.entities-bt.variant-expression",
+  "version": "0.1.0",
+  "unity": "2020.2",
+  "displayName": "EntitiesBT - Expression Variant",
+  "dependencies": {
+    "com.quabug.entities-bt.essential": "1.1.3"
+  },
+  "samples": []
+}

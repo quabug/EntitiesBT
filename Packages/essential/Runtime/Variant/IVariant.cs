@@ -1,5 +1,6 @@
 using System;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using Unity.Entities;
 
 namespace EntitiesBT.Variant
@@ -15,8 +16,19 @@ namespace EntitiesBT.Variant
         );
     }
 
+    public interface IVariantReader : IVariant {}
+    public interface IVariantWriter : IVariant {}
     public interface IVariant<out T> : IVariant where T : unmanaged {}
-    public interface IVariantReader<out T> : IVariant<T> where T : unmanaged {}
-    public interface IVariantWriter<out T> : IVariant<T> where T : unmanaged {}
-    public interface IVariantReaderAndWriter<out T> : IVariant<T> where T : unmanaged {}
+    public interface IVariantReader<out T> : IVariantReader, IVariant<T> where T : unmanaged {}
+    public interface IVariantWriter<out T> : IVariantWriter, IVariant<T> where T : unmanaged {}
+    public interface IVariantReaderAndWriter<out T> : IVariantReader, IVariantWriter, IVariant<T> where T : unmanaged {}
+
+    public static partial class VariantExtension
+    {
+        [CanBeNull] public static Type FindValueType([NotNull] this IVariant variant)
+        {
+            var type = variant.GetType();
+            return type.GetInterface(typeof(IVariant<int>).Name)?.GenericTypeArguments[0];
+        }
+    }
 }

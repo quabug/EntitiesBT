@@ -1,0 +1,19 @@
+{
+    "name": "EntitiesBT.Variant.Expression",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c7babe7561eb244059259745ef27b866",
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:734d92eba21c94caba915361bd5ac177",
+        "GUID:abe4851e67df59644865a60dae54a845"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

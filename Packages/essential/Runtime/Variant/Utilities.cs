@@ -84,6 +84,11 @@ namespace EntitiesBT.Variant
             return new IntPtr(ptr);
         }
 
+        public static IntPtr Allocate<TValue>(this BlobBuilder builder, ref BlobVariantReadOnlyPtr blob, TValue value) where TValue : unmanaged
+        {
+            return builder.Allocate(ref blob.Value, value);
+        }
+
         public static IntPtr Allocate<T>(
             this IVariantReader<T> property
           , ref BlobBuilder builder
@@ -91,6 +96,14 @@ namespace EntitiesBT.Variant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+
+        public static IntPtr Allocate(
+            this IVariantReader property
+          , ref BlobBuilder builder
+          , ref BlobVariantReadOnlyPtr blobVariant
+          , [NotNull] INodeDataBuilder self
+          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
+        ) => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
 
         public static IntPtr Allocate<T>(
             this IVariantWriter<T> property
