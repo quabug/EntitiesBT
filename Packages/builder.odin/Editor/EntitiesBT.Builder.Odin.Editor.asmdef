@@ -6,7 +6,9 @@
         "EntitiesBT.Runtime",
         "EntitiesBT.Builder.Odin"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

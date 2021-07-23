@@ -6,7 +6,7 @@ namespace EntitiesBT.Core
     public interface IBlackboard
     {
         bool HasData<T>() where T : struct;
-        T GetData<[ReadOnly(typeof(int))] T>() where T : struct;
+        T GetData<[ReadOnly] T>() where T : struct;
         ref T GetDataRef<[ReadWrite] T>() where T : struct;
 
         bool HasData(Type type);

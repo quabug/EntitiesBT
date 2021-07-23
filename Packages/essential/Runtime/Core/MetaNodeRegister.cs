@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using UnityEngine;
 using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 
@@ -126,26 +127,43 @@ namespace EntitiesBT.Core
         
         internal static readonly IReadOnlyDictionary<int, Node> NODES;
 
+        [Preserve]
         static MetaNodeRegister()
         {
+            var resetMethod = GetMethod(nameof(Reset));
+            var tickMethod = GetMethod(nameof(Tick));
+
             var nodes = new Dictionary<int, Node>();
             foreach (var type in MetaNodeRegister.NODES.Values.Select(node => node.Type))
             {
                 var attribute = type.GetCustomAttribute<BehaviorNodeAttribute>();
-                nodes[attribute.Id] = new Node {
-                  Reset = CreateDelegate<ResetFunc>(nameof(Reset), type)
-                  , Tick = CreateDelegate<TickFunc>(nameof(Tick), type)
-                };
+                try
+                {
+                    var node = new Node
+                    {
+                        Reset = CreateDelegate<ResetFunc>(resetMethod, type),
+                        Tick = CreateDelegate<TickFunc>(tickMethod, type)
+                    };
+                    nodes[attribute.Id] = node;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex);
+                }
             }
+
             NODES = new ReadOnlyDictionary<int, Node>(nodes);
-            
-            T CreateDelegate<T>(string methodName, Type type) where T : Delegate
+
+            MethodInfo GetMethod(string methodName)
             {
-                return (T) typeof(MetaNodeRegister<TNodeBlob, TBlackboard>)
-                    .GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static)
-                    .MakeGenericMethod(type)
-                    .CreateDelegate(typeof(T))
+                return typeof(MetaNodeRegister<TNodeBlob, TBlackboard>)
+                    .GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
                 ;
+            }
+
+            T CreateDelegate<T>(MethodInfo methodInfo, Type type) where T : Delegate
+            {
+                return (T) methodInfo.MakeGenericMethod(type).CreateDelegate(typeof(T));
             }
         }
     }
