@@ -151,6 +151,11 @@ namespace EntitiesBT.CodeGen.Editor
             return node.Subs.Select(sub => sub.Type);
         }
 
+        public bool HasBaseType(TypeDefinition baseType)
+        {
+            return _typeTreeNodeMap.ContainsKey(new TypeKey(baseType));
+        }
+
         /// <summary>
         /// Get all derived class type of <paramref name="rootType"/>.
         /// Will make new TypeReference if derived type is generic.
@@ -173,9 +178,9 @@ namespace EntitiesBT.CodeGen.Editor
                 {
                     genericArguments = type.ResolveGenericArguments(baseType);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // logger.Debug($"cannot resolve {typeReference.ToReadableName()} : {baseType.ToReadableName()}: {ex}");
+                    _logger?.Debug($"cannot resolve {type.ToReadableName()} : {baseType.ToReadableName()}: {ex}");
                     return Enumerable.Empty<TypeReference>();
                 }
 

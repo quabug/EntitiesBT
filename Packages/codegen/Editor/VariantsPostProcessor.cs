@@ -54,7 +54,7 @@ namespace EntitiesBT.CodeGen.Editor
                 var valueTypes = referenceAssemblies.Append(assembly)
                     .SelectMany(asm => asm.GetAttributesOf<VariantValueTypeAttribute>())
                     .Select(attribute => (TypeReference) attribute.ConstructorArguments[0].Value)
-                    .Select(valueType => module.ImportReference(valueType))
+                    .Select(valueType => module.ImportReference(valueType.Resolve()))
                     .ToArray()
                 ;
 
@@ -82,6 +82,8 @@ namespace EntitiesBT.CodeGen.Editor
             bool GenerateVariants(Type interfaceType, IReadOnlyList<TypeReference> valueTypes, TypeTree typeTree)
             {
                 var @interface = module.ImportReference(interfaceType);
+                if (!typeTree.HasBaseType(@interface.Resolve())) return false;
+
                 logger.Info($"process interface {@interface.Name}");
 
                 var wrapper = new TypeDefinition(
