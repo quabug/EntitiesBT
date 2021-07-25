@@ -26,19 +26,19 @@ public class Int32SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISeriali
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked), false)]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private Int32VariantReaderAndWriter _readerAndWriter;
     public EntitiesBT.Variant.IVariantReaderAndWriter<System.Int32> ReaderAndWriter => _readerAndWriter;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private Int32VariantReader _reader;
     public EntitiesBT.Variant.IVariantReader<System.Int32> Reader => _reader;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private Int32VariantWriter _writer;
     public EntitiesBT.Variant.IVariantWriter<System.Int32> Writer => _writer;
 }
@@ -67,19 +67,19 @@ public class Int64SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISeriali
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked), false)]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private Int64VariantReaderAndWriter _readerAndWriter;
     public EntitiesBT.Variant.IVariantReaderAndWriter<System.Int64> ReaderAndWriter => _readerAndWriter;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private Int64VariantReader _reader;
     public EntitiesBT.Variant.IVariantReader<System.Int64> Reader => _reader;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private Int64VariantWriter _writer;
     public EntitiesBT.Variant.IVariantWriter<System.Int64> Writer => _writer;
 }
@@ -108,19 +108,19 @@ public class SingleSerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerial
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked), false)]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private SingleVariantReaderAndWriter _readerAndWriter;
     public EntitiesBT.Variant.IVariantReaderAndWriter<System.Single> ReaderAndWriter => _readerAndWriter;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private SingleVariantReader _reader;
     public EntitiesBT.Variant.IVariantReader<System.Single> Reader => _reader;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private SingleVariantWriter _writer;
     public EntitiesBT.Variant.IVariantWriter<System.Single> Writer => _writer;
 }
@@ -149,19 +149,19 @@ public class float2SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerial
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked), false)]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private float2VariantReaderAndWriter _readerAndWriter;
     public EntitiesBT.Variant.IVariantReaderAndWriter<Unity.Mathematics.float2> ReaderAndWriter => _readerAndWriter;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private float2VariantReader _reader;
     public EntitiesBT.Variant.IVariantReader<Unity.Mathematics.float2> Reader => _reader;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private float2VariantWriter _writer;
     public EntitiesBT.Variant.IVariantWriter<Unity.Mathematics.float2> Writer => _writer;
 }
@@ -190,19 +190,19 @@ public class float3SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerial
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked), false)]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private float3VariantReaderAndWriter _readerAndWriter;
     public EntitiesBT.Variant.IVariantReaderAndWriter<Unity.Mathematics.float3> ReaderAndWriter => _readerAndWriter;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private float3VariantReader _reader;
     public EntitiesBT.Variant.IVariantReader<Unity.Mathematics.float3> Reader => _reader;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private float3VariantWriter _writer;
     public EntitiesBT.Variant.IVariantWriter<Unity.Mathematics.float3> Writer => _writer;
 }
@@ -231,19 +231,19 @@ public class quaternionSerializedReaderAndWriterVariant : EntitiesBT.Variant.ISe
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked), false)]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private quaternionVariantReaderAndWriter _readerAndWriter;
     public EntitiesBT.Variant.IVariantReaderAndWriter<Unity.Mathematics.quaternion> ReaderAndWriter => _readerAndWriter;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private quaternionVariantReader _reader;
     public EntitiesBT.Variant.IVariantReader<Unity.Mathematics.quaternion> Reader => _reader;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private quaternionVariantWriter _writer;
     public EntitiesBT.Variant.IVariantWriter<Unity.Mathematics.quaternion> Writer => _writer;
 }

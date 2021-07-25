@@ -11,7 +11,7 @@ namespace EntitiesBT.Extensions.UnityMovement
 {
     public class BTSetTransformRotation : BTNode<SetTransformRotationNode>
     {
-        [SerializeReference, SerializeReferenceButton]
+        [SerializeReference, SerializeReferenceDrawer]
         public quaternionVariantReader RotationReader;
 
         protected override unsafe void Build(ref SetTransformRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)

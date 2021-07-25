@@ -11,7 +11,7 @@ namespace EntitiesBT.Samples
 {
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
-        [SerializeReference, SerializeReferenceButton]
+        [SerializeReference, SerializeReferenceDrawer]
         public float2VariantReader InputMovePropertyReader;
         
         public quaternionSerializedReaderAndWriterVariant OutputDirectionPropertyWriter;

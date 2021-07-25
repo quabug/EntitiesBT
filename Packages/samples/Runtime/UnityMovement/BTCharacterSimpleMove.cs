@@ -13,7 +13,7 @@ namespace EntitiesBT.Extensions.UnityMovement
     {
         public bool IsLocal;
         
-        [SerializeReference, SerializeReferenceButton]
+        [SerializeReference, SerializeReferenceDrawer]
         public float3VariantReader VelocityPropertyReader;
 
         protected override unsafe void Build(ref CharacterSimpleMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)

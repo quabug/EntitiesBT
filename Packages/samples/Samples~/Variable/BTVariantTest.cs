@@ -11,11 +11,11 @@ namespace EntitiesBT.Sample
 {
     public class BTVariantTest : BTNode<VariablesTestNode>
     {
-        [SerializeReference, SerializeReferenceButton] public Int64VariantReader LongReader;
+        [SerializeReference, SerializeReferenceDrawer] public Int64VariantReader LongReader;
         public string String;
         public int[] IntArray;
-        [SerializeReference, SerializeReferenceButton] public Int64VariantWriter LongWriter;
-        [SerializeReference, SerializeReferenceButton] public SingleVariantReader SingleReader;
+        [SerializeReference, SerializeReferenceDrawer] public Int64VariantWriter LongWriter;
+        [SerializeReference, SerializeReferenceDrawer] public SingleVariantReader SingleReader;
         public long LongValue;
         public SingleSerializedReaderAndWriterVariant SingleReaderAndWriter;
 

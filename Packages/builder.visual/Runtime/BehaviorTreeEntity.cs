@@ -10,7 +10,7 @@ namespace EntitiesBT.Builder.Visual
 {
     public class BehaviorTreeEntity : MonoBehaviour, IConvertGameObjectToEntity
     {
-        [SerializeReference, SerializeReferenceButton] private IBehaviorTreeSource _source = default;
+        [SerializeReference, SerializeReferenceDrawer] private IBehaviorTreeSource _source = default;
         [SerializeField] private BehaviorTreeThread _thread = BehaviorTreeThread.ForceRunOnMainThread;
 
         [Tooltip("add queried components of behavior tree into entity automatically")]

@@ -12,10 +12,10 @@ namespace EntitiesBT.Samples
 {
     public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
     {
-        [SerializeReference, SerializeReferenceButton]
+        [SerializeReference, SerializeReferenceDrawer]
         public SingleVariantReader SpeedPropertyReader;
         
-        [SerializeReference, SerializeReferenceButton]
+        [SerializeReference, SerializeReferenceDrawer]
         public float2VariantReader InputMovePropertyReader;
         
         public float3SerializedReaderAndWriterVariant OutputVelocityPropertyWriter;

@@ -17,19 +17,19 @@ public class SingleSerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerial
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked), false)]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private SingleVariantReaderAndWriter _readerAndWriter;
     public EntitiesBT.Variant.IVariantReaderAndWriter<System.Single> ReaderAndWriter => _readerAndWriter;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private SingleVariantReader _reader;
     public EntitiesBT.Variant.IVariantReader<System.Single> Reader => _reader;
 
     [UnityEngine.SerializeReference]
     [EntitiesBT.Attributes.HideIf(nameof(_isLinked))]
-    [EntitiesBT.Attributes.SerializeReferenceButton]
+    [EntitiesBT.Attributes.SerializeReferenceDrawer]
     private SingleVariantWriter _writer;
     public EntitiesBT.Variant.IVariantWriter<System.Single> Writer => _writer;
 }
