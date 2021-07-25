@@ -26,6 +26,11 @@ namespace EntitiesBT.Attributes.Editor
              return property.GetFieldsByPath().ElementAt(pathCount - 1).field;
          }
 
+         public static bool IsReferencedArrayElement(this SerializedProperty property)
+         {
+             return property.propertyType == SerializedPropertyType.ManagedReference && property.propertyPath.EndsWith("]");
+         }
+
          public static IEnumerable<(object field, FieldInfo fi)> GetFieldsByPath(this SerializedProperty property)
          {
              var obj = (object)property.serializedObject.targetObject;

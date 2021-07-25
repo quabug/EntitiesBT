@@ -43,7 +43,10 @@ namespace EntitiesBT.Attributes.Editor
             var labelPosition = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
             EditorGUI.LabelField(labelPosition, label);
 
-            var typeRestrictions = GetAllBuiltInTypeRestrictions(property.GetPropertyField().fieldInfo);
+            var typeRestrictions = property.IsReferencedArrayElement() ?
+                null : GetAllBuiltInTypeRestrictions(property.GetPropertyField().fieldInfo)
+            ;
+
             DrawSelectionButtonForManagedReference(property, position, typeRestrictions);
 
             EditorGUI.PropertyField(position, property, GUIContent.none, true);

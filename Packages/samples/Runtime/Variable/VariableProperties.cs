@@ -18,7 +18,7 @@ public class Int32LocalVariantReaderAndWriter : EntitiesBT.Variant.LocalVariant.
 
 
 [System.Serializable]
-public class Int32SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantReaderAndWriter<System.Int32>
+public class Int32SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantRW<System.Int32>
 {
     [UnityEngine.SerializeField]
     private bool _isLinked = true;
@@ -59,7 +59,7 @@ public class Int64LocalVariantReaderAndWriter : EntitiesBT.Variant.LocalVariant.
 
 
 [System.Serializable]
-public class Int64SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantReaderAndWriter<System.Int64>
+public class Int64SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantRW<System.Int64>
 {
     [UnityEngine.SerializeField]
     private bool _isLinked = true;
@@ -100,7 +100,7 @@ public class SingleLocalVariantReaderAndWriter : EntitiesBT.Variant.LocalVariant
 
 
 [System.Serializable]
-public class SingleSerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantReaderAndWriter<System.Single>
+public class SingleSerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantRW<System.Single>
 {
     [UnityEngine.SerializeField]
     private bool _isLinked = true;
@@ -141,7 +141,7 @@ public class float2LocalVariantReaderAndWriter : EntitiesBT.Variant.LocalVariant
 
 
 [System.Serializable]
-public class float2SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantReaderAndWriter<Unity.Mathematics.float2>
+public class float2SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantRW<Unity.Mathematics.float2>
 {
     [UnityEngine.SerializeField]
     private bool _isLinked = true;
@@ -182,7 +182,7 @@ public class float3LocalVariantReaderAndWriter : EntitiesBT.Variant.LocalVariant
 
 
 [System.Serializable]
-public class float3SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantReaderAndWriter<Unity.Mathematics.float3>
+public class float3SerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantRW<Unity.Mathematics.float3>
 {
     [UnityEngine.SerializeField]
     private bool _isLinked = true;
@@ -223,7 +223,7 @@ public class quaternionLocalVariantReaderAndWriter : EntitiesBT.Variant.LocalVar
 
 
 [System.Serializable]
-public class quaternionSerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantReaderAndWriter<Unity.Mathematics.quaternion>
+public class quaternionSerializedReaderAndWriterVariant : EntitiesBT.Variant.ISerializedVariantRW<Unity.Mathematics.quaternion>
 {
     [UnityEngine.SerializeField]
     private bool _isLinked = true;

@@ -5,8 +5,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.quabug.entities-bt.essential": "1.0.1",
-        "com.quabug.entities-bt.variable.scriptable-object": "1.0.1"
+        "com.quabug.entities-bt.essential": "1.0.1"
       }
     },
     "com.quabug.entities-bt.builder.odin": {

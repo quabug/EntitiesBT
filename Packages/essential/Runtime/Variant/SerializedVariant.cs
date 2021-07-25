@@ -1,9 +1,12 @@
+using System;
 using EntitiesBT.Attributes;
+using EntitiesBT.Core;
+using Unity.Entities;
 
 namespace EntitiesBT.Variant
 {
-    [System.Serializable]
-    public class SerializedVariantRW<T> where T : unmanaged
+    [Serializable]
+    public class SerializedVariantRW<T> : ISerializedVariantRW<T> where T : unmanaged
     {
         [UnityEngine.SerializeField]
         private bool _isLinked = true;
@@ -28,21 +31,31 @@ namespace EntitiesBT.Variant
         public IVariantWriter<T> Writer => (IVariantWriter<T>)_writer;
     }
 
-    [System.Serializable]
-    public class SerializedVariantRO<T> where T : unmanaged
+    [Serializable]
+    public class SerializedVariantRO<T> : IVariantReader<T> where T : unmanaged
     {
         [UnityEngine.SerializeReference]
         [SerializeReferenceDrawer, SerializeReferenceDrawerPropertyBaseType(nameof(Reader))]
         private object _reader;
         public IVariantReader<T> Reader => (IVariantReader<T>)_reader;
+
+        public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        {
+            return Reader.Allocate(ref builder, ref blobVariant, self, tree);
+        }
     }
 
-    [System.Serializable]
-    public class SerializedVariantWO<T> where T : unmanaged
+    [Serializable]
+    public class SerializedVariantWO<T> : IVariantWriter<T> where T : unmanaged
     {
         [UnityEngine.SerializeReference]
         [SerializeReferenceDrawer, SerializeReferenceDrawerPropertyBaseType(nameof(Writer))]
         private object _writer;
         public IVariantWriter<T> Writer => (IVariantWriter<T>)_writer;
+
+        public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        {
+            return Writer.Allocate(ref builder, ref blobVariant, self, tree);
+        }
     }
 }

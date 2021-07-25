@@ -8,7 +8,7 @@ namespace EntitiesBT.Components
 {
     public class BTTimer : BTNode<EntitiesBT.Nodes.TimerNode>
     {
-        public EntitiesBT.Variant.SingleSerializedReaderAndWriterVariant CountdownSeconds;
+        public EntitiesBT.Variant.SerializedVariantRW<System.Single> CountdownSeconds;
         public EntitiesBT.Core.NodeState BreakReturnState;
         protected override void Build(ref EntitiesBT.Nodes.TimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

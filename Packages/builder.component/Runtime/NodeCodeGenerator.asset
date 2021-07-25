@@ -46,12 +46,6 @@ MonoBehaviour:
     00000005:
       type: {class: BlobVariantFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Components.Editor}
       data:
-        ShouldGenerateVariantInterface: 1
-        VariantInterfaceDirectory: Variant
         VariantInterfaceNamespace: EntitiesBT.Variant
-        VariantPropertyNameSuffix: Variant
-        Generator: {fileID: 11400000}
-        Assembly: {fileID: 5897886265953266890, guid: c7babe7561eb244059259745ef27b866,
-          type: 3}
     00000006:
       type: {class: DefaultNodeDataFieldCodeGenerator, ns: EntitiesBT.Editor, asm: EntitiesBT.Editor}

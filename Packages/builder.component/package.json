@@ -5,7 +5,6 @@
   "unity": "2020.2",
   "displayName": "EntitiesBT - Component Builder",
   "dependencies": {
-    "com.quabug.entities-bt.essential": "1.0.1",
-    "com.quabug.entities-bt.variable.scriptable-object": "1.0.1"
+    "com.quabug.entities-bt.essential": "1.0.1"
   }
 }

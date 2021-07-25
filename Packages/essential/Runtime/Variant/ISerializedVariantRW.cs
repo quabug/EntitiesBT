@@ -1,6 +1,6 @@
 namespace EntitiesBT.Variant
 {
-    public interface ISerializedVariantReaderAndWriter<T> where T : unmanaged
+    public interface ISerializedVariantRW<out T> where T : unmanaged
     {
         bool IsLinked { get; }
         IVariantReaderAndWriter<T> ReaderAndWriter { get; }

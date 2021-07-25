@@ -130,7 +130,7 @@ namespace EntitiesBT.Variant
         }
 
         public static IntPtr Allocate<T>(
-            this ISerializedVariantReaderAndWriter<T> property
+            this ISerializedVariantRW<T> property
           , ref BlobBuilder builder
           , ref BlobVariantReaderAndWriter<T> blobVariant
           , [NotNull] INodeDataBuilder self
