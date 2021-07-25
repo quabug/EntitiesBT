@@ -1,7 +1,5 @@
 using System;
-using EntitiesBT.Attributes;
 using EntitiesBT.Core;
-using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -12,7 +10,7 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputMove : BTInputActionBase<InputMoveNode>
     {
-        public float2SerializedReaderAndWriterVariant Output;
+        public SerializedVariantRW<float2> Output;
 
         protected override unsafe void Build(ref InputMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

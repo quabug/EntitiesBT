@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -668,7 +668,8 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value: 2
     00000001:
@@ -810,9 +811,10 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
-        Value: 2
+        Value: 3
     00000001:
       type: {class: , ns: , asm: }
 --- !u!1 &1365720264
@@ -1131,7 +1133,8 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:

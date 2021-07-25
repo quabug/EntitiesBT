@@ -1,7 +1,6 @@
 using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -12,9 +11,9 @@ namespace EntitiesBT.Samples
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
         [SerializeReference, SerializeReferenceDrawer]
-        public float2VariantReader InputMovePropertyReader;
+        public SerializedVariantRO<float2> InputMovePropertyReader;
         
-        public quaternionSerializedReaderAndWriterVariant OutputDirectionPropertyWriter;
+        public SerializedVariantRW<quaternion> OutputDirectionPropertyWriter;
 
         protected override unsafe void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

@@ -181,16 +181,16 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 2
     00000001:
-      type: {class: float2NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float2NodeVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 1332110029}
         ValueFieldName: Output
     00000002:
-      type: {class: float3LocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReaderAndWriter>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value:
           x: 0
@@ -772,16 +772,16 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 4
     00000001:
-      type: {class: float2NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 1332110029}
         ValueFieldName: Output
     00000002:
-      type: {class: float3LocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReaderAndWriter>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value:
           x: 0
@@ -883,7 +883,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: quaternionNodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/quaternionLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 1160618947}
         ValueFieldName: OutputDirection
@@ -1118,13 +1118,12 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: float2NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 1332110029}
         ValueFieldName: Output
     00000001:
-      type: {class: quaternionLocalVariantReaderAndWriter, ns: EntitiesBT.Sample,
-        asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReaderAndWriter>/quaternionLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value:
           value:
@@ -1367,7 +1366,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: float2LocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReaderAndWriter>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value:
           x: 0
@@ -1470,7 +1469,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: float3LocalVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value:
           x: 0

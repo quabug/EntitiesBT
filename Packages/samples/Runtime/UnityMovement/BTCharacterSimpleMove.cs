@@ -1,7 +1,5 @@
-using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -13,8 +11,7 @@ namespace EntitiesBT.Extensions.UnityMovement
     {
         public bool IsLocal;
         
-        [SerializeReference, SerializeReferenceDrawer]
-        public float3VariantReader VelocityPropertyReader;
+        public SerializedVariantRO<float3> VelocityPropertyReader;
 
         protected override unsafe void Build(ref CharacterSimpleMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {

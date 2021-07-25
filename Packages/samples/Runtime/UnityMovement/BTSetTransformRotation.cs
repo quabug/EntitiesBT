@@ -1,7 +1,6 @@
 using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -12,7 +11,7 @@ namespace EntitiesBT.Extensions.UnityMovement
     public class BTSetTransformRotation : BTNode<SetTransformRotationNode>
     {
         [SerializeReference, SerializeReferenceDrawer]
-        public quaternionVariantReader RotationReader;
+        public SerializedVariantRO<quaternion> RotationReader;
 
         protected override unsafe void Build(ref SetTransformRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
