@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using DynamicExpresso;
 
 namespace EntitiesBT.Variant.Expression
@@ -13,17 +16,21 @@ namespace EntitiesBT.Variant.Expression
         {
             _interpreter = new Interpreter();
             _interpreter.EnableAssignment(AssignmentOperators.None);
-            foreach (var type in ExpressionReferenceTypeRegistry.GetReferenceTypes()) _interpreter.Reference(type);
+            foreach (var type in VariantValueTypeRegistry.GetAllTypes()) _interpreter.Reference(type);
+            foreach (var type in AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetCustomAttributes<ExpressionReferenceAttribute>())
+                .Select(attribute => attribute.Type)
+            ) _interpreter.Reference(type);
         }
 
         public static Lambda Parse(this ref ExpressionVariant.Data data)
         {
             if (data.LambdaId >= 0) return _lambdas[data.LambdaId];
-            var expressionType = ExpressionReferenceTypeRegistry.GetTypeById(data.ExpressionType);
+            var expressionType = VariantValueTypeRegistry.GetTypeById(data.ExpressionType);
             var parameters = new Parameter[data.VariantTypes.Length];
             for (var i = 0; i < parameters.Length; i++)
             {
-                var type = ExpressionReferenceTypeRegistry.GetTypeById(data.VariantTypes[i]);
+                var type = VariantValueTypeRegistry.GetTypeById(data.VariantTypes[i]);
                 var name = data.VariantNames[i].ToString();
                 parameters[i] = new Parameter(name, type);
             }

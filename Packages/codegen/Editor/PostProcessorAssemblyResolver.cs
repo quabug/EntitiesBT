@@ -14,9 +14,9 @@ namespace EntitiesBT.CodeGen.Editor
         private readonly IDictionary<string, AssemblyDefinition> _cache = new Dictionary<string, AssemblyDefinition>();
         private readonly IReadOnlyList<string> _references;
 
-        public PostProcessorAssemblyResolver([NotNull] IReadOnlyList<string> references)
+        public PostProcessorAssemblyResolver([NotNull] IEnumerable<string> references)
         {
-            _references = references;
+            _references = references.ToArray();
         }
 
         public void Dispose()
@@ -28,6 +28,11 @@ namespace EntitiesBT.CodeGen.Editor
         public AssemblyDefinition Resolve(AssemblyNameReference name)
         {
             return Resolve(name, new ReaderParameters(ReadingMode.Deferred));
+        }
+
+        public AssemblyDefinition Resolve(string name)
+        {
+            return Resolve(new AssemblyNameReference(name, new Version()), new ReaderParameters(ReadingMode.Deferred));
         }
 
         public AssemblyDefinition Resolve(AssemblyNameReference name, ReaderParameters parameters)
@@ -59,11 +64,8 @@ namespace EntitiesBT.CodeGen.Editor
 
         private string FindFile(AssemblyNameReference name)
         {
-            var fileName = _references.FirstOrDefault(r => Path.GetFileName(r) == name.Name + ".dll");
-            if (fileName != null) return fileName;
-
-            // perhaps the type comes from an exe instead
-            fileName = _references.FirstOrDefault(r => Path.GetFileName(r) == name.Name + ".exe");
+            var fileName = _references.FirstOrDefault(r =>
+                r == name.Name || Path.GetFileName(r) == name.Name + ".dll" || Path.GetFileName(r) == name.Name + ".exe");
             if (fileName != null) return fileName;
 
             //Unfortunately the current ICompiledAssembly API only provides direct references.

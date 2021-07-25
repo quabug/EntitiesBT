@@ -120,7 +120,7 @@ namespace EntitiesBT.Core
         );
 
         public static readonly Lazy<IReadOnlyCollection<Type>> ALL_TYPES = new Lazy<IReadOnlyCollection<Type>>(
-            () => new ReadOnlyCollection<Type>(ALL_ASSEMBLIES.Value.SelectMany(assembly => assembly.GetTypes()).ToArray())
+            () => new ReadOnlyCollection<Type>(ALL_ASSEMBLIES.Value.SelectMany(assembly => assembly.GetTypesWithoutException()).ToArray())
         );
 
         public static readonly Lazy<IReadOnlyCollection<Type>> BEHAVIOR_TREE_ASSEMBLY_TYPES = new Lazy<IReadOnlyCollection<Type>>(

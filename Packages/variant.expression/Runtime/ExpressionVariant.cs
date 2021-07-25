@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
-using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -46,7 +45,7 @@ namespace EntitiesBT.Variant.Expression
                 ref var blobPtr = ref UnsafeUtility.As<int, BlobPtr<Data>>(ref blobVariant.MetaDataOffsetPtr);
                 ref var data = ref builder.Allocate(ref blobPtr);
                 data.LambdaId = -1;
-                data.ExpressionType = ExpressionReferenceTypeRegistry.GetIdByType(typeof(T));
+                data.ExpressionType = VariantValueTypeRegistry.GetIdByType(typeof(T));
                 builder.AllocateString(ref data.Expression, _expression);
                 var variants = builder.Allocate(ref data.Variants, _sources.Length);
                 var names = builder.Allocate(ref data.VariantNames, _sources.Length);
@@ -55,7 +54,7 @@ namespace EntitiesBT.Variant.Expression
                 {
                     _sources[i].Value.Allocate(ref builder, ref variants[i], self, tree);
                     builder.AllocateString(ref names[i], _sources[i].Name);
-                    types[i] = ExpressionReferenceTypeRegistry.GetIdByType(_sources[i].Value.FindValueType());
+                    types[i] = VariantValueTypeRegistry.GetIdByType(_sources[i].Value.FindValueType());
                 }
                 return new IntPtr(UnsafeUtility.AddressOf(ref data));
             }
@@ -78,7 +77,7 @@ namespace EntitiesBT.Variant.Expression
 
             for (var i = 0; i < arguments.Length; i++)
             {
-                var type = ExpressionReferenceTypeRegistry.GetTypeById(data.VariantTypes[i]);
+                var type = VariantValueTypeRegistry.GetTypeById(data.VariantTypes[i]);
                 var pointer = data.Variants[i].GetPointer(index, ref blob, ref bb);
                 arguments[i] = Marshal.PtrToStructure(pointer, type);
             }
