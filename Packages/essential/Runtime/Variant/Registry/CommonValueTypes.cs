@@ -76,3 +76,4 @@ using Unity.Mathematics;
 [assembly: VariantValueType(typeof(half2), 81)]
 [assembly: VariantValueType(typeof(half3), 82)]
 [assembly: VariantValueType(typeof(half4), 83)]
+[assembly: VariantValueType(typeof(quaternion), 84)]

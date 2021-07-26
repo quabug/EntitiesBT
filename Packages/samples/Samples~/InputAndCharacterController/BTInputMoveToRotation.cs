@@ -10,9 +10,7 @@ namespace EntitiesBT.Samples
 {
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
-        [SerializeReference, SerializeReferenceDrawer]
         public SerializedVariantRO<float2> InputMovePropertyReader;
-        
         public SerializedVariantRW<quaternion> OutputDirectionPropertyWriter;
 
         protected override unsafe void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)

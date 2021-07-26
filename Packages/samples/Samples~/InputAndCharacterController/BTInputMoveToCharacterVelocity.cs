@@ -10,12 +10,8 @@ namespace EntitiesBT.Samples
 {
     public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
     {
-        [SerializeReference, SerializeReferenceDrawer]
         public SerializedVariantRO<float> SpeedPropertyReader;
-        
-        [SerializeReference, SerializeReferenceDrawer]
         public SerializedVariantRO<float2> InputMovePropertyReader;
-        
         public SerializedVariantRW<float3> OutputVelocityPropertyWriter;
 
         protected override unsafe void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
