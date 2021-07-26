@@ -1,10 +1,10 @@
 {
   "name": "com.quabug.entities-bt.builder.odin",
   "description": "Behavior Tree for Unity Entities - Odin Builder",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "unity": "2020.2",
   "displayName": "EntitiesBT - Odin Builder",
   "dependencies": {
-    "com.quabug.entities-bt.builder.component": "1.0.2"
+    "com.quabug.entities-bt.builder.component": "1.2.0"
   }
 }

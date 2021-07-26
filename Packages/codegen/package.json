@@ -1,7 +1,7 @@
 {
   "name": "com.quabug.entities-bt.codegen",
   "description": "Behavior Tree for Unity Entities - ILCodeGen",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "unity": "2020.2",
   "displayName": "EntitiesBT - IL CodeGen"
 }
