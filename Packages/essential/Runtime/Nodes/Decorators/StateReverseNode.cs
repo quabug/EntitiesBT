@@ -17,11 +17,5 @@ namespace EntitiesBT.Nodes
             default: return childState;
             }
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }

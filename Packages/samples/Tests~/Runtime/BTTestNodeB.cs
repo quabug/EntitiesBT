@@ -8,7 +8,7 @@ using UnityEngine;
 namespace EntitiesBT.Test
 {
     [BehaviorNode("793F38C5-B0BD-410A-87BD-D122B10E636F")]
-    public struct NodeB : INodeData
+    public struct NodeB : INodeData, ICustomResetAction
     {
         public int B;
         public int BB;

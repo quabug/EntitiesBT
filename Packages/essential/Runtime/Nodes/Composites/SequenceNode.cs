@@ -11,11 +11,5 @@ namespace EntitiesBT.Nodes
         {
             return index.TickChildrenReturnLastOrDefault(ref blob, ref bb, breakCheck: state => state.IsRunningOrFailure());
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }

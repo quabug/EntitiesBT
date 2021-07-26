@@ -26,11 +26,5 @@ namespace EntitiesBT.Nodes
             CountdownSeconds.Write(index, ref blob, ref bb, countdown);
             return countdown <= 0f ? NodeState.Success : NodeState.Running;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }

@@ -105,7 +105,7 @@ namespace EntitiesBT.Core
         
         [Preserve]
         private static unsafe NodeState Tick<TNodeData>(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb)
-            where TNodeData : struct, INodeData
+            where TNodeData : unmanaged, INodeData
         {
             return UnsafeUtility.AsRef<TNodeData>((void*)ptr).Tick(index, ref blob, ref bb);
         }
@@ -114,11 +114,13 @@ namespace EntitiesBT.Core
         
         [Preserve]
         private static unsafe void Reset<TNodeData>(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb)
-            where TNodeData : struct, INodeData
+            where TNodeData : unmanaged, ICustomResetAction
         {
             UnsafeUtility.AsRef<TNodeData>((void*)ptr).Reset(index, ref blob, ref bb);
         }
-        
+
+        private static void DefaultReset(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb) {}
+
         internal class Node
         {
             public ResetFunc Reset;
@@ -141,7 +143,8 @@ namespace EntitiesBT.Core
                 {
                     var node = new Node
                     {
-                        Reset = CreateDelegate<ResetFunc>(resetMethod, type),
+                        Reset = typeof(ICustomResetAction).IsAssignableFrom(type) ?
+                            CreateDelegate<ResetFunc>(resetMethod, type) : DefaultReset,
                         Tick = CreateDelegate<TickFunc>(tickMethod, type)
                     };
                     nodes[attribute.Id] = node;

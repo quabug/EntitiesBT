@@ -12,11 +12,5 @@ namespace EntitiesBT.Nodes
             VirtualMachine.Reset(index, ref blob, ref blackboard, blob.GetEndIndex(index) - index);
             return NodeState.Success;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }

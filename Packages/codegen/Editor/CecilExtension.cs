@@ -125,6 +125,12 @@ namespace EntitiesBT.CodeGen.Editor
 			return self.Methods.First(m => m.Name == name);
 		}
 
+        [Pure, CanBeNull]
+        public static MethodDefinition GetMethodNullable([NotNull] this TypeDefinition self, [NotNull] string name)
+		{
+			return self.Methods.FirstOrDefault(m => m.Name == name);
+		}
+
         [Pure]
         public static void AddRange<T>([NotNull] this Collection<T> self, [NotNull, ItemNotNull] IEnumerable<T> items)
 		{

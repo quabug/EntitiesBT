@@ -21,11 +21,5 @@ namespace EntitiesBT.Nodes
             prioritySelectorData.Weights[WeightIndex] += AddWeight;
             return NodeState.Success;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }

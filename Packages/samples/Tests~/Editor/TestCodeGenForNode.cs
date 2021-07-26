@@ -30,7 +30,7 @@ namespace EntitiesBT.Test
         }
 
         [BehaviorNode("E683A98D-96D3-4EFE-B5E4-250F92441B3B", Ignore = true)]
-        class TestManualNode : INodeData
+        class TestManualNode : INodeData, ICustomResetAction
         {
             [ReadWrite(typeof(double))]
             public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb) where TNodeBlob : struct, INodeBlob where TBlackboard : struct, IBlackboard
@@ -73,9 +73,8 @@ namespace EntitiesBT.Test
         struct BarComponent : IComponentData {}
 
         [BehaviorNode("D4C33711-96CB-448B-BD6E-182271E2D69F", Ignore = true)]
-        class TestNode : INodeData
+        class TestNode : INodeData, ICustomResetAction
         {
-
             public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb) where TNodeBlob : struct, INodeBlob where TBlackboard : struct, IBlackboard
             {
                 bb.GetData<FooComponent>();

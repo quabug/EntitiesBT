@@ -37,11 +37,5 @@ namespace EntitiesBT.Samples
             OutputDirection.Write(index, ref blob, ref bb, direction);
             return NodeState.Success;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }
