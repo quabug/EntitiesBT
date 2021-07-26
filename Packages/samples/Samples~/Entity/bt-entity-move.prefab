@@ -59,7 +59,7 @@ MonoBehaviour:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 3
+        Value: 2
     00000001:
       type: {class: , ns: , asm: }
 --- !u!1 &7154796705611245648
@@ -121,7 +121,7 @@ MonoBehaviour:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 3
+        Value: 2
     00000001:
       type: {class: , ns: , asm: }
 --- !u!1 &7154796705739208521
@@ -227,7 +227,7 @@ MonoBehaviour:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 1
+        Value: 2
     00000001:
       type: {class: , ns: , asm: }
 --- !u!1 &7154796705978280124
@@ -381,7 +381,7 @@ MonoBehaviour:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 2
+        Value: 1
     00000001:
       type: {class: , ns: , asm: }
 --- !u!1 &7154796706415700004
@@ -591,7 +591,7 @@ MonoBehaviour:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 3
+        Value: 2
     00000001:
       type: {class: , ns: , asm: }
 --- !u!1 &7154796706839227953
@@ -789,6 +789,6 @@ MonoBehaviour:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 3
+        Value: 2
     00000001:
       type: {class: , ns: , asm: }
