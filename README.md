@@ -37,6 +37,9 @@ _____      _   _ _   _           ______ _____
 
 Behavior Tree framework based on and used for Unity Entities (DOTS)
 
+## Release Notes
+- [1.2.0](https://github.com/quabug/EntitiesBT/pull/160#issue-696822887)
+
 ## Why another Behavior Tree framework?
 Existing BT frameworks are not support Entities out of box.
 
@@ -55,6 +58,7 @@ Existing BT frameworks are not support Entities out of box.
 
 ## Disadvantages
 - Incompatible with burst.
+- Incompatible with il2cpp.
 - Lack of action nodes. (Will add some actions as extension if I personally need them)
 - Not easy to modify tree structure at runtime.
 - Node data must be compatible with `Blob` and created by [`BlobBuilder`](https://docs.unity3d.com/Packages/com.unity.entities@0.11/api/Unity.Entities.BlobBuilder.html)
