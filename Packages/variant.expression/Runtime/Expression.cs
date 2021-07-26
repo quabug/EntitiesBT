@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,8 +10,7 @@ namespace EntitiesBT.Variant.Expression
     public static class Expression
     {
         private static readonly Interpreter _interpreter;
-        private static List<Lambda> _lambdas = new List<Lambda>(_capacityExpandingCount);
-        private const int _capacityExpandingCount = 32;
+        private static readonly ConcurrentDictionary<LambdaId, Lambda> _lambdas = new ConcurrentDictionary<LambdaId, Lambda>();
 
         static Expression()
         {
@@ -23,9 +23,10 @@ namespace EntitiesBT.Variant.Expression
             ) _interpreter.Reference(type);
         }
 
-        public static Lambda Parse(this ref ExpressionVariant.Data data)
+        public static Lambda Parse(this ref ExpressionVariant.Data data, in LambdaId lambdaId)
         {
-            if (data.LambdaId >= 0) return _lambdas[data.LambdaId];
+            if (_lambdas.TryGetValue(lambdaId, out var lambda)) return lambda;
+
             var expressionType = VariantValueTypeRegistry.GetTypeById(data.ExpressionType);
             var parameters = new Parameter[data.VariantTypes.Length];
             for (var i = 0; i < parameters.Length; i++)
@@ -34,25 +35,13 @@ namespace EntitiesBT.Variant.Expression
                 var name = data.VariantNames[i].ToString();
                 parameters[i] = new Parameter(name, type);
             }
-            var lambda = _interpreter.Parse(
+
+            lambda = _interpreter.Parse(
                 data.Expression.ToString(),
                 expressionType,
                 parameters
             );
-
-            lock (_lambdas)
-            {
-                var lambdas = _lambdas;
-                if (lambdas.Count == lambdas.Capacity)
-                {
-                    lambdas = new List<Lambda>(_lambdas.Capacity + _capacityExpandingCount);
-                    lambdas.AddRange(_lambdas);
-                }
-                lambdas.Add(lambda);
-                data.LambdaId = lambdas.Count - 1;
-                _lambdas = lambdas;
-            }
-
+            _lambdas[lambdaId] = lambda;
             return lambda;
         }
     }

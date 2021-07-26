@@ -6,6 +6,8 @@ namespace EntitiesBT.Entities
     [UpdateBefore(typeof(VirtualMachineSystem))]
     public class BehaviorTreeLifeCycleSystem : SystemBase
     {
+        private int _runtimeId = 0;
+
         struct LastTargetComponent : ISystemStateComponentData
         {
             public Entity Target;
@@ -23,6 +25,8 @@ namespace EntitiesBT.Entities
                 .ForEach((Entity entity, in BlackboardDataQuery query, in BehaviorTreeComponent bt, in BehaviorTreeTargetComponent target, in BehaviorTreeOrderComponent order) =>
                 {
                     var blob = new NodeBlobRef(bt.Blob.BlobRef.Clone());
+                    blob.RuntimeId = _runtimeId;
+                    _runtimeId++;
                     EntityManager.AddComponentData(entity, new LastTargetComponent {Target = target.Value, Blob = blob});
                     BindBehaviorTree(entity, bt, query, target.Value, order.Value, blob);
                 }).Run();

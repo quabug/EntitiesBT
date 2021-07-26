@@ -22,10 +22,9 @@ namespace EntitiesBT.Variant.Expression
             public BlobArray<BlobVariantReadOnlyPtr> Variants;
             public BlobArray<BlobString> VariantNames;
             public BlobArray<int> VariantTypes;
-            internal int LambdaId;
         }
 
-        private static readonly ConcurrentDictionary<int, object[]> _expressionParameters = new ConcurrentDictionary<int, object[]>();
+        private static readonly ConcurrentDictionary<LambdaId, object[]> _expressionParameters = new ConcurrentDictionary<LambdaId, object[]>();
 
         [Serializable]
         public class Reader<T> : IVariantReader<T> where T : unmanaged
@@ -45,7 +44,6 @@ namespace EntitiesBT.Variant.Expression
                 blobVariant.VariantId = GuidHashCode(GUID);
                 ref var blobPtr = ref UnsafeUtility.As<int, BlobPtr<Data>>(ref blobVariant.MetaDataOffsetPtr);
                 ref var data = ref builder.Allocate(ref blobPtr);
-                data.LambdaId = -1;
                 data.ExpressionType = VariantValueTypeRegistry.GetIdByType(typeof(T));
                 builder.AllocateString(ref data.Expression, _expression);
                 var variants = builder.Allocate(ref data.Variants, _sources.Length);
@@ -68,12 +66,13 @@ namespace EntitiesBT.Variant.Expression
             where TBlackboard : struct, IBlackboard
         {
             ref var data = ref blobVariant.As<Data>();
-            var lambda = data.Parse();
+            var lambdaId = new LambdaId(blob.RuntimeId, index);
+            var lambda = data.Parse(lambdaId);
 
-            if (!_expressionParameters.TryGetValue(data.LambdaId, out var arguments))
+            if (!_expressionParameters.TryGetValue(lambdaId, out var arguments))
             {
                 arguments = new object[data.Variants.Length];
-                _expressionParameters[data.LambdaId] = arguments;
+                _expressionParameters[lambdaId] = arguments;
             }
 
             for (var i = 0; i < arguments.Length; i++)
