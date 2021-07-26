@@ -14,19 +14,19 @@ namespace EntitiesBT.Variant
 
         [UnityEngine.SerializeReference]
         [HideIf(nameof(_isLinked), false)]
-        [SerializeReferenceDrawer, SerializeReferenceDrawerPropertyBaseType(nameof(ReaderAndWriter))]
+        [SerializeReferenceDrawer(TypeRestrictionBySiblingProperty = nameof(ReaderAndWriter))]
         private object _readerAndWriter;
         public IVariantReaderAndWriter<T> ReaderAndWriter => (IVariantReaderAndWriter<T>)_readerAndWriter;
 
         [UnityEngine.SerializeReference]
         [HideIf(nameof(_isLinked))]
-        [SerializeReferenceDrawer, SerializeReferenceDrawerPropertyBaseType(nameof(Reader))]
+        [SerializeReferenceDrawer(TypeRestrictionBySiblingProperty = nameof(Reader))]
         private object _reader;
         public IVariantReader<T> Reader => (IVariantReader<T>)_reader;
 
         [UnityEngine.SerializeReference]
         [HideIf(nameof(_isLinked))]
-        [SerializeReferenceDrawer, SerializeReferenceDrawerPropertyBaseType(nameof(Writer))]
+        [SerializeReferenceDrawer(TypeRestrictionBySiblingProperty = nameof(Writer))]
         private object _writer;
         public IVariantWriter<T> Writer => (IVariantWriter<T>)_writer;
     }
@@ -35,7 +35,7 @@ namespace EntitiesBT.Variant
     public class SerializedVariantRO<T> : IVariantReader<T> where T : unmanaged
     {
         [UnityEngine.SerializeReference]
-        [SerializeReferenceDrawer, SerializeReferenceDrawerPropertyBaseType(nameof(Reader))]
+        [SerializeReferenceDrawer(TypeRestrictionBySiblingProperty = nameof(Reader))]
         private object _reader;
         public IVariantReader<T> Reader => (IVariantReader<T>)_reader;
 
@@ -49,7 +49,7 @@ namespace EntitiesBT.Variant
     public class SerializedVariantWO<T> : IVariantWriter<T> where T : unmanaged
     {
         [UnityEngine.SerializeReference]
-        [SerializeReferenceDrawer, SerializeReferenceDrawerPropertyBaseType(nameof(Writer))]
+        [SerializeReferenceDrawer(TypeRestrictionBySiblingProperty = nameof(Writer))]
         private object _writer;
         public IVariantWriter<T> Writer => (IVariantWriter<T>)_writer;
 

@@ -18,10 +18,11 @@ namespace EntitiesBT.Variant
 
     public interface IVariantReader : IVariant {}
     public interface IVariantWriter : IVariant {}
+    public interface IVariantReaderAndWriter : IVariant {}
     public interface IVariant<out T> : IVariant where T : unmanaged {}
     public interface IVariantReader<out T> : IVariantReader, IVariant<T> where T : unmanaged {}
     public interface IVariantWriter<out T> : IVariantWriter, IVariant<T> where T : unmanaged {}
-    public interface IVariantReaderAndWriter<out T> : IVariantReader, IVariantWriter, IVariant<T> where T : unmanaged {}
+    public interface IVariantReaderAndWriter<out T> : IVariantReaderAndWriter, IVariant<T> where T : unmanaged {}
 
     public static partial class VariantExtension
     {

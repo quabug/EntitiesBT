@@ -23,13 +23,7 @@ namespace EntitiesBT.Attributes.Editor
 
          public static object GetDeclaringObject(this SerializedProperty property)
          {
-             var pathCount = property.propertyPath.Split('.').Length;
-             return property.GetFieldsByPath().ElementAt(pathCount - 1).field;
-         }
-
-         public static bool IsReferencedArrayElement(this SerializedProperty property)
-         {
-             return property.propertyType == SerializedPropertyType.ManagedReference && property.propertyPath.EndsWith("]");
+             return property.GetFieldsByPath().Reverse().Skip(1).First().field;
          }
 
          public static IEnumerable<(object field, FieldInfo fi)> GetFieldsByPath(this SerializedProperty property)

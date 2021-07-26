@@ -189,15 +189,15 @@ MonoBehaviour:
         asm: Assembly-CSharp}
       data:
         Value:
-          x: 3
-          y: 4
+          x: 3.4
+          y: 2.1
     00000002:
       type: {class: <IVariantReader>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value:
-          x: 2
-          y: 2
+          x: 2.1
+          y: 5.2
 --- !u!114 &220197283
 MonoBehaviour:
   m_ObjectHideFlags: 0
