@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -153,13 +153,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LongReader:
-    id: 0
+    _reader:
+      id: 0
   String: aabbbcccc
   IntArray: a00c0000020000002000000004000000b3150000
   LongWriter:
-    id: 1
+    _writer:
+      id: 1
   SingleReader:
-    id: 2
+    _reader:
+      id: 2
   LongValue: 23333
   SingleReaderAndWriter:
     _isLinked: 1
@@ -172,21 +175,24 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: Int64ComponentVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/Int64LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
+        Value: 111
     00000001:
-      type: {class: Int64ComponentVariantWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantWriter>/Int64NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
+        NodeObject: {fileID: 327906297}
+        ValueFieldName: LongReader
     00000002:
-      type: {class: SingleScriptableObjectVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
-        ScriptableObject: {fileID: 11400000, guid: cee16ca8c8b594efb867f66c8d699937,
-          type: 2}
-        ScriptableObjectValueName: FloatValue
+        Value: 43243
     00000003:
-      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value: 123
     00000004:
@@ -432,13 +438,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LongReader:
-    id: 0
+    _reader:
+      id: 0
   String: 43242131
   IntArray: 
   LongWriter:
-    id: 1
+    _writer:
+      id: 1
   SingleReader:
-    id: 2
+    _reader:
+      id: 2
   LongValue: 44332
   SingleReaderAndWriter:
     _isLinked: 0
@@ -451,28 +460,33 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: Int64NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/Int64NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
-        NodeObject: {fileID: 327906297}
+        NodeObject: {fileID: 1667038669}
         ValueFieldName: Long
     00000001:
-      type: {class: Int64NodeVariantWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantWriter>/Int64NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
-        NodeObject: {fileID: 327906297}
+        NodeObject: {fileID: 1667038669}
         ValueFieldName: Long
     00000002:
-      type: {class: SingleComponentVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.InputValue
+        ComponentValueName: EntitiesBT.Sample.SampleTimeDelayData.TwoSeconds
     00000003:
       type: {class: , ns: , asm: }
     00000004:
-      type: {class: SingleNodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/SingleNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 327906297}
         ValueFieldName: SingleReader
     00000005:
-      type: {class: SingleNodeVariantWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantWriter>/SingleNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 327906297}
         ValueFieldName: SingleReader

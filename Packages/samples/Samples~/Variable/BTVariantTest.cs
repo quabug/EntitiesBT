@@ -1,3 +1,4 @@
+using System;
 using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
@@ -11,13 +12,13 @@ namespace EntitiesBT.Sample
 {
     public class BTVariantTest : BTNode<VariablesTestNode>
     {
-        [SerializeReference, SerializeReferenceDrawer] public Int64VariantReader LongReader;
+        public SerializedVariantRO<Int64> LongReader;
         public string String;
         public int[] IntArray;
-        [SerializeReference, SerializeReferenceDrawer] public Int64VariantWriter LongWriter;
-        [SerializeReference, SerializeReferenceDrawer] public SingleVariantReader SingleReader;
+        public SerializedVariantWO<Int64> LongWriter;
+        public SerializedVariantRO<Single> SingleReader;
         public long LongValue;
-        public SingleSerializedReaderAndWriterVariant SingleReaderAndWriter;
+        public SerializedVariantRW<Single>SingleReaderAndWriter;
 
         protected override unsafe void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
