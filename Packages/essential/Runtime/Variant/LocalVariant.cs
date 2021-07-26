@@ -35,7 +35,7 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            return ref blobVariant.Value<T>();
+            return ref blobVariant.As<T>();
         }
 
         [ReadWritePointerMethod]
@@ -43,7 +43,7 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            return new IntPtr(blobVariant.ValuePtr());
+            return new IntPtr(blobVariant.AsPointer());
         }
     }
 }

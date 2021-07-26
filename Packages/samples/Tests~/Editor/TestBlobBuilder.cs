@@ -36,7 +36,7 @@ namespace EntitiesBT.Test
 
                 using var persistent = builder.CreateBlobAssetReference<BlobVariant>(Allocator.Persistent);
                 var value = persistent.Value;
-                ref var valueData = ref persistent.Value.Value<Data>();
+                ref var valueData = ref persistent.Value.As<Data>();
 
                 Assert.That(value.VariantId, Is.EqualTo(1));
                 Assert.That(valueData.IntValue, Is.EqualTo(2));

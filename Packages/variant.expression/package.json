@@ -5,6 +5,5 @@
   "displayName": "EntitiesBT - Expression Variant",
   "dependencies": {
     "com.quabug.entities-bt.essential": "1.1.3"
-  },
-  "samples": []
+  }
 }

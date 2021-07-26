@@ -13,13 +13,11 @@ namespace EntitiesBT.Variant
     public static class BlobVariantExtension
     {
         [Pure]
-        // public static ref TValue Value<TValue>(this ref BlobVariant blobVariant) where TValue : struct =>
-            // ref UnsafeUtility.As<int, BlobPtr<TValue>>(ref blobVariant.MetaDataOffsetPtr).Value;
-        public static unsafe ref TValue Value<TValue>(this ref BlobVariant blobVariant) where TValue : unmanaged =>
-            ref UnsafeUtility.AsRef<TValue>(blobVariant.ValuePtr());
+        public static unsafe ref TValue As<TValue>(this ref BlobVariant blobVariant) where TValue : unmanaged =>
+            ref UnsafeUtility.AsRef<TValue>(blobVariant.AsPointer());
 
         [Pure]
-        public static unsafe void* ValuePtr(this ref BlobVariant blobVariant)
+        public static unsafe void* AsPointer(this ref BlobVariant blobVariant)
         {
             fixed (int* thisPtr = &blobVariant.MetaDataOffsetPtr)
             {
@@ -28,8 +26,8 @@ namespace EntitiesBT.Variant
         }
 
         [Pure]
-        public static unsafe object Value(this ref BlobVariant blobVariant, Type valueType) =>
-            Marshal.PtrToStructure(new IntPtr(blobVariant.ValuePtr()), valueType);
+        public static unsafe object AsObject(this ref BlobVariant blobVariant, Type valueType) =>
+            Marshal.PtrToStructure(new IntPtr(blobVariant.AsPointer()), valueType);
 
         [Pure]
         public static IEnumerable<ComponentType> GetComponentAccessList(this ref BlobVariant blobVariant)

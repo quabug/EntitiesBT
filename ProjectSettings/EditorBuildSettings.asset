@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Packages/com.quabug.entities-bt.variant-expression/Samples/SampleExpression.unity
+    path: Packages/com.quabug.entities-bt.samples/Samples/Expression/SampleExpression.unity
     guid: b6a242e0521a16045abe2502e2b9dbc5
   m_configObjects: {}

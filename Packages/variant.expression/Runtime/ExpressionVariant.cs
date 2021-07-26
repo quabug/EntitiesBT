@@ -66,7 +66,7 @@ namespace EntitiesBT.Variant.Expression
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            ref var data = ref blobVariant.Value<Data>();
+            ref var data = ref blobVariant.As<Data>();
             var lambda = data.Parse();
 
             if (!_expressionParameters.TryGetValue(data.LambdaId, out var arguments))

@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using static EntitiesBT.Core.Utilities;
 
-namespace EntitiesBT.Tests
+namespace EntitiesBT.Test
 {
-    public class TestsDelegateRegistry
+    public class TestDelegateRegistry
     {
         [RegisterDelegateClass(GUID)]
         static class TestClass

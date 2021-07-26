@@ -32,7 +32,7 @@ namespace EntitiesBT.Builder.Visual
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            ref var port = ref blobVariant.Value<InputDataPort>();
+            ref var port = ref blobVariant.As<InputDataPort>();
             var behaviorTree = bb.GetData<CurrentBehaviorTreeComponent>().RefValue.BehaviorTree;
             // HACK: how to support multiple worlds?
             var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;

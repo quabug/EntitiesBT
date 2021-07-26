@@ -60,7 +60,7 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            return ref blobVariant.Value<T>();
+            return ref blobVariant.As<T>();
         }
 
     }

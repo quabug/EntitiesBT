@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Mono.Cecil;
 using NUnit.Framework;
 
-namespace EntitiesBT.CodeGen.Tests
+namespace EntitiesBT.Test
 {
     public class TestCecilExtension
     {

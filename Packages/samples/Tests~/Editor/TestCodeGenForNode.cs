@@ -7,7 +7,7 @@ using Mono.Cecil;
 using NUnit.Framework;
 using Unity.Entities;
 
-namespace EntitiesBT.CodeGen.Tests
+namespace EntitiesBT.Test
 {
     public class TestCodeGenForNode
     {

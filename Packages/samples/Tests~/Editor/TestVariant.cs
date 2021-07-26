@@ -4,7 +4,7 @@ using EntitiesBT.Variant;
 using NUnit.Framework;
 using Unity.Entities;
 
-namespace EntitiesBT.Tests
+namespace EntitiesBT.Test
 {
     public class TestVariant
     {

@@ -49,7 +49,7 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            ref var data = ref blobVariant.Value<DynamicNodeRefData>();
+            ref var data = ref blobVariant.As<DynamicNodeRefData>();
             var ptr = blob.GetRuntimeDataPtr(data.Index);
             ref var variable = ref UnsafeUtility.AsRef<BlobVariantReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             // TODO: check writable on editor?
@@ -71,7 +71,7 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            ref var data = ref blobVariant.Value<DynamicNodeRefData>();
+            ref var data = ref blobVariant.As<DynamicNodeRefData>();
             var ptr = blob.GetRuntimeDataPtr(data.Index);
             ref var variable = ref UnsafeUtility.AsRef<BlobVariantReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return variable.Read(index, ref blob, ref bb);
@@ -79,7 +79,7 @@ namespace EntitiesBT.Variant
 
         private static unsafe ref T GetValue<T>(ref BlobVariant blobVariant, Func<int, IntPtr> ptrFunc) where T : unmanaged
         {
-            ref var data = ref blobVariant.Value<DynamicNodeRefData>();
+            ref var data = ref blobVariant.As<DynamicNodeRefData>();
             var ptr = ptrFunc(data.Index);
             return ref UnsafeUtility.AsRef<T>(IntPtr.Add(ptr, data.Offset).ToPointer());
         }
