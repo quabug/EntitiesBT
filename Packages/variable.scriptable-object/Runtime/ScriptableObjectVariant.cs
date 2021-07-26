@@ -3,7 +3,6 @@ using System.Reflection;
 using EntitiesBT.Core;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variant
@@ -19,9 +18,11 @@ namespace EntitiesBT.Variant
         }
     }
 
-
+    [VariantClass(GUID)]
     public static class ScriptableObjectVariant
     {
+        public const string GUID = "B14A224A-7ADF-4E03-8240-60DE620FF946";
+
         [Serializable]
         public class Reader<T> : IVariantReader<T> where T : unmanaged
         {
@@ -53,15 +54,13 @@ namespace EntitiesBT.Variant
             }
         }
 
-        public const string GUID = "B14A224A-7ADF-4E03-8240-60DE620FF946";
-
-        [Preserve, RefReaderMethod(GUID)]
+        [RefReaderMethod]
         private static ref T GetDataRef<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            return ref blobVariant.Value<T>();
+            return ref blobVariant.As<T>();
         }
 
     }

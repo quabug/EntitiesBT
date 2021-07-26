@@ -317,7 +317,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 2
     00000001:
@@ -692,7 +692,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReaderAndWriter, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 2
     00000001:

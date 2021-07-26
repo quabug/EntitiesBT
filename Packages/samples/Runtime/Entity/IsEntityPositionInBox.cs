@@ -32,12 +32,6 @@ namespace EntitiesBT.Sample
             var translation = bb.GetData<Translation>();
             return Bounds.Contains(translation.Value) ? NodeState.Success : NodeState.Failure;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
     
     public class IsEntityPositionInBoxNodeDebugView : BTDebugView<IsEntityPositionInBoxNode> {}

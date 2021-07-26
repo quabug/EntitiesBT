@@ -6,6 +6,7 @@ namespace EntitiesBT.Core
 {
     public interface INodeBlob
     {
+        int RuntimeId { [Pure] get; }
         int Count { [Pure] get; }
         
         [Pure] int GetTypeId(int nodeIndex);

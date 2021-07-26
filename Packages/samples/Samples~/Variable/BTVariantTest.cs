@@ -1,3 +1,4 @@
+using System;
 using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
@@ -5,19 +6,18 @@ using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
 using EntitiesBT.Variant;
 using Unity.Entities;
-using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
     public class BTVariantTest : BTNode<VariablesTestNode>
     {
-        [SerializeReference, SerializeReferenceButton] public Int64VariantReader LongReader;
+        public SerializedVariantRO<Int64> LongReader;
         public string String;
         public int[] IntArray;
-        [SerializeReference, SerializeReferenceButton] public Int64VariantWriter LongWriter;
-        [SerializeReference, SerializeReferenceButton] public SingleVariantReader SingleReader;
+        public SerializedVariantWO<Int64> LongWriter;
+        public SerializedVariantRO<Single> SingleReader;
         public long LongValue;
-        public SingleSerializedReaderAndWriterVariant SingleReaderAndWriter;
+        public SerializedVariantRW<Single> SingleReaderAndWriter;
 
         protected override unsafe void Build(ref VariablesTestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
@@ -49,11 +49,6 @@ namespace EntitiesBT.Sample
             LongWriter.Write(index, ref blob, ref bb, (int)SingleReader.Read(index, ref blob, ref bb));
             return NodeState.Success;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {}
     }
 
     [BehaviorTreeDebugView(typeof(VariablesTestNode))]

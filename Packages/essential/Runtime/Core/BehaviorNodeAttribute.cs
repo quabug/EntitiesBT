@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using JetBrains.Annotations;
+using UnityEngine.Scripting;
 
 namespace EntitiesBT.Core
 {
@@ -13,7 +14,7 @@ namespace EntitiesBT.Core
     
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     [BaseTypeRequired(typeof(INodeData))]
-    public class BehaviorNodeAttribute : Attribute
+    public class BehaviorNodeAttribute : PreserveAttribute
     {
         public Guid Guid { get; } 
         public int Id { get; }

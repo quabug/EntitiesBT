@@ -1,7 +1,6 @@
 using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -11,10 +10,8 @@ namespace EntitiesBT.Samples
 {
     public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
     {
-        [SerializeReference, SerializeReferenceButton]
-        public float2VariantReader InputMovePropertyReader;
-        
-        public quaternionSerializedReaderAndWriterVariant OutputDirectionPropertyWriter;
+        public SerializedVariantRO<float2> InputMovePropertyReader;
+        public SerializedVariantRW<quaternion> OutputDirectionPropertyWriter;
 
         protected override unsafe void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
@@ -39,12 +36,6 @@ namespace EntitiesBT.Samples
             var direction = quaternion.LookRotationSafe(new float3(move.x, 0, move.y), math.up());
             OutputDirection.Write(index, ref blob, ref bb, direction);
             return NodeState.Success;
-        }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
         }
     }
 }

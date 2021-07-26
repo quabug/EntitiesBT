@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace EntitiesBT.CodeGen.Editor
@@ -35,6 +36,12 @@ namespace EntitiesBT.CodeGen.Editor
                     .Where(type => typeof(T).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
                     .Select(type => (T) Activator.CreateInstance(type))
                 ;
+        }
+
+        [Pure]
+        public static string ToReadableName(this Type type)
+        {
+            return type.IsGenericType ? Regex.Replace(type.ToString(), @"(\w+)`\d+\[(.*)\]", "$1<$2>") : type.ToString();
         }
     }
 }

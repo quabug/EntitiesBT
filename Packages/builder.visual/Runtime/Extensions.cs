@@ -26,7 +26,7 @@ namespace EntitiesBT.Builder.Visual
         }
     }
 
-    public readonly struct SerializedVisualReaderAndWriter<T> : ISerializedVariantReaderAndWriter<T> where T : unmanaged
+    public readonly struct SerializedVisualReaderAndWriter<T> : ISerializedVariantRW<T> where T : unmanaged
     {
         public bool IsLinked { get; }
         public IVariantReaderAndWriter<T> ReaderAndWriter { get; }
@@ -94,7 +94,7 @@ namespace EntitiesBT.Builder.Visual
         }
 
         [Pure]
-        public static ISerializedVariantReaderAndWriter<T> ToVariantReaderAndWriter<T>(this in DataPortReaderAndWriter port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
+        public static ISerializedVariantRW<T> ToVariantReaderAndWriter<T>(this in DataPortReaderAndWriter port, [NotNull] GraphInstance instance, [NotNull] GraphDefinition definition) where T : unmanaged
         {
             if (!port.IsLinked) throw new NotImplementedException();
             return new SerializedVisualReaderAndWriter<T>(true, ToLocalReaderAndWriter<T>(instance, port.Input), null, null);

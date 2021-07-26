@@ -40,11 +40,5 @@ namespace EntitiesBT.Nodes
                 return VirtualMachine.Tick(maxChildIndex, ref blob, ref blackboard);
             }
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }

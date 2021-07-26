@@ -21,11 +21,5 @@ namespace EntitiesBT.Nodes
             }
             return BreakStates.HasFlagFast(childState) ? childState : NodeState.Running;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }

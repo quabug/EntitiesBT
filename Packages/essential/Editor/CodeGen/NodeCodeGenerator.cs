@@ -18,7 +18,7 @@ namespace EntitiesBT.Editor
     [CreateAssetMenu(fileName = "NodeCodeGenerator", menuName = "EntitiesBT/NodeCodeGenerator")]
     public class NodeCodeGenerator : ScriptableObject
     {
-        [SerializeReference, SerializeReferenceButton, DrawWithUnity]
+        [SerializeReference, SerializeReferenceDrawer, DrawWithUnity]
         private INodeCodeTemplate _codeTemplate;
 
         [SerializeField]
@@ -27,13 +27,13 @@ namespace EntitiesBT.Editor
         [SerializeField]
         private string _classRenameRegex = @"(\w+)(?:Node)/$1";
 
-        [SerializeReference, SerializeReferenceButton, DrawWithUnity]
+        [SerializeReference, SerializeReferenceDrawer, DrawWithUnity]
         private ITypeGroup[] _includedNodes = { new TypeGroupAssemblies() };
 
-        [SerializeReference, SerializeReferenceButton, DrawWithUnity]
+        [SerializeReference, SerializeReferenceDrawer, DrawWithUnity]
         private ITypeValidator[] _excludedNodes = { new TypeValidatorWithFullName() };
 
-        [SerializeReference, SerializeReferenceButton, DrawWithUnity]
+        [SerializeReference, SerializeReferenceDrawer, DrawWithUnity]
         private INodeDataFieldCodeGenerator[] _fieldCodeGenerators = { new DefaultNodeDataFieldCodeGenerator() };
 
         [ContextMenu("Generate")]

@@ -1,7 +1,5 @@
-using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -13,8 +11,7 @@ namespace EntitiesBT.Extensions.UnityMovement
     {
         public bool IsLocal;
         
-        [SerializeReference, SerializeReferenceButton]
-        public float3VariantReader VelocityPropertyReader;
+        public SerializedVariantRO<float3> VelocityPropertyReader;
 
         protected override unsafe void Build(ref CharacterSimpleMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
@@ -38,12 +35,6 @@ namespace EntitiesBT.Extensions.UnityMovement
             Vector3 velocity = Velocity.Read(index, ref blob, ref bb);
             controller.SimpleMove(IsLocal ? controller.transform.localToWorldMatrix.MultiplyVector(velocity) : velocity);
             return NodeState.Success;
-        }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
         }
     }
 }

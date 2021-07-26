@@ -5,11 +5,11 @@ using EntitiesBT.Entities;
 using EntitiesBT.Variant;
 using Runtime;
 using Unity.Entities;
-using UnityEngine.Scripting;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Builder.Visual
 {
+    [VariantClass(GUID)]
     public static class GraphVariant
     {
         public const string GUID = "7BCAE9F4-BE78-424D-84DD-5DA101A3F07F";
@@ -26,13 +26,13 @@ namespace EntitiesBT.Builder.Visual
             }
         }
 
-        [Preserve, ReaderMethod(GUID)]
+        [ReaderMethod]
         private static T GetData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            ref var port = ref blobVariant.Value<InputDataPort>();
+            ref var port = ref blobVariant.As<InputDataPort>();
             var behaviorTree = bb.GetData<CurrentBehaviorTreeComponent>().RefValue.BehaviorTree;
             // HACK: how to support multiple worlds?
             var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -40,7 +40,7 @@ namespace EntitiesBT.Builder.Visual
             return graphInstance.ReadValue<T>(port);
         }
 
-        [Preserve, AccessorMethod(GUID)]
+        [AccessorMethod]
         private static IEnumerable<ComponentType> GetComponentAccess(ref BlobVariant variant)
         {
             return ComponentType.ReadOnly<CurrentBehaviorTreeComponent>().Yield();

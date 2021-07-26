@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System.Linq;
 using EntitiesBT.Entities;
 using Unity.Entities;
@@ -67,3 +69,5 @@ namespace EntitiesBT.DebugView
         }
     }
 }
+
+#endif

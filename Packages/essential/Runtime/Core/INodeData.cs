@@ -6,7 +6,10 @@ namespace EntitiesBT.Core
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         ;
-        
+    }
+
+    public interface ICustomResetAction
+    {
         void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard

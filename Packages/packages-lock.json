@@ -5,8 +5,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.quabug.entities-bt.essential": "1.0.1",
-        "com.quabug.entities-bt.variable.scriptable-object": "1.0.1"
+        "com.quabug.entities-bt.essential": "1.2.0"
       }
     },
     "com.quabug.entities-bt.builder.odin": {
@@ -14,7 +13,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.quabug.entities-bt.builder.component": "1.0.2"
+        "com.quabug.entities-bt.builder.component": "1.2.0"
       }
     },
     "com.quabug.entities-bt.builder.visual": {
@@ -38,7 +37,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.quabug.entities-bt.essential": "1.0.0"
+        "com.quabug.entities-bt.essential": "1.2.0"
       }
     },
     "com.quabug.entities-bt.essential": {
@@ -47,7 +46,7 @@
       "source": "embedded",
       "dependencies": {
         "com.unity.entities": "0.14.0-preview.19",
-        "com.quabug.entities-bt.codegen": "1.0.2"
+        "com.quabug.entities-bt.codegen": "1.2.0"
       }
     },
     "com.quabug.entities-bt.samples": {
@@ -57,9 +56,10 @@
       "dependencies": {
         "com.unity.inputsystem": "1.0.0",
         "com.unity.rendering.hybrid": "0.8.0-preview.19",
-        "com.quabug.entities-bt.builder.component": "1.0.0",
-        "com.quabug.entities-bt.debug.component-viewer": "1.0.0",
-        "com.quabug.entities-bt.essential": "1.1.0"
+        "com.quabug.entities-bt.builder.component": "1.2.0",
+        "com.quabug.entities-bt.debug.component-viewer": "1.2.0",
+        "com.quabug.entities-bt.essential": "1.2.0",
+        "com.quabug.entities-bt.variant-expression": "0.2.0"
       }
     },
     "com.quabug.entities-bt.variable.scriptable-object": {
@@ -67,7 +67,15 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.quabug.entities-bt.essential": "1.0.1"
+        "com.quabug.entities-bt.essential": "1.2.0"
+      }
+    },
+    "com.quabug.entities-bt.variant-expression": {
+      "version": "file:variant.expression",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.quabug.entities-bt.essential": "1.2.0"
       }
     },
     "com.unity.burst": {
@@ -154,7 +162,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.7",
+      "version": "2.0.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -279,7 +287,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.1.22",
+      "version": "1.1.27",
       "depth": 1,
       "source": "registry",
       "dependencies": {

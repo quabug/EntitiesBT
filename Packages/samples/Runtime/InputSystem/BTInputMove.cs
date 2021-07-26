@@ -1,7 +1,5 @@
 using System;
-using EntitiesBT.Attributes;
 using EntitiesBT.Core;
-using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -12,7 +10,7 @@ namespace EntitiesBT.Extensions.InputSystem
 {
     public class BTInputMove : BTInputActionBase<InputMoveNode>
     {
-        public float2SerializedReaderAndWriterVariant Output;
+        public SerializedVariantRW<float2> Output;
 
         protected override unsafe void Build(ref InputMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
@@ -35,12 +33,6 @@ namespace EntitiesBT.Extensions.InputSystem
             if (!inputValue.HasValue) return NodeState.Failure;
             Output.Write(index, ref blob, ref bb, inputValue.Value);
             return NodeState.Success;
-        }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
         }
     }
 }

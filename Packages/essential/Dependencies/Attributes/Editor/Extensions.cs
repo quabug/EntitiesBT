@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,21 +10,43 @@ namespace EntitiesBT.Attributes.Editor
     {
          public static object GetSiblingFieldValue(this SerializedProperty property, string fieldName)
          {
-             var pathCount = property.propertyPath.Split('.').Length;
-             var obj = property.GetFieldsByPath().ElementAt(pathCount - 1).field;
+             var obj = GetDeclaringObject(property);
              var fieldInfo = obj.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
              return fieldInfo.GetValue(obj);
+         }
+
+         public static PropertyInfo GetSiblingPropertyInfo(this SerializedProperty property, string propertyName)
+         {
+             var obj = GetDeclaringObject(property);
+             return obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+         }
+
+         public static object GetDeclaringObject(this SerializedProperty property)
+         {
+             return property.GetFieldsByPath().Reverse().Skip(1).First().field;
          }
 
          public static IEnumerable<(object field, FieldInfo fi)> GetFieldsByPath(this SerializedProperty property)
          {
              var obj = (object)property.serializedObject.targetObject;
-             yield return (obj, null);
+             FieldInfo fi = null;
+             yield return (obj, fi);
              foreach (var fieldName in property.propertyPath.Split('.'))
              {
-                 var t = Field(obj, fieldName);
-                 obj = t.field;
-                 yield return t;
+                 if (obj.GetType().IsArray)
+                 {
+                     if (fieldName == "Array") continue;
+                     var itemIndex = int.Parse(fieldName.Substring(5 /*"data["*/, fieldName.Length - 6 /*"data[]"*/));
+                     obj = ((Array) obj).GetValue(itemIndex);
+                     yield return (obj, fi);
+                 }
+                 else
+                 {
+                     var t = Field(obj, fieldName);
+                     obj = t.field;
+                     fi = t.fi;
+                     yield return t;
+                 }
              }
 
              (object field, FieldInfo fi) Field(object @object, string fieldName)

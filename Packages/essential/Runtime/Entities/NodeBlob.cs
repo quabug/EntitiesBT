@@ -9,7 +9,7 @@ namespace EntitiesBT.Entities
 {
     public struct NodeBlob
     {
-        public const int VERSION = 2;
+        public const int VERSION = 3;
 
 #region Serialized Data
         public BlobArray<int> Types;
@@ -19,6 +19,7 @@ namespace EntitiesBT.Entities
 #endregion
         
 #region NonSerialized Data (runtime only)
+        public int RuntimeId;
         public BlobArray<NodeState> States; // states of each nodes
         public BlobArray<byte> RuntimeDataBlob; // initialize from `DefaultDataBlob`
 #endregion
@@ -44,7 +45,13 @@ namespace EntitiesBT.Entities
         public readonly BlobAssetReference<NodeBlob> BlobRef;
         
         public NodeBlobRef(BlobAssetReference<NodeBlob> blobRef) => BlobRef = blobRef;
-        
+
+        public int RuntimeId
+        {
+            get => _blob.RuntimeId;
+            set => _blob.RuntimeId = value;
+        }
+
         public int Count => _blob.Count;
         public int GetTypeId(int nodeIndex) => _blob.Types[nodeIndex];
         public int GetEndIndex(int nodeIndex) => _blob.EndIndices[nodeIndex];

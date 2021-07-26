@@ -1,24 +1,18 @@
 using EntitiesBT.Attributes;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Sample;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-using SingleVariantReader = EntitiesBT.Sample.SingleVariantReader;
 
 namespace EntitiesBT.Samples
 {
     public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
     {
-        [SerializeReference, SerializeReferenceButton]
-        public SingleVariantReader SpeedPropertyReader;
-        
-        [SerializeReference, SerializeReferenceButton]
-        public float2VariantReader InputMovePropertyReader;
-        
-        public float3SerializedReaderAndWriterVariant OutputVelocityPropertyWriter;
+        public SerializedVariantRO<float> SpeedPropertyReader;
+        public SerializedVariantRO<float2> InputMovePropertyReader;
+        public SerializedVariantRW<float3> OutputVelocityPropertyWriter;
 
         protected override unsafe void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
@@ -44,12 +38,6 @@ namespace EntitiesBT.Samples
             var speed = Speed.Read(index, ref blob, ref bb);
             OutputVelocity.Write(index, ref blob, ref bb, direction * speed);
             return NodeState.Success;
-        }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
         }
     }
 }

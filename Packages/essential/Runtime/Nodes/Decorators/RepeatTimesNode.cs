@@ -25,11 +25,5 @@ namespace EntitiesBT.Nodes
             TickTimes--;
             return TickTimes <= 0 ? NodeState.Success : NodeState.Running;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }

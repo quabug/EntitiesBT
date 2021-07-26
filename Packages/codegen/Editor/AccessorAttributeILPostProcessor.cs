@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using EntitiesBT.Core;
 using Mono.Cecil;
@@ -13,29 +14,37 @@ namespace EntitiesBT.CodeGen.Editor
 
         public bool Generate(AssemblyDefinition assemblyDefinition)
         {
-            Logger.Debug($"generate accessor attributes for {assemblyDefinition.Name}");
-            var methods = assemblyDefinition.MainModule.GetAllTypes()
-                .Where(type => type.IsClass && !type.IsAbstract && type.TypeImplements(typeof(INodeData)))
-                .SelectMany(FetchNodeDataMethods)
-                .Where(method => !method.CustomAttributes.FindAccessorAttributes().Any())
-            ;
-            var modified = false;
-            foreach (var method in methods)
+            var sw = Stopwatch.StartNew();
+            try
             {
-                var attributes = method.GenerateAccessorAttributes();
-                if (!attributes.Any()) continue;
+                var methods = assemblyDefinition.MainModule.GetAllTypes()
+                        .Where(type => type.IsClass && !type.IsAbstract && type.TypeImplements(typeof(INodeData)))
+                        .SelectMany(FetchNodeDataMethods)
+                        .Where(method => method != null && !method.CustomAttributes.FindAccessorAttributes().Any())
+                    ;
+                var modified = false;
+                foreach (var method in methods)
+                {
+                    var attributes = method.GenerateAccessorAttributes();
+                    if (!attributes.Any()) continue;
 
-                Logger.Debug($"generate accessor attributes for {method.FullName}");
-                modified = true;
-                method.CustomAttributes.AddRange(attributes);
+                    Logger.Debug($"generate accessor attributes for {method.FullName}");
+                    modified = true;
+                    method.CustomAttributes.AddRange(attributes);
+                }
+
+                return modified;
             }
-            return modified;
+            finally
+            {
+                Logger.Debug($"generate accessor attributes for {assemblyDefinition.Name} ({sw.ElapsedMilliseconds}ms)");
+            }
         }
 
         IEnumerable<MethodDefinition> FetchNodeDataMethods(TypeDefinition type)
         {
             yield return type.GetMethod(nameof(INodeData.Tick));
-            yield return type.GetMethod(nameof(INodeData.Reset));
+            yield return type.GetMethodNullable(nameof(ICustomResetAction.Reset));
         }
     }
 }

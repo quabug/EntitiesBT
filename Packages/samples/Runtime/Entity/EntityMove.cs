@@ -35,12 +35,6 @@ namespace EntitiesBT.Sample
             translation.Value += Velocity * deltaTime.Value;
             return NodeState.Running;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 
     public class EntityMoveDebugView : BTDebugView<EntityMoveNode> {}

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -167,9 +167,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpeedPropertyReader:
-    id: 0
+    _reader:
+      id: 0
   InputMovePropertyReader:
-    id: 1
+    _reader:
+      id: 1
   OutputVelocityPropertyWriter:
     _isLinked: 1
     _readerAndWriter:
@@ -181,16 +183,19 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value: 2
     00000001:
-      type: {class: float2NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float2NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 1332110029}
         ValueFieldName: Output
     00000002:
-      type: {class: float3LocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReaderAndWriter>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value:
           x: 0
@@ -623,11 +628,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsLocal: 0
   VelocityPropertyReader:
-    id: 0
+    _reader:
+      id: 0
   references:
     version: 1
     00000000:
-      type: {class: float3NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float3NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 775125229}
         ValueFieldName: OutputVelocity
@@ -758,9 +765,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpeedPropertyReader:
-    id: 0
+    _reader:
+      id: 0
   InputMovePropertyReader:
-    id: 1
+    _reader:
+      id: 1
   OutputVelocityPropertyWriter:
     _isLinked: 1
     _readerAndWriter:
@@ -772,16 +781,19 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: SingleLocalVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value: 4
     00000001:
-      type: {class: float2NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float2NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 1332110029}
         ValueFieldName: Output
     00000002:
-      type: {class: float3LocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReaderAndWriter>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value:
           x: 0
@@ -879,11 +891,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotationReader:
-    id: 0
+    _reader:
+      id: 0
   references:
     version: 1
     00000000:
-      type: {class: quaternionNodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/quaternionNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 1160618947}
         ValueFieldName: OutputDirection
@@ -1106,7 +1120,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InputMovePropertyReader:
-    id: 0
+    _reader:
+      id: 0
   OutputDirectionPropertyWriter:
     _isLinked: 1
     _readerAndWriter:
@@ -1118,13 +1133,14 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: float2NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float2NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 1332110029}
         ValueFieldName: Output
     00000001:
-      type: {class: quaternionLocalVariantReaderAndWriter, ns: EntitiesBT.Sample,
-        asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReaderAndWriter>/quaternionLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value:
           value:
@@ -1367,7 +1383,8 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: float2LocalVariantReaderAndWriter, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReaderAndWriter>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value:
           x: 0
@@ -1466,16 +1483,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsLocal: 1
   VelocityPropertyReader:
-    id: 0
+    _reader:
+      id: 0
   references:
     version: 1
     00000000:
-      type: {class: float3LocalVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         Value:
           x: 0
           y: 0
-          z: 8
+          z: 10
 --- !u!1 &1454846012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1843,11 +1862,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsLocal: 0
   VelocityPropertyReader:
-    id: 0
+    _reader:
+      id: 0
   references:
     version: 1
     00000000:
-      type: {class: float3NodeVariantReader, ns: EntitiesBT.Sample, asm: EntitiesBT.Sample.Variable}
+      type: {class: <IVariantReader>/float3NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 2282878}
         ValueFieldName: OutputVelocity

@@ -1,5 +1,6 @@
 {
     "name": "EntitiesBT.Tests.Editor",
+    "rootNamespace": "",
     "references": [
         "GUID:0acc523941302664db1f4e527237feb3",
         "GUID:27619889b8ba8c24980f49ee34dbb44a",
@@ -7,16 +8,23 @@
         "GUID:734d92eba21c94caba915361bd5ac177",
         "GUID:0db6da4b0e13948bab4bf99649766bad",
         "GUID:c7babe7561eb244059259745ef27b866",
-        "GUID:d3630359ae08047918d5cd6cddd51767"
+        "GUID:6679f77e90ec1d540ab279146d203dbb",
+        "GUID:f49b79f7e0a9b4b63a97d15e26787406",
+        "GUID:ce5f967ea6c735344b367065891c4afb"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "Moq.dll",
+        "Mono.Cecil.dll",
+        "Mono.Cecil.Mdb.dll",
+        "Mono.Cecil.Pdb.dll",
+        "Mono.Cecil.Rocks.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [],

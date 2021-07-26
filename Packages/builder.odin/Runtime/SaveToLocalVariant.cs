@@ -7,6 +7,7 @@ using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Components.Odin
 {
+    [VariantClass(GUID)]
     public class SaveToLocalVariant
     {
         [Serializable]
@@ -27,7 +28,7 @@ namespace EntitiesBT.Components.Odin
 
         public const string GUID = "F315684E-2AA1-4780-B31B-2791A93359F1";
 
-        [Preserve, RefReaderMethod(GUID)]
+        [RefReaderMethod]
         private static ref T Read<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
