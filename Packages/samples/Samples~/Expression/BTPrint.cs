@@ -1,24 +1,19 @@
-#if ODIN_INSPECTOR
-
 using EntitiesBT.Core;
 using Unity.Entities;
-using Sirenix.Serialization;
 using System;
 using EntitiesBT.Variant;
-using Sirenix.OdinInspector;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace EntitiesBT.Components.Odin
 {
-    public class OdinPrint : OdinNode<PrintNode>
+    public class BTPrint : BTNode<PrintNode>
     {
-        [OdinSerializeAttribute, NonSerializedAttribute, HideReferenceObjectPickerAttribute]
-        public OdinSerializedVariantReader<float2> TimerSeconds;
+        public SerializedVariantRO<float2> Value;
 
         protected override void Build(ref PrintNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            TimerSeconds.Allocate(ref builder, ref data.Value, this, tree);
+            Value.Allocate(ref builder, ref data.Value, this, tree);
         }
     }
 
@@ -35,13 +30,5 @@ namespace EntitiesBT.Components.Odin
             Debug.Log(Value.Read(index, ref blob, ref bb));
             return NodeState.Success;
         }
-
-        public void Reset<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard blackboard)
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-        }
     }
 }
-
-#endif

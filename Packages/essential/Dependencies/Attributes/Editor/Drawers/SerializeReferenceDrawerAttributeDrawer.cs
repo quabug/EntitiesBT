@@ -43,9 +43,15 @@ namespace EntitiesBT.Attributes.Editor
             var labelPosition = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
             EditorGUI.LabelField(labelPosition, label);
 
-            var typeRestrictions = property.IsReferencedArrayElement() ?
-                null : GetAllBuiltInTypeRestrictions(property.GetPropertyField().fieldInfo)
-            ;
+            IEnumerable<Func<Type, bool>> typeRestrictions = null;
+            try
+            {
+                typeRestrictions = GetAllBuiltInTypeRestrictions(property.GetPropertyField().fieldInfo);
+            }
+            catch
+            {
+                // ignored
+            }
 
             DrawSelectionButtonForManagedReference(property, position, typeRestrictions);
 

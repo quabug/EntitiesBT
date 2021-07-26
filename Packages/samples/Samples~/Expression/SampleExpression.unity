@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 220197283}
   - component: {fileID: 220197282}
   m_Layer: 0
-  m_Name: OdinPrint
+  m_Name: BTPrint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,102 +167,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbbe6bf307a5abe4e9b9f9a925279349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: TimerSeconds
-      Entry: 7
-      Data: 0|EntitiesBT.Components.Odin.OdinSerializedVariantReader`1[[Unity.Mathematics.float2,
-        Unity.Mathematics]], EntitiesBT.Builder.Odin
-    - Name: <Reader>k__BackingField
-      Entry: 7
-      Data: 1|EntitiesBT.Variant.Expression.ExpressionVariant+Reader`1[[Unity.Mathematics.float2,
-        Unity.Mathematics]], EntitiesBT.Variant.Expression
-    - Name: _sources
-      Entry: 7
-      Data: 2|EntitiesBT.Variant.Expression.ExpressionVariant+Reader`1+Variant[[Unity.Mathematics.float2,
-        Unity.Mathematics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]][],
-        EntitiesBT.Variant.Expression
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 3|EntitiesBT.Variant.Expression.ExpressionVariant+Reader`1+Variant[[Unity.Mathematics.float2,
-        Unity.Mathematics]], EntitiesBT.Variant.Expression
-    - Name: Value
-      Entry: 7
-      Data: 4|EntitiesBT.Sample.float2LocalVariantReader, EntitiesBT.Sample.Variable
-    - Name: Value
-      Entry: 7
-      Data: Unity.Mathematics.float2, Unity.Mathematics
-    - Name: x
-      Entry: 4
-      Data: 2
-    - Name: y
-      Entry: 4
-      Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: Name
-      Entry: 1
-      Data: x
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 5|EntitiesBT.Variant.Expression.ExpressionVariant+Reader`1+Variant[[Unity.Mathematics.float2,
-        Unity.Mathematics]], EntitiesBT.Variant.Expression
-    - Name: Value
-      Entry: 7
-      Data: 6|EntitiesBT.Sample.float2LocalVariantReader, EntitiesBT.Sample.Variable
-    - Name: Value
-      Entry: 7
-      Data: Unity.Mathematics.float2, Unity.Mathematics
-    - Name: x
-      Entry: 4
-      Data: 3
-    - Name: y
-      Entry: 4
-      Data: 4
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: Name
-      Entry: 1
-      Data: y
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: _expression
-      Entry: 1
-      Data: (x+y)*2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+  Value:
+    _reader:
+      id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <IVariantReader>/float2ExpressionVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        _expression: (x+y)*2+1
+        _sources:
+        - Value:
+            id: 1
+          Name: x
+        - Value:
+            id: 2
+          Name: y
+    00000001:
+      type: {class: <IVariantReader>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value:
+          x: 3
+          y: 4
+    00000002:
+      type: {class: <IVariantReader>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value:
+          x: 2
+          y: 2
 --- !u!114 &220197283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,7 +221,7 @@ GameObject:
   - component: {fileID: 1122494587}
   - component: {fileID: 1122494586}
   m_Layer: 0
-  m_Name: OdinSequence
+  m_Name: BTSequence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -301,18 +236,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1122494585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 285a0dc7a5c059240a1cb4c3d029ce9b, type: 3}
+  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
+  _recursiveResetStatesBeforeTick: 0
 --- !u!4 &1122494587
 Transform:
   m_ObjectHideFlags: 0
@@ -338,8 +265,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1706943926}
   - component: {fileID: 1706943925}
-  - component: {fileID: 1706943924}
   - component: {fileID: 1706943927}
+  - component: {fileID: 1706943924}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -368,10 +295,10 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: OdinBehaviorTree, ns: EntitiesBT.Components.Odin, asm: EntitiesBT.Builder.Odin}
+      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
       data:
         Root: {fileID: 1122494586}
-        AutoDestroy: 0
+        AutoDestroy: 1
 --- !u!114 &1706943925
 MonoBehaviour:
   m_ObjectHideFlags: 0

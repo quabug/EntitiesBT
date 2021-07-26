@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
+using EntitiesBT.Attributes;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -32,12 +33,12 @@ namespace EntitiesBT.Variant.Expression
             [Serializable]
             internal class Variant
             {
-                [SerializeReference] public IVariantReader Value;
+                [SerializeReference, SerializeReferenceDrawer] public IVariantReader Value;
                 public string Name;
             }
 
-            [SerializeField] internal Variant[] _sources;
             [SerializeField] internal string _expression;
+            [SerializeField] internal Variant[] _sources;
 
             public unsafe IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
