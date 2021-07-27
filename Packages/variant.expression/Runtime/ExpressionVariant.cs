@@ -19,7 +19,7 @@ namespace EntitiesBT.Variant.Expression
         {
             public BlobString Expression;
             public int ExpressionType;
-            public BlobArray<BlobVariantReadOnlyPtr> Variants;
+            public BlobArray<BlobVariantPtrRO> Variants;
             public BlobArray<BlobString> VariantNames;
             public BlobArray<int> VariantTypes;
         }

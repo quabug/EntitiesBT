@@ -12,7 +12,7 @@ namespace EntitiesBT.Extensions.InputSystem
     public struct ReadInputVector2Node : IReadInputValueNode
     {
         public Guid ActionId { get; set; }
-        public BlobVariantReader<Vector2> Output;
+        public BlobVariantRO<Vector2> Output;
         public unsafe void* OutputPtr => UnsafeUtility.AddressOf(ref Output);
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)

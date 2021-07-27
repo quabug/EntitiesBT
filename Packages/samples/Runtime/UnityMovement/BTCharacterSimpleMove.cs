@@ -24,7 +24,7 @@ namespace EntitiesBT.Extensions.UnityMovement
     public struct CharacterSimpleMoveNode : INodeData
     {
         public bool IsLocal;
-        public BlobVariantReader<float3> Velocity;
+        public BlobVariantRO<float3> Velocity;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

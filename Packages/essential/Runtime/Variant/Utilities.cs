@@ -84,7 +84,7 @@ namespace EntitiesBT.Variant
             return new IntPtr(ptr);
         }
 
-        public static IntPtr Allocate<TValue>(this BlobBuilder builder, ref BlobVariantReadOnlyPtr blob, TValue value) where TValue : unmanaged
+        public static IntPtr Allocate<TValue>(this BlobBuilder builder, ref BlobVariantPtrRO blob, TValue value) where TValue : unmanaged
         {
             return builder.Allocate(ref blob.Value, value);
         }
@@ -92,7 +92,7 @@ namespace EntitiesBT.Variant
         public static IntPtr Allocate<T>(
             this IVariantReader<T> property
           , ref BlobBuilder builder
-          , ref BlobVariantReader<T> blobVariant
+          , ref BlobVariantRO<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
@@ -100,7 +100,7 @@ namespace EntitiesBT.Variant
         public static IntPtr Allocate(
             this IVariantReader property
           , ref BlobBuilder builder
-          , ref BlobVariantReadOnlyPtr blobVariant
+          , ref BlobVariantPtrRO blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
@@ -108,7 +108,7 @@ namespace EntitiesBT.Variant
         public static IntPtr Allocate<T>(
             this IVariantWriter<T> property
           , ref BlobBuilder builder
-          , ref BlobVariantWriter<T> blobVariant
+          , ref BlobVariantWO<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
@@ -116,7 +116,7 @@ namespace EntitiesBT.Variant
         public static unsafe IntPtr Allocate<T>(
             this IVariantReaderAndWriter<T> property
           , ref BlobBuilder builder
-          , ref BlobVariantReaderAndWriter<T> blobVariant
+          , ref BlobVariantRW<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged
@@ -132,7 +132,7 @@ namespace EntitiesBT.Variant
         public static IntPtr Allocate<T>(
             this ISerializedVariantRW<T> property
           , ref BlobBuilder builder
-          , ref BlobVariantReaderAndWriter<T> blobVariant
+          , ref BlobVariantRW<T> blobVariant
           , [NotNull] INodeDataBuilder self
           , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged

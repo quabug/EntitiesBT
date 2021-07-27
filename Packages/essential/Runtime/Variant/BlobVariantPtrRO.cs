@@ -8,7 +8,7 @@ using Unity.Entities;
 namespace EntitiesBT.Variant
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct BlobVariantReadOnlyPtr : IRuntimeComponentAccessor
+    public struct BlobVariantPtrRO : IRuntimeComponentAccessor
     {
         internal BlobVariant Value;
 

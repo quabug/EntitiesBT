@@ -7,10 +7,10 @@ using Unity.Entities;
 namespace EntitiesBT.Variant
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct BlobVariantReaderAndWriter<T> : IRuntimeComponentAccessor where T : unmanaged
+    public struct BlobVariantRW<T> : IRuntimeComponentAccessor where T : unmanaged
     {
-        internal BlobVariantReader<T> Reader;
-        internal BlobVariantWriter<T> Writer;
+        internal BlobVariantRO<T> Reader;
+        internal BlobVariantWO<T> Writer;
 
         public IEnumerable<ComponentType> AccessTypes => Reader.AccessTypes.Concat(Writer.AccessTypes);
 

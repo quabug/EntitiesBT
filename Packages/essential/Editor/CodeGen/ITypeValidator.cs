@@ -27,7 +27,7 @@ namespace EntitiesBT.Editor
         {
             var fields = node.GetFields(BindingFlags.Public | BindingFlags.Instance);
             return !fields.Select(fi => fi.FieldType)
-                .Any(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BlobVariantReader<>))
+                .Any(type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BlobVariantRO<>))
             ;
         }
     }

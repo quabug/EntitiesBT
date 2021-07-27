@@ -21,7 +21,7 @@ namespace EntitiesBT.Components.Odin
     [BehaviorNode("30E1D8D2-356D-422A-AF98-1CB734C3C63D")]
     public struct PrintNode : INodeData
     {
-        public BlobVariantReader<float2> Value;
+        public BlobVariantRO<float2> Value;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

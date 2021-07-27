@@ -51,7 +51,7 @@ namespace EntitiesBT.Variant
         {
             ref var data = ref blobVariant.As<DynamicNodeRefData>();
             var ptr = blob.GetRuntimeDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariantReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariantRO<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             // TODO: check writable on editor?
             variable.Value.WriteWithRefFallback(index, ref blob, ref bb, value);
         }
@@ -73,7 +73,7 @@ namespace EntitiesBT.Variant
         {
             ref var data = ref blobVariant.As<DynamicNodeRefData>();
             var ptr = blob.GetRuntimeDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariantReader<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            ref var variable = ref UnsafeUtility.AsRef<BlobVariantRO<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
             return variable.Read(index, ref blob, ref bb);
         }
 
@@ -122,7 +122,7 @@ namespace EntitiesBT.Variant
             {
                 blobVariant.VariantId = GuidHashCode(ID_RUNTIME_NODE);
             }
-            else if (fieldType == typeof(BlobVariantReader<T>) || fieldType == typeof(BlobVariantReaderAndWriter<T>))
+            else if (fieldType == typeof(BlobVariantRO<T>) || fieldType == typeof(BlobVariantRW<T>))
             {
                 blobVariant.VariantId = GuidHashCode(ID_RUNTIME_NODE_VARIANT);
             }
@@ -133,8 +133,8 @@ namespace EntitiesBT.Variant
             }
 
             var fieldOffset = Marshal.OffsetOf(nodeType, valueFieldName).ToInt32();
-            if (fieldType == typeof(BlobVariantReaderAndWriter<T>))
-                fieldOffset += Marshal.OffsetOf(typeof(BlobVariantReaderAndWriter<T>) , nameof(BlobVariantReaderAndWriter<T>.Reader)).ToInt32();
+            if (fieldType == typeof(BlobVariantRW<T>))
+                fieldOffset += Marshal.OffsetOf(typeof(BlobVariantRW<T>) , nameof(BlobVariantRW<T>.Reader)).ToInt32();
             return builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = fieldOffset});
         }
     }

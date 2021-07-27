@@ -49,9 +49,9 @@ namespace EntitiesBT.Builder.Visual.Editor
         {
             if (!fi.FieldType.IsGenericType) return false;
             var type = fi.FieldType.GetGenericTypeDefinition();
-            return type == typeof(BlobVariantReader<>)
-                   || type == typeof(BlobVariantWriter<>)
-                   || type == typeof(BlobVariantReaderAndWriter<>)
+            return type == typeof(BlobVariantRO<>)
+                   || type == typeof(BlobVariantWO<>)
+                   || type == typeof(BlobVariantRW<>)
                ;
         }
 
@@ -60,9 +60,9 @@ namespace EntitiesBT.Builder.Visual.Editor
             var type = fi.FieldType.GenericTypeArguments[0];
             var valueType = type.ToRunTimeValueType();
             var variantType = fi.FieldType.GetGenericTypeDefinition();
-            if (variantType == typeof(BlobVariantReader<>))
+            if (variantType == typeof(BlobVariantRO<>))
                 return $"[PortDescription(Runtime.ValueType.{valueType})] public InputDataPort {fi.Name};";
-            if (variantType == typeof(BlobVariantWriter<>))
+            if (variantType == typeof(BlobVariantWO<>))
                 return $"[PortDescription(Runtime.ValueType.{valueType})] public OutputDataPort {fi.Name};";
 
             return $"[PortDescription(Runtime.ValueType.{valueType}, \"{fi.Name}\")] public InputDataPort Input{fi.Name};"
@@ -76,8 +76,8 @@ namespace EntitiesBT.Builder.Visual.Editor
         public string GenerateBuild(FieldInfo fi)
         {
             var type = fi.FieldType.GenericTypeArguments[0];
-            if (type == typeof(BlobVariantReader<>)) return BuildScript(fi.Name, fi.Name, "Reader");
-            if (type == typeof(BlobVariantWriter<>)) return BuildScript(fi.Name, fi.Name, "Writer");
+            if (type == typeof(BlobVariantRO<>)) return BuildScript(fi.Name, fi.Name, "Reader");
+            if (type == typeof(BlobVariantWO<>)) return BuildScript(fi.Name, fi.Name, "Writer");
             return $"new {nameof(DataPortReaderAndWriter)}(@this.IsLinked{fi.Name}, @this.Input{fi.Name}, @this.Output{fi.Name}).ToVariantReaderAndWriter<{type.FullName}>(instance, definition).Allocate(ref blobBuilder, ref data.{fi.Name}, self, builders);";
 
             string BuildScript(string fieldName, string dataFieldName, string variantSuffix)

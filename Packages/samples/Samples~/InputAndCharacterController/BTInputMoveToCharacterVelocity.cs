@@ -25,9 +25,9 @@ namespace EntitiesBT.Samples
     [BehaviorNode("B4559A1E-392B-4B8C-A074-B323AB31EEA7")]
     public struct InputMoveToCharacterVelocityNode : INodeData
     {
-        public BlobVariantReader<float> Speed;
-        public BlobVariantReader<float2> InputMove;
-        public BlobVariantReaderAndWriter<float3> OutputVelocity;
+        public BlobVariantRO<float> Speed;
+        public BlobVariantRO<float2> InputMove;
+        public BlobVariantRW<float3> OutputVelocity;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

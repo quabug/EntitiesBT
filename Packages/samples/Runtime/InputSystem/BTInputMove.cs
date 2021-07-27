@@ -23,7 +23,7 @@ namespace EntitiesBT.Extensions.InputSystem
     public struct InputMoveNode : IInputActionNodeData
     {
         public Guid ActionId { get; set; }
-        public BlobVariantReaderAndWriter<float2> Output;
+        public BlobVariantRW<float2> Output;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

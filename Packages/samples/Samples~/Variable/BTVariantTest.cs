@@ -34,12 +34,12 @@ namespace EntitiesBT.Sample
     [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
     public struct VariablesTestNode : INodeData
     {
-        [Optional] public BlobVariantReader<long> LongReader;
+        [Optional] public BlobVariantRO<long> LongReader;
         public BlobString String;
         public BlobArray<int> IntArray;
-        public BlobVariantWriter<long> LongWriter;
-        public BlobVariantReader<float> SingleReader;
-        public BlobVariantReaderAndWriter<float> SingleReaderAndWriter;
+        public BlobVariantWO<long> LongWriter;
+        public BlobVariantRO<float> SingleReader;
+        public BlobVariantRW<float> SingleReaderAndWriter;
         public long Long;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)

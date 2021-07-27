@@ -15,7 +15,7 @@ namespace EntitiesBT.Extensions.InputSystem
         protected override unsafe void Build(ref U data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
             base.Build(ref data, builder, tree);
-            ref var output = ref UnsafeUtility.AsRef<BlobVariantReader<T>>(data.OutputPtr);
+            ref var output = ref UnsafeUtility.AsRef<BlobVariantRO<T>>(data.OutputPtr);
             Output.Allocate(ref builder, ref output, this, tree);
         }
     }
@@ -37,7 +37,7 @@ namespace EntitiesBT.Extensions.InputSystem
             var inputValue = ReadInputActionValue<TNodeData, TValue, TNodeBlob, TBlackboard>(index, ref blob, ref bb);
             if (!inputValue.HasValue) return NodeState.Failure;
             ref var data = ref blob.GetNodeData<TNodeData, TNodeBlob>(index);
-            ref var output = ref UnsafeUtility.AsRef<BlobVariantWriter<TValue>>(data.OutputPtr);
+            ref var output = ref UnsafeUtility.AsRef<BlobVariantWO<TValue>>(data.OutputPtr);
             output.Write(index, ref blob, ref bb, inputValue.Value);
             return NodeState.Success;
         }

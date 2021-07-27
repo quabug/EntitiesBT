@@ -27,8 +27,8 @@ namespace EntitiesBT.Editor
                 var nodeObject = (INodeDataBuilder)property.GetSiblingFieldValue(_attribute.NodeObjectFieldName);
                 if (!Equals(nodeObject, _nodeObject))
                 {
-                    var readerType = typeof(BlobVariantReader<>).MakeGenericType(_genericType);
-                    var rwType = typeof(BlobVariantReaderAndWriter<>).MakeGenericType(_genericType);
+                    var readerType = typeof(BlobVariantRO<>).MakeGenericType(_genericType);
+                    var rwType = typeof(BlobVariantRW<>).MakeGenericType(_genericType);
                     _nodeObject = nodeObject;
                     _options = nodeObject == null
                         ? new string[0]

@@ -56,9 +56,9 @@ namespace EntitiesBT.Editor
         {
             if (!fi.FieldType.IsGenericType) return false;
             var variantType = fi.FieldType.GetGenericTypeDefinition();
-            if (variantType == typeof(BlobVariantReader<>)) return true;
-            if (variantType == typeof(BlobVariantWriter<>)) return true;
-            if (variantType == typeof(BlobVariantReaderAndWriter<>)) return true;
+            if (variantType == typeof(BlobVariantRO<>)) return true;
+            if (variantType == typeof(BlobVariantWO<>)) return true;
+            if (variantType == typeof(BlobVariantRW<>)) return true;
             return false;
         }
 
@@ -66,9 +66,9 @@ namespace EntitiesBT.Editor
         {
             var valueType = fi.FieldType.GetGenericArguments()[0];
             var variantType = fi.FieldType.GetGenericTypeDefinition();
-            if (variantType == typeof(BlobVariantReaderAndWriter<>))
+            if (variantType == typeof(BlobVariantRW<>))
                 return $"public {VariantInterfaceNamespace}.SerializedVariantRW<{valueType.FullName}> {fi.Name};";
-            if (variantType == typeof(BlobVariantReader<>))
+            if (variantType == typeof(BlobVariantRO<>))
                 return $"public {VariantInterfaceNamespace}.SerializedVariantRO<{valueType.FullName}> {fi.Name};";
             return $"public {VariantInterfaceNamespace}.SerializedVariantWO<{valueType.FullName}> {fi.Name};";
         }
