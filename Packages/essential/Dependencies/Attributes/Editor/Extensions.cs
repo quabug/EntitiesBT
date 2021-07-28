@@ -21,9 +21,20 @@ namespace EntitiesBT.Attributes.Editor
              return obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
          }
 
+         public static MethodInfo GetSiblingMethodInfo(this SerializedProperty property, string methodName)
+         {
+             var obj = GetDeclaringObject(property);
+             return obj.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+         }
+
          public static object GetDeclaringObject(this SerializedProperty property)
          {
              return property.GetFieldsByPath().Reverse().Skip(1).First().field;
+         }
+
+         public static object GetObject(this SerializedProperty property)
+         {
+             return property.GetFieldsByPath().Last().field;
          }
 
          public static IEnumerable<(object field, FieldInfo fi)> GetFieldsByPath(this SerializedProperty property)

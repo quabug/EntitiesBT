@@ -22,13 +22,13 @@ namespace EntitiesBT.Nodes
             return timer <= 0 ? NodeState.Success : NodeState.Running;
         }
 
-        public class Managed
+        public class Serialized : SerializedNodeData<DelayTimerNode>
         {
             public SerializedVariantRW<float> TimerSeconds;
 
-            public void Build(ref DelayTimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+            protected override void Build(ref DelayTimerNode data, BlobBuilder builder, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
             {
-
+                TimerSeconds.Allocate(ref builder, ref data.TimerSeconds, self, tree);
             }
         }
     }

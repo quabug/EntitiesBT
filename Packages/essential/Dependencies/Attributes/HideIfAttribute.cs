@@ -1,3 +1,5 @@
+using static System.Int32;
+
 namespace EntitiesBT.Attributes
 {
     public class HideIfAttribute : MultiPropertyAttribute
@@ -8,6 +10,7 @@ namespace EntitiesBT.Attributes
 
         public HideIfAttribute(string conditionFieldName, bool value = true, bool leaveEmptySpace = false)
         {
+            order = MinValue;
             LeaveEmptySpace = leaveEmptySpace;
             ConditionFieldName = conditionFieldName;
             Value = value;

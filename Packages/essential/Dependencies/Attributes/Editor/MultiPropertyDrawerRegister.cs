@@ -53,7 +53,7 @@ namespace EntitiesBT.Attributes.Editor
             _drawers = new Dictionary<FieldInfo, IReadOnlyList<IMultiPropertyDrawer>>();
             _drawerRegister = new ReadOnlyDictionary<Type, DrawerEntry>(
                 (
-                    from drawerType in EntitiesBT.Core.Utilities.ALL_TYPES.Value
+                    from drawerType in TypeCache.GetTypesWithAttribute<CustomMultiPropertyDrawerAttribute>()
                     from attribute in GetCustomPropertyDrawerAttribute(drawerType).Yield()
                     where attribute != null
                     select (drawerType, attribute, attributeType: attribute.Type)

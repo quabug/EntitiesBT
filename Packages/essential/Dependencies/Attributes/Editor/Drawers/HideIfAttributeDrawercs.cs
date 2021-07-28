@@ -16,7 +16,7 @@ namespace EntitiesBT.Attributes.Editor
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return ShouldHide(property)
-                ? _attribute.LeaveEmptySpace ? EditorGUI.GetPropertyHeight(property, false) : 0
+                ? (_attribute.LeaveEmptySpace ? EditorGUI.GetPropertyHeight(property, false) : 0)
                 : base.GetPropertyHeight(property, label)
             ;
         }

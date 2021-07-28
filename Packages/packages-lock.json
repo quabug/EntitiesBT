@@ -8,14 +8,6 @@
         "com.quabug.entities-bt.essential": "1.2.0"
       }
     },
-    "com.quabug.entities-bt.builder.graph": {
-      "version": "file:com.quabug.entities-bt.builder.graph",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.quabug.entities-bt.builder.component": "1.2.0"
-      }
-    },
     "com.quabug.entities-bt.builder.odin": {
       "version": "file:builder.odin",
       "depth": 0,

@@ -27,8 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using Shtif;
 using UnityEditor;
 using UnityEngine;
@@ -106,7 +104,7 @@ namespace EntitiesBT.Attributes.Editor
             void FillContextMenu(GenericMenu contextMenu)
             {
                 // Adds "Make Null" menu command
-                contextMenu.AddItem(new GUIContent("Null"), false, SetManagedReferenceToNull());
+                contextMenu.AddItem(new GUIContent("Null"), false, SetManagedReferenceToNull);
 
                 // Collects appropriate types
                 var appropriateTypes = GetAppropriateTypesForAssigningToManagedReference();
@@ -116,37 +114,27 @@ namespace EntitiesBT.Attributes.Editor
                     AddItemToContextMenu(appropriateType, contextMenu);
             }
 
-            GenericMenu.MenuFunction SetManagedReferenceToNull()
+            void SetManagedReferenceToNull()
             {
-                return () =>
-                {
-                    property.serializedObject.Update();
-                    property.managedReferenceValue = null;
-                    property.serializedObject.ApplyModifiedProperties();
-                };
+                property.serializedObject.Update();
+                property.managedReferenceValue = null;
+                property.serializedObject.ApplyModifiedProperties();
             }
 
             void AddItemToContextMenu(Type type, GenericMenu genericMenuContext)
             {
                 var assemblyName =  type.Assembly.ToString().Split('(', ',')[0];
-                var entryName = type + "  ( " + assemblyName + " )";
-                // HACK: display subclass name after "+"
-                entryName = entryName.Substring(entryName.IndexOf('+') + 1);
-                genericMenuContext.AddItem(new GUIContent(entryName), false, AssignNewInstanceCommand, new GenericMenuParameterForAssignInstanceCommand(type, property));
+                var entryName = type.ToString().Split('.').Reverse().First() + "  ( " + assemblyName + " )";
+                genericMenuContext.AddItem(new GUIContent(entryName), false, AssignNewInstanceCommand, null);
 
-                void AssignNewInstanceCommand(object objectGenericMenuParameter)
+                void AssignNewInstanceCommand(object _)
                 {
-                    var parameter = (GenericMenuParameterForAssignInstanceCommand) objectGenericMenuParameter;
-                    AssignNewInstanceOfTypeToManagedReference(parameter.Property, parameter.Type);
-                }
+                    if (type == property.GetObject()?.GetType()) return;
 
-                object AssignNewInstanceOfTypeToManagedReference(SerializedProperty serializedProperty, Type type)
-                {
                     var instance = Activator.CreateInstance(type);
-                    serializedProperty.serializedObject.Update();
-                    serializedProperty.managedReferenceValue = instance;
-                    serializedProperty.serializedObject.ApplyModifiedProperties();
-                    return instance;
+                    property.serializedObject.Update();
+                    property.managedReferenceValue = instance;
+                    property.serializedObject.ApplyModifiedProperties();
                 }
             }
 
@@ -209,18 +197,6 @@ namespace EntitiesBT.Attributes.Editor
             var typeClassName = typeSplitString[1];
             var typeAssemblyName = typeSplitString[0];
             return (typeAssemblyName,  typeClassName);
-        }
-
-        private readonly struct GenericMenuParameterForAssignInstanceCommand
-        {
-            public GenericMenuParameterForAssignInstanceCommand(Type type, SerializedProperty property)
-            {
-                Type = type;
-                Property = property;
-            }
-
-            public readonly SerializedProperty Property;
-            public readonly Type Type;
         }
     }
 }
