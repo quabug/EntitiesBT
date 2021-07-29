@@ -2,7 +2,6 @@ using System;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using EntitiesBT.Variant;
-using Unity.Entities;
 
 namespace EntitiesBT.Nodes
 {
@@ -20,16 +19,6 @@ namespace EntitiesBT.Nodes
             timer -= bb.GetData<BehaviorTreeTickDeltaTime>().Value;
             TimerSeconds.Write(index, ref blob, ref bb, timer);
             return timer <= 0 ? NodeState.Success : NodeState.Running;
-        }
-
-        public class Serialized : SerializedNodeData<DelayTimerNode>
-        {
-            public SerializedVariantRW<float> TimerSeconds;
-
-            protected override void Build(ref DelayTimerNode data, BlobBuilder builder, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
-            {
-                TimerSeconds.Allocate(ref builder, ref data.TimerSeconds, self, tree);
-            }
         }
     }
 }
