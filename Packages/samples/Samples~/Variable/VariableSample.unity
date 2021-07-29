@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 327906298}
   - component: {fileID: 327906297}
   m_Layer: 0
-  m_Name: BTVariablesTest
+  m_Name: VariablesTestNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,53 +149,59 @@ MonoBehaviour:
   m_GameObject: {fileID: 327906296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LongReader:
-    _reader:
-      id: 0
-  String: aabbbcccc
-  IntArray: a00c0000020000002000000004000000b3150000
-  LongWriter:
-    _writer:
-      id: 1
-  SingleReader:
-    _reader:
-      id: 2
-  LongValue: 23333
-  SingleReaderAndWriter:
-    _isLinked: 1
-    _readerAndWriter:
-      id: 3
-    _reader:
-      id: 4
-    _writer:
-      id: 4
+  NodeData:
+    id: 0
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReader>/Int64LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <Serializable>/VariablesTestNode, ns: EntitiesBT.Node.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 111
+        LongReader:
+          _reader:
+            id: 1
+        String: 123
+        IntArray: 0b00000017000000bc0100002b020000
+        LongWriter:
+          _writer:
+            id: 2
+        SingleReader:
+          _reader:
+            id: 3
+        SingleReaderAndWriter:
+          _isLinked: 1
+          _readerAndWriter:
+            id: 4
+          _reader:
+            id: 5
+          _writer:
+            id: 5
+        Long: 22233
     00000001:
-      type: {class: <IVariantWriter>/Int64NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/Int64NodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 327906297}
-        ValueFieldName: LongReader
+        ValueFieldName: Long
     00000002:
+      type: {class: <IVariantWriter>/Int64ComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
+    00000003:
       type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 43243
-    00000003:
+        Value: 222
+    00000004:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 123
-    00000004:
+        Value: 4533
+    00000005:
       type: {class: , ns: , asm: }
 --- !u!4 &327906298
 Transform:
@@ -223,7 +229,6 @@ GameObject:
   - component: {fileID: 1392768646}
   - component: {fileID: 1392768649}
   - component: {fileID: 1392768650}
-  - component: {fileID: 1392768647}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -256,18 +261,6 @@ MonoBehaviour:
       data:
         Root: {fileID: 1723425238}
         AutoDestroy: 1
---- !u!114 &1392768647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1392768645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1870774babe4d9c83c487cce9fe3130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1392768648
 Transform:
   m_ObjectHideFlags: 0
@@ -394,102 +387,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1667038667
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1667038668}
-  - component: {fileID: 1667038669}
-  m_Layer: 0
-  m_Name: BTVariablesTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1667038668
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1667038667}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1723425237}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1667038669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1667038667}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3550e0ed33aa471dbfc495d176b59f37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LongReader:
-    _reader:
-      id: 0
-  String: 43242131
-  IntArray: 
-  LongWriter:
-    _writer:
-      id: 1
-  SingleReader:
-    _reader:
-      id: 2
-  LongValue: 44332
-  SingleReaderAndWriter:
-    _isLinked: 0
-    _readerAndWriter:
-      id: 3
-    _reader:
-      id: 4
-    _writer:
-      id: 5
-  references:
-    version: 1
-    00000000:
-      type: {class: <IVariantReader>/Int64NodeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        NodeObject: {fileID: 1667038669}
-        ValueFieldName: Long
-    00000001:
-      type: {class: <IVariantWriter>/Int64NodeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        NodeObject: {fileID: 1667038669}
-        ValueFieldName: Long
-    00000002:
-      type: {class: <IVariantReader>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        ComponentValueName: EntitiesBT.Sample.SampleTimeDelayData.TwoSeconds
-    00000003:
-      type: {class: , ns: , asm: }
-    00000004:
-      type: {class: <IVariantReader>/SingleNodeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        NodeObject: {fileID: 327906297}
-        ValueFieldName: SingleReader
-    00000005:
-      type: {class: <IVariantWriter>/SingleNodeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        NodeObject: {fileID: 327906297}
-        ValueFieldName: SingleReader
 --- !u!1 &1723425236
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,7 +416,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 327906298}
-  - {fileID: 1667038668}
   m_Father: {fileID: 1392768648}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

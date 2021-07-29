@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -178,8 +178,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 0.5
     00000001:
@@ -240,8 +239,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -574,8 +572,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -636,8 +633,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -759,8 +755,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -1149,8 +1144,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -1350,8 +1344,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -1586,8 +1579,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -1750,8 +1742,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -1812,8 +1803,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 2
     00000001:
@@ -2105,8 +2095,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -2167,8 +2156,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -2411,8 +2399,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -2591,8 +2578,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 2
     00000001:
@@ -3076,8 +3062,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -3298,8 +3283,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -3360,8 +3344,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -3961,8 +3944,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -4457,8 +4439,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -4776,8 +4757,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -5266,8 +5246,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -5450,8 +5429,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 2
     00000001:
@@ -5512,8 +5490,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -6260,8 +6237,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -6550,7 +6526,7 @@ GameObject:
   - component: {fileID: 1723956083}
   - component: {fileID: 1723956084}
   m_Layer: 0
-  m_Name: DelayTimerNode
+  m_Name: BTDelayTimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6579,30 +6555,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1723956082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
+  m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
+  TimerSeconds:
+    _isLinked: 1
+    _readerAndWriter:
+      id: 0
+    _reader:
+      id: 1
+    _writer:
+      id: 1
   references:
     version: 1
     00000000:
-      type: {class: DelayTimerNode/Serialized, ns: EntitiesBT.Nodes, asm: EntitiesBT.Runtime}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
-        TimerSeconds:
-          _isLinked: 1
-          _readerAndWriter:
-            id: 1
-          _reader:
-            id: 2
-          _writer:
-            id: 2
+        Value: 1
     00000001:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 2
-    00000002:
       type: {class: , ns: , asm: }
 --- !u!1 &1776290775
 GameObject:
@@ -6748,8 +6718,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 2
     00000001:
@@ -7124,8 +7093,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -7234,8 +7202,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -7487,8 +7454,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -7765,8 +7731,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:
@@ -7931,8 +7896,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,asm: Assembly-CSharp}
       data:
         Value: 1
     00000001:

@@ -3,11 +3,17 @@ using EntitiesBT.Core;
 using EntitiesBT.Attributes;
 using Unity.Entities;
 using static EntitiesBT.Variant.Utilities;
+using UnityEngine;
+using System;
 
 namespace EntitiesBT.Components
 {
+    [Obsolete("Use BTDynamicNode")]
     public class BTStateMap : BTNode<EntitiesBT.Nodes.StateMapNode>
     {
+        [Header("obsolete: use BTDynamicNode")]
+        private int _;
+        
         public EntitiesBT.Core.NodeState MapSuccess;
         public EntitiesBT.Core.NodeState MapFailure;
         public EntitiesBT.Core.NodeState MapRunning;

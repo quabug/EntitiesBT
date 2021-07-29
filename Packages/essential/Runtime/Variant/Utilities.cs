@@ -89,6 +89,30 @@ namespace EntitiesBT.Variant
             return builder.Allocate(ref blob.Value, value);
         }
 
+        public static IntPtr AllocateRO<T>(
+            this IVariantReader<T> property
+          , ref BlobBuilder builder
+          , ref BlobVariantRO<T> blobVariant
+          , [NotNull] INodeDataBuilder self
+          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+
+        public static IntPtr AllocateWO<T>(
+            this IVariantWriter<T> property
+          , ref BlobBuilder builder
+          , ref BlobVariantWO<T> blobVariant
+          , [NotNull] INodeDataBuilder self
+          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+
+        public static IntPtr AllocateRW<T>(
+            this ISerializedVariantRW<T> property
+            , ref BlobBuilder builder
+            , ref BlobVariantRW<T> blobVariant
+            , [NotNull] INodeDataBuilder self
+            , [NotNull] ITreeNode<INodeDataBuilder>[] tree
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant, self, tree);
+
         public static IntPtr Allocate<T>(
             this IVariantReader<T> property
           , ref BlobBuilder builder

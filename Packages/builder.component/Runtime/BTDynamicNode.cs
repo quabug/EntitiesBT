@@ -10,7 +10,7 @@ namespace EntitiesBT.Components
     public class BTDynamicNode : BTNode
     {
         [SerializeReference, SerializeReferenceDrawer, OnValueChanged(nameof(OnNodeChanged))]
-        public ISerializedNodeData NodeData;
+        public ISerializableNodeData NodeData;
 
         protected override Type NodeType => NodeData?.NodeType ?? typeof(ZeroNode);
 

@@ -1,10 +1,11 @@
 using System;
-using UnityEngine;
+using JetBrains.Annotations;
 
-namespace EntitiesBT.Components
+namespace EntitiesBT.Attributes
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public class SerializedTypeAttribute : PropertyAttribute
+    [BaseTypeRequired(typeof(string))]
+    public class SerializedTypeAttribute : MultiPropertyAttribute
     {
         public Type BaseType;
         public SerializedTypeAttribute(Type baseType = null) => BaseType = baseType;

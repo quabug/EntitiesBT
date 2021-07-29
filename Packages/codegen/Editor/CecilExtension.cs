@@ -257,7 +257,6 @@ namespace EntitiesBT.CodeGen.Editor
                 ;
         }
 
-
         //.method public hidebysig specialname rtspecialname instance void
         //  .ctor() cil managed
         //{
@@ -381,6 +380,13 @@ namespace EntitiesBT.CodeGen.Editor
                 Enumerable.Empty<CustomAttribute>();
 
             static bool IsAttributeOf(CustomAttribute attribute) => attribute.AttributeType.FullName == typeof(T).FullName;
+        }
+
+        public static MethodReference ImportMethod(this ModuleDefinition module, Type methodDeclaringType, string methodName)
+        {
+            var ext = module.ImportReference(methodDeclaringType);
+            var methodDefinition = ext.Resolve().Methods.First(m => m.Name == methodName);
+            return module.ImportReference(methodDefinition);
         }
     }
 }
