@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
@@ -8,6 +9,8 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
 using Mono.Collections.Generic;
+using Unity.CompilationPipeline.Common.Diagnostics;
+using Unity.CompilationPipeline.Common.ILPostProcessing;
 using ICustomAttributeProvider = Mono.Cecil.ICustomAttributeProvider;
 using MethodAttributes = Mono.Cecil.MethodAttributes;
 using TypeAttributes = Mono.Cecil.TypeAttributes;
@@ -387,6 +390,20 @@ namespace EntitiesBT.CodeGen.Editor
             var ext = module.ImportReference(methodDeclaringType);
             var methodDefinition = ext.Resolve().Methods.First(m => m.Name == methodName);
             return module.ImportReference(methodDefinition);
+        }
+
+        public static ILPostProcessResult Write(this AssemblyDefinition assemblyDefinition, List<DiagnosticMessage> messages)
+        {
+           var pe = new MemoryStream();
+           var pdb = new MemoryStream();
+           var writerParameters = new WriterParameters
+           {
+               SymbolWriterProvider = new PortablePdbWriterProvider()
+               , SymbolStream = pdb
+               , WriteSymbols = true
+           };
+           assemblyDefinition.Write(pe, writerParameters);
+           return new ILPostProcessResult(new InMemoryAssembly(pe.ToArray(), pdb.ToArray()), messages);
         }
     }
 }

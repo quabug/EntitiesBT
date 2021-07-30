@@ -12,10 +12,7 @@ namespace EntitiesBT.Core
             ITreeNode<INodeDataBuilder>[] tree);
     }
 
-    public interface ITestT {}
-    public class SerializableNodeData {}
-
-[Serializable]
+    [Serializable]
     public abstract class SerializableNodeData<T> : ISerializableNodeData where T : unmanaged, INodeData
     {
         public Type NodeType => typeof(T);

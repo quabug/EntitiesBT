@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
 
 namespace EntitiesBT.Attributes.Editor
@@ -67,5 +68,14 @@ namespace EntitiesBT.Attributes.Editor
                  return (fieldValue, fieldInfo);
              }
          }
+
+         internal static (Regex, string) ParseReplaceRegex(this string pattern, string separator = "||")
+         {
+             if (string.IsNullOrEmpty(pattern)) return (null, null);
+             var patterns = pattern.Split(new [] { separator }, StringSplitOptions.None);
+             if (patterns.Length == 2) return (new Regex(patterns[0]), patterns[1]);
+             throw new ArgumentException($"invalid number of separator ({separator}) in pattern ({pattern})");
+         }
+
     }
 }

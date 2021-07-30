@@ -32,7 +32,9 @@ namespace EntitiesBT.Variant.Expression
             [Serializable]
             internal class Variant
             {
-                [SerializeReference, SerializeReferenceDrawer] public IVariantReader Value;
+                [SerializeReference]
+                [SerializeReferenceDrawer(RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2")]
+                public IVariantReader Value;
                 public string Name;
             }
 
