@@ -22,7 +22,6 @@ namespace EntitiesBT.Components
             NodeData?.Build(dataPtr, blobBuilder, Self, builders);
         }
 
-#if UNITY_EDITOR
         private void OnNodeChanged()
         {
             name = NodeData?.NodeType?.Name ?? "[Null]";
@@ -38,6 +37,5 @@ namespace EntitiesBT.Components
                 type = type.BaseType;
             }
         }
-#endif
     }
 }

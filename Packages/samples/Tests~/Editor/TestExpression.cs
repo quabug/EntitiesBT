@@ -1,9 +1,7 @@
 using System;
 using EntitiesBT.Core;
-using EntitiesBT.Entities;
 using EntitiesBT.Variant;
 using EntitiesBT.Variant.Expression;
-using Moq;
 using NUnit.Framework;
 using Unity.Collections;
 using Unity.Entities;
