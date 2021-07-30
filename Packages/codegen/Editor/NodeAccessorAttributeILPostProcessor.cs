@@ -7,7 +7,7 @@ using Mono.Cecil.Rocks;
 
 namespace EntitiesBT.CodeGen.Editor
 {
-    public class NodeDataILPostProcessor : IILCodeGenerator
+    public class NodeAccessorAttributeILPostProcessor : IILCodeGenerator
     {
         public int Order { get; }
         public ILogger Logger { get; set; }
