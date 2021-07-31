@@ -8,8 +8,8 @@ namespace EntitiesBT.Core
     {
         Type NodeType { get; }
 
-        unsafe void Build(void* dataPtr, BlobBuilder builder, INodeDataBuilder self,
-            ITreeNode<INodeDataBuilder>[] tree);
+        unsafe void Build(void* dataPtr, BlobBuilder builder, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree);
+        unsafe void Load(void* dataPtr);
     }
 
     [Serializable]
@@ -22,6 +22,12 @@ namespace EntitiesBT.Core
             Build(ref UnsafeUtility.AsRef<T>(dataPtr), builder, self, tree);
         }
 
+        public unsafe void Load(void* dataPtr)
+        {
+            Load(ref UnsafeUtility.AsRef<T>(dataPtr));
+        }
+
         protected virtual void Build(ref T data, BlobBuilder builder, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree) {}
+        protected virtual void Load(ref T data) {}
     }
 }
