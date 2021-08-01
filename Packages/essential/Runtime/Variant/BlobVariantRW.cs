@@ -23,5 +23,7 @@ namespace EntitiesBT.Variant
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
             => Writer.Write(index, ref blob, ref bb, value);
+
+        public bool IsValid => Reader.IsValid && Writer.IsValid;
     }
 }

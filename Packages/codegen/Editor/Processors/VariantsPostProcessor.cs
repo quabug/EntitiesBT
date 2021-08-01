@@ -87,8 +87,7 @@ namespace EntitiesBT.CodeGen.Editor
                     var wrapper = new TypeDefinition(
                         "EntitiesBT.Variant.CodeGen",
                         $"<{@interface.Name.Split('`')[0]}>",
-                        TypeAttributes.Class | TypeAttributes.Sealed | TypeAttributes.Abstract | TypeAttributes.Public |
-                        TypeAttributes.BeforeFieldInit
+                        TypeAttributes.Class | TypeAttributes.Sealed | TypeAttributes.Abstract | TypeAttributes.Public | TypeAttributes.BeforeFieldInit
                     );
                     wrapper.BaseType = module.ImportReference(typeof(object));
 

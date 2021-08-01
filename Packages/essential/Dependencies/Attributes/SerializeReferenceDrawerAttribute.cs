@@ -10,6 +10,7 @@ namespace EntitiesBT.Attributes
         public bool DisplayAssemblyName = false;
         public bool AlphabeticalOrder = true;
         public string CategoryName;
+        public bool Nullable = true;
         public SerializeReferenceDrawerAttribute() => order = int.MaxValue;
     }
 }

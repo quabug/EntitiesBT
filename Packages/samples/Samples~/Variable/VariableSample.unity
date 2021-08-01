@@ -411,33 +411,27 @@ MonoBehaviour:
           _reader:
             id: 5
           _writer:
-            id: 6
+            id: 1
         Long: 14
     00000001:
-      type: {class: <IVariantReader>/Int64ExpressionVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        _expression: x + y + z
-        _sources:
-        - Value:
-            id: 7
-          Name: x
-        - Value:
-            id: 8
-          Name: y
-        - Value:
-            id: 9
-          Name: z
+      type: {class: , ns: , asm: }
     00000002:
       type: {class: <IVariantWriter>/Int64ComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
     00000003:
-      type: {class: <IVariantReader>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleExpressionVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.InputValue
+        _expression: x*y
+        _sources:
+        - Value:
+            id: 6
+          Name: x
+        - Value:
+            id: 7
+          Name: y
     00000004:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
@@ -450,19 +444,12 @@ MonoBehaviour:
         NodeObject: {fileID: 1723425238}
         ValueFieldName: SingleReader
     00000006:
-      type: {class: , ns: , asm: }
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value: 3
     00000007:
-      type: {class: <IVariantReader>/Int64LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 10
-    00000008:
-      type: {class: <IVariantReader>/Int64LocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 12
-    00000009:
-      type: {class: <IVariantReader>/Int64LocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 22
+        Value: 4

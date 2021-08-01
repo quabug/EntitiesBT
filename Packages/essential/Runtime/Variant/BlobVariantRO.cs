@@ -21,5 +21,7 @@ namespace EntitiesBT.Variant
         public IEnumerable<ComponentType> AccessTypes =>
             Value.GetComponentAccessList().Select(t => ComponentType.ReadOnly(t.TypeIndex))
         ;
+
+        public bool IsValid => Value.MetaDataOffsetPtr > 0;
     }
 }

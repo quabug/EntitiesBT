@@ -1,3 +1,4 @@
+using EntitiesBT.Attributes;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using Unity.Entities;
@@ -20,18 +21,22 @@ namespace EntitiesBT.Sample
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            Debug.Log(LongReader.Read(index,ref blob, ref bb));
+            if (LongReader.IsValid) Debug.Log(LongReader.Read(index,ref blob, ref bb));
+            else Debug.Log($"invalid {nameof(LongReader)}");
             Debug.Log(String.ToString());
             Debug.Log(string.Join(",", IntArray.ToArray()));
             Debug.Log(SingleReader.Read(index, ref blob, ref bb));
             Debug.Log(SingleReaderAndWriter.Read(index, ref blob, ref bb));
             LongWriter.Write(index, ref blob, ref bb, 100);
             SingleReaderAndWriter.Write(index, ref blob, ref bb, 200);
-            Debug.Log(LongReader.Read(index,ref blob, ref bb));
+
+            if (LongReader.IsValid) Debug.Log(LongReader.Read(index,ref blob, ref bb));
+            else Debug.Log($"invalid {nameof(LongReader)}");
             Debug.Log(String.ToString());
             Debug.Log(string.Join(",", IntArray.ToArray()));
             Debug.Log(SingleReader.Read(index, ref blob, ref bb));
             Debug.Log(SingleReaderAndWriter.Read(index, ref blob, ref bb));
+
             return NodeState.Success;
         }
     }

@@ -1,7 +1,11 @@
 using System;
+using System.Linq;
+using EntitiesBT.Components;
+using EntitiesBT.Core;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
+using Mono.Collections.Generic;
 using Unity.Entities;
 
 namespace EntitiesBT.CodeGen.Editor
@@ -35,15 +39,16 @@ namespace EntitiesBT.CodeGen.Editor
                 serializedField: serializedField,
                 generateBuild: method =>
                 {
-                    var il = method.Body.Instructions;
-                    // IL_0018: ldarg.1      // data
-                    il.Add(Instruction.Create(OpCodes.Ldarg_1));
-                    // IL_0019: ldarg.0      // this
-                    il.Add(Instruction.Create(OpCodes.Ldarg_0));
-                    // IL_001a: ldfld        int32 EntitiesBT.Nodes.DelayTimerNode/Serializable::A
-                    il.Add(Instruction.Create(OpCodes.Ldfld, serializedField));
-                    // IL_001f: stfld        int32 EntitiesBT.Nodes.DelayTimerNode::A
-                    il.Add(Instruction.Create(OpCodes.Stfld, blobField));
+                    method.Body.Instructions.Insert(0,
+                        // IL_0018: ldarg.1      // data
+                        Instruction.Create(OpCodes.Ldarg_1),
+                        // IL_0019: ldarg.0      // this
+                        Instruction.Create(OpCodes.Ldarg_0),
+                        // IL_001a: ldfld        int32 EntitiesBT.Nodes.DelayTimerNode/Serializable::A
+                        Instruction.Create(OpCodes.Ldfld, serializedField),
+                        // IL_001f: stfld        int32 EntitiesBT.Nodes.DelayTimerNode::A
+                        Instruction.Create(OpCodes.Stfld, blobField)
+                    );
                 },
                 generateLoad: null
             );
@@ -84,7 +89,7 @@ namespace EntitiesBT.CodeGen.Editor
         public BlobArrayFieldTrait(ModuleDefinition module)
         {
             _blobType = module.ImportReference(typeof(BlobArray<>));
-            _allocate = module.ImportMethod(typeof(BlobStringExtensions), nameof(BlobStringExtensions.AllocateString));
+            _allocate = module.ImportMethod(typeof(BlobBuilderExtensions), nameof(BlobBuilderExtensions.AllocateArray));
         }
 
         public IFieldTrait.Data TryMakeData(FieldReference blobField)
@@ -107,17 +112,32 @@ namespace EntitiesBT.CodeGen.Editor
         protected abstract TypeReference BlobType { get; }
         protected abstract TypeReference SerializedType { get; }
         protected abstract MethodReference Allocate { get; }
+        protected abstract MethodReference IsNull { get; }
+        private readonly VariableDefinition _boolVar;
+
+        protected BlobVariantFieldTrait(ModuleDefinition module)
+        {
+            _boolVar = new VariableDefinition(module.ImportReference(typeof(bool)));
+        }
 
         public IFieldTrait.Data TryMakeData(FieldReference blobField)
         {
             if (!BlobType.IsTypeEqual(blobField.FieldType)) return null;
             var valueType = ((GenericInstanceType) blobField.FieldType).GenericArguments[0];
             var genericAllocate = Allocate.MakeGenericInstanceMethod(valueType);
-            var serializedField = new FieldDefinition(blobField.Name, FieldAttributes.Public, SerializedType.MakeGenericInstanceType(valueType));
+            var genericSerializedType = SerializedType.MakeGenericInstanceType(valueType);
+            var serializedField = new FieldDefinition(blobField.Name, FieldAttributes.Public, genericSerializedType);
+            var isNull = IsNull.MakeGenericHostMethod(genericSerializedType);
             return new IFieldTrait.Data
             (
                 serializedField: serializedField,
-                generateBuild: method => method.GenerateBlobVariantTypeBuildIL(blobField, serializedField, genericAllocate),
+                generateBuild: method =>
+                {
+                    var lastInstruction = method.Body.Instructions[0];
+                    method.GenerateBlobVariantTypeBuildIL(blobField, serializedField, genericAllocate);
+                    if (blobField.IsOptional())
+                        method.GenerateOptionalCheck(_boolVar, serializedField, isNull, lastInstruction);
+                },
                 generateLoad: null
             );
         }
@@ -128,12 +148,14 @@ namespace EntitiesBT.CodeGen.Editor
         protected override TypeReference BlobType { get; }
         protected override TypeReference SerializedType { get; }
         protected override MethodReference Allocate { get; }
+        protected override MethodReference IsNull { get; }
 
-        public BlobVariantROFieldTrait(ModuleDefinition module)
+        public BlobVariantROFieldTrait(ModuleDefinition module) : base(module)
         {
             BlobType = module.ImportReference(typeof(Variant.BlobVariantRO<>));
             SerializedType = module.ImportReference(typeof(Variant.SerializedVariantRO<>));
             Allocate = module.ImportMethod(typeof(Variant.Utilities), nameof(Variant.Utilities.AllocateRO));
+            IsNull = module.ImportMethod(typeof(Variant.SerializedVariantRO<>), nameof(Variant.SerializedVariantRO<int>.IsNull));
         }
     }
 
@@ -142,12 +164,14 @@ namespace EntitiesBT.CodeGen.Editor
         protected override TypeReference BlobType { get; }
         protected override TypeReference SerializedType { get; }
         protected override MethodReference Allocate { get; }
+        protected override MethodReference IsNull { get; }
 
-        public BlobVariantWOFieldTrait(ModuleDefinition module)
+        public BlobVariantWOFieldTrait(ModuleDefinition module) : base(module)
         {
             BlobType = module.ImportReference(typeof(Variant.BlobVariantWO<>));
             SerializedType = module.ImportReference(typeof(Variant.SerializedVariantWO<>));
             Allocate = module.ImportMethod(typeof(Variant.Utilities), nameof(Variant.Utilities.AllocateWO));
+            IsNull = module.ImportMethod(typeof(Variant.SerializedVariantWO<>), nameof(Variant.SerializedVariantWO<int>.IsNull));
         }
     }
 
@@ -156,12 +180,14 @@ namespace EntitiesBT.CodeGen.Editor
         protected override TypeReference BlobType { get; }
         protected override TypeReference SerializedType { get; }
         protected override MethodReference Allocate { get; }
+        protected override MethodReference IsNull { get; }
 
-        public BlobVariantRWFieldTrait(ModuleDefinition module)
+        public BlobVariantRWFieldTrait(ModuleDefinition module) : base(module)
         {
             BlobType = module.ImportReference(typeof(Variant.BlobVariantRW<>));
             SerializedType = module.ImportReference(typeof(Variant.SerializedVariantRW<>));
             Allocate = module.ImportMethod(typeof(Variant.Utilities), nameof(Variant.Utilities.AllocateRW));
+            IsNull = module.ImportMethod(typeof(Variant.SerializedVariantRW<>), nameof(Variant.SerializedVariantRW<int>.IsNull));
         }
     }
 
@@ -169,43 +195,89 @@ namespace EntitiesBT.CodeGen.Editor
     {
         public static void GenerateBlobTypeBuildIL(this MethodDefinition build, FieldReference blobField, FieldDefinition serializedField, MethodReference allocateMethod)
         {
-            var il = build.Body.Instructions;
-            // IL_002f: ldarga.s     builder
-            il.Add(Instruction.Create(OpCodes.Ldarga_S, build.Parameters[1]));
-            // IL_0031: ldarg.1      // data
-            il.Add(Instruction.Create(OpCodes.Ldarg_1));
-            // IL_0032: ldflda       valuetype [Unity.Entities]Unity.Entities.BlobString EntitiesBT.Nodes.DelayTimerNode::String
-            il.Add(Instruction.Create(OpCodes.Ldflda, blobField));
-            // IL_0037: ldarg.0      // this
-            il.Add(Instruction.Create(OpCodes.Ldarg_0));
-            // IL_0038: ldfld        string EntitiesBT.Nodes.DelayTimerNode/Serializable::String
-            il.Add(Instruction.Create(OpCodes.Ldfld, serializedField));
-            // IL_003d: call         void [Unity.Entities]Unity.Entities.BlobStringExtensions::AllocateString(valuetype [Unity.Entities]Unity.Entities.BlobBuilder&, valuetype [Unity.Entities]Unity.Entities.BlobString&, string)
-            il.Add(Instruction.Create(OpCodes.Call, allocateMethod));
-            // IL_0042: nop
+            build.Body.Instructions.Insert(0,
+                // IL_002f: ldarga.s     builder
+                Instruction.Create(OpCodes.Ldarga_S, build.Parameters[1]),
+                // IL_0031: ldarg.1      // data
+                Instruction.Create(OpCodes.Ldarg_1),
+                // IL_0032: ldflda       valuetype [Unity.Entities]Unity.Entities.BlobString EntitiesBT.Nodes.DelayTimerNode::String
+                Instruction.Create(OpCodes.Ldflda, blobField),
+                // IL_0037: ldarg.0      // this
+                Instruction.Create(OpCodes.Ldarg_0),
+                // IL_0038: ldfld        string EntitiesBT.Nodes.DelayTimerNode/Serializable::String
+                Instruction.Create(OpCodes.Ldfld, serializedField),
+                // IL_003d: call         void [Unity.Entities]Unity.Entities.BlobStringExtensions::AllocateString(valuetype [Unity.Entities]Unity.Entities.BlobBuilder&, valuetype [Unity.Entities]Unity.Entities.BlobString&, string)
+                Instruction.Create(OpCodes.Call, allocateMethod)
+                // IL_0042: nop
+            );
         }
 
-        public static void GenerateBlobVariantTypeBuildIL(this MethodDefinition method, FieldReference blobField, FieldDefinition serializedField, MethodReference allocateMethod)
+        public static void GenerateBlobVariantTypeBuildIL(
+            this MethodDefinition method,
+            FieldReference blobField,
+            FieldDefinition serializedField,
+            MethodReference allocateMethod
+        )
         {
-            var il = method.Body.Instructions;
-            // IL_0018: ldarg.0      // this
-            il.Add(Instruction.Create(OpCodes.Ldarg_0));
-            // IL_0019: ldfld        class EntitiesBT.Variant.SerializedVariantRO`1<float32> EntitiesBT.Nodes.DelayTimerNode/Serializable::RO
-            il.Add(Instruction.Create(OpCodes.Ldfld, serializedField));
-            // IL_001e: ldarga.s     builder
-            il.Add(Instruction.Create(OpCodes.Ldarga_S, method.Parameters[1]));
-            // IL_0020: ldarg.1      // data
-            il.Add(Instruction.Create(OpCodes.Ldarg_1));
-            // IL_0021: ldflda       valuetype EntitiesBT.Variant.BlobVariantRO`1<float32> EntitiesBT.Nodes.DelayTimerNode::RO
-            il.Add(Instruction.Create(OpCodes.Ldflda, blobField));
-            // IL_0026: ldarg.3      // self
-            il.Add(Instruction.Create(OpCodes.Ldarg_3));
-            // IL_0027: ldarg.s      tree
-            il.Add(Instruction.Create(OpCodes.Ldarg_S, method.Parameters[3]));
-            // IL_0029: call         native int EntitiesBT.Variant.Utilities::AllocateRO<float32>(class EntitiesBT.Variant.IVariantReader`1<!!0/*float32*/>, valuetype [Unity.Entities]Unity.Entities.BlobBuilder&, valuetype EntitiesBT.Variant.BlobVariantRO`1<!!0/*float32*/>&, class EntitiesBT.Core.INodeDataBuilder, class EntitiesBT.Core.ITreeNode`1<class EntitiesBT.Core.INodeDataBuilder>[])
-            il.Add(Instruction.Create(OpCodes.Call, allocateMethod));
-            // IL_002e: pop
-            il.Add(Instruction.Create(OpCodes.Pop));
+            method.Body.Instructions.Insert(0,
+                // IL_0018: ldarg.0      // this
+                Instruction.Create(OpCodes.Ldarg_0),
+                // IL_0019: ldfld        class EntitiesBT.Variant.SerializedVariantRO`1<float32> EntitiesBT.Nodes.DelayTimerNode/Serializable::RO
+                Instruction.Create(OpCodes.Ldfld, serializedField),
+                // IL_001e: ldarga.s     builder
+                Instruction.Create(OpCodes.Ldarga_S, method.Parameters[1]),
+                // IL_0020: ldarg.1      // data
+                Instruction.Create(OpCodes.Ldarg_1),
+                // IL_0021: ldflda       valuetype EntitiesBT.Variant.BlobVariantRO`1<float32> EntitiesBT.Nodes.DelayTimerNode::RO
+                Instruction.Create(OpCodes.Ldflda, blobField),
+                // IL_0026: ldarg.3      // self
+                Instruction.Create(OpCodes.Ldarg_3),
+                // IL_0027: ldarg.s      tree
+                Instruction.Create(OpCodes.Ldarg_S, method.Parameters[3]),
+                // IL_0029: call         native int EntitiesBT.Variant.Utilities::AllocateRO<float32>(class EntitiesBT.Variant.IVariantReader`1<!!0/*float32*/>, valuetype [Unity.Entities]Unity.Entities.BlobBuilder&, valuetype EntitiesBT.Variant.BlobVariantRO`1<!!0/*float32*/>&, class EntitiesBT.Core.INodeDataBuilder, class EntitiesBT.Core.ITreeNode`1<class EntitiesBT.Core.INodeDataBuilder>[])
+                Instruction.Create(OpCodes.Call, allocateMethod),
+                // IL_002e: pop
+                Instruction.Create(OpCodes.Pop)
+            );
+        }
+
+        public static void GenerateOptionalCheck(
+            this MethodDefinition method,
+            VariableDefinition boolVar,
+            FieldDefinition serializedField,
+            MethodReference isNull,
+            Instruction jumpTo
+        )
+        {
+            method.Body.Variables.Add(boolVar);
+            method.Body.Instructions.Insert(0,
+                // IL_0001: ldarg.0      // this
+                Instruction.Create(OpCodes.Ldarg_0),
+                // IL_0002: ldfld        class [EntitiesBT.Runtime]EntitiesBT.Variant.SerializedVariantRO`1<int64> EntitiesBT.Sample.VariablesTestNode/Serializable::LongReader
+                Instruction.Create(OpCodes.Ldfld, serializedField),
+                // IL_0007: callvirt     instance bool class [EntitiesBT.Runtime]EntitiesBT.Variant.SerializedVariantRO`1<int64>::IsNull()
+                Instruction.Create(OpCodes.Callvirt, isNull),
+                // IL_000c: ldc.i4.0
+                Instruction.Create(OpCodes.Ldc_I4_0),
+                // IL_000d: ceq
+                Instruction.Create(OpCodes.Ceq),
+                // IL_000f: stloc.0      // V_0
+                Instruction.Create(OpCodes.Stloc, boolVar),
+                // IL_0010: ldloc.0      // V_0
+                Instruction.Create(OpCodes.Ldloc, boolVar),
+                // IL_0011: brfalse.s    IL_002
+                Instruction.Create(OpCodes.Brfalse_S, jumpTo)
+            );
+        }
+
+        public static bool IsOptional(this FieldReference blobField)
+        {
+            return blobField.Resolve().GetAttributesOf<OptionalAttribute>().Any();
+        }
+
+        internal static void Insert(this Collection<Instruction> il, int index, params Instruction[] instructions)
+        {
+            foreach (var instruction in instructions.Reverse()) il.Insert(index, instruction);
         }
     }
 }

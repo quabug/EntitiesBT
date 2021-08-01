@@ -133,9 +133,11 @@ namespace EntitiesBT.CodeGen.Editor
                 //      ) cil managed
                 //    {
                 var buildMethod = CreateBuildMethod(node);
+                buildMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
                 serializable.Methods.Add(buildMethod);
 
                 var loadMethod = CreateLoadMethod(node);
+                loadMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
                 serializable.Methods.Add(loadMethod);
 
                 foreach (var field in node.Resolve().Fields.Where(f => f.IsPublic)
@@ -146,9 +148,6 @@ namespace EntitiesBT.CodeGen.Editor
                     traitData.GenerateBuild(buildMethod);
                     // traitData.GenerateLoad(loadMethod);
                 }
-
-                buildMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
-                loadMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Ret));
                 return serializable;
             }
 

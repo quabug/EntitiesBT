@@ -73,19 +73,18 @@ namespace EntitiesBT.Attributes.Editor
 
             void DrawSelectionButtonForManagedReference()
             {
-                var backgroundColor = new Color(0.1f, 0.55f, 0.9f, 1f);
-
                 var buttonPosition = position;
                 buttonPosition.x += EditorGUIUtility.labelWidth + 1 * EditorGUIUtility.standardVerticalSpacing;
                 buttonPosition.width = position.width - EditorGUIUtility.labelWidth - 1 * EditorGUIUtility.standardVerticalSpacing;
                 buttonPosition.height = EditorGUIUtility.singleLineHeight;
 
+                var referenceType = GetTypeFromName(property.managedReferenceFullTypename);
+
                 var storedIndent = EditorGUI.indentLevel;
                 EditorGUI.indentLevel = 0;
                 var storedColor = GUI.backgroundColor;
-                GUI.backgroundColor = backgroundColor;
+                GUI.backgroundColor = attribute.Nullable == false && referenceType == null ? new Color(1, 0, 0) : new Color(0.1f, 0.55f, 0.9f, 1f);
 
-                var referenceType = GetTypeFromName(property.managedReferenceFullTypename);
                 var content = referenceType == null ? new GUIContent("Null ( Assign )") : MakeContent(referenceType);
                 if (GUI.Button(buttonPosition, content))
                     ShowContextMenuForManagedReference();
@@ -108,7 +107,7 @@ namespace EntitiesBT.Attributes.Editor
             void FillContextMenu(GenericMenu contextMenu)
             {
                 // Adds "Make Null" menu command
-                contextMenu.AddItem(new GUIContent("Null"), false, SetManagedReferenceToNull);
+                if (attribute.Nullable) contextMenu.AddItem(new GUIContent("Null"), false, SetManagedReferenceToNull);
 
                 // Collects appropriate types
                 var appropriateTypes = GetAppropriateTypesForAssigningToManagedReference();

@@ -29,6 +29,8 @@ namespace EntitiesBT.Variant
         [SerializeReferenceDrawer(TypeRestrictBySiblingProperty = nameof(Writer), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2")]
         private object _writer;
         public IVariantWriter<T> Writer => (IVariantWriter<T>)_writer;
+
+        public bool IsNull() => _isLinked ? _readerAndWriter == null : (_reader == null || _writer == null);
     }
 
     [Serializable]
@@ -43,6 +45,8 @@ namespace EntitiesBT.Variant
         {
             return Reader.Allocate(ref builder, ref blobVariant, self, tree);
         }
+
+        public bool IsNull() => _reader == null;
     }
 
     [Serializable]
@@ -57,5 +61,7 @@ namespace EntitiesBT.Variant
         {
             return Writer.Allocate(ref builder, ref blobVariant, self, tree);
         }
+
+        public bool IsNull() => _writer == null;
     }
 }
