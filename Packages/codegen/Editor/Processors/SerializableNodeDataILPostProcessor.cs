@@ -146,7 +146,7 @@ namespace EntitiesBT.CodeGen.Editor
                     var traitData = fieldTraits.Select(t => t.TryMakeData(field)).First(data => data != null);
                     serializable.Fields.Add(traitData.SerializedField);
                     traitData.GenerateBuild(buildMethod);
-                    // traitData.GenerateLoad(loadMethod);
+                    traitData.GenerateLoad(loadMethod);
                 }
                 return serializable;
             }

@@ -50,8 +50,19 @@ namespace EntitiesBT.CodeGen.Editor
                         Instruction.Create(OpCodes.Stfld, blobField)
                     );
                 },
-                generateLoad: null
-            );
+                generateLoad: method =>
+                {
+                    method.Body.Instructions.Insert(0,
+                        // IL_0023: ldarg.0      // this
+                        Instruction.Create(OpCodes.Ldarg_0),
+                        // IL_0024: ldarg.1      // data
+                        Instruction.Create(OpCodes.Ldarg_1),
+                        // IL_0025: ldfld        int64 EntitiesBT.Sample.VariablesTestNode::Long
+                        Instruction.Create(OpCodes.Ldfld, blobField),
+                        // IL_002a: stfld        int64 EntitiesBT.Sample.VariablesTestNode/Serializable::Long
+                        Instruction.Create(OpCodes.Stfld, serializedField)
+                    );
+                });
         }
     }
 
@@ -60,12 +71,14 @@ namespace EntitiesBT.CodeGen.Editor
         private readonly TypeReference _blobType;
         private readonly TypeReference _serializedType;
         private readonly MethodReference _allocate;
+        private readonly MethodReference _load;
 
         public BlobStringFieldTrait(ModuleDefinition module)
         {
             _blobType = module.ImportReference(typeof(BlobString));
             _serializedType = module.ImportReference(typeof(string));
             _allocate = module.ImportMethod(typeof(BlobStringExtensions), nameof(BlobStringExtensions.AllocateString));
+            _load = module.ImportMethod(typeof(BlobString), nameof(BlobString.ToString));
         }
 
         public IFieldTrait.Data TryMakeData(FieldReference blobField)
@@ -76,7 +89,7 @@ namespace EntitiesBT.CodeGen.Editor
             (
                 serializedField: serializedField,
                 generateBuild: method => method.GenerateBlobTypeBuildIL(blobField, serializedField, _allocate),
-                generateLoad: null
+                generateLoad: method => method.GenerateBlobTypeLoadIL(blobField, serializedField, _load)
             );
         }
     }
@@ -85,24 +98,27 @@ namespace EntitiesBT.CodeGen.Editor
     {
         private readonly TypeReference _blobType;
         private readonly MethodReference _allocate;
+        private readonly MethodReference _load;
 
         public BlobArrayFieldTrait(ModuleDefinition module)
         {
             _blobType = module.ImportReference(typeof(BlobArray<>));
             _allocate = module.ImportMethod(typeof(BlobBuilderExtensions), nameof(BlobBuilderExtensions.AllocateArray));
+            _load = module.ImportMethod(typeof(BlobArray<>), nameof(BlobArray<int>.ToArray));
         }
 
         public IFieldTrait.Data TryMakeData(FieldReference blobField)
         {
             if (!_blobType.IsTypeEqual(blobField.FieldType)) return null;
             var valueType = ((GenericInstanceType) blobField.FieldType).GenericArguments[0];
-            var genericAllocate = _allocate.MakeGenericInstanceMethod(valueType);
             var serializedField = new FieldDefinition(blobField.Name, FieldAttributes.Public, valueType.MakeArrayType());
+            var genericAllocate = _allocate.MakeGenericInstanceMethod(valueType);
+            var genericLoad = _load.MakeGenericHostMethod(_blobType.MakeGenericInstanceType(valueType));
             return new IFieldTrait.Data
             (
                 serializedField: serializedField,
                 generateBuild: method => method.GenerateBlobTypeBuildIL(blobField, serializedField, genericAllocate),
-                generateLoad: null
+                generateLoad: method => method.GenerateBlobTypeLoadIL(blobField, serializedField, genericLoad)
             );
         }
     }
@@ -138,7 +154,7 @@ namespace EntitiesBT.CodeGen.Editor
                     if (blobField.IsOptional())
                         method.GenerateOptionalCheck(_boolVar, serializedField, isNull, lastInstruction);
                 },
-                generateLoad: null
+                generateLoad: method => {} // TODO: implement
             );
         }
     }
@@ -209,6 +225,22 @@ namespace EntitiesBT.CodeGen.Editor
                 // IL_003d: call         void [Unity.Entities]Unity.Entities.BlobStringExtensions::AllocateString(valuetype [Unity.Entities]Unity.Entities.BlobBuilder&, valuetype [Unity.Entities]Unity.Entities.BlobString&, string)
                 Instruction.Create(OpCodes.Call, allocateMethod)
                 // IL_0042: nop
+            );
+        }
+
+        public static void GenerateBlobTypeLoadIL(this MethodDefinition load, FieldReference blobField, FieldDefinition serializedField, MethodReference loadMethod)
+        {
+            load.Body.Instructions.Insert(0,
+                //IL_0001: ldarg.0      // this
+                Instruction.Create(OpCodes.Ldarg_0),
+                // IL_0002: ldarg.1      // data
+                Instruction.Create(OpCodes.Ldarg_1),
+                // IL_0003: ldflda       valuetype [Unity.Entities]Unity.Entities.BlobString EntitiesBT.Sample.VariablesTestNode::String
+                Instruction.Create(OpCodes.Ldflda, blobField),
+                // IL_0008: call         instance string [Unity.Entities]Unity.Entities.BlobString::ToString()
+                Instruction.Create(OpCodes.Call, loadMethod),
+                // IL_000d: stfld        string EntitiesBT.Sample.VariablesTestNode/Serializable::String
+                Instruction.Create(OpCodes.Stfld, serializedField)
             );
         }
 
