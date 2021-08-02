@@ -4,7 +4,7 @@ using Unity.CompilationPipeline.Common.Diagnostics;
 
 namespace EntitiesBT.CodeGen.Editor
 {
-    public class ILPostProcessorLogger : ILogger
+    public class ILPostProcessorLogger
     {
         public readonly List<DiagnosticMessage> Messages;
 

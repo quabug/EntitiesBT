@@ -3,7 +3,8 @@
     "rootNamespace": "EntitiesBT.CodeGen.Editor",
     "references": [
         "GUID:c7babe7561eb244059259745ef27b866",
-        "GUID:3d9288551f5f1b14b9fcbd11fd97a391"
+        "GUID:3d9288551f5f1b14b9fcbd11fd97a391",
+        "GUID:734d92eba21c94caba915361bd5ac177"
     ],
     "includePlatforms": [
         "Editor"

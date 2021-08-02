@@ -19,7 +19,7 @@ namespace EntitiesBT.Variant.Expression
         {
             public BlobString Expression;
             public int ExpressionType;
-            public BlobArray<BlobVariantReadOnlyPtr> Variants;
+            public BlobArray<BlobVariantPtrRO> Variants;
             public BlobArray<BlobString> VariantNames;
             public BlobArray<int> VariantTypes;
         }
@@ -32,7 +32,9 @@ namespace EntitiesBT.Variant.Expression
             [Serializable]
             internal class Variant
             {
-                [SerializeReference, SerializeReferenceDrawer] public IVariantReader Value;
+                [SerializeReference]
+                [SerializeReferenceDrawer(RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2")]
+                public IVariantReader Value;
                 public string Name;
             }
 

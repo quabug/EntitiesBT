@@ -23,8 +23,8 @@ namespace EntitiesBT.Samples
     [BehaviorNode("2164B3CA-C12E-4C86-9F80-F45A99124FAD")]
     public struct InputMoveToRotationNode : INodeData
     {
-        public BlobVariantReader<float2> InputMove;
-        public BlobVariantReaderAndWriter<quaternion> OutputDirection;
+        public BlobVariantRO<float2> InputMove;
+        public BlobVariantRW<quaternion> OutputDirection;
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

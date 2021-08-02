@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using Shtif;
 using UnityEditor;
@@ -47,6 +46,13 @@ namespace EntitiesBT.Attributes.Editor
 
             var attribute = (SerializeReferenceDrawerAttribute) Decorator;
             var filters = GetAllBuiltInTypeRestrictions();
+            var (renamePattern, renameReplacement) = attribute.RenamePatter.ParseReplaceRegex();
+            var categoryMethodInfo = attribute.CategoryName == null ? null : property.GetSiblingMethodInfo(attribute.CategoryName);
+            var categoryFunc = categoryMethodInfo == null
+                ? null
+                : (Func<Type, string>) categoryMethodInfo.CreateDelegate(typeof(Func<Type, string>), property.serializedObject.targetObject)
+            ;
+
             DrawSelectionButtonForManagedReference();
 
             EditorGUI.PropertyField(position, property, GUIContent.none, true);
@@ -56,9 +62,9 @@ namespace EntitiesBT.Attributes.Editor
             IEnumerable<Func<Type, bool>> GetAllBuiltInTypeRestrictions()
             {
                 var result = new List<Func<Type, bool>>();
-                if (!string.IsNullOrEmpty(attribute.TypeRestrictionBySiblingProperty))
+                if (!string.IsNullOrEmpty(attribute.TypeRestrictBySiblingProperty))
                 {
-                    var baseType = property.GetSiblingPropertyInfo(attribute.TypeRestrictionBySiblingProperty).PropertyType;
+                    var baseType = property.GetSiblingPropertyInfo(attribute.TypeRestrictBySiblingProperty).PropertyType;
                     var derivedTypes = TypeCache.GetTypesDerivedFrom(baseType);
                     result.Add(derivedTypes.Contains);
                 }
@@ -67,23 +73,20 @@ namespace EntitiesBT.Attributes.Editor
 
             void DrawSelectionButtonForManagedReference()
             {
-                var backgroundColor = new Color(0.1f, 0.55f, 0.9f, 1f);
-
                 var buttonPosition = position;
                 buttonPosition.x += EditorGUIUtility.labelWidth + 1 * EditorGUIUtility.standardVerticalSpacing;
                 buttonPosition.width = position.width - EditorGUIUtility.labelWidth - 1 * EditorGUIUtility.standardVerticalSpacing;
                 buttonPosition.height = EditorGUIUtility.singleLineHeight;
 
+                var referenceType = GetTypeFromName(property.managedReferenceFullTypename);
+
                 var storedIndent = EditorGUI.indentLevel;
                 EditorGUI.indentLevel = 0;
                 var storedColor = GUI.backgroundColor;
-                GUI.backgroundColor = backgroundColor;
+                GUI.backgroundColor = attribute.Nullable == false && referenceType == null ? new Color(1, 0, 0) : new Color(0.1f, 0.55f, 0.9f, 1f);
 
-
-                var names = GetSplitNamesFromTypename(property.managedReferenceFullTypename);
-                var className = string.IsNullOrEmpty(names.ClassName) ? "Null (Assign)" : names.ClassName;
-                var assemblyName = names.AssemblyName;
-                if (GUI.Button(buttonPosition, new GUIContent(className, className + "  ( "+ assemblyName +" )" )))
+                var content = referenceType == null ? new GUIContent("Null ( Assign )") : MakeContent(referenceType);
+                if (GUI.Button(buttonPosition, content))
                     ShowContextMenuForManagedReference();
 
                 GUI.backgroundColor = storedColor;
@@ -94,66 +97,68 @@ namespace EntitiesBT.Attributes.Editor
                     var context = new GenericMenu();
                     FillContextMenu(context);
                     var popup = GenericMenuPopup.Get(context, "");
-                    popup.width = 400;
                     popup.showSearch = true;
                     popup.showTooltip = false;
                     popup.resizeToContent = true;
                     popup.Show(new Vector2(buttonPosition.x, buttonPosition.y));
-                    // context.ShowAsContext();
                 }
             }
 
             void FillContextMenu(GenericMenu contextMenu)
             {
                 // Adds "Make Null" menu command
-                contextMenu.AddItem(new GUIContent("Null"), false, SetManagedReferenceToNull());
+                if (attribute.Nullable) contextMenu.AddItem(new GUIContent("Null"), false, SetManagedReferenceToNull);
 
                 // Collects appropriate types
                 var appropriateTypes = GetAppropriateTypesForAssigningToManagedReference();
 
                 // Adds appropriate types to menu
-                foreach (var appropriateType in appropriateTypes)
-                    AddItemToContextMenu(appropriateType, contextMenu);
+                var typeContentMap =
+                    from type in appropriateTypes
+                    select (type, content: MakeContent(type))
+                ;
+
+                if (attribute.AlphabeticalOrder) typeContentMap = typeContentMap.OrderBy(t => t.content.text);
+                foreach (var (type, content) in typeContentMap)
+                    contextMenu.AddItem(content, false, AssignNewInstanceCommand, type);
             }
 
-            GenericMenu.MenuFunction SetManagedReferenceToNull()
+            void SetManagedReferenceToNull()
             {
-                return () =>
-                {
-                    property.serializedObject.Update();
-                    property.managedReferenceValue = null;
-                    property.serializedObject.ApplyModifiedProperties();
-                };
+                property.serializedObject.Update();
+                property.managedReferenceValue = null;
+                property.serializedObject.ApplyModifiedProperties();
             }
 
-            void AddItemToContextMenu(Type type, GenericMenu genericMenuContext)
+            void AssignNewInstanceCommand(object typeObject)
             {
-                var assemblyName =  type.Assembly.ToString().Split('(', ',')[0];
-                var entryName = type + "  ( " + assemblyName + " )";
-                // HACK: display subclass name after "+"
-                entryName = entryName.Substring(entryName.IndexOf('+') + 1);
-                genericMenuContext.AddItem(new GUIContent(entryName), false, AssignNewInstanceCommand, new GenericMenuParameterForAssignInstanceCommand(type, property));
+                var type = (Type)typeObject;
+                if (type == property.GetObject()?.GetType()) return;
 
-                void AssignNewInstanceCommand(object objectGenericMenuParameter)
-                {
-                    var parameter = (GenericMenuParameterForAssignInstanceCommand) objectGenericMenuParameter;
-                    AssignNewInstanceOfTypeToManagedReference(parameter.Property, parameter.Type);
-                }
+                var instance = Activator.CreateInstance(type);
+                property.serializedObject.Update();
+                property.managedReferenceValue = instance;
+                property.serializedObject.ApplyModifiedProperties();
+            }
 
-                object AssignNewInstanceOfTypeToManagedReference(SerializedProperty serializedProperty, Type type)
+            GUIContent MakeContent(Type type)
+            {
+                var entryName = type.FullName;
+                if (renamePattern != null) entryName = renamePattern.Replace(entryName, renameReplacement);
+                if (attribute.DisplayAssemblyName) entryName += "  ( " + type.Assembly.GetName().Name + " )";
+                if (categoryFunc != null)
                 {
-                    var instance = Activator.CreateInstance(type);
-                    serializedProperty.serializedObject.Update();
-                    serializedProperty.managedReferenceValue = instance;
-                    serializedProperty.serializedObject.ApplyModifiedProperties();
-                    return instance;
+                    var category = categoryFunc(type);
+                    if (!string.IsNullOrEmpty(category)) entryName = category + "/" + entryName;
                 }
+                return new GUIContent(entryName, $"{type.FullName} ( {type.Assembly.GetName().Name} )");
             }
 
             IEnumerable<Type> GetAppropriateTypesForAssigningToManagedReference()
             {
-                var fieldType = GetManagedReferenceFieldType();
+                var fieldType = GetTypeFromName(property.managedReferenceFieldTypename);
                 var appropriateTypes = new List<Type>();
+                if (fieldType == null) return appropriateTypes;
 
                 // Get and filter all appropriate types
                 var derivedTypes = TypeCache.GetTypesDerivedFrom(fieldType);
@@ -166,6 +171,8 @@ namespace EntitiesBT.Attributes.Editor
                     if (type.IsAbstract)
                         continue;
                     if (type.IsGenericType)
+                        continue;
+                    if (!type.IsPublic && !type.IsNestedPublic)
                         continue;
                     // Skip types that has no public empty constructors (activator can not create them)
                     if (type.IsClass && type.GetConstructor(Type.EmptyTypes) == null) // Structs still can be created (strangely)
@@ -180,47 +187,11 @@ namespace EntitiesBT.Attributes.Editor
                 return appropriateTypes;
             }
 
-            // Gets real type of managed reference
-            Type GetManagedReferenceFieldType()
+            Type GetTypeFromName(string fullName)
             {
-                var realPropertyType = GetRealTypeFromTypename(property.managedReferenceFieldTypename);
-                if (realPropertyType != null)
-                    return realPropertyType;
-
-                Debug.LogError($"Can not get field type of managed reference : {property.managedReferenceFieldTypename}");
-                return null;
-
-                // Gets real type of managed reference's field typeName
-                Type GetRealTypeFromTypename(string stringType)
-                {
-                    var names = GetSplitNamesFromTypename(stringType);
-                    var realType = Type.GetType($"{names.ClassName}, {names.AssemblyName}");
-                    return realType;
-                }
+                var names = fullName.Split(' ');
+                return names.Length != 2 ? null : Type.GetType($"{names[1]}, {names[0]}");
             }
-        }
-
-        private (string AssemblyName, string ClassName) GetSplitNamesFromTypename(string typename)
-        {
-            if (string.IsNullOrEmpty(typename))
-                return ("","");
-
-            var typeSplitString = typename.Split(char.Parse(" "));
-            var typeClassName = typeSplitString[1];
-            var typeAssemblyName = typeSplitString[0];
-            return (typeAssemblyName,  typeClassName);
-        }
-
-        private readonly struct GenericMenuParameterForAssignInstanceCommand
-        {
-            public GenericMenuParameterForAssignInstanceCommand(Type type, SerializedProperty property)
-            {
-                Type = type;
-                Property = property;
-            }
-
-            public readonly SerializedProperty Property;
-            public readonly Type Type;
         }
     }
 }

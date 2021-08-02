@@ -90,13 +90,13 @@ namespace EntitiesBT.CodeGen.Editor
 
         private readonly Dictionary<TypeKey, TypeTreeNode> _typeTreeNodeMap;
 
-        private readonly ILogger _logger;
+        private readonly ILPostProcessorLogger _logger;
 
         /// <summary>
         /// Create a type-tree from a collection of <paramref name="sourceTypes"/>
         /// </summary>
         /// <param name="sourceTypes">The source types of tree.</param>
-        public TypeTree([NotNull] IEnumerable<TypeDefinition> sourceTypes, ILogger logger = null)
+        public TypeTree([NotNull] IEnumerable<TypeDefinition> sourceTypes, ILPostProcessorLogger logger = null)
         {
             _logger = logger;
             _typeTreeNodeMap = new Dictionary<TypeKey, TypeTreeNode>();

@@ -96,8 +96,8 @@ namespace EntitiesBT.DebugView
                 }
                 else
                 {
-                    nodeGameObject.name = $"?? {nodeGameObject.name}";
-                    nodeGameObject.AddComponent<BTDebugView>().Blob = blob;
+                    nodeGameObject.name = $"*{nodeGameObject.name}";
+                    nodeGameObject.AddComponent<BTDynamicDebugView>().Blob = blob;
                 }
                 
                 var parentIndex = blob.ParentIndex(i);

@@ -19,11 +19,17 @@ using EntitiesBT.Core;
 using EntitiesBT.Attributes;
 using Unity.Entities;
 using static EntitiesBT.Variant.Utilities;
+using UnityEngine;
+using System;
 
 namespace EntitiesBT.Components
 {{
+    [Obsolete(""Use BTDynamicNode"")]
     public class {className} : BTNode<{nodeType.FullName}>
     {{
+        [Header(""obsolete: use BTDynamicNode"")]
+        private int _;
+        
         {string.Join(Environment.NewLine + "        ", fieldStrings)}
         protected override void Build(ref {nodeType.FullName} data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {{

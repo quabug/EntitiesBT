@@ -9,7 +9,7 @@ namespace EntitiesBT.Nodes
     [BehaviorNode("46540F67-6145-4433-9A3A-E470992B952E", BehaviorNodeType.Decorate)]
     public struct TimerNode : INodeData
     {
-        public BlobVariantReaderAndWriter<float> CountdownSeconds;
+        public BlobVariantRW<float> CountdownSeconds;
         public NodeState BreakReturnState;
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
