@@ -242,7 +242,6 @@ GameObject:
   - component: {fileID: 456945893}
   - component: {fileID: 456945892}
   - component: {fileID: 456945891}
-  - component: {fileID: 456945897}
   m_Layer: 0
   m_Name: AnimatorJob
   m_TagString: Untagged
@@ -273,7 +272,7 @@ MonoBehaviour:
     00000000:
       type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
       data:
-        Root: {fileID: 512318345}
+        Root: {fileID: 512318347}
         AutoDestroy: 0
 --- !u!114 &456945892
 MonoBehaviour:
@@ -370,18 +369,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &456945897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 456945890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1870774babe4d9c83c487cce9fe3130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &512318344
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,27 +378,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 512318346}
-  - component: {fileID: 512318345}
+  - component: {fileID: 512318347}
   m_Layer: 0
-  m_Name: BTSequence
+  m_Name: SequenceNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &512318345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 512318344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
 --- !u!4 &512318346
 Transform:
   m_ObjectHideFlags: 0
@@ -429,6 +403,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &512318347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512318344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NodeData:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &545624839
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,7 +476,7 @@ GameObject:
   - component: {fileID: 565112785}
   - component: {fileID: 565112786}
   m_Layer: 0
-  m_Name: BTSequence
+  m_Name: SequenceNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -517,10 +509,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 565112784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
+  NodeData:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,7 +622,7 @@ GameObject:
   - component: {fileID: 876631836}
   - component: {fileID: 876631837}
   m_Layer: 0
-  m_Name: BTDelayTimer
+  m_Name: DelayTimerNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -654,25 +651,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 876631835}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimerSeconds:
-    _isLinked: 1
-    _readerAndWriter:
-      id: 0
-    _reader:
-      id: 1
-    _writer:
-      id: 1
+  NodeData:
+    id: 0
   references:
     version: 1
     00000000:
+      type: {class: <Serializable>_DelayTimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      data:
+        TimerSeconds:
+          _isLinked: 1
+          _readerAndWriter:
+            id: 1
+          _reader:
+            id: 2
+          _writer:
+            id: 2
+    00000001:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 2
-    00000001:
+        Value: 1
+    00000002:
       type: {class: , ns: , asm: }
 --- !u!1 &963194225
 GameObject:
@@ -768,7 +770,7 @@ GameObject:
   - component: {fileID: 1219867601}
   - component: {fileID: 1219867602}
   m_Layer: 0
-  m_Name: BTDelayTimer (1)
+  m_Name: DelayTimerNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -797,25 +799,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1219867600}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimerSeconds:
-    _isLinked: 1
-    _readerAndWriter:
-      id: 0
-    _reader:
-      id: 1
-    _writer:
-      id: 1
+  NodeData:
+    id: 0
   references:
     version: 1
     00000000:
+      type: {class: <Serializable>_DelayTimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      data:
+        TimerSeconds:
+          _isLinked: 1
+          _readerAndWriter:
+            id: 1
+          _reader:
+            id: 2
+          _writer:
+            id: 2
+    00000001:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 3
-    00000001:
+        Value: 1
+    00000002:
       type: {class: , ns: , asm: }
 --- !u!1 &1365720264
 GameObject:
@@ -828,7 +835,7 @@ GameObject:
   - component: {fileID: 1365720265}
   - component: {fileID: 1365720266}
   m_Layer: 0
-  m_Name: BTRepeat
+  m_Name: RepeatForeverNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -858,13 +865,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1365720264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3013650591734b2cbe7111fcc10341ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
-  BreakStates: 0
-  RepeatTimes: 0
-  RepeatDurationInSeconds: 0
+  NodeData:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_RepeatForeverNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      data:
+        BreakStates: 0
 --- !u!1 &1532516090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,7 +1088,7 @@ MonoBehaviour:
     00000000:
       type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
       data:
-        Root: {fileID: 512318345}
+        Root: {fileID: 512318347}
         AutoDestroy: 0
 --- !u!1 &2107458201
 GameObject:
@@ -1090,7 +1101,7 @@ GameObject:
   - component: {fileID: 2107458202}
   - component: {fileID: 2107458203}
   m_Layer: 0
-  m_Name: BTDelayTimer
+  m_Name: DelayTimerNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1119,23 +1130,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 2107458201}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db493cf6cb9347a880404576b970ea05, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimerSeconds:
-    _isLinked: 1
-    _readerAndWriter:
-      id: 0
-    _reader:
-      id: 1
-    _writer:
-      id: 1
+  NodeData:
+    id: 0
   references:
     version: 1
     00000000:
+      type: {class: <Serializable>_DelayTimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      data:
+        TimerSeconds:
+          _isLinked: 1
+          _readerAndWriter:
+            id: 1
+          _reader:
+            id: 2
+          _writer:
+            id: 2
+    00000001:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: 1
-    00000001:
+    00000002:
       type: {class: , ns: , asm: }

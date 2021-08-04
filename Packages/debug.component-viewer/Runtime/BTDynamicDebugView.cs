@@ -22,7 +22,8 @@ namespace EntitiesBT.DebugView
 
             ISerializableNodeData CreateSerializableNodeData()
             {
-                return (ISerializableNodeData) Activator.CreateInstance(SerializableNodeDataRegistry.FindSerializableType(blob.GetTypeId(Index)));
+                var type = SerializableNodeDataRegistry.FindSerializableType(blob.GetTypeId(Index));
+                return type == null ? null : (ISerializableNodeData) Activator.CreateInstance(type);
             }
         }
 

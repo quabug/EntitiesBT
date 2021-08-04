@@ -5,6 +5,7 @@ using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
+using EntitiesBT.Nodes;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -12,11 +13,15 @@ namespace EntitiesBT.Test
 {
     public class BehaviorTreeTestBase
     {
+        class Sequence : BTNode<SequenceNode> {}
+        class Selector : BTNode<SelectorNode> {}
+        class Parallel : BTNode<ParallelNode> {}
+
         private readonly Dictionary<string, Func<string, BTNode>> _nodeCreators = new Dictionary<string, Func<string, BTNode>>
         {
-            { "seq", Create<BTSequence> }
-          , { "sel", Create<BTSelector> }
-          , { "par", Create<BTParallel> }
+            { "seq", Create<Sequence> }
+          , { "sel", Create<Selector> }
+          , { "par", Create<Parallel> }
           , { "yes", CreateTestNode(NodeState.Success) }
           , { "no", CreateTestNode(NodeState.Failure) }
           , { "run", CreateTestNode(NodeState.Running) }

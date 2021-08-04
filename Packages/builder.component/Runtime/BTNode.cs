@@ -63,12 +63,22 @@ namespace EntitiesBT.Components
             default:
                 throw new ArgumentOutOfRangeException();
             }
-            
-            var childCount = transform.childCount;
-            if (childCount > maxChildCount)
+
+            var activateChildCount = 0;
+            foreach (Transform child in transform)
             {
-                Debug.LogError($"{BehaviorNodeType} node {name} is not allowed to have more than {maxChildCount} children", gameObject);
-                for (var i = childCount - 1; i >= maxChildCount; i--) DestroyImmediate(transform.GetChild(i).gameObject);
+                if (child.gameObject.activeSelf)
+                {
+                    if (activateChildCount < maxChildCount)
+                    {
+                        activateChildCount++;
+                    }
+                    else
+                    {
+                        Debug.LogError($"{BehaviorNodeType} node {name} is not allowed to have more than {maxChildCount} children", gameObject);
+                        child.gameObject.SetActive(false);
+                    }
+                }
             }
 #endif
         }
