@@ -40,17 +40,5 @@ namespace EntitiesBT.Sample
 
             return NodeState.Success;
         }
-
-        public class S
-        {
-            public int[] IntArray;
-            public string String;
-
-            void Load(BlobBuilder builder, ref VariablesTestNode data)
-            {
-                builder.AllocateArray<int>(ref data.IntArray, (IList<int>) this.IntArray);
-                builder.AllocateString(ref data.String, this.String);
-            }
-        }
     }
 }

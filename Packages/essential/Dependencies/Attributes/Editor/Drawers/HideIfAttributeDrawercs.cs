@@ -10,7 +10,7 @@ namespace EntitiesBT.Attributes.Editor
 
         private bool ShouldHide(SerializedProperty property)
         {
-            return (bool) property.GetSiblingFieldValue(_attribute.ConditionFieldName) == _attribute.Value;
+            return (bool) property.GetSiblingValue(_attribute.ConditionName) == _attribute.Value;
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)

@@ -9,6 +9,19 @@ namespace EntitiesBT.Attributes.Editor
 {
     public static class Extensions
     {
+         public static object GetSiblingValue(this SerializedProperty property, string name)
+         {
+             var obj = GetDeclaringObject(property);
+             var type = obj.GetType();
+             var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+             var fieldInfo = type.GetField(name, flags);
+             if (fieldInfo != null) return fieldInfo.GetValue(obj);
+             var propertyInfo = type.GetProperty(name, flags);
+             if (propertyInfo != null) return propertyInfo.GetValue(obj);
+             var methodInfo = type.GetMethod(name, flags);
+             return methodInfo.Invoke(obj, Array.Empty<object>());
+         }
+
          public static object GetSiblingFieldValue(this SerializedProperty property, string fieldName)
          {
              var obj = GetDeclaringObject(property);
