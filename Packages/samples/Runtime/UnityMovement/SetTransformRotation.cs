@@ -1,23 +1,10 @@
-using EntitiesBT.Attributes;
-using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace EntitiesBT.Extensions.UnityMovement
 {
-    public class BTSetTransformRotation : BTNode<SetTransformRotationNode>
-    {
-        public SerializedVariantRO<quaternion> RotationReader;
-
-        protected override unsafe void Build(ref SetTransformRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            RotationReader.Allocate(ref builder, ref data.RotationProperty, this, tree);
-        }
-    }
-    
     [BehaviorNode("7FCFF548-4D65-402A-B885-20633923DC22")]
     public struct SetTransformRotationNode : INodeData
     {

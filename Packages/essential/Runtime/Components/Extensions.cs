@@ -72,7 +72,7 @@ namespace EntitiesBT.Components
             return Pointer.Unbox(ptr);
         }
 
-        public static void AllocateArray<T>(ref this BlobBuilder builder, ref BlobArray<T> blobArray, IList<T> sourceArray) where T : unmanaged
+        public static void AllocateArray<T>(this ref BlobBuilder builder, ref BlobArray<T> blobArray, IList<T> sourceArray) where T : unmanaged
         {
             var array = builder.Allocate(ref blobArray, sourceArray.Count);
             for (var i = 0; i < sourceArray.Count; i++) array[i] = sourceArray[i];

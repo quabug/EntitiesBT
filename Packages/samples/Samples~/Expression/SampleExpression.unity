@@ -306,10 +306,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 883457543}
-  - component: {fileID: 883457542}
   - component: {fileID: 883457544}
+  - component: {fileID: 883457542}
   m_Layer: 0
-  m_Name: BTSequence
+  m_Name: SequenceNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -324,10 +324,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 883457541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!4 &883457543
 Transform:
   m_ObjectHideFlags: 0
@@ -365,10 +371,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1122494587}
-  - component: {fileID: 1122494586}
   - component: {fileID: 1122494588}
+  - component: {fileID: 1122494586}
   m_Layer: 0
-  m_Name: BTSequence
+  m_Name: SequenceNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -383,10 +389,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1122494585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!4 &1122494587
 Transform:
   m_ObjectHideFlags: 0

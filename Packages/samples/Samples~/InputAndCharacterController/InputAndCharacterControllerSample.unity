@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 9309918}
   - component: {fileID: 9309919}
   m_Layer: 0
-  m_Name: BTSequence-Run
+  m_Name: run
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,10 +246,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 9309917}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &72413650
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,7 +311,7 @@ GameObject:
   - component: {fileID: 83713279}
   - component: {fileID: 83713280}
   m_Layer: 0
-  m_Name: BTSequence-Dash
+  m_Name: dash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -336,10 +342,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 83713278}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_ParallelNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &119268659
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,7 +492,7 @@ GameObject:
   - component: {fileID: 447731369}
   - component: {fileID: 447731370}
   m_Layer: 0
-  m_Name: BTRepeat
+  m_Name: RepeatForeverNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -497,7 +509,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1174442161}
+  - {fileID: 1923460355}
   m_Father: {fileID: 1454846014}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -510,13 +522,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 447731368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3013650591734b2cbe7111fcc10341ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
-  BreakStates: 0
-  RepeatTimes: 0
-  RepeatDurationInSeconds: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_RepeatForeverNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      data:
+        BreakStates: 0
 --- !u!1 &461176656
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,7 +611,7 @@ GameObject:
   - component: {fileID: 525316153}
   - component: {fileID: 525316154}
   m_Layer: 0
-  m_Name: BTCharacterSimpleMove
+  m_Name: CharacterSimpleMoveNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -623,16 +640,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 525316152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsLocal: 0
-  VelocityPropertyReader:
-    _reader:
-      id: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
   references:
     version: 1
     00000000:
+      type: {class: <Serializable>_CharacterSimpleMoveNode, ns: EntitiesBT.Extensions.UnityMovement,
+        asm: Assembly-CSharp}
+      data:
+        IsLocal: 0
+        Velocity:
+          _reader:
+            id: 1
+    00000001:
       type: {class: <IVariantReader>/float3NodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
@@ -812,7 +836,7 @@ GameObject:
   - component: {fileID: 866069045}
   - component: {fileID: 866069046}
   m_Layer: 0
-  m_Name: BTSequence-Walk
+  m_Name: walk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -843,10 +867,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 866069044}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &945633982
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,7 +888,7 @@ GameObject:
   - component: {fileID: 945633983}
   - component: {fileID: 945633984}
   m_Layer: 0
-  m_Name: BTSetTransformRotation
+  m_Name: SetTransformRotationNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -887,20 +917,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 945633982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c415565511944df690f9499120783f67, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationReader:
-    _reader:
-      id: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReader>/quaternionNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <Serializable>_SetTransformRotationNode, ns: EntitiesBT.Extensions.UnityMovement,
         asm: Assembly-CSharp}
       data:
-        NodeObject: {fileID: 1160618947}
-        ValueFieldName: OutputDirection
+        RotationProperty:
+          _reader:
+            id: 1
+    00000001:
+      type: {class: <IVariantReader>/quaternionComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        ComponentValueName: Unity.Transforms.Rotation.Value
 --- !u!1 &1000532614
 GameObject:
   m_ObjectHideFlags: 0
@@ -1242,7 +1278,7 @@ GameObject:
   - component: {fileID: 1174442161}
   - component: {fileID: 1174442162}
   m_Layer: 0
-  m_Name: BTSequence
+  m_Name: SequenceNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1255,7 +1291,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1174442160}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1263,7 +1299,7 @@ Transform:
   - {fileID: 1160618946}
   - {fileID: 945633983}
   - {fileID: 1821151457}
-  m_Father: {fileID: 447731369}
+  m_Father: {fileID: 1923460355}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1174442162
@@ -1275,10 +1311,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1174442160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &1273432696
 GameObject:
   m_ObjectHideFlags: 0
@@ -1290,7 +1332,7 @@ GameObject:
   - component: {fileID: 1273432697}
   - component: {fileID: 1273432698}
   m_Layer: 0
-  m_Name: BTRepeat
+  m_Name: RepeatTimesNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1320,13 +1362,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1273432696}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3013650591734b2cbe7111fcc10341ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 2
-  BreakStates: 0
-  RepeatTimes: 10
-  RepeatDurationInSeconds: 0.2
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_RepeatTimesNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      data:
+        TickTimes: 1
+        BreakStates: 0
 --- !u!1 &1332110027
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,7 +1497,7 @@ GameObject:
   - component: {fileID: 1401883811}
   - component: {fileID: 1401883812}
   m_Layer: 0
-  m_Name: BTCharacterSimpleMove
+  m_Name: CharacterSimpleMoveNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1478,23 +1526,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1401883810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsLocal: 1
-  VelocityPropertyReader:
-    _reader:
-      id: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
   references:
     version: 1
     00000000:
+      type: {class: <Serializable>_CharacterSimpleMoveNode, ns: EntitiesBT.Extensions.UnityMovement,
+        asm: Assembly-CSharp}
+      data:
+        IsLocal: 1
+        Velocity:
+          _reader:
+            id: 1
+    00000001:
       type: {class: <IVariantReader>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value:
           x: 0
-          y: 0
-          z: 10
+          y: 8
+          z: 0
 --- !u!1 &1454846012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1506,7 +1561,7 @@ GameObject:
   - component: {fileID: 1454846014}
   - component: {fileID: 1454846013}
   m_Layer: 0
-  m_Name: BTSequence
+  m_Name: SequenceNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1521,10 +1576,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1454846012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce483d001ae6449ea17ef9d3fbfdb5d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!4 &1454846014
 Transform:
   m_ObjectHideFlags: 0
@@ -1828,7 +1889,7 @@ GameObject:
   - component: {fileID: 1632375397}
   - component: {fileID: 1632375398}
   m_Layer: 0
-  m_Name: BTCharacterSimpleMove
+  m_Name: CharacterSimpleMoveNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1857,21 +1918,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1632375396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44b66a82e73ef4f709f5661b03c05873, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsLocal: 0
-  VelocityPropertyReader:
-    _reader:
-      id: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReader>/float3NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <Serializable>_CharacterSimpleMoveNode, ns: EntitiesBT.Extensions.UnityMovement,
         asm: Assembly-CSharp}
       data:
-        NodeObject: {fileID: 2282878}
-        ValueFieldName: OutputVelocity
+        IsLocal: 1
+        Velocity:
+          _reader:
+            id: 1
+    00000001:
+      type: {class: <IVariantReader>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value:
+          x: 0
+          y: 2
+          z: 0
 --- !u!1 &1736258349
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,7 +2072,7 @@ GameObject:
   - component: {fileID: 1821151457}
   - component: {fileID: 1821151458}
   m_Layer: 0
-  m_Name: BTSelector
+  m_Name: SelectorNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2034,10 +2104,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1821151456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce2c67364c4d49bd9dae2ca6344e3292, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recursiveResetStatesBeforeTick: 0
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_SelectorNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &1891447500
 GameObject:
   m_ObjectHideFlags: 0
@@ -2068,6 +2144,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1923460354
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1923460355}
+  - component: {fileID: 1923460356}
+  m_Layer: 0
+  m_Name: RecursiveResetStateNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1923460355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923460354}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1174442161}
+  m_Father: {fileID: 447731369}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1923460356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923460354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NodeData:
+    id: 0
+  RunOnMainThread: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <Serializable>_RecursiveResetStateNode, ns: EntitiesBT.Nodes,
+        asm: Assembly-CSharp}
 --- !u!1 &1928177375
 GameObject:
   m_ObjectHideFlags: 0

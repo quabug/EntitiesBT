@@ -1,25 +1,10 @@
-using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace EntitiesBT.Extensions.UnityMovement
 {
-    public class BTCharacterSimpleMove : BTNode<CharacterSimpleMoveNode>
-    {
-        public bool IsLocal;
-        
-        public SerializedVariantRO<float3> VelocityPropertyReader;
-
-        protected override unsafe void Build(ref CharacterSimpleMoveNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            data.IsLocal = IsLocal;
-            VelocityPropertyReader.Allocate(ref builder, ref data.Velocity, this, tree);
-        }
-    }
-
     [BehaviorNode("21F65017-DCC0-449A-8AE5-E2D296B9E0E5")]
     public struct CharacterSimpleMoveNode : INodeData
     {

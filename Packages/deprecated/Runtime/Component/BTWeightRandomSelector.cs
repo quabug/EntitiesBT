@@ -13,8 +13,8 @@ namespace EntitiesBT.Components
 
         protected override void Build(ref WeightRandomSelectorNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] __)
         {
-            data.Sum = _weights.Sum();
-            builder.AllocateArray(ref data.Weights, _weights);
+            var sum = _weights.Sum();
+            builder.AllocateArray(ref data.NormalizedWeights, _weights.Select(w => w / sum).ToArray());
         }
 
         protected override void Update()

@@ -1,16 +1,16 @@
 using System;
-using System.Diagnostics;
 
 namespace EntitiesBT.Attributes
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class OnValueChangedAttribute : MultiPropertyAttribute
     {
-        public string MethodName { get; }
-        public OnValueChangedAttribute(string methodName)
+        public string Callback { get; }
+        public string PropertyName;
+        public OnValueChangedAttribute(string callback)
         {
             order = int.MinValue;
-            MethodName = methodName;
+            Callback = callback;
         }
     }
 }
