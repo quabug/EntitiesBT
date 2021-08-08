@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NodeData:
     id: 0
+  RunOnMainThread: 0
   references:
     version: 1
     00000000:
@@ -401,6 +402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NodeData:
     id: 0
+  RunOnMainThread: 0
   references:
     version: 1
     00000000:
@@ -424,10 +426,13 @@ MonoBehaviour:
           _reader:
             id: 5
           _writer:
-            id: 1
+            id: 6
         Long: 14
     00000001:
-      type: {class: , ns: , asm: }
+      type: {class: <IVariantReader>/Int64LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value: 44231321
     00000002:
       type: {class: <IVariantWriter>/Int64ComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
@@ -440,10 +445,10 @@ MonoBehaviour:
         _expression: x*y
         _sources:
         - Value:
-            id: 6
+            id: 7
           Name: x
         - Value:
-            id: 7
+            id: 8
           Name: y
     00000004:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
@@ -457,11 +462,13 @@ MonoBehaviour:
         NodeObject: {fileID: 1723425238}
         ValueFieldName: SingleReader
     00000006:
+      type: {class: , ns: , asm: }
+    00000007:
       type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: 3
-    00000007:
+    00000008:
       type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:

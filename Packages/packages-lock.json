@@ -30,6 +30,14 @@
         "com.quabug.entities-bt.essential": "1.2.0"
       }
     },
+    "com.quabug.entities-bt.deprecated": {
+      "version": "file:deprecated",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.quabug.entities-bt.essential": "1.2.0"
+      }
+    },
     "com.quabug.entities-bt.essential": {
       "version": "file:essential",
       "depth": 0,

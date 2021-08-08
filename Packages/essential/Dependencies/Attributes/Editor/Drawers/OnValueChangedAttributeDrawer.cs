@@ -23,6 +23,9 @@ namespace EntitiesBT.Attributes.Editor
 
             var attribute = (OnValueChangedAttribute) Decorator;
             var currentValue = fields[0];
+            if (!string.IsNullOrEmpty(attribute.PropertyName) && currentValue != null)
+                currentValue = GetPropertyValue(currentValue);
+
             var declaringObject = fields[1];
             var id = (declaringObject, property.propertyPath);
             var hasValue = ObservaedProperties.TryGetValue(id, out var previousValue);
@@ -37,11 +40,18 @@ namespace EntitiesBT.Attributes.Editor
                 ObservaedProperties[id] = currentValue;
 
                 var method = declaringObject.GetType().GetMethod(
-                    attribute.MethodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                    attribute.Callback, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
                 );
 
                 if (method != null && !method.GetParameters().Any())// Only instantiate methods with 0 parameters
                     method.Invoke(declaringObject, null);
+            }
+
+            object GetPropertyValue(object obj)
+            {
+                if (obj == null) return null;
+                var property = obj.GetType().GetProperty(attribute.PropertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                return property.GetValue(obj);
             }
         }
     }

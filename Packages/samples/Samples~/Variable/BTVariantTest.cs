@@ -1,4 +1,5 @@
-using EntitiesBT.Attributes;
+using System.Collections.Generic;
+using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using Unity.Entities;
@@ -24,7 +25,7 @@ namespace EntitiesBT.Sample
             if (LongReader.IsValid) Debug.Log(LongReader.Read(index,ref blob, ref bb));
             else Debug.Log($"invalid {nameof(LongReader)}");
             Debug.Log(String.ToString());
-            Debug.Log(string.Join(",", IntArray.ToArray()));
+            // Debug.Log(string.Join(",", IntArray.ToArray()));
             Debug.Log(SingleReader.Read(index, ref blob, ref bb));
             Debug.Log(SingleReaderAndWriter.Read(index, ref blob, ref bb));
             LongWriter.Write(index, ref blob, ref bb, 100);
@@ -33,7 +34,7 @@ namespace EntitiesBT.Sample
             if (LongReader.IsValid) Debug.Log(LongReader.Read(index,ref blob, ref bb));
             else Debug.Log($"invalid {nameof(LongReader)}");
             Debug.Log(String.ToString());
-            Debug.Log(string.Join(",", IntArray.ToArray()));
+            // Debug.Log(string.Join(",", IntArray.ToArray()));
             Debug.Log(SingleReader.Read(index, ref blob, ref bb));
             Debug.Log(SingleReaderAndWriter.Read(index, ref blob, ref bb));
 

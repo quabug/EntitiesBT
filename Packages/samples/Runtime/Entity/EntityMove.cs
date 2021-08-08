@@ -1,25 +1,11 @@
 using System;
 using EntitiesBT.Core;
-using EntitiesBT.Components;
-using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
-using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace EntitiesBT.Sample
 {
-    public class EntityMove : BTNode<EntityMoveNode>
-    {
-        public Vector3 Velocity;
-
-        protected override void Build(ref EntityMoveNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
-        {
-            data.Velocity = Velocity;
-        }
-    }
-    
     [Serializable]
     [BehaviorNode("F5C2EE7E-690A-4B5C-9489-FB362C949192")]
     public struct EntityMoveNode : INodeData
@@ -36,6 +22,4 @@ namespace EntitiesBT.Sample
             return NodeState.Running;
         }
     }
-
-    public class EntityMoveDebugView : BTDebugView<EntityMoveNode> {}
 }

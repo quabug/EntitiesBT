@@ -12,8 +12,10 @@ namespace EntitiesBT.Components
     {
         [SerializeReference]
         [SerializeReferenceDrawer(RenamePatter = @"^.*(\.|_|/)(\w+)(\+\w+)?$||$2", CategoryName = nameof(CategoryName))]
-        [OnValueChanged(nameof(OnNodeChanged))]
+        [OnValueChanged(nameof(OnNodeChanged), PropertyName = nameof(ISerializableNodeData.NodeType))]
         public ISerializableNodeData NodeData;
+
+        public bool RunOnMainThread = false;
 
         protected override Type NodeType => NodeData?.NodeType ?? typeof(ZeroNode);
 
@@ -21,6 +23,8 @@ namespace EntitiesBT.Components
         {
             NodeData?.Build(dataPtr, blobBuilder, Self, builders);
         }
+
+        protected override INodeDataBuilder SelfImpl => RunOnMainThread ? new BTVirtualDecorator<RunOnMainThreadNode>(this) : (INodeDataBuilder) this;
 
         private void OnNodeChanged()
         {
