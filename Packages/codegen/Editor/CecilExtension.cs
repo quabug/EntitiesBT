@@ -134,7 +134,6 @@ namespace EntitiesBT.CodeGen.Editor
 			return self.Methods.FirstOrDefault(m => m.Name == name);
 		}
 
-        [Pure]
         public static void AddRange<T>([NotNull] this Collection<T> self, [NotNull, ItemNotNull] IEnumerable<T> items)
 		{
 			foreach (var item in items) self.Add(item);
