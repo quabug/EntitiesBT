@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using EntitiesBT.Variant;
 using Mono.Cecil;
 using Mono.Cecil.Rocks;
@@ -68,21 +69,21 @@ namespace EntitiesBT.CodeGen.Editor
                         .ToArray()
                     ;
 
-                var ro = GenerateVariantsWrapper(typeof(IVariantReader<>));
-                if (ro != null) module.Types.Add(ro);
-                var wo = GenerateVariantsWrapper(typeof(IVariantWriter<>));
-                if (wo != null) module.Types.Add(wo);
-                var rw = GenerateVariantsWrapper(typeof(IVariantReaderAndWriter<>));
-                if (rw != null) module.Types.Add(rw);
-
-                return ro != null || wo != null || rw != null;
+                var wrappers = new[] {typeof(IVariantReader<>), typeof(IVariantWriter<>), typeof(IVariantReaderAndWriter<>)}
+                    // .AsParallel()
+                    .Select(GenerateVariantsWrapper)
+                    .Where(wrapper => wrapper != null)
+                    .ToArray()
+                ;
+                module.Types.AddRange(wrappers);
+                return wrappers.Any();
 
                 TypeDefinition GenerateVariantsWrapper(Type interfaceType)
                 {
                     var @interface = module.ImportReference(interfaceType);
                     if (!typeTree.HasBaseType(@interface.Resolve())) return null;
 
-                    logger.Info($"process interface {@interface.Name}");
+                    logger.Info($"process interface {@interface.Name} @ {Thread.CurrentThread.ManagedThreadId}");
 
                     var wrapper = new TypeDefinition(
                         "EntitiesBT.Variant.CodeGen",
@@ -93,8 +94,7 @@ namespace EntitiesBT.CodeGen.Editor
 
                     foreach (var (valueType, variantType) in
                         from valueType in valueTypes
-                        from variantType in typeTree.GetOrCreateAllDerivedReference(
-                            @interface.MakeGenericInstanceType(valueType))
+                        from variantType in typeTree.GetOrCreateAllDerivedReference(@interface.MakeGenericInstanceType(valueType))
                         select (valueType, module.ImportReference(variantType))
                     )
                     {
