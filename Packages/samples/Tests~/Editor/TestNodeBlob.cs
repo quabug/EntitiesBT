@@ -79,7 +79,7 @@ namespace EntitiesBT.Test
         public void should_create_behavior_tree_objects_from_single_line_of_string()
         {
             var root = CreateBTNode("!seq>yes|yes|b:1,1|a:111");
-            Assert.AreEqual(root.name, "BTSequence");
+            Assert.AreEqual(root.name, "Sequence");
             Assert.AreEqual(root.transform.childCount, 4);
             
             var children = root.Children<BTNode>().ToArray();
