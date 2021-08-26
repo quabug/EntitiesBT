@@ -2,6 +2,7 @@ using System;
 using EntitiesBT.Core;
 using EntitiesBT.DebugView;
 using EntitiesBT.Entities;
+using Nuwa.Blob;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,8 +10,6 @@ using static EntitiesBT.Extensions.InputSystem.InputExtensions;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
-    public class BTInputAimPosition : BTInputActionBase<InputAimPositionNode> {}
-
     [BehaviorTreeComponent]
     public struct BTInputAimPositionData : IComponentData
     {
@@ -20,7 +19,7 @@ namespace EntitiesBT.Extensions.InputSystem
     [Serializable, BehaviorNode("2B2517A4-1A55-4CF4-8A49-61DDFD1168B1")]
     public struct InputAimPositionNode : IInputActionNodeData
     {
-        public Guid ActionId { get; set; }
+        [field: CustomBuilder(typeof(InputActionGuidBuilder))] public Guid ActionId { get; set; }
         
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

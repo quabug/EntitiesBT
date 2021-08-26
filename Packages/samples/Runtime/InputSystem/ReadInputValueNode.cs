@@ -6,20 +6,6 @@ using static EntitiesBT.Extensions.InputSystem.InputExtensions;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
-    public class BTReadInputValue<T, U> : BTInputActionBase<U>
-        where T : unmanaged
-        where U : unmanaged, IReadInputValueNode
-    {
-        public IVariantReader<T> Output;
-
-        protected override unsafe void Build(ref U data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            base.Build(ref data, builder, tree);
-            ref var output = ref UnsafeUtility.AsRef<BlobVariantRO<T>>(data.OutputPtr);
-            Output.Allocate(ref builder, ref output, this, tree);
-        }
-    }
-
     public interface IReadInputValueNode : IInputActionNodeData
     {
         unsafe void* OutputPtr { get; }

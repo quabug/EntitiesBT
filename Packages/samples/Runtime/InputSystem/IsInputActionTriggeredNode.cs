@@ -1,15 +1,14 @@
 using System;
 using EntitiesBT.Core;
+using Nuwa.Blob;
 using static EntitiesBT.Extensions.InputSystem.InputExtensions;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
-    public class BTIsInputActionTriggered : BTInputActionBase<IsInputActionTriggeredNode> {}
-
     [BehaviorNode("EF8EAB7A-2D0B-443C-B2BC-125A6A0CF1ED")]
     public struct IsInputActionTriggeredNode : IInputActionNodeData
     {
-        public Guid ActionId { get; set; }
+        [field: CustomBuilder(typeof(InputActionGuidBuilder))] public Guid ActionId { get; set; }
 
         public NodeState Tick<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

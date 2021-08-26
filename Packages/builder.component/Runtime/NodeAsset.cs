@@ -11,7 +11,6 @@ namespace EntitiesBT.Components
     [Serializable]
     public class NodeAsset
     {
-        // [SerializeReferenceDrawer(RenamePatter = @"^.*(\.|_|/)(\w+)(\+\w+)?$||$2", CategoryName = nameof(CategoryName))]
         [SerializedType(typeof(INodeData), RenamePatter = @".*(\.|\+)(\w+)$||$2", Nullable = false, DisplayAssemblyName = false, CategoryName = nameof(CategoryName), Where = nameof(WhereFilter))]
         public string NodeType;
 

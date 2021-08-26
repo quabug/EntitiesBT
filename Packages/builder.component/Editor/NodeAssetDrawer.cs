@@ -1,6 +1,5 @@
 using EntitiesBT.Components;
 using Nuwa.Blob;
-using Nuwa.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ namespace EntitiesBT.Editor
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var builder = property.FindPropertyRelative(nameof(NodeAsset.Builder));
-            return EditorGUIUtility.singleLineHeight + EditorGUI.GetPropertyHeight(builder, true);
+            return EditorGUI.GetPropertyHeight(builder, true);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -32,8 +31,8 @@ namespace EntitiesBT.Editor
                 builderBlobType.serializedObject.ApplyModifiedPropertiesWithoutUndo();
             }
 
-            EditorGUI.PropertyField(position, nodeType, label);
-            position = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight, position.width, position.height - EditorGUIUtility.singleLineHeight);
+            builder.isExpanded = true;
+            EditorGUI.PropertyField(position, nodeType, GUIContent.none);
             EditorGUI.PropertyField(position, builder, includeChildren: true);
         }
     }
