@@ -9,8 +9,8 @@ namespace EntitiesBT.Variant
     [StructLayout(LayoutKind.Sequential)]
     public struct BlobVariantRW<T> : IRuntimeComponentAccessor where T : unmanaged
     {
-        internal BlobVariantRO<T> Reader;
-        internal BlobVariantWO<T> Writer;
+        public BlobVariantRO<T> Reader;
+        public BlobVariantWO<T> Writer;
 
         public IEnumerable<ComponentType> AccessTypes => Reader.AccessTypes.Concat(Writer.AccessTypes);
 

@@ -227,15 +227,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
   RunOnMainThread: 1
+  NodeData:
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   references:
     version: 1
-    00000000:
-      type: {class: SetAnimatorTriggerNode/Serializable, ns: EntitiesBT.Sample, asm: AnimatorSample}
-      data:
-        TriggerName: Roll
 --- !u!1 &456945890
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,13 +436,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
   RunOnMainThread: 0
+  NodeData:
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &545624839
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,15 +488,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
   RunOnMainThread: 1
+  NodeData:
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   references:
     version: 1
-    00000000:
-      type: {class: SetAnimatorTriggerNode/Serializable, ns: EntitiesBT.Sample, asm: AnimatorSample}
-      data:
-        TriggerName: Crouch
 --- !u!1 &565112784
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,13 +544,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
   RunOnMainThread: 0
+  NodeData:
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,29 +689,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
   RunOnMainThread: 0
+  NodeData:
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_DelayTimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
-      data:
-        TimerSeconds:
-          _isLinked: 1
-          _readerAndWriter:
-            id: 1
-          _reader:
-            id: 2
-          _writer:
-            id: 2
-    00000001:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 1
-    00000002:
-      type: {class: , ns: , asm: }
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,29 +824,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
   RunOnMainThread: 0
+  NodeData:
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_DelayTimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
-      data:
-        TimerSeconds:
-          _isLinked: 1
-          _readerAndWriter:
-            id: 1
-          _reader:
-            id: 2
-          _writer:
-            id: 2
-    00000001:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 1
-    00000002:
-      type: {class: , ns: , asm: }
 --- !u!1 &1365720264
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,7 +849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1365720265
 Transform:
   m_ObjectHideFlags: 0
@@ -901,15 +877,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
   RunOnMainThread: 0
+  NodeData:
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_RepeatForeverNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
-      data:
-        BreakStates: 0
 --- !u!1 &1532516090
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,7 +902,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1532516091
 Transform:
   m_ObjectHideFlags: 0
@@ -953,15 +929,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
   RunOnMainThread: 1
+  NodeData:
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   references:
     version: 1
-    00000000:
-      type: {class: SetAnimatorTriggerNode/Serializable, ns: EntitiesBT.Sample, asm: AnimatorSample}
-      data:
-        TriggerName: Jump
 --- !u!1 &2006228425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,7 +1108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2107458202
 Transform:
   m_ObjectHideFlags: 0
@@ -1159,26 +1135,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeData:
-    id: 0
   RunOnMainThread: 0
+  NodeData:
+    NodeType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Axis
+      - RadianPerSecond
+      Builders:
+      - id: 0
+      - id: 1
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_DelayTimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      type: {class: float3Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        TimerSeconds:
-          _isLinked: 1
-          _readerAndWriter:
-            id: 1
-          _reader:
-            id: 2
-          _writer:
-            id: 2
+        Value:
+          x: 0
+          y: 0
+          z: 0
     00000001:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
+      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 1
-    00000002:
-      type: {class: , ns: , asm: }
+        Value: 0

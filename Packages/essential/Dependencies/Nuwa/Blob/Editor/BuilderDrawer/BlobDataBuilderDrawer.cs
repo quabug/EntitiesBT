@@ -36,7 +36,7 @@ namespace Nuwa.Blob.Editor
             //     fieldType = property.GetObject().GetType();
             // var blobType = fieldType.FindGenericArgumentsOf(typeof(Builder<>))[0];
             var blobType = GetBlobType(property);
-            var blobFields = blobType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var blobFields = blobType?.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) ?? Array.Empty<FieldInfo>();
 
             var buildersProperty = Builders(property);
             buildersProperty.arraySize = blobFields.Length;

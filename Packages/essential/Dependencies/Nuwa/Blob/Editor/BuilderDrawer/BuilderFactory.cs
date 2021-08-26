@@ -8,7 +8,27 @@ using UnityEditor;
 
 namespace Nuwa.Blob
 {
-    public static class Extensions
+    public ref struct BuilderFactory
+    {
+        public Type BuilderType { get; }
+        private readonly Func<object> _creator;
+
+        public BuilderFactory([NotNull] Type builderType)
+        {
+            BuilderType = builderType;
+            _creator = () => Activator.CreateInstance(builderType);
+        }
+
+        public BuilderFactory([NotNull] Type builderType, [NotNull] Func<object> creator)
+        {
+            BuilderType = builderType;
+            _creator = creator;
+        }
+
+        public object Create() => _creator();
+    }
+
+    public static class BuilderFactoryExtensions
     {
         public static BuilderFactory FindBuilderCreator([NotNull] this FieldInfo fieldInfo)
         {

@@ -10,7 +10,7 @@ namespace Unity.Entities
     /// Used by the <see cref="BlobBuilder"/> methods to reference the arrays within a blob asset.
     /// </summary>
     /// <remarks>Use this reference to initialize the data of a newly created <see cref="BlobArray{T}"/>.</remarks>
-    public struct BlobBuilderDynamicArray
+    public struct BlobBuilderArray
     {
         private IntPtr m_data;
         private int m_length;
@@ -19,7 +19,7 @@ namespace Unity.Entities
         /// <summary>
         /// For internal, <see cref="BlobBuilder"/>, use only.
         /// </summary>
-        public BlobBuilderDynamicArray(IntPtr data, int length, Type elementType)
+        public BlobBuilderArray(IntPtr data, int length, Type elementType)
         {
             m_data = data;
             m_length = length;
