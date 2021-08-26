@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
-using EntitiesBT.Attributes;
 using EntitiesBT.Core;
+using Nuwa;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;

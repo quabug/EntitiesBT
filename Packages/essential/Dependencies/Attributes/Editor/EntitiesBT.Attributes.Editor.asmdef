@@ -1,5 +1,5 @@
 {
-    "name": "EntitiesBT.Attributes.Editor",
+    "name": "Nuwa.Editor",
     "rootNamespace": "",
     "references": [
         "GUID:abe4851e67df59644865a60dae54a845",

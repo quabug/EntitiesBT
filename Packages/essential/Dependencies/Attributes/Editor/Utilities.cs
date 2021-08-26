@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace EntitiesBT.Attributes.Editor
+namespace Nuwa.Editor
 {
     public static class Utilities
     {

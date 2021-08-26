@@ -1,7 +1,7 @@
 using System;
 using static System.Int32;
 
-namespace EntitiesBT.Attributes
+namespace Nuwa
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class HideIfAttribute : MultiPropertyAttribute

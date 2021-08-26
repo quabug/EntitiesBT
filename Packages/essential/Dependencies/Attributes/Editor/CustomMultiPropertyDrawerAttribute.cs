@@ -1,7 +1,7 @@
 using System;
 using JetBrains.Annotations;
 
-namespace EntitiesBT.Attributes.Editor
+namespace Nuwa.Editor
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     [BaseTypeRequired(typeof(IMultiPropertyDrawer))]

@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
-using EntitiesBT.Attributes;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using Unity.Entities;
 using UnityEngine;
+using Nuwa;
 
 namespace EntitiesBT.Components
 {

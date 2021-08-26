@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace EntitiesBT.Attributes.Editor
+namespace Nuwa.Editor
 {
     public abstract class BaseMultiPropertyDrawer : IMultiPropertyDrawer
     {

@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
-namespace EntitiesBT.Attributes.Editor
+namespace Nuwa.Editor
 {
     public static class MultiPropertyDrawerRegister
     {

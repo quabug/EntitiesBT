@@ -1,5 +1,5 @@
 using System;
-using EntitiesBT.Attributes;
+using Nuwa;
 using EntitiesBT.Core;
 using Unity.Entities;
 

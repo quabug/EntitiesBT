@@ -1,4 +1,4 @@
-namespace EntitiesBT.Attributes
+namespace Nuwa
 {
     public class UnityDrawPropertyAttribute : MultiPropertyAttribute
     {

@@ -1,6 +1,6 @@
 using System.Linq;
-using EntitiesBT.Attributes;
-using EntitiesBT.Attributes.Editor;
+using Nuwa;
+using Nuwa.Editor;
 using UnityEditor;
 using UnityEngine;
 

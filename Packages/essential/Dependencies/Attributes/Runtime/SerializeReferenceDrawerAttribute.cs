@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EntitiesBT.Attributes
+namespace Nuwa
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class SerializeReferenceDrawerAttribute : MultiPropertyAttribute

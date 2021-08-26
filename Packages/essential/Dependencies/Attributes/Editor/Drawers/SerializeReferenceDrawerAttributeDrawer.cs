@@ -32,7 +32,7 @@ using Shtif;
 using UnityEditor;
 using UnityEngine;
 
-namespace EntitiesBT.Attributes.Editor
+namespace Nuwa.Editor
 {
     [CustomMultiPropertyDrawer(typeof(SerializeReferenceDrawerAttribute))]
     public class SerializeReferenceDrawerAttributeDrawer : BaseMultiPropertyDrawer

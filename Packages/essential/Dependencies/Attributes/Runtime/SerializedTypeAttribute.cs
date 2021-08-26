@@ -1,7 +1,7 @@
 using System;
 using JetBrains.Annotations;
 
-namespace EntitiesBT.Attributes
+namespace Nuwa
 {
     [AttributeUsage(AttributeTargets.Field)]
     [BaseTypeRequired(typeof(string))]

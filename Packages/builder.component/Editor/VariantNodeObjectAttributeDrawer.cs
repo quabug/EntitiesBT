@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using EntitiesBT.Attributes.Editor;
-using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
+using Nuwa.Editor;
 using UnityEditor;
 using UnityEngine;
 

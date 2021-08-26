@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
 
-namespace EntitiesBT.Attributes.Editor
+namespace Nuwa.Editor
 {
     public static class Extensions
     {

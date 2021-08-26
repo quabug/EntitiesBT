@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace EntitiesBT.Attributes.Editor
+namespace Nuwa.Editor
 {
     [CustomMultiPropertyDrawer(typeof(UnityDrawPropertyAttribute))]
     public class UnityDrawPropertyAttributeDrawer : BaseMultiPropertyDrawer

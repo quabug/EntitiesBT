@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace EntitiesBT.Attributes.Editor
+namespace Nuwa.Editor
 {
     [CustomMultiPropertyDrawer(typeof(DisableIfAttribute))]
     public class DisableIfAttributeDrawer : BaseMultiPropertyDrawer

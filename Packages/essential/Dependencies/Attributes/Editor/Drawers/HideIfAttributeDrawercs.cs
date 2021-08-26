@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace EntitiesBT.Attributes.Editor
+namespace Nuwa.Editor
 {
     [CustomMultiPropertyDrawer(typeof(HideIfAttribute))]
     public class HideIfAttributeDrawer : BaseMultiPropertyDrawer
