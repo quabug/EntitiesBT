@@ -5,6 +5,7 @@ namespace Nuwa
     [AttributeUsage(AttributeTargets.Field)]
     public class SerializeReferenceDrawerAttribute : MultiPropertyAttribute
     {
+        public string TypeRestrictBySiblingTypeName;
         public string TypeRestrictBySiblingProperty;
         public string RenamePatter;
         public bool DisplayAssemblyName = false;

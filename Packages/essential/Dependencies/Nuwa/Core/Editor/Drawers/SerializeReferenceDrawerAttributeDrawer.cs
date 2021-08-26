@@ -27,7 +27,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Shtif;
 using UnityEditor;
 using UnityEngine;
@@ -68,6 +67,14 @@ namespace Nuwa.Editor
                     var derivedTypes = TypeCache.GetTypesDerivedFrom(baseType);
                     result.Add(derivedTypes.Contains);
                 }
+
+                if (!string.IsNullOrEmpty(attribute.TypeRestrictBySiblingTypeName))
+                {
+                    var baseType = Type.GetType((string)property.GetSiblingValue(attribute.TypeRestrictBySiblingTypeName));
+                    var derivedTypes = TypeCache.GetTypesDerivedFrom(baseType);
+                    result.Add(derivedTypes.Contains);
+                }
+
                 return result;
             }
 

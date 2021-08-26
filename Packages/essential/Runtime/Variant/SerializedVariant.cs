@@ -1,7 +1,9 @@
 using System;
 using Nuwa;
 using EntitiesBT.Core;
+using Nuwa.Blob;
 using Unity.Entities;
+using UnityEngine;
 
 namespace EntitiesBT.Variant
 {
