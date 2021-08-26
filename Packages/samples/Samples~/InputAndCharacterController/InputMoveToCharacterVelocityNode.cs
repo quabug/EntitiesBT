@@ -1,26 +1,10 @@
-using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
-using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace EntitiesBT.Samples
 {
-    public class BTInputMoveToCharacterVelocity : BTNode<InputMoveToCharacterVelocityNode>
-    {
-        public SerializedVariantRO<float> SpeedPropertyReader;
-        public SerializedVariantRO<float2> InputMovePropertyReader;
-        public SerializedVariantRW<float3> OutputVelocityPropertyWriter;
-
-        protected override unsafe void Build(ref InputMoveToCharacterVelocityNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            SpeedPropertyReader.Allocate(ref builder, ref data.Speed, this, tree);
-            InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
-            OutputVelocityPropertyWriter.Allocate(ref builder, ref data.OutputVelocity, this, tree);
-        }
-    }
-
     [BehaviorNode("B4559A1E-392B-4B8C-A074-B323AB31EEA7")]
     public struct InputMoveToCharacterVelocityNode : INodeData
     {

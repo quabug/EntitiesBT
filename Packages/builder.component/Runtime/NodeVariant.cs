@@ -33,9 +33,9 @@ namespace EntitiesBT.Variant
             public BTNode NodeObject;
             [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
 
-            public unsafe IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public unsafe IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
-                return Allocate<T>(ref builder, ref blobVariant, self, tree, NodeObject, ValueFieldName);
+                return Allocate<T>(ref builder, ref blobVariant, NodeObject, ValueFieldName);
             }
         }
 
@@ -93,16 +93,14 @@ namespace EntitiesBT.Variant
         public static IntPtr Allocate<T>(
             ref BlobBuilder builder
             , ref BlobVariant blobVariant
-            , INodeDataBuilder self
-            , ITreeNode<INodeDataBuilder>[] tree
             , INodeDataBuilder nodeObject
             , string valueFieldName
         ) where T : unmanaged
         {
-            var index = Array.FindIndex(tree, node => ReferenceEquals(node.Value, nodeObject));
+            var index = nodeObject.NodeIndex;
             if (nodeObject == null || index < 0)
             {
-                Debug.LogError($"Invalid `NodeObject` {nodeObject}", (UnityEngine.Object)self);
+                Debug.LogError($"Invalid `NodeObject` {nodeObject}");
                 throw new ArgumentException();
             }
 
@@ -113,7 +111,7 @@ namespace EntitiesBT.Variant
             var fieldInfo = nodeType.GetField(valueFieldName, BindingFlags.Instance | BindingFlags.Public);
             if (fieldInfo == null)
             {
-                Debug.LogError($"Invalid `ValueFieldName` {valueFieldName}", (UnityEngine.Object)self);
+                Debug.LogError($"Invalid `ValueFieldName` {valueFieldName}");
                 throw new ArgumentException();
             }
 
@@ -128,7 +126,7 @@ namespace EntitiesBT.Variant
             }
             else
             {
-                Debug.LogError($"Invalid type of `ValueFieldName` {valueFieldName} {fieldType}", (UnityEngine.Object)self);
+                Debug.LogError($"Invalid type of `ValueFieldName` {valueFieldName} {fieldType}");
                 throw new ArgumentException();
             }
 

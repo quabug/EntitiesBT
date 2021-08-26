@@ -19,7 +19,7 @@ namespace EntitiesBT.Variant
         {
             public T Value;
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
                 return builder.Allocate(ref blobVariant, Value);

@@ -22,13 +22,13 @@ namespace EntitiesBT.Variant
         {
             [VariantComponentData] public string ComponentValueName;
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
                 var data = GetTypeHashAndFieldOffset(ComponentValueName);
                 if (data.Type != typeof(T) || data.Hash == 0)
                 {
-                    Debug.LogError($"{nameof(ComponentVariant)}({ComponentValueName}) is not valid, fallback to ConstantValue", (UnityEngine.Object)self);
+                    Debug.LogError($"{nameof(ComponentVariant)}({ComponentValueName}) is not valid, fallback to ConstantValue");
                     throw new ArgumentException();
                 }
                 return builder.Allocate(ref blobVariant, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});

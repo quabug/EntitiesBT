@@ -1,24 +1,9 @@
-using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
-using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace EntitiesBT.Samples
 {
-    public class BTInputMoveToRotation : BTNode<InputMoveToRotationNode>
-    {
-        public SerializedVariantRO<float2> InputMovePropertyReader;
-        public SerializedVariantRW<quaternion> OutputDirectionPropertyWriter;
-
-        protected override unsafe void Build(ref InputMoveToRotationNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            InputMovePropertyReader.Allocate(ref builder, ref data.InputMove, this, tree);
-            OutputDirectionPropertyWriter.Allocate(ref builder, ref data.OutputDirection, this, tree);
-        }
-    }
-
     [BehaviorNode("2164B3CA-C12E-4C86-9F80-F45A99124FAD")]
     public struct InputMoveToRotationNode : INodeData
     {

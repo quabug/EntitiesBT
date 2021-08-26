@@ -17,7 +17,7 @@ namespace EntitiesBT.Components
         public EntitiesBT.Core.NodeState BreakReturnState;
         protected override void Build(ref EntitiesBT.Nodes.TimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            CountdownSeconds.Allocate(ref builder, ref data.CountdownSeconds, Self, tree);
+            CountdownSeconds.Allocate(ref builder, ref data.CountdownSeconds);
             data.BreakReturnState = BreakReturnState;
         }
     }

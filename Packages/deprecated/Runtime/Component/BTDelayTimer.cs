@@ -16,7 +16,7 @@ namespace EntitiesBT.Components
         public EntitiesBT.Variant.SerializedVariantRW<System.Single> TimerSeconds;
         protected override void Build(ref EntitiesBT.Nodes.DelayTimerNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
         {
-            TimerSeconds.Allocate(ref builder, ref data.TimerSeconds, Self, tree);
+            TimerSeconds.Allocate(ref builder, ref data.TimerSeconds);
         }
     }
 }

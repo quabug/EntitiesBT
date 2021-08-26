@@ -93,59 +93,45 @@ namespace EntitiesBT.Variant
             this IVariantReader<T> property
           , ref BlobBuilder builder
           , ref BlobVariantRO<T> blobVariant
-          , [NotNull] INodeDataBuilder self
-          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value);
 
         public static IntPtr AllocateWO<T>(
             this IVariantWriter<T> property
           , ref BlobBuilder builder
           , ref BlobVariantWO<T> blobVariant
-          , [NotNull] INodeDataBuilder self
-          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value);
 
         public static IntPtr AllocateRW<T>(
             this ISerializedVariantRW<T> property
             , ref BlobBuilder builder
             , ref BlobVariantRW<T> blobVariant
-            , [NotNull] INodeDataBuilder self
-            , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant, self, tree);
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant);
 
         public static IntPtr Allocate<T>(
             this IVariantReader<T> property
           , ref BlobBuilder builder
           , ref BlobVariantRO<T> blobVariant
-          , [NotNull] INodeDataBuilder self
-          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value);
 
         public static IntPtr Allocate(
             this IVariantReader property
           , ref BlobBuilder builder
           , ref BlobVariantPtrRO blobVariant
-          , [NotNull] INodeDataBuilder self
-          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+        ) => property.Allocate(ref builder, ref blobVariant.Value);
 
         public static IntPtr Allocate<T>(
             this IVariantWriter<T> property
           , ref BlobBuilder builder
           , ref BlobVariantWO<T> blobVariant
-          , [NotNull] INodeDataBuilder self
-          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value, self, tree);
+        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value);
 
         public static unsafe IntPtr Allocate<T>(
             this IVariantReaderAndWriter<T> property
           , ref BlobBuilder builder
           , ref BlobVariantRW<T> blobVariant
-          , [NotNull] INodeDataBuilder self
-          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged
         {
-            var metaDataPtr = property.Allocate(ref builder, ref blobVariant.Reader.Value, self, tree);
+            var metaDataPtr = property.Allocate(ref builder, ref blobVariant.Reader.Value);
             blobVariant.Writer.Value.VariantId = blobVariant.Reader.Value.VariantId;
             // HACK: set meta data of writer as same as reader's
             ref var writerMetaPtr = ref ToBlobPtr<byte>(ref blobVariant.Writer.Value.MetaDataOffsetPtr);
@@ -157,13 +143,11 @@ namespace EntitiesBT.Variant
             this ISerializedVariantRW<T> property
           , ref BlobBuilder builder
           , ref BlobVariantRW<T> blobVariant
-          , [NotNull] INodeDataBuilder self
-          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged
         {
-            if (property.IsLinked) return property.ReaderAndWriter.Allocate(ref builder, ref blobVariant, self, tree);
-            property.Writer.Allocate(ref builder, ref blobVariant.Writer, self, tree);
-            return property.Reader.Allocate(ref builder, ref blobVariant.Reader, self, tree);
+            if (property.IsLinked) return property.ReaderAndWriter.Allocate(ref builder, ref blobVariant);
+            property.Writer.Allocate(ref builder, ref blobVariant.Writer);
+            return property.Reader.Allocate(ref builder, ref blobVariant.Reader);
         }
 
         public static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : unmanaged
@@ -175,11 +159,9 @@ namespace EntitiesBT.Variant
             this IVariantReader<T> variant
           , ref BlobBuilder builder
           , void* blobVariantPtr
-          , [NotNull] INodeDataBuilder self
-          , [NotNull] ITreeNode<INodeDataBuilder>[] tree
         ) where T : unmanaged
         {
-            variant.Allocate(ref builder, ref UnsafeUtility.AsRef<BlobVariant>(blobVariantPtr), self, tree);
+            variant.Allocate(ref builder, ref UnsafeUtility.AsRef<BlobVariant>(blobVariantPtr));
         }
 
         public static MethodInfo GetVariantMethodInfo(Type type, string name)

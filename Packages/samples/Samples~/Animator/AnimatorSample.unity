@@ -123,6 +123,142 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &120499741
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 120499743}
+  - component: {fileID: 120499742}
+  m_Layer: 0
+  m_Name: BTDynamicNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &120499742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120499741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RunOnMainThread: 0
+  NodeData:
+    NodeType: EntitiesBT.Extensions.InputSystem.CheckInputPhaseNode, EntitiesBT.Extensions.InputSystem,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Extensions.InputSystem.CheckInputPhaseNode, EntitiesBT.Extensions.InputSystem,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - <ActionId>k__BackingField
+      - Phase
+      Builders:
+      - id: 0
+      - id: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: DynamicBlobDataBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        BlobDataType: System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+        FieldNames:
+        - _a
+        - _b
+        - _c
+        - _d
+        - _e
+        - _f
+        - _g
+        - _h
+        - _i
+        - _j
+        - _k
+        Builders:
+        - id: 2
+        - id: 3
+        - id: 4
+        - id: 5
+        - id: 6
+        - id: 7
+        - id: 8
+        - id: 9
+        - id: 10
+        - id: 11
+        - id: 12
+    00000001:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: UnityEngine.InputSystem.InputActionPhase, Unity.InputSystem,
+          Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+        Value: 0
+    00000002:
+      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000003:
+      type: {class: Int16Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000004:
+      type: {class: Int16Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000005:
+      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000006:
+      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000007:
+      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000008:
+      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000009:
+      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    0000000A:
+      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    0000000B:
+      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    0000000C:
+      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+--- !u!4 &120499743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120499741}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!850595691 &194364474
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -1137,27 +1273,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunOnMainThread: 0
   NodeData:
-    NodeType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    NodeType: EntitiesBT.Extensions.InputSystem.CheckInputPhaseNode, EntitiesBT.Extensions.InputSystem,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      BlobDataType: EntitiesBT.Extensions.InputSystem.CheckInputPhaseNode, EntitiesBT.Extensions.InputSystem,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       FieldNames:
-      - Axis
-      - RadianPerSecond
+      - <ActionId>k__BackingField
+      - Phase
       Builders:
       - id: 0
       - id: 1
   references:
     version: 1
     00000000:
-      type: {class: float3Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      type: {class: InputActionGuidBuilder, ns: EntitiesBT.Extensions.InputSystem,
+        asm: EntitiesBT.Extensions.InputSystem}
       data:
-        Value:
-          x: 0
-          y: 0
-          z: 0
+        InputAction: {fileID: 0}
     00000001:
-      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 0
+        EnumTypeName: UnityEngine.InputSystem.InputActionPhase, Unity.InputSystem,
+          Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+        Value: 3

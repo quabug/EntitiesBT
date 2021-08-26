@@ -7,6 +7,7 @@ namespace EntitiesBT.Core
     {
         int NodeId { get; }
         BlobAssetReference Build([NotNull] ITreeNode<INodeDataBuilder>[] builders);
+        int NodeIndex { get; set; }
         INodeDataBuilder Self { get; }
         IEnumerable<INodeDataBuilder> Children { get; }
     }
