@@ -1,0 +1,31 @@
+{
+    "name": "Nuwa.Blob",
+    "rootNamespace": "Nuwa.Blob",
+    "references": [
+        "GUID:734d92eba21c94caba915361bd5ac177",
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:39174d49d2befe84d9c54bf8b8d32755",
+        "GUID:cf3547b97f3ec664f9eca740d393c07c",
+        "GUID:abe4851e67df59644865a60dae54a845"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.mathematics",
+            "expression": "1.0.1",
+            "define": "ENABLE_UNITY_MATHEMATICS"
+        },
+        {
+            "name": "com.unity.animation",
+            "expression": "0.7.1-preview.2",
+            "define": "ENABLE_UNITY_ANIMATION"
+        }
+    ],
+    "noEngineReferences": false
+}

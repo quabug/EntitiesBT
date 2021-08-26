@@ -2,8 +2,7 @@
     "name": "Nuwa.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:abe4851e67df59644865a60dae54a845",
-        "GUID:c7babe7561eb244059259745ef27b866"
+        "GUID:abe4851e67df59644865a60dae54a845"
     ],
     "includePlatforms": [
         "Editor"

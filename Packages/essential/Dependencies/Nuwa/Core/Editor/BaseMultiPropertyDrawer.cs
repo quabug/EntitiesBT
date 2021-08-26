@@ -25,7 +25,7 @@ namespace Nuwa.Editor
 
         public virtual float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUI.GetPropertyHeight(property, true);
+            return NextDrawer?.GetPropertyHeight(property, label) ?? EditorGUI.GetPropertyHeight(property, true);
         }
 
         protected virtual void OnGUISelf(Rect position, SerializedProperty property, GUIContent label) {}

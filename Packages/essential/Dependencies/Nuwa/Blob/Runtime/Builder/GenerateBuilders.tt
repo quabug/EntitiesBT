@@ -1,0 +1,29 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+
+<#@ include file="../Primitives.ttinclude" #>
+<#@ include file="../Mathematics.ttinclude" #>
+
+namespace Nuwa.Blob
+{
+
+<#
+    foreach (var type in Primitives) GenerateBuilders(type);
+#>
+
+#if ENABLE_UNITY_MATHEMATICS
+<#
+    foreach (var type in Mathematics) GenerateBuilders(type);
+#>
+#endif
+
+}
+
+<#+
+    void GenerateBuilders(Type type)
+    {
+#>
+    public class <#= type.Name #>Builder : Blob.PlainDataBuilder<<#= type #>> {}
+<#+
+    }
+#>
