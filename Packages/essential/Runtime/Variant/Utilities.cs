@@ -48,7 +48,7 @@ namespace EntitiesBT.Variant
                     yield return new ComponentFieldData(type, null, hash, 0);
                     foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
                         if (!field.IsLiteral && !field.IsStatic)
-                            yield return new ComponentFieldData(type, field, hash, Marshal.OffsetOf(type, field.Name).ToInt32());
+                            yield return new ComponentFieldData(type, field, hash, UnsafeUtility.GetFieldOffset(field));
                 }
             }
 

@@ -6,6 +6,13 @@ using Unity.Entities;
 
 namespace EntitiesBT.Variant
 {
+
+    public struct BlobVariantRW
+    {
+        public BlobVariant Reader;
+        public BlobVariant Writer;
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     public struct BlobVariantRW<T> : IRuntimeComponentAccessor where T : unmanaged
     {

@@ -15,10 +15,9 @@ namespace Nuwa.Editor
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return ShouldHide(property)
-                ? (_attribute.LeaveEmptySpace ? EditorGUI.GetPropertyHeight(property, false) : 0)
-                : base.GetPropertyHeight(property, label)
-            ;
+            if (ShouldHide(property))
+                return _attribute.LeaveEmptySpace ? EditorGUI.GetPropertyHeight(property, includeChildren: false) : 0;
+            return base.GetPropertyHeight(property, label);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
