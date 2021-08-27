@@ -150,7 +150,7 @@ namespace EntitiesBT.Variant
             return property.Reader.Allocate(ref builder, ref blobVariant.Reader);
         }
 
-        public static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : unmanaged
+        internal static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : unmanaged
         {
             return ref UnsafeUtility.As<int, BlobPtr<T>>(ref offsetPtr);
         }

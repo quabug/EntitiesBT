@@ -1,6 +1,7 @@
 using System;
 using Nuwa;
 using Nuwa.Blob;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
 
@@ -75,9 +76,14 @@ namespace EntitiesBT.Variant
         [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
         private IVariantReaderAndWriter _variant;
 
-        public override void Build(BlobBuilder builder, ref BlobVariantRW data)
+        public override unsafe void Build(BlobBuilder builder, ref BlobVariantRW data)
         {
-            // _variant.Allocate(ref builder, ref data);
+            var metaDataPtr = _variant.Allocate(ref builder, ref data.Reader);
+            data.Writer.VariantId = data.Reader.VariantId;
+
+            // HACK: set meta data of writer as same as reader's
+            ref var writerMetaPtr = ref Utilities.ToBlobPtr<byte>(ref data.Writer.MetaDataOffsetPtr);
+            builder.SetPointer(ref writerMetaPtr, ref UnsafeUtility.AsRef<byte>(metaDataPtr.ToPointer()));
         }
     }
 
