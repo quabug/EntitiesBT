@@ -12,6 +12,7 @@ namespace EntitiesBT.Components
     public class NodeAsset
     {
         [SerializedType(typeof(INodeData), RenamePatter = @".*(\.|\+)(\w+)$||$2", Nullable = false, DisplayAssemblyName = false, CategoryName = nameof(CategoryName), Where = nameof(WhereFilter))]
+        [AsGameObjectName(Default = "Unknown", NamePatter = @"(\w+\.|\w+\+)*(\w+), .*||$2")]
         public string NodeType;
 
         public DynamicBlobDataBuilder Builder;

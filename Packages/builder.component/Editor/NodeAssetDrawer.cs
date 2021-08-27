@@ -31,9 +31,10 @@ namespace EntitiesBT.Editor
                 builderBlobType.serializedObject.ApplyModifiedPropertiesWithoutUndo();
             }
 
-            builder.isExpanded = true;
             EditorGUI.PropertyField(position, nodeType, GUIContent.none);
             EditorGUI.PropertyField(position, builder, includeChildren: true);
+
+            property.serializedObject.ApplyModifiedProperties();
         }
     }
 }

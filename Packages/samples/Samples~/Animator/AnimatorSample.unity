@@ -123,142 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &120499741
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 120499743}
-  - component: {fileID: 120499742}
-  m_Layer: 0
-  m_Name: BTDynamicNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &120499742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 120499741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RunOnMainThread: 0
-  NodeData:
-    NodeType: EntitiesBT.Extensions.InputSystem.CheckInputPhaseNode, EntitiesBT.Extensions.InputSystem,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Builder:
-      BlobDataType: EntitiesBT.Extensions.InputSystem.CheckInputPhaseNode, EntitiesBT.Extensions.InputSystem,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - <ActionId>k__BackingField
-      - Phase
-      Builders:
-      - id: 0
-      - id: 1
-  references:
-    version: 1
-    00000000:
-      type: {class: DynamicBlobDataBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        BlobDataType: System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-        FieldNames:
-        - _a
-        - _b
-        - _c
-        - _d
-        - _e
-        - _f
-        - _g
-        - _h
-        - _i
-        - _j
-        - _k
-        Builders:
-        - id: 2
-        - id: 3
-        - id: 4
-        - id: 5
-        - id: 6
-        - id: 7
-        - id: 8
-        - id: 9
-        - id: 10
-        - id: 11
-        - id: 12
-    00000001:
-      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        EnumTypeName: UnityEngine.InputSystem.InputActionPhase, Unity.InputSystem,
-          Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-        Value: 0
-    00000002:
-      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000003:
-      type: {class: Int16Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000004:
-      type: {class: Int16Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000005:
-      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000006:
-      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000007:
-      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000008:
-      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000009:
-      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    0000000A:
-      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    0000000B:
-      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    0000000C:
-      type: {class: ByteBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
---- !u!4 &120499743
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 120499741}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!850595691 &194364474
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -363,15 +227,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunOnMainThread: 1
   NodeData:
-    NodeType: 
+    NodeType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Value
+      Builders:
+      - id: 0
+  RunOnMainThread: 1
   references:
     version: 1
+    00000000:
+      type: {class: AnimatorTriggerNameBuilder, ns: EntitiesBT.Sample, asm: AnimatorSample}
+      data:
+        TriggerName: Roll
 --- !u!1 &456945890
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,7 +287,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
+      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Component}
       data:
         Root: {fileID: 512318347}
         AutoDestroy: 0
@@ -572,13 +444,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunOnMainThread: 0
   NodeData:
-    NodeType: 
+    NodeType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
+      BlobDataType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       FieldNames: []
       Builders: []
+  RunOnMainThread: 0
   references:
     version: 1
 --- !u!1 &545624839
@@ -624,15 +498,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunOnMainThread: 1
   NodeData:
-    NodeType: 
+    NodeType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Value
+      Builders:
+      - id: 0
+  RunOnMainThread: 1
   references:
     version: 1
+    00000000:
+      type: {class: AnimatorTriggerNameBuilder, ns: EntitiesBT.Sample, asm: AnimatorSample}
+      data:
+        TriggerName: Crouch
 --- !u!1 &565112784
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,13 +562,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunOnMainThread: 0
   NodeData:
-    NodeType: 
+    NodeType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
+      BlobDataType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       FieldNames: []
       Builders: []
+  RunOnMainThread: 0
   references:
     version: 1
 --- !u!1 &705507993
@@ -825,15 +709,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunOnMainThread: 0
   NodeData:
-    NodeType: 
+    NodeType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - TimerSeconds
+      Builders:
+      - id: 0
+  RunOnMainThread: 0
   references:
     version: 1
+    00000000:
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _isLinked: 1
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 1
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 1
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 2
+    00000001:
+      type: {class: , ns: , asm: }
+    00000002:
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value: 1
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,15 +877,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunOnMainThread: 0
   NodeData:
-    NodeType: 
+    NodeType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - TimerSeconds
+      Builders:
+      - id: 0
+  RunOnMainThread: 0
   references:
     version: 1
+    00000000:
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _isLinked: 1
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 1
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 1
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 2
+    00000001:
+      type: {class: , ns: , asm: }
+    00000002:
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value: 1
 --- !u!1 &1365720264
 GameObject:
   m_ObjectHideFlags: 0
@@ -985,7 +935,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1365720265
 Transform:
   m_ObjectHideFlags: 0
@@ -1013,15 +963,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunOnMainThread: 0
   NodeData:
-    NodeType: 
+    NodeType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - BreakStates
+      Builders:
+      - id: 0
+  RunOnMainThread: 0
   references:
     version: 1
+    00000000:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
 --- !u!1 &1532516090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1038,7 +998,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1532516091
 Transform:
   m_ObjectHideFlags: 0
@@ -1065,15 +1025,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunOnMainThread: 1
   NodeData:
-    NodeType: 
+    NodeType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Value
+      Builders:
+      - id: 0
+  RunOnMainThread: 1
   references:
     version: 1
+    00000000:
+      type: {class: AnimatorTriggerNameBuilder, ns: EntitiesBT.Sample, asm: AnimatorSample}
+      data:
+        TriggerName: Jump
 --- !u!1 &2006228425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1224,7 +1192,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
+      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Component}
       data:
         Root: {fileID: 512318347}
         AutoDestroy: 0
@@ -1244,7 +1212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2107458202
 Transform:
   m_ObjectHideFlags: 0
@@ -1271,29 +1239,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RunOnMainThread: 0
   NodeData:
-    NodeType: EntitiesBT.Extensions.InputSystem.CheckInputPhaseNode, EntitiesBT.Extensions.InputSystem,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    NodeType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: EntitiesBT.Extensions.InputSystem.CheckInputPhaseNode, EntitiesBT.Extensions.InputSystem,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       FieldNames:
-      - <ActionId>k__BackingField
-      - Phase
+      - TimerSeconds
       Builders:
       - id: 0
-      - id: 1
+  RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: InputActionGuidBuilder, ns: EntitiesBT.Extensions.InputSystem,
-        asm: EntitiesBT.Extensions.InputSystem}
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        InputAction: {fileID: 0}
+        _isLinked: 1
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 1
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 1
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 2
     00000001:
-      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      type: {class: , ns: , asm: }
+    00000002:
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
-        EnumTypeName: UnityEngine.InputSystem.InputActionPhase, Unity.InputSystem,
-          Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-        Value: 3
+        Value: 1

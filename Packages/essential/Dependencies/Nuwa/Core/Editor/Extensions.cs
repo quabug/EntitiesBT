@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
-using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -47,7 +45,21 @@ namespace Nuwa.Editor
 
         public static object GetDeclaringObject(this SerializedProperty property)
         {
-            return property.GetFieldsByPath().Reverse().Skip(1).First().field;
+            return GetDeclaringField(property).field;
+        }
+
+        public static (object field, FieldInfo fieldInfo) GetDeclaringField(this SerializedProperty property)
+        {
+            return property.GetFieldsByPath().Reverse().Skip(1).First();
+        }
+
+        public static SerializedProperty GetArrayProperty(this SerializedProperty arrayElementProperty)
+        {
+            var paths = arrayElementProperty.propertyPath.Split('.');
+            Assert.AreEqual("Array", paths[paths.Length - 2]);
+            Assert.IsTrue(paths.Last().StartsWith("data[") && paths.Last().EndsWith("]"));
+            var path = string.Join(".", paths.Take(paths.Length - 2));
+            return arrayElementProperty.serializedObject.FindProperty(path);
         }
 
         public static object GetObject(this SerializedProperty property)

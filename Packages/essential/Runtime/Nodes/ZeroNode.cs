@@ -20,7 +20,5 @@ namespace EntitiesBT.Nodes
         {
             throw new NotImplementedException();
         }
-
-        private class Serializalbe : SerializableNodeData<ZeroNode> {}
     }
 }

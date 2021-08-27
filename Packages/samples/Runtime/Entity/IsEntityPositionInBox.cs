@@ -1,5 +1,6 @@
 using System;
 using EntitiesBT.Core;
+using Nuwa.Blob;
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
@@ -19,17 +20,17 @@ namespace EntitiesBT.Sample
             var translation = bb.GetData<Translation>();
             return Bounds.Contains(translation.Value) ? NodeState.Success : NodeState.Failure;
         }
+    }
 
-        public class Serializable : SerializableNodeData<IsEntityPositionInBoxNode>
+    [DefaultBuilder]
+    public class ColliderBoundsBuilder : PlainDataBuilder<Bounds>
+    {
+        public Transform Transform;
+        public BoxCollider Box;
+
+        public override void Build(BlobBuilder builder, ref Bounds data)
         {
-            public Transform Transform;
-            public BoxCollider Box;
-
-            protected override void Build(ref IsEntityPositionInBoxNode data, BlobBuilder builder, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
-            {
-                // rotation is not count into.
-                data.Bounds = new Bounds(Box.center + Transform.position, Box.size);
-            }
+            data = new Bounds(Box.center + Transform.position, Box.size);
         }
     }
 }
