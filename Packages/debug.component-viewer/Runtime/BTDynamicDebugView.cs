@@ -1,36 +1,31 @@
 using System;
-using EntitiesBT.Core;
-using UnityEngine;
+using Nuwa.Blob;
 
 namespace EntitiesBT.DebugView
 {
     public class BTDynamicDebugView : BTDebugView
     {
-        // [SerializeReference] public ISerializableNodeData Default;
-        // [SerializeReference] public ISerializableNodeData Runtime;
+        public BlobViewer Default = new BlobViewer();
+        public BlobViewer Runtime = new BlobViewer();
 
-        public IntPtr DefaultData;
-        public IntPtr RuntimeData;
+        private IntPtr _defaultDataPtr;
+        private IntPtr _runtimeDataPtr;
+        private Type _nodeType;
 
         public override void Init()
         {
             var blob = Blob;
-            RuntimeData = blob.GetDefaultDataPtr(Index);
-            DefaultData = blob.GetRuntimeDataPtr(Index);
-            // Default = CreateSerializableNodeData();
-            // Runtime = CreateSerializableNodeData();
+            _defaultDataPtr = blob.GetDefaultDataPtr(Index);
+            _runtimeDataPtr = blob.GetRuntimeDataPtr(Index);
 
-            // ISerializableNodeData CreateSerializableNodeData()
-            // {
-            //     var type = SerializableNodeDataRegistry.FindSerializableType(blob.GetTypeId(Index));
-            //     return type == null ? null : (ISerializableNodeData) Activator.CreateInstance(type);
-            // }
+            var typeId = blob.GetTypeId(Index);
+            DebugComponentLookUp.BEHAVIOR_NODE_ID_TYPE_MAP.TryGetValue(typeId, out _nodeType);
         }
 
-        public override unsafe void Tick()
+        public override void Tick()
         {
-            // Default?.Load(DefaultData.ToPointer());
-            // Runtime?.Load(RuntimeData.ToPointer());
+            Default.UnsafeView(_defaultDataPtr, _nodeType);
+            Runtime.UnsafeView(_runtimeDataPtr, _nodeType);
         }
     }
 }
