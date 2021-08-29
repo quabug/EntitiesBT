@@ -35,11 +35,6 @@
       "path": "Samples~/Entity"
     },
     {
-      "displayName": "[Sample] input system & movement",
-      "description": "sample of input system and unity movement extensions.",
-      "path": "Samples~/InputAndCharacterController"
-    },
-    {
       "displayName": "[Sample] variable",
       "description": "variable value from variant source",
       "path": "Samples~/Variable"
