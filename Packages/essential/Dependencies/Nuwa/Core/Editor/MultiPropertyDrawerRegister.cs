@@ -45,11 +45,11 @@ namespace Nuwa.Editor
         }
 
         private static readonly IReadOnlyDictionary<Type/* of CustomMultiPropertyDrawerAttribute */, DrawerEntry> _drawerRegister;
-        private static readonly IDictionary<MultiPropertyUnityDrawer, IReadOnlyList<IMultiPropertyDrawer>> _drawers;
+        private static readonly IDictionary<(object target, string propertyPath), IReadOnlyList<IMultiPropertyDrawer>> _drawers;
 
         static MultiPropertyDrawerRegister()
         {
-            _drawers = new Dictionary<MultiPropertyUnityDrawer, IReadOnlyList<IMultiPropertyDrawer>>();
+            _drawers = new Dictionary<(object, string), IReadOnlyList<IMultiPropertyDrawer>>();
             _drawerRegister = new ReadOnlyDictionary<Type, DrawerEntry>(
                 (
                     from drawerType in TypeCache.GetTypesWithAttribute<CustomMultiPropertyDrawerAttribute>()
@@ -75,21 +75,22 @@ namespace Nuwa.Editor
             }
         }
 
-        internal static GetHeightFunc GetHeight([NotNull] MultiPropertyUnityDrawer self)
+        internal static GetHeightFunc GetHeight([NotNull] FieldInfo fieldInfo)
         {
-            return (property, label) => GetOrCreateDrawer(self).FirstOrDefault()?.GetPropertyHeight(property, label)
+            return (property, label) => GetOrCreateDrawer(fieldInfo, property).FirstOrDefault()?.GetPropertyHeight(property, label)
                                         ?? EditorGUI.GetPropertyHeight(property, true);
         }
 
-        internal static DrawFunc DrawMultiProperty([NotNull] MultiPropertyUnityDrawer self)
+        internal static DrawFunc DrawMultiProperty([NotNull] FieldInfo fieldInfo)
         {
-            return (position, property, label) => GetOrCreateDrawer(self).FirstOrDefault()?.OnGUI(position, property, label);
+            return (position, property, label) => GetOrCreateDrawer(fieldInfo, property).FirstOrDefault()?.OnGUI(position, property, label);
         }
 
-        private static IReadOnlyList<IMultiPropertyDrawer> GetOrCreateDrawer([NotNull] MultiPropertyUnityDrawer self)
+        private static IReadOnlyList<IMultiPropertyDrawer> GetOrCreateDrawer(FieldInfo fieldInfo, SerializedProperty property)
         {
-            if (_drawers.TryGetValue(self, out var drawerList)) return drawerList;
-            var attributes = self.fieldInfo
+            if (_drawers.TryGetValue((property.serializedObject.targetObject, property.propertyPath), out var drawerList)) return drawerList;
+
+            var attributes = fieldInfo
                 .GetCustomAttributes<MultiPropertyAttribute>()
                 .OrderBy(attribute => attribute.order)
                 .ToArray()
@@ -109,11 +110,11 @@ namespace Nuwa.Editor
                     drawer.SortedDrawers = drawers;
                     drawer.Decorator = attributes[i];
                     drawer.AttributeIndex = i;
-                    drawer.FieldInfo = self.fieldInfo;
+                    drawer.FieldInfo = fieldInfo;
                     drawers.Add(drawer);
                 }
             }
-            _drawers[self] = drawers;
+            _drawers[(property.serializedObject.targetObject, property.propertyPath)] = drawers;
             return drawers;
 
             DrawerEntry FindEntry(Type attributeType)

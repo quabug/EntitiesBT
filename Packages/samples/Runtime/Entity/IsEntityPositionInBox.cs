@@ -23,7 +23,7 @@ namespace EntitiesBT.Sample
     }
 
     [DefaultBuilder]
-    public class ColliderBoundsBuilder : PlainDataBuilder<Bounds>
+    public class ColliderBoundsBuilder : Builder<Bounds>
     {
         public Transform Transform;
         public BoxCollider Box;

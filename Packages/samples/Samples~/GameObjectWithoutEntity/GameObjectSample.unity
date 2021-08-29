@@ -168,14 +168,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Sample.TransformMoveNode, GameObjectWithoutEntitySample,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Sample.TransformMoveNode, GameObjectWithoutEntitySample,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Velocity
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_TransformMoveNode, ns: EntitiesBT.Sample, asm: Assembly-CSharp}
+      type: {class: Vector3Builder, ns: EntitiesBT.Sample, asm: GameObjectWithoutEntitySample}
       data:
-        Velocity: {x: 1, y: 0, z: 0}
+        Value: {x: 2, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,29 +322,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.TimerNode, EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.TimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - CountdownSeconds
+      - BreakReturnState
+      Builders:
+      - id: 0
+      - id: 1
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_TimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CountdownSeconds:
-          _isLinked: 1
-          _readerAndWriter:
-            id: 1
-          _reader:
+        _isLinked: 1
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 2
-          _writer:
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 2
-        BreakReturnState: 0
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 3
     00000001:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
+    00000002:
+      type: {class: , ns: , asm: }
+    00000003:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 2
-    00000002:
-      type: {class: , ns: , asm: }
+        Value: 1
 --- !u!1 &916918465
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,14 +415,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Sample.TransformMoveNode, GameObjectWithoutEntitySample,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Sample.TransformMoveNode, GameObjectWithoutEntitySample,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Velocity
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_TransformMoveNode, ns: EntitiesBT.Sample, asm: Assembly-CSharp}
+      type: {class: Vector3Builder, ns: EntitiesBT.Sample, asm: GameObjectWithoutEntitySample}
       data:
-        Velocity: {x: -1, y: 0, z: 0}
+        Value: {x: -2, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,14 +559,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - BreakStates
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_RepeatForeverNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        BreakStates: 0
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
 --- !u!1 &1591468545
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,12 +607,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!4 &1591468547
 Transform:
   m_ObjectHideFlags: 0
@@ -718,26 +774,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.TimerNode, EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.TimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - CountdownSeconds
+      - BreakReturnState
+      Builders:
+      - id: 0
+      - id: 1
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_TimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        CountdownSeconds:
-          _isLinked: 1
-          _readerAndWriter:
-            id: 1
-          _reader:
+        _isLinked: 1
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 2
-          _writer:
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 2
-        BreakReturnState: 0
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 3
     00000001:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
+    00000002:
+      type: {class: , ns: , asm: }
+    00000003:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 2
-    00000002:
-      type: {class: , ns: , asm: }
+        Value: 1

@@ -1,4 +1,3 @@
-using Nuwa.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,8 +11,9 @@ namespace Nuwa.Editor
             var attribute = (AsGameObjectNameAttribute) Decorator;
             var (renamePattern, renameReplacement) = attribute.NamePatter.ParseReplaceRegex();
             var target = property.serializedObject.targetObject;
-            target.name = renamePattern.Replace(property.stringValue, renameReplacement);
-            if (string.IsNullOrEmpty(target.name)) target.name = attribute.Default;
+            var name = renamePattern.Replace(property.stringValue, renameReplacement);
+            if (string.IsNullOrEmpty(name)) name = attribute.Default;
+            target.name = name;
             property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
         }
     }

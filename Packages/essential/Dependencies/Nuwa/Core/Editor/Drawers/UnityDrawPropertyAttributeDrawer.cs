@@ -20,8 +20,6 @@ namespace Nuwa.Editor
             }
         }
 
-        private PropertyDrawer _customDrawer;
-
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return GetOrCreateCustomDrawer(property).GetPropertyHeight(property, label);
@@ -29,24 +27,16 @@ namespace Nuwa.Editor
 
         protected override void OnGUISelf(Rect position, UnityEditor.SerializedProperty property, GUIContent label)
         {
+            property.serializedObject.Update();
             GetOrCreateCustomDrawer(property).OnGUI(position, property, label);
+            property.serializedObject.ApplyModifiedProperties();
         }
 
         PropertyDrawer GetOrCreateCustomDrawer(SerializedProperty property)
         {
-            if (_customDrawer != null) return _customDrawer;
-
             var propertyType = property?.GetObject()?.GetType();
             var customDrawerType = propertyType != null ? property.GetDrawerTypeForPropertyAndType(propertyType) : null;
-            if (customDrawerType == null)
-            {
-                _customDrawer = new DefaultDrawer();
-            }
-            else
-            {
-                _customDrawer = (PropertyDrawer) Activator.CreateInstance(customDrawerType);
-            }
-            return _customDrawer;
+            return customDrawerType == null ? new DefaultDrawer() : (PropertyDrawer)Activator.CreateInstance(customDrawerType);
         }
     }
 }

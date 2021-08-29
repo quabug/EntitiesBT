@@ -23,7 +23,7 @@ namespace Nuwa.Blob
     void GenerateBuilders(Type type)
     {
 #>
-    public class <#= type.Name #>Builder : Blob.PlainDataBuilder<<#= type #>> {}
+    [Nuwa.Blob.DefaultBuilder] public class <#= type.Name #>Builder : Nuwa.Blob.PlainDataBuilder<<#= type #>> {}
 <#+
     }
 #>

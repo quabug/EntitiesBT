@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using Unity.Entities;

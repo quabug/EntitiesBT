@@ -2,11 +2,9 @@ using System;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
 using Unity.Entities;
-using UnityEngine;
 
 namespace EntitiesBT.Components
 {
-    [ExecuteAlways]
     public class BTDynamicNode : BTNode
     {
         public NodeAsset NodeData;
