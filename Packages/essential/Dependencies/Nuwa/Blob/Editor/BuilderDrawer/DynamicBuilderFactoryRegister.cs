@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using JetBrains.Annotations;
 using UnityEditor;
 
@@ -20,14 +21,14 @@ namespace Nuwa.Blob.Editor
             ;
         }
 
-        [CanBeNull] public static object Create([NotNull] Type dataType)
+        [CanBeNull] public static object Create([NotNull] Type dataType, [CanBeNull] FieldInfo fieldInfo)
         {
-            return _factories.FirstOrDefault(f => f.IsValid(dataType))?.Create(dataType);
+            return _factories.FirstOrDefault(f => f.IsValid(dataType, fieldInfo))?.Create(dataType, fieldInfo);
         }
 
-        [CanBeNull] public static IDynamicBuilderFactory FindFactory([NotNull] Type dataType)
+        [CanBeNull] public static IDynamicBuilderFactory FindFactory([NotNull] Type dataType, [CanBeNull] FieldInfo fieldInfo)
         {
-            return _factories.FirstOrDefault(f => f.IsValid(dataType));
+            return _factories.FirstOrDefault(f => f.IsValid(dataType, fieldInfo));
         }
     }
 }

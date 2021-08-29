@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+using System.Reflection;
+using EntitiesBT.Core;
 using Nuwa;
 using Nuwa.Blob;
 using Unity.Collections.LowLevel.Unsafe;
@@ -8,43 +11,48 @@ using UnityEngine;
 namespace EntitiesBT.Variant
 {
     [Serializable]
-    public class BlobVariantROBuilder : PlainDataBuilder<BlobVariant>
+    public class BlobVariantROBuilder : Builder<BlobVariant>
     {
         [SerializeField, HideInInspector] internal string _variantTypeName;
 
         [SerializeReference]
-        [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
+        [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", NullableVariable = nameof(IsOptional))]
         private IVariantReader _variant;
+
+        internal bool IsOptional;
 
         public override void Build(BlobBuilder builder, ref BlobVariant data)
         {
-            _variant.Allocate(ref builder, ref data);
+            if (_variant != null) _variant.Allocate(ref builder, ref data);
         }
 
         public class Factory : DynamicBuilderFactory<BlobVariantROBuilder>
         {
-            public override bool IsValid(Type dataType)
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo)
             {
                 return dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobVariantRO<>);
             }
 
-            public override object Create(Type dataType)
+            public override object Create(Type dataType, FieldInfo fieldInfo)
             {
                 var valueType = dataType.GenericTypeArguments[0];
                 var variantType = typeof(IVariantReader<>);
-                return new BlobVariantROBuilder { _variantTypeName = variantType.MakeGenericType(valueType).AssemblyQualifiedName };
+                var isOptional = fieldInfo.GetCustomAttributes<OptionalAttribute>().Any();
+                return new BlobVariantROBuilder { _variantTypeName = variantType.MakeGenericType(valueType).AssemblyQualifiedName, IsOptional = isOptional };
             }
         }
     }
 
     [Serializable]
-    public class BlobVariantWOBuilder : PlainDataBuilder<BlobVariant>
+    public class BlobVariantWOBuilder : Builder<BlobVariant>
     {
         [SerializeField, HideInInspector] internal string _variantTypeName;
 
         [SerializeReference]
-        [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
+        [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", NullableVariable = nameof(IsOptional))]
         private IVariantWriter _variant;
+
+        internal bool IsOptional;
 
         public override void Build(BlobBuilder builder, ref BlobVariant data)
         {
@@ -53,28 +61,31 @@ namespace EntitiesBT.Variant
 
         public class Factory : DynamicBuilderFactory<BlobVariantWOBuilder>
         {
-            public override bool IsValid(Type dataType)
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo)
             {
                 return dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobVariantWO<>);
             }
 
-            public override object Create(Type dataType)
+            public override object Create(Type dataType, FieldInfo fieldInfo)
             {
                 var valueType = dataType.GenericTypeArguments[0];
                 var variantType = typeof(IVariantWriter<>);
-                return new BlobVariantWOBuilder { _variantTypeName = variantType.MakeGenericType(valueType).AssemblyQualifiedName };
+                var isOptional = fieldInfo.GetCustomAttributes<OptionalAttribute>().Any();
+                return new BlobVariantWOBuilder { _variantTypeName = variantType.MakeGenericType(valueType).AssemblyQualifiedName, IsOptional = isOptional };
             }
         }
     }
 
     [Serializable]
-    public class BlobVariantRWBuilder : PlainDataBuilder<BlobVariantRW>
+    public class BlobVariantRWBuilder : Builder<BlobVariantRW>
     {
         [SerializeField, HideInInspector] internal string _variantTypeName;
 
         [SerializeReference]
-        [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
+        [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", NullableVariable = nameof(IsOptional))]
         private IVariantReaderAndWriter _variant;
+
+        internal bool IsOptional;
 
         public override unsafe void Build(BlobBuilder builder, ref BlobVariantRW data)
         {
@@ -88,7 +99,7 @@ namespace EntitiesBT.Variant
     }
 
     [Serializable]
-    public class BlobVariantLinkedRWBuilder : PlainDataBuilder<BlobVariantRW>
+    public class BlobVariantLinkedRWBuilder : Builder<BlobVariantRW>
     {
         [SerializeField] private bool _isLinked = true;
         [HideIf(nameof(_isLinked)), SerializeField, UnboxSingleProperty, UnityDrawProperty] private BlobVariantROBuilder _reader;
@@ -110,19 +121,20 @@ namespace EntitiesBT.Variant
 
         public class Factory : DynamicBuilderFactory<BlobVariantLinkedRWBuilder>
         {
-            public override bool IsValid(Type dataType)
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo)
             {
                 return dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobVariantRW<>);
             }
 
-            public override object Create(Type dataType)
+            public override object Create(Type dataType, FieldInfo fieldInfo)
             {
                 var valueType = dataType.GenericTypeArguments[0];
+                var isOptional = fieldInfo.GetCustomAttributes<OptionalAttribute>().Any();
                 return new BlobVariantLinkedRWBuilder
                 {
-                    _reader = new BlobVariantROBuilder { _variantTypeName = typeof(IVariantReader<>).MakeGenericType(valueType).AssemblyQualifiedName },
-                    _writer = new BlobVariantWOBuilder { _variantTypeName = typeof(IVariantWriter<>).MakeGenericType(valueType).AssemblyQualifiedName },
-                    _readerAndWriter = new BlobVariantRWBuilder { _variantTypeName = typeof(IVariantReaderAndWriter<>).MakeGenericType(valueType).AssemblyQualifiedName },
+                    _reader = new BlobVariantROBuilder { _variantTypeName = typeof(IVariantReader<>).MakeGenericType(valueType).AssemblyQualifiedName, IsOptional = isOptional},
+                    _writer = new BlobVariantWOBuilder { _variantTypeName = typeof(IVariantWriter<>).MakeGenericType(valueType).AssemblyQualifiedName, IsOptional = isOptional },
+                    _readerAndWriter = new BlobVariantRWBuilder { _variantTypeName = typeof(IVariantReaderAndWriter<>).MakeGenericType(valueType).AssemblyQualifiedName, IsOptional = isOptional },
                 };
             }
         }

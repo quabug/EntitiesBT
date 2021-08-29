@@ -52,6 +52,8 @@ namespace Nuwa.Editor
                 : (Func<Type, string>) categoryMethodInfo.CreateDelegate(typeof(Func<Type, string>), property.serializedObject.targetObject)
             ;
 
+            var isNullable = string.IsNullOrEmpty(attribute.NullableVariable) ? attribute.Nullable : (bool)property.GetSiblingValue(attribute.NullableVariable);
+
             DrawSelectionButtonForManagedReference();
 
             EditorGUI.PropertyField(position, property, GUIContent.none, true);
@@ -90,7 +92,7 @@ namespace Nuwa.Editor
                 var storedIndent = EditorGUI.indentLevel;
                 EditorGUI.indentLevel = 0;
                 var storedColor = GUI.backgroundColor;
-                GUI.backgroundColor = attribute.Nullable == false && referenceType == null ? new Color(1, 0, 0) : new Color(0.1f, 0.55f, 0.9f, 1f);
+                GUI.backgroundColor = !isNullable && referenceType == null ? new Color(1, 0, 0) : new Color(0.1f, 0.55f, 0.9f, 1f);
 
                 var content = referenceType == null ? new GUIContent("Null ( Assign )") : MakeContent(referenceType);
                 if (GUI.Button(buttonPosition, content))
@@ -114,7 +116,7 @@ namespace Nuwa.Editor
             void FillContextMenu(GenericMenu contextMenu)
             {
                 // Adds "Make Null" menu command
-                if (attribute.Nullable) contextMenu.AddItem(new GUIContent("Null"), false, SetManagedReferenceToNull);
+                if (isNullable) contextMenu.AddItem(new GUIContent("Null"), false, SetManagedReferenceToNull);
 
                 // Collects appropriate types
                 var appropriateTypes = GetAppropriateTypesForAssigningToManagedReference();

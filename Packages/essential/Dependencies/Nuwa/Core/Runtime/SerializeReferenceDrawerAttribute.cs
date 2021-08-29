@@ -12,6 +12,7 @@ namespace Nuwa
         public bool AlphabeticalOrder = true;
         public string CategoryName;
         public bool Nullable = true;
+        public string NullableVariable;
         public SerializeReferenceDrawerAttribute() => order = int.MaxValue;
     }
 }

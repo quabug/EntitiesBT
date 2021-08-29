@@ -33,10 +33,10 @@ namespace Nuwa.Blob
         public static BuilderFactory FindBuilderCreator([NotNull] this FieldInfo fieldInfo)
         {
             var customBuilder = fieldInfo.GetCustomAttribute<CustomBuilderAttribute>()?.BuilderType;
-            return GetBuilderFactory(fieldInfo.FieldType, customBuilder);
+            return GetBuilderFactory(fieldInfo.FieldType, customBuilder, fieldInfo);
         }
 
-        public static BuilderFactory GetBuilderFactory([NotNull] this Type valueType, Type customBuilder)
+        public static BuilderFactory GetBuilderFactory([NotNull] this Type valueType, Type customBuilder, FieldInfo fieldInfo = null)
         {
             var builderType = typeof(Builder<>).MakeGenericType(valueType);
             var builders = TypeCache.GetTypesDerivedFrom(builderType);
@@ -60,9 +60,9 @@ namespace Nuwa.Blob
 
             BuilderFactory DynamicBuilder()
             {
-                var factory = DynamicBuilderFactoryRegister.FindFactory(valueType);
+                var factory = DynamicBuilderFactoryRegister.FindFactory(valueType, fieldInfo);
                 if (factory == null) throw new ArgumentException($"cannot find any builder for {valueType}");
-                return new BuilderFactory(factory.BuilderType, () => factory.Create(valueType));
+                return new BuilderFactory(factory.BuilderType, () => factory.Create(valueType, fieldInfo));
             }
         }
     }

@@ -10,16 +10,16 @@ namespace Nuwa.Blob
     {
         public int Order { get; }
         public Type BuilderType { get; }
-        public bool IsValid(Type dataType);
-        public object Create(Type dataType);
+        public bool IsValid(Type dataType, FieldInfo fieldInfo);
+        public object Create(Type dataType, FieldInfo fieldInfo);
     }
 
     public abstract class DynamicBuilderFactory<T> : IDynamicBuilderFactory where T : IBuilder
     {
         public virtual int Order => 0;
         public Type BuilderType => typeof(T);
-        public abstract bool IsValid(Type dataType);
-        public abstract object Create(Type dataType);
+        public abstract bool IsValid(Type dataType, FieldInfo fieldInfo);
+        public abstract object Create(Type dataType, FieldInfo fieldInfo);
     }
 
     [Serializable]
@@ -35,12 +35,12 @@ namespace Nuwa.Blob
 
         public class Factory<U> : DynamicBuilderFactory<U> where U : DynamicEnumBuilder<T>, new()
         {
-            public override bool IsValid(Type dataType)
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo)
             {
                 return dataType.IsEnum && Enum.GetUnderlyingType(dataType) == typeof(T);
             }
 
-            public override object Create(Type dataType)
+            public override object Create(Type dataType, FieldInfo fieldInfo)
             {
                 return new U { EnumTypeName = dataType.AssemblyQualifiedName };
             }
@@ -107,8 +107,8 @@ namespace Nuwa.Blob
         public class Factory : DynamicBuilderFactory<DynamicBlobDataBuilder>
         {
             public override int Order => 1000;
-            public override bool IsValid(Type dataType) => !dataType.IsEnum && !dataType.IsPrimitive;
-            public override object Create(Type dataType) => new DynamicBlobDataBuilder { BlobDataType = dataType.AssemblyQualifiedName };
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo) => !dataType.IsEnum && !dataType.IsPrimitive;
+            public override object Create(Type dataType, FieldInfo fieldInfo) => new DynamicBlobDataBuilder { BlobDataType = dataType.AssemblyQualifiedName };
         }
     }
 
@@ -128,8 +128,8 @@ namespace Nuwa.Blob
         public class Factory : DynamicBuilderFactory<DynamicArrayBuilder>
         {
             public override int Order => 100;
-            public override bool IsValid(Type dataType) => dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobArray<>);
-            public override object Create(Type dataType) => new DynamicArrayBuilder { ArrayElementType = dataType.GenericTypeArguments[0].AssemblyQualifiedName };
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo) => dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobArray<>);
+            public override object Create(Type dataType, FieldInfo fieldInfo) => new DynamicArrayBuilder { ArrayElementType = dataType.GenericTypeArguments[0].AssemblyQualifiedName };
         }
     }
 
@@ -148,8 +148,8 @@ namespace Nuwa.Blob
         public class Factory : DynamicBuilderFactory<DynamicPtrBuilder>
         {
             public override int Order => 100;
-            public override bool IsValid(Type dataType) => dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobPtr<>);
-            public override object Create(Type dataType) => new DynamicPtrBuilder { DataType = dataType.GenericTypeArguments[0].AssemblyQualifiedName };
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo) => dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobPtr<>);
+            public override object Create(Type dataType, FieldInfo fieldInfo) => new DynamicPtrBuilder { DataType = dataType.GenericTypeArguments[0].AssemblyQualifiedName };
         }
     }
 }
