@@ -14,6 +14,22 @@ namespace Nuwa.Blob
         void View(IntPtr dataPtr, Type type);
     }
 
+    public interface IDynamicViewerFactory
+    {
+        public int Order { get; }
+        public Type ViewerType { get; }
+        public bool IsValid(Type dataType, FieldInfo fieldInfo);
+        public object Create(Type dataType, FieldInfo fieldInfo);
+    }
+
+    public abstract class DynamicViewerFactory<T> : IDynamicViewerFactory where T : IViewer
+    {
+        public virtual int Order => 0;
+        public Type ViewerType => typeof(T);
+        public abstract bool IsValid(Type dataType, FieldInfo fieldInfo);
+        public abstract object Create(Type dataType, FieldInfo fieldInfo);
+    }
+
     public abstract class Viewer<T> : IViewer where T : unmanaged
     {
         public unsafe void View(IntPtr dataPtr, Type type)
@@ -52,16 +68,31 @@ namespace Nuwa.Blob
             var elementType = type.GenericTypeArguments[0];
             Array.Resize(ref Elements, length);
 
-            var viewerType = elementType.FindViewerType();
+            var viewerFactory = elementType.FindViewerType();
             var elementSize = UnsafeUtility.SizeOf(elementType);
             var arrayPtr = dataPtr + offsetPtr;
 
             for (var i = 0; i < length; i++)
             {
-                if (Elements[i] == null || Elements[i].GetType() != viewerType)
-                    Elements[i] = (IViewer) Activator.CreateInstance(viewerType);
+                if (Elements[i] == null || Elements[i].GetType() != viewerFactory.Type)
+                    Elements[i] = (IViewer) viewerFactory.Create();
                 var elementPtr = arrayPtr + elementSize * i;
                 Elements[i].View(elementPtr, elementType);
+            }
+        }
+
+        public class Factory : DynamicViewerFactory<DynamicArrayViewer>
+        {
+            public override int Order => 100;
+
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo)
+            {
+                return dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobArray<>);
+            }
+
+            public override object Create(Type dataType, FieldInfo fieldInfo)
+            {
+                return new DynamicArrayViewer();
             }
         }
     }
@@ -81,11 +112,26 @@ namespace Nuwa.Blob
             for (var i = 0; i < fields.Length; i++)
             {
                 var field = fields[i];
-                var viewerType = field.FieldType.FindViewerType();
-                if (FieldsViewer[i] == null || FieldsViewer[i].GetType() != viewerType)
-                    FieldsViewer[i] = (IViewer) Activator.CreateInstance(viewerType);
+                var viewerFactory = field.FieldType.FindViewerType(field);
+                if (FieldsViewer[i] == null || FieldsViewer[i].GetType() != viewerFactory.Type)
+                    FieldsViewer[i] = (IViewer) viewerFactory.Create();
                 var fieldOffset = UnsafeUtility.GetFieldOffset(field);
                 FieldsViewer[i].View(dataPtr + fieldOffset, field.FieldType);
+            }
+        }
+
+        public class Factory : DynamicViewerFactory<DynamicBlobDataViewer>
+        {
+            public override int Order => 1000;
+
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo)
+            {
+                return !dataType.IsPrimitive && !dataType.IsEnum && dataType.IsValueType;
+            }
+
+            public override object Create(Type dataType, FieldInfo fieldInfo)
+            {
+                return new DynamicBlobDataViewer();
             }
         }
     }
@@ -99,10 +145,25 @@ namespace Nuwa.Blob
         {
             Assert.IsTrue(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BlobPtr<>));
             var dataType = type.GenericTypeArguments[0];
-            var viewerType = dataType.FindViewerType();
-            if (Value == null || Value.GetType() != viewerType) Value = (IViewer) Activator.CreateInstance(viewerType);
+            var viewerFactory = dataType.FindViewerType();
+            if (Value == null || Value.GetType() != viewerFactory.Type) Value = (IViewer) viewerFactory.Create();
             ref var offsetPtr = ref UnsafeUtility.AsRef<int>(dataPtr.ToPointer());
             Value.View(dataPtr + offsetPtr, dataType);
+        }
+
+        public class Factory : DynamicViewerFactory<DynamicPtrViewer>
+        {
+            public override int Order => 100;
+
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo)
+            {
+                return dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobPtr<>);
+            }
+
+            public override object Create(Type dataType, FieldInfo fieldInfo)
+            {
+                return new DynamicPtrViewer();
+            }
         }
     }
 
@@ -118,21 +179,32 @@ namespace Nuwa.Blob
             Ptr = dataPtr.ToInt64();
             EnumType = type.AssemblyQualifiedName;
         }
+
+        public class Factory : DynamicViewerFactory<DynamicPtrViewer>
+        {
+            public override int Order => 100;
+
+            public override bool IsValid(Type dataType, FieldInfo fieldInfo)
+            {
+                return dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobPtr<>);
+            }
+
+            public override object Create(Type dataType, FieldInfo fieldInfo)
+            {
+                return new DynamicPtrViewer();
+            }
+        }
     }
 
     static class ViewerExtension
     {
-        public static Type FindViewerType(this Type dataType)
+        public static TypeFactory FindViewerType(this Type dataType, FieldInfo fieldInfo = null)
         {
             var viewerType = typeof(Viewer<>).MakeGenericType(dataType);
             viewerType = TypeCache.GetTypesDerivedFrom(viewerType).SingleOrDefault();
-            if (viewerType != null) return viewerType;
-            if (dataType.IsEnum) return typeof(DynamicEnumViewer);
-            if (dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobPtr<>))
-                return typeof(DynamicPtrViewer);
-            if (dataType.IsGenericType && dataType.GetGenericTypeDefinition() == typeof(BlobArray<>))
-                return typeof(DynamicArrayViewer);
-            if (!dataType.IsPrimitive) return typeof(DynamicBlobDataViewer);
+            if (viewerType != null) return new TypeFactory(viewerType);
+            var dynamicFactory = DynamicViewerFactoryRegister.FindFactory(dataType, fieldInfo);
+            if (dynamicFactory != null) return new TypeFactory(dataType, () => dynamicFactory.Create(dataType, fieldInfo));
             throw new ArgumentException($"cannot find proper viewer {dataType}");
         }
     }

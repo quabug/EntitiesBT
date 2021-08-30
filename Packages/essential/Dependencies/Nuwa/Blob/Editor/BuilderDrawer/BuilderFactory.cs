@@ -8,40 +8,20 @@ using UnityEditor;
 
 namespace Nuwa.Blob
 {
-    public ref struct BuilderFactory
-    {
-        public Type BuilderType { get; }
-        private readonly Func<object> _creator;
-
-        public BuilderFactory([NotNull] Type builderType)
-        {
-            BuilderType = builderType;
-            _creator = () => Activator.CreateInstance(builderType);
-        }
-
-        public BuilderFactory([NotNull] Type builderType, [NotNull] Func<object> creator)
-        {
-            BuilderType = builderType;
-            _creator = creator;
-        }
-
-        public object Create() => _creator();
-    }
-
     public static class BuilderFactoryExtensions
     {
-        public static BuilderFactory FindBuilderCreator([NotNull] this FieldInfo fieldInfo)
+        public static TypeFactory FindBuilderCreator([NotNull] this FieldInfo fieldInfo)
         {
             var customBuilder = fieldInfo.GetCustomAttribute<CustomBuilderAttribute>()?.BuilderType;
             return GetBuilderFactory(fieldInfo.FieldType, customBuilder, fieldInfo);
         }
 
-        public static BuilderFactory GetBuilderFactory([NotNull] this Type valueType, Type customBuilder, FieldInfo fieldInfo = null)
+        public static TypeFactory GetBuilderFactory([NotNull] this Type valueType, Type customBuilder, FieldInfo fieldInfo = null)
         {
             var builderType = typeof(Builder<>).MakeGenericType(valueType);
             var builders = TypeCache.GetTypesDerivedFrom(builderType);
-            if (customBuilder == null && builders.Count == 1) return new BuilderFactory(builders[0]);
-            if (customBuilder != null && builders.Contains(customBuilder)) return new BuilderFactory(customBuilder);
+            if (customBuilder == null && builders.Count == 1) return new TypeFactory(builders[0]);
+            if (customBuilder != null && builders.Contains(customBuilder)) return new TypeFactory(customBuilder);
             if (customBuilder != null)
                 throw new InvalidCustomBuilderException(
                     $"Invalid {customBuilder.Name} of {valueType.Name}, must be one of [{string.Join(",", builders.Select(b => b.Name))}]");
@@ -49,7 +29,7 @@ namespace Nuwa.Blob
             try
             {
                 var defaultBuilder = builders.SingleOrDefault(b => b.GetCustomAttribute<DefaultBuilderAttribute>() != null);
-                return defaultBuilder == null ? DynamicBuilder() : new BuilderFactory(defaultBuilder);
+                return defaultBuilder == null ? DynamicBuilder() : new TypeFactory(defaultBuilder);
             }
             catch (Exception ex)
             {
@@ -58,11 +38,11 @@ namespace Nuwa.Blob
                     ex);
             }
 
-            BuilderFactory DynamicBuilder()
+            TypeFactory DynamicBuilder()
             {
                 var factory = DynamicBuilderFactoryRegister.FindFactory(valueType, fieldInfo);
                 if (factory == null) throw new ArgumentException($"cannot find any builder for {valueType}");
-                return new BuilderFactory(factory.BuilderType, () => factory.Create(valueType, fieldInfo));
+                return new TypeFactory(factory.BuilderType, () => factory.Create(valueType, fieldInfo));
             }
         }
     }

@@ -24,7 +24,7 @@ namespace Nuwa.Blob.Editor
             {
                 var elementProperty = elementsProperty.GetArrayElementAtIndex(i);
                 var element = elementProperty.GetObject();
-                if (element == null || element.GetType() != builderFactory.BuilderType)
+                if (element == null || element.GetType() != builderFactory.Type)
                 {
                     elementProperty.managedReferenceValue = builderFactory.Create();
                     property.serializedObject.ApplyModifiedProperties();

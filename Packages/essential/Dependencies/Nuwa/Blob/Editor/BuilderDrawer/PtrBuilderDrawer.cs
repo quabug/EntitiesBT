@@ -23,7 +23,7 @@ namespace Nuwa.Blob.Editor
             var valueType = BlobType(property);
             var builderFactory = valueType.GetBuilderFactory(customBuilder: null);
             var value = valueProperty.GetObject();
-            if (value == null || value.GetType() != builderFactory.BuilderType) valueProperty.managedReferenceValue = builderFactory.Create();
+            if (value == null || value.GetType() != builderFactory.Type) valueProperty.managedReferenceValue = builderFactory.Create();
             EditorGUI.PropertyField(position, valueProperty, label, includeChildren: true);
             property.serializedObject.ApplyModifiedProperties();
         }

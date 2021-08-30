@@ -21,7 +21,7 @@ namespace Nuwa.Blob.Editor
             var builderFactory = valueType.GetBuilderFactory(customBuilder: null);
             property = property.FindPropertyRelative(nameof(BlobAsset<int>.Builder));
             var builder = property.GetObject();
-            if (builder == null || builder.GetType() != builderFactory.BuilderType)
+            if (builder == null || builder.GetType() != builderFactory.Type)
             {
                 property.managedReferenceValue = builderFactory.Create();
                 property.serializedObject.ApplyModifiedPropertiesWithoutUndo();

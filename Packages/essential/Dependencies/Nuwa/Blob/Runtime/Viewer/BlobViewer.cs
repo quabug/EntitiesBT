@@ -17,9 +17,9 @@ namespace Nuwa.Blob
         {
 #if UNITY_EDITOR
             TypeName = type.ToReadableName();
-            var viewerType = type.FindViewerType();
-            if (Viewer == null || Viewer.GetType() != viewerType)
-                Viewer = (IViewer) Activator.CreateInstance(viewerType);
+            var viewerFactory = type.FindViewerType();
+            if (Viewer == null || Viewer.GetType() != viewerFactory.Type)
+                Viewer = (IViewer) viewerFactory.Create();
             Viewer.View(dataPtr, type);
 #endif
         }

@@ -435,6 +435,7 @@ MonoBehaviour:
         _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Int64, mscorlib,
           Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        IsOptional: 0
         _variant:
           id: 7
     00000001:
@@ -455,6 +456,7 @@ MonoBehaviour:
         _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Int64, mscorlib,
           Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        IsOptional: 0
         _variant:
           id: 10
     00000004:
@@ -463,6 +465,7 @@ MonoBehaviour:
         _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
           Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        IsOptional: 0
         _variant:
           id: 11
     00000005:
@@ -473,18 +476,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 12
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 13
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 14
     00000006:

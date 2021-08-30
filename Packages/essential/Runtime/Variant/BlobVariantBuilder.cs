@@ -14,12 +14,11 @@ namespace EntitiesBT.Variant
     public class BlobVariantROBuilder : Builder<BlobVariant>
     {
         [SerializeField, HideInInspector] internal string _variantTypeName;
+        [SerializeField, HideInInspector] internal bool IsOptional;
 
         [SerializeReference]
         [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", NullableVariable = nameof(IsOptional))]
         private IVariantReader _variant;
-
-        internal bool IsOptional;
 
         public override void Build(BlobBuilder builder, ref BlobVariant data)
         {
@@ -47,12 +46,11 @@ namespace EntitiesBT.Variant
     public class BlobVariantWOBuilder : Builder<BlobVariant>
     {
         [SerializeField, HideInInspector] internal string _variantTypeName;
+        [SerializeField, HideInInspector] internal bool IsOptional;
 
         [SerializeReference]
         [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", NullableVariable = nameof(IsOptional))]
         private IVariantWriter _variant;
-
-        internal bool IsOptional;
 
         public override void Build(BlobBuilder builder, ref BlobVariant data)
         {
@@ -80,12 +78,11 @@ namespace EntitiesBT.Variant
     public class BlobVariantRWBuilder : Builder<BlobVariantRW>
     {
         [SerializeField, HideInInspector] internal string _variantTypeName;
+        [SerializeField, HideInInspector] internal bool IsOptional;
 
         [SerializeReference]
         [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", NullableVariable = nameof(IsOptional))]
         private IVariantReaderAndWriter _variant;
-
-        internal bool IsOptional;
 
         public override unsafe void Build(BlobBuilder builder, ref BlobVariantRW data)
         {
