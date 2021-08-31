@@ -17,7 +17,8 @@ namespace EntitiesBT.Components
         public BehaviorNodeType BehaviorNodeType => NodeType.GetBehaviorNodeAttribute().Type;
         public int NodeId => NodeType.GetBehaviorNodeAttribute().Id;
         protected virtual Type NodeType { get; } = typeof(ZeroNode);
-        
+        public int NodeIndex { get; set; } = 0;
+
         public virtual IEnumerable<INodeDataBuilder> Children => this.Children();
         public INodeDataBuilder Self => gameObject.activeSelf ? SelfImpl : null;
 

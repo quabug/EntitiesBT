@@ -22,13 +22,13 @@ namespace EntitiesBT.Variant
         {
             [VariantComponentData] public string ComponentValueName;
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
                 var data = GetTypeHashAndFieldOffset(ComponentValueName);
                 if (data.Type != typeof(T) || data.Hash == 0)
                 {
-                    Debug.LogError($"{nameof(ComponentVariant)}({ComponentValueName}) is not valid, fallback to ConstantValue", (UnityEngine.Object)self);
+                    Debug.LogError($"{nameof(ComponentVariant)}({ComponentValueName}) is not valid, fallback to ConstantValue");
                     throw new ArgumentException();
                 }
                 return builder.Allocate(ref blobVariant, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
@@ -53,13 +53,18 @@ namespace EntitiesBT.Variant
             return ComponentType.FromTypeIndex(typeIndex).Yield();
         }
 
-        private static unsafe ref T GetComponentValue<T>(ulong stableHash, int offset, Func<Type, IntPtr> getDataPtr)
-            where T : unmanaged
+        private static IntPtr GetComponentValue(ulong stableHash, int offset, Func<Type, IntPtr> getDataPtr)
         {
             var index = TypeManager.GetTypeIndexFromStableTypeHash(stableHash);
             var componentPtr = getDataPtr(TypeManager.GetType(index));
             // TODO: type safety check
             var dataPtr = componentPtr + offset;
+            return dataPtr;
+        }
+
+        private static unsafe ref T GetComponentValue<T>(ulong stableHash, int offset, Func<Type, IntPtr> getDataPtr) where T : unmanaged
+        {
+            var dataPtr = GetComponentValue(stableHash, offset, getDataPtr);
             return ref UnsafeUtility.AsRef<T>(dataPtr.ToPointer());
         }
 
@@ -83,5 +88,22 @@ namespace EntitiesBT.Variant
             return ref GetComponentValue<T>(data.StableHash, data.Offset, bb.GetDataPtrRW);
         }
 
+        [ReadOnlyPointerMethod]
+        private static IntPtr GetPointerRO<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            ref var data = ref blobVariant.As<DynamicComponentData>();
+            return GetComponentValue(data.StableHash, data.Offset, bb.GetDataPtrRO);
+        }
+
+        [ReadWritePointerMethod]
+        private static IntPtr GetPointerRW<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            ref var data = ref blobVariant.As<DynamicComponentData>();
+            return GetComponentValue(data.StableHash, data.Offset, bb.GetDataPtrRW);
+        }
     }
 }

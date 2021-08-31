@@ -9,7 +9,7 @@ namespace EntitiesBT.Variant
     [StructLayout(LayoutKind.Sequential)]
     public struct BlobVariantRO<T> : IRuntimeComponentAccessor where T : unmanaged
     {
-        internal BlobVariant Value;
+        public BlobVariant Value;
 
         public T Read<TNodeBlob, TBlackboard>(int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeBlob : struct, INodeBlob

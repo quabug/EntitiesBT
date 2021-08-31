@@ -17,7 +17,7 @@ namespace EntitiesBT.Test
 
         class InvalidVariant : IVariant
         {
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 throw new NotImplementedException();
             }

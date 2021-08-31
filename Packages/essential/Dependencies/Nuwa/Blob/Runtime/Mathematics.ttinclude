@@ -1,0 +1,16 @@
+<# //@ assembly name="/Applications/Unity/Hub/Editor/2020.3.16f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.CoreModule.dll" #>
+<#@ assembly name="C:/Program Files/Unity/Hub/Editor/2020.3.16f1/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll" #>
+<#@ assembly name="$(SolutionDir)/Library/ScriptAssemblies/Unity.Mathematics.dll" #>
+<#@ import namespace="Unity.Mathematics" #>
+<#@ import namespace="System.Linq" #>
+
+<#+
+    Type[] Mathematics = typeof(math).Assembly.GetTypes().Where(type => type.IsPublic && IsUnmanaged(type)).ToArray();
+
+    class U<T> where T : unmanaged { }
+    public static bool IsUnmanaged(Type t)
+    {
+        try { typeof(U<>).MakeGenericType(t); return true; }
+        catch (Exception){ return false; }
+    }
+#>

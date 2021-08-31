@@ -8,12 +8,7 @@ namespace EntitiesBT.Variant
     public interface IVariant
     {
         // return: pointer of meta data
-        IntPtr Allocate(
-            ref BlobBuilder builder
-          , ref BlobVariant blobVariant
-          , INodeDataBuilder self
-          , ITreeNode<INodeDataBuilder>[] tree
-        );
+        IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant);
     }
 
     public interface IVariantReader : IVariant {}

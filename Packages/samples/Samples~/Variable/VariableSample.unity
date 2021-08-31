@@ -168,12 +168,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &1392768645
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,10 +219,10 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
+      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Component}
       data:
         Root: {fileID: 340380320}
-        AutoDestroy: 1
+        AutoDestroy: 0
 --- !u!114 &1392768647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,8 +275,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac828a561a46d4c2e8c8930610ee3eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputValue: 123
-  OutputValue: 333
+  FloatValue: 0
+  IntValue: 0
   LongValue: 222
 --- !u!1 &1568700988
 GameObject:
@@ -401,75 +405,131 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Sample.VariablesTestNode, EntitiesBT.Sample.Variant, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Sample.VariablesTestNode, EntitiesBT.Sample.Variant,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - LongReader
+      - String
+      - IntArray
+      - LongWriter
+      - SingleReader
+      - SingleReaderAndWriter
+      - Long
+      Builders:
+      - id: 0
+      - id: 1
+      - id: 2
+      - id: 3
+      - id: 4
+      - id: 5
+      - id: 6
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_VariablesTestNode, ns: EntitiesBT.Sample, asm: Assembly-CSharp}
+      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        LongReader:
-          _reader:
-            id: 1
-        String: 11223344
-        IntArray: 010000000200000003000000
-        LongWriter:
-          _writer:
-            id: 2
-        SingleReader:
-          _reader:
-            id: 3
-        SingleReaderAndWriter:
-          _isLinked: 1
-          _readerAndWriter:
-            id: 4
-          _reader:
-            id: 5
-          _writer:
-            id: 6
-        Long: 14
+        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Int64, mscorlib,
+          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        IsOptional: 0
+        _variant:
+          id: 7
     00000001:
-      type: {class: <IVariantReader>/Int64LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: StringBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 233213adffda
+    00000002:
+      type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+        Value:
+        - id: 8
+        - id: 9
+    00000003:
+      type: {class: BlobVariantWOBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Int64, mscorlib,
+          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        IsOptional: 0
+        _variant:
+          id: 10
+    00000004:
+      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        IsOptional: 0
+        _variant:
+          id: 11
+    00000005:
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _isLinked: 0
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
+          _variant:
+            id: 12
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
+          _variant:
+            id: 13
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
+          _variant:
+            id: 14
+    00000006:
+      type: {class: Int64Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 443333
+    00000007:
+      type: {class: <IVariantReader>/Int64ComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 44231321
-    00000002:
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
+    00000008:
+      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 333
+    00000009:
+      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 444
+    0000000A:
       type: {class: <IVariantWriter>/Int64ComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
-    00000003:
-      type: {class: <IVariantReader>/SingleExpressionVariant, ns: EntitiesBT.Variant.CodeGen,
+    0000000B:
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        _expression: x*y
-        _sources:
-        - Value:
-            id: 7
-          Name: x
-        - Value:
-            id: 8
-          Name: y
-    00000004:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 12
-    00000005:
+        Value: 12333
+    0000000C:
       type: {class: <IVariantReader>/SingleNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         NodeObject: {fileID: 1723425238}
         ValueFieldName: SingleReader
-    00000006:
+    0000000D:
+      type: {class: <IVariantWriter>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        ComponentValueName: EntitiesBT.Sample.ComponentVariableData.FloatValue
+    0000000E:
       type: {class: , ns: , asm: }
-    00000007:
-      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 3
-    00000008:
-      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 4

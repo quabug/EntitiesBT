@@ -5,8 +5,8 @@ namespace EntitiesBT.Sample
     [GenerateAuthoringComponent]
     public struct ComponentVariableData : IComponentData
     {
-        public float InputValue;
-        public int OutputValue;
+        public float FloatValue;
+        public int IntValue;
         public long LongValue;
     }
 }

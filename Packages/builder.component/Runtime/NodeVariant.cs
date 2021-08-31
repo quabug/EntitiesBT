@@ -33,28 +33,15 @@ namespace EntitiesBT.Variant
             public BTNode NodeObject;
             [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
 
-            public unsafe IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
-                return Allocate<T>(ref builder, ref blobVariant, self, tree, NodeObject, ValueFieldName);
+                return Allocate<T>(ref builder, ref blobVariant, NodeObject, ValueFieldName);
             }
         }
 
         [Serializable] public class Reader<T> : Any<T>, IVariantReader<T> where T : unmanaged {}
         [Serializable] public class Writer<T> : Any<T>, IVariantWriter<T> where T : unmanaged {}
         [Serializable] public class ReaderAndWriter<T> : Any<T>, IVariantReaderAndWriter<T> where T : unmanaged {}
-
-        [WriterMethod]
-        private static unsafe void WriteVariableFunc<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb, T value)
-            where T : unmanaged
-            where TNodeBlob : struct, INodeBlob
-            where TBlackboard : struct, IBlackboard
-        {
-            ref var data = ref blobVariant.As<DynamicNodeRefData>();
-            var ptr = blob.GetRuntimeDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariantRO<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
-            // TODO: check writable on editor?
-            variable.Value.WriteWithRefFallback(index, ref blob, ref bb, value);
-        }
 
         [RefReaderMethod(OverrideGuid = ID_RUNTIME_NODE)]
         private static ref T GetRuntimeNodeData<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
@@ -65,23 +52,54 @@ namespace EntitiesBT.Variant
             return ref GetValue<T>(ref blobVariant, blob.GetRuntimeDataPtr);
         }
 
-        [ReaderMethod]
-        private static unsafe T GetRuntimeNodeVariable<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+        [ReadOnlyPointerMethod(OverrideGuid = ID_RUNTIME_NODE)]
+        private static IntPtr GetRuntimeNodeDataPointerRO<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            return GetValuePtr(ref blobVariant, blob.GetRuntimeDataPtr);
+        }
+
+        [WriterMethod]
+        private static void WriteVariableFunc<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb, T value)
             where T : unmanaged
             where TNodeBlob : struct, INodeBlob
             where TBlackboard : struct, IBlackboard
         {
-            ref var data = ref blobVariant.As<DynamicNodeRefData>();
-            var ptr = blob.GetRuntimeDataPtr(data.Index);
-            ref var variable = ref UnsafeUtility.AsRef<BlobVariantRO<T>>(IntPtr.Add(ptr, data.Offset).ToPointer());
-            return variable.Read(index, ref blob, ref bb);
+            ref var variant = ref GetVariant<T, TNodeBlob>(ref blobVariant, ref blob);
+            // TODO: check writable on editor?
+            variant.Value.WriteWithRefFallback(index, ref blob, ref bb, value);
+        }
+
+        [ReaderMethod]
+        private static T GetRuntimeNodeVariable<T, TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where T : unmanaged
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            ref var variant = ref GetVariant<T, TNodeBlob>(ref blobVariant, ref blob);
+            return variant.Read(index, ref blob, ref bb);
+        }
+
+        [ReadOnlyPointerMethod]
+        private static IntPtr GetRuntimeNodeVariantPointerRO<TNodeBlob, TBlackboard>(ref BlobVariant blobVariant, int index, ref TNodeBlob blob, ref TBlackboard bb)
+            where TNodeBlob : struct, INodeBlob
+            where TBlackboard : struct, IBlackboard
+        {
+            ref var variant = ref GetVariant(ref blobVariant, ref blob);
+            return variant.ReadOnlyPtrWithReadWriteFallback(index, ref blob, ref bb);
         }
 
         private static unsafe ref T GetValue<T>(ref BlobVariant blobVariant, Func<int, IntPtr> ptrFunc) where T : unmanaged
         {
+            return ref UnsafeUtility.AsRef<T>(GetValuePtr(ref blobVariant, ptrFunc).ToPointer());
+        }
+
+        private static IntPtr GetValuePtr(ref BlobVariant blobVariant, Func<int, IntPtr> ptrFunc)
+        {
             ref var data = ref blobVariant.As<DynamicNodeRefData>();
             var ptr = ptrFunc(data.Index);
-            return ref UnsafeUtility.AsRef<T>(IntPtr.Add(ptr, data.Offset).ToPointer());
+            return IntPtr.Add(ptr, data.Offset);
         }
 
         private struct DynamicNodeRefData
@@ -90,19 +108,36 @@ namespace EntitiesBT.Variant
             public int Offset;
         }
 
+        private static unsafe ref BlobVariantRO<T> GetVariant<T, TNodeBlob>(ref BlobVariant blobVariant, ref TNodeBlob blob)
+            where T : unmanaged
+            where TNodeBlob : struct, INodeBlob
+        {
+            return ref UnsafeUtility.AsRef<BlobVariantRO<T>>(GetVariantPtr(ref blobVariant, ref blob).ToPointer());
+        }
+
+        private static unsafe ref BlobVariant GetVariant<TNodeBlob>(ref BlobVariant blobVariant, ref TNodeBlob blob) where TNodeBlob : struct, INodeBlob
+        {
+            return ref UnsafeUtility.AsRef<BlobVariant>(GetVariantPtr(ref blobVariant, ref blob).ToPointer());
+        }
+
+        private static IntPtr GetVariantPtr<TNodeBlob>(ref BlobVariant blobVariant, ref TNodeBlob blob) where TNodeBlob : struct, INodeBlob
+        {
+            ref var data = ref blobVariant.As<DynamicNodeRefData>();
+            var ptr = blob.GetRuntimeDataPtr(data.Index);
+            return IntPtr.Add(ptr, data.Offset);
+        }
+
         public static IntPtr Allocate<T>(
             ref BlobBuilder builder
             , ref BlobVariant blobVariant
-            , INodeDataBuilder self
-            , ITreeNode<INodeDataBuilder>[] tree
             , INodeDataBuilder nodeObject
             , string valueFieldName
         ) where T : unmanaged
         {
-            var index = Array.FindIndex(tree, node => ReferenceEquals(node.Value, nodeObject));
+            var index = nodeObject.NodeIndex;
             if (nodeObject == null || index < 0)
             {
-                Debug.LogError($"Invalid `NodeObject` {nodeObject}", (UnityEngine.Object)self);
+                Debug.LogError($"Invalid `NodeObject` {nodeObject}");
                 throw new ArgumentException();
             }
 
@@ -113,7 +148,7 @@ namespace EntitiesBT.Variant
             var fieldInfo = nodeType.GetField(valueFieldName, BindingFlags.Instance | BindingFlags.Public);
             if (fieldInfo == null)
             {
-                Debug.LogError($"Invalid `ValueFieldName` {valueFieldName}", (UnityEngine.Object)self);
+                Debug.LogError($"Invalid `ValueFieldName` {valueFieldName}");
                 throw new ArgumentException();
             }
 
@@ -128,7 +163,7 @@ namespace EntitiesBT.Variant
             }
             else
             {
-                Debug.LogError($"Invalid type of `ValueFieldName` {valueFieldName} {fieldType}", (UnityEngine.Object)self);
+                Debug.LogError($"Invalid type of `ValueFieldName` {valueFieldName} {fieldType}");
                 throw new ArgumentException();
             }
 

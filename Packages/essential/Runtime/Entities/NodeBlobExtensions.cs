@@ -26,6 +26,8 @@ namespace EntitiesBT.Entities
             var nodeDataList = new NativeArray<BlobAssetReference>(nodes.Length, Allocator.Temp);
             try
             {
+                for (var i = 0; i < nodes.Length; i++) nodes[i].Value.NodeIndex = i;
+
                 for (var i = 0; i < nodes.Length; i++)
                 {
                     var node = nodes[i];

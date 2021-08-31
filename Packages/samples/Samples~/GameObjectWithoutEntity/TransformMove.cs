@@ -1,5 +1,6 @@
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
+using Nuwa.Blob;
 using UnityEngine;
 
 namespace EntitiesBT.Sample
@@ -20,4 +21,6 @@ namespace EntitiesBT.Sample
             return NodeState.Running;
         }
     }
+
+    public class Vector3Builder : PlainDataBuilder<Vector3> {}
 }

@@ -11,6 +11,7 @@ namespace EntitiesBT.Components
         public virtual int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
         public virtual INodeDataBuilder Self => this;
         public abstract IEnumerable<INodeDataBuilder> Children { get; }
+        public int NodeIndex { get; set; } = 0;
 
         public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
         {
@@ -23,7 +24,7 @@ namespace EntitiesBT.Components
                 return blobBuilder.CreateReference<T>();
             }
         }
-        
+
         protected virtual void Build(BlobBuilder blobBuilder, ref T data, ITreeNode<INodeDataBuilder>[] builders) {}
     }
 
@@ -33,6 +34,7 @@ namespace EntitiesBT.Components
         private readonly INodeDataBuilder _self;
         public int NodeId => _self.NodeId;
         public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders) => BlobAssetReference.Null;
+        public int NodeIndex { get; set; } = 0;
         public INodeDataBuilder Self => _self;
         public IEnumerable<INodeDataBuilder> Children => _self.Children;
     }

@@ -1,7 +1,9 @@
 using System;
-using EntitiesBT.Attributes;
+using Nuwa;
 using EntitiesBT.Core;
+using Nuwa.Blob;
 using Unity.Entities;
+using UnityEngine;
 
 namespace EntitiesBT.Variant
 {
@@ -41,9 +43,9 @@ namespace EntitiesBT.Variant
         private object _reader;
         public IVariantReader<T> Reader => (IVariantReader<T>)_reader;
 
-        public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
         {
-            return Reader.Allocate(ref builder, ref blobVariant, self, tree);
+            return Reader.Allocate(ref builder, ref blobVariant);
         }
 
         public bool IsNull() => _reader == null;
@@ -57,9 +59,9 @@ namespace EntitiesBT.Variant
         private object _writer;
         public IVariantWriter<T> Writer => (IVariantWriter<T>)_writer;
 
-        public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
+        public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
         {
-            return Writer.Allocate(ref builder, ref blobVariant, self, tree);
+            return Writer.Allocate(ref builder, ref blobVariant);
         }
 
         public bool IsNull() => _writer == null;

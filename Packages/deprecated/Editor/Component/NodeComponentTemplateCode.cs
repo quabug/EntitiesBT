@@ -16,7 +16,7 @@ namespace EntitiesBT.Editor
             var className = string.IsNullOrEmpty(classNameOverride) ? nodeType.Name : classNameOverride;
             return $@"{Header}
 using EntitiesBT.Core;
-using EntitiesBT.Attributes;
+using Nuwa;
 using Unity.Entities;
 using static EntitiesBT.Variant.Utilities;
 using UnityEngine;

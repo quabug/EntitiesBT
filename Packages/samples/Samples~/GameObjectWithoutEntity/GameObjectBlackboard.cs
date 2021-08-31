@@ -53,7 +53,7 @@ namespace EntitiesBT.Sample
 
         public T GetObject<T>() where T : class
         {
-            if (typeof(T).IsSubclassOf(typeof(Component)))
+            if (typeof(T).IsSubclassOf(typeof(UnityEngine.Component)))
                 return _gameObject.GetComponent<T>();
             _dict.TryGetValue(typeof(T), out var obj);
             return (T)obj;

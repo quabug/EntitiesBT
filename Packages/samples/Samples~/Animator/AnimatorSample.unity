@@ -228,12 +228,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Value
+      Builders:
+      - id: 0
   RunOnMainThread: 1
   references:
     version: 1
     00000000:
-      type: {class: SetAnimatorTriggerNode/Serializable, ns: EntitiesBT.Sample, asm: AnimatorSample}
+      type: {class: AnimatorTriggerNameBuilder, ns: EntitiesBT.Sample, asm: AnimatorSample}
       data:
         TriggerName: Roll
 --- !u!1 &456945890
@@ -279,7 +287,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
+      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Component}
       data:
         Root: {fileID: 512318347}
         AutoDestroy: 0
@@ -437,12 +445,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &545624839
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,12 +499,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Value
+      Builders:
+      - id: 0
   RunOnMainThread: 1
   references:
     version: 1
     00000000:
-      type: {class: SetAnimatorTriggerNode/Serializable, ns: EntitiesBT.Sample, asm: AnimatorSample}
+      type: {class: AnimatorTriggerNameBuilder, ns: EntitiesBT.Sample, asm: AnimatorSample}
       data:
         TriggerName: Crouch
 --- !u!1 &565112784
@@ -543,12 +563,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.SequenceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,28 +710,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - TimerSeconds
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_DelayTimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        TimerSeconds:
-          _isLinked: 1
-          _readerAndWriter:
+        _isLinked: 1
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 1
-          _reader:
-            id: 2
-          _writer:
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 1
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 2
     00000001:
+      type: {class: , ns: , asm: }
+    00000002:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: 1
-    00000002:
-      type: {class: , ns: , asm: }
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,28 +878,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - TimerSeconds
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_DelayTimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        TimerSeconds:
-          _isLinked: 1
-          _readerAndWriter:
+        _isLinked: 1
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 1
-          _reader:
-            id: 2
-          _writer:
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 1
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 2
     00000001:
+      type: {class: , ns: , asm: }
+    00000002:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: 1
-    00000002:
-      type: {class: , ns: , asm: }
 --- !u!1 &1365720264
 GameObject:
   m_ObjectHideFlags: 0
@@ -902,14 +964,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - BreakStates
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_RepeatForeverNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        BreakStates: 0
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
 --- !u!1 &1532516090
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,12 +1026,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Sample.SetAnimatorTriggerNode, AnimatorSample, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Value
+      Builders:
+      - id: 0
   RunOnMainThread: 1
   references:
     version: 1
     00000000:
-      type: {class: SetAnimatorTriggerNode/Serializable, ns: EntitiesBT.Sample, asm: AnimatorSample}
+      type: {class: AnimatorTriggerNameBuilder, ns: EntitiesBT.Sample, asm: AnimatorSample}
       data:
         TriggerName: Jump
 --- !u!1 &2006228425
@@ -1112,7 +1192,7 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
+      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Component}
       data:
         Root: {fileID: 512318347}
         AutoDestroy: 0
@@ -1160,25 +1240,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - TimerSeconds
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
     00000000:
-      type: {class: <Serializable>_DelayTimerNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        TimerSeconds:
-          _isLinked: 1
-          _readerAndWriter:
+        _isLinked: 1
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 1
-          _reader:
-            id: 2
-          _writer:
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
+            id: 1
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          _variant:
             id: 2
     00000001:
+      type: {class: , ns: , asm: }
+    00000002:
       type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: 1
-    00000002:
-      type: {class: , ns: , asm: }

@@ -1,8 +1,12 @@
+using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
+using Nuwa;
+using Nuwa.Blob;
 using Unity.Entities;
+using UnityEngine;
 
 namespace EntitiesBT.Nodes
 {
@@ -38,16 +42,16 @@ namespace EntitiesBT.Nodes
                 return 0;
             }
         }
+    }
 
-        public class Serializable : SerializableNodeData<WeightRandomSelectorNode>
+    public class NormalizedWeightBuilder : PlainDataBuilder<BlobArray<float>>
+    {
+        public int[] Weights;
+
+        public override void Build(BlobBuilder builder, ref BlobArray<float> data)
         {
-            public int[] Weights;
-
-            protected override void Build(ref WeightRandomSelectorNode data, BlobBuilder builder, INodeDataBuilder self, ITreeNode<INodeDataBuilder>[] tree)
-            {
-                float sum = Weights.Sum();
-                builder.AllocateArray(ref data.NormalizedWeights, Weights.Select(w => w / sum).ToArray());
-            }
+            float sum = Weights.Sum();
+            builder.AllocateArray(ref data, Weights.Select(w => w / sum).ToArray());
         }
     }
 }

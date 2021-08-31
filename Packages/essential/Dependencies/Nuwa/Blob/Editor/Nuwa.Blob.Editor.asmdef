@@ -1,0 +1,18 @@
+{
+    "name": "Nuwa.Blob.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:234ce02035d06804fbc60711c8529437",
+        "GUID:6d84eb5386377416e93c122a00485b68",
+        "GUID:abe4851e67df59644865a60dae54a845"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
