@@ -1,4 +1,5 @@
 using System;
+using EntitiesBT.Variant;
 using Nuwa.Blob;
 
 namespace EntitiesBT.DebugView
@@ -20,6 +21,9 @@ namespace EntitiesBT.DebugView
 
             var typeId = blob.GetTypeId(Index);
             DebugComponentLookUp.BEHAVIOR_NODE_ID_TYPE_MAP.TryGetValue(typeId, out _nodeType);
+
+            Default.Register(new BlobVariantROViewer.Factory { Index = Index, Blob = Blob, Blackboard = Blackboard.Value });
+            Runtime.Register(new BlobVariantROViewer.Factory { Index = Index, Blob = Blob, Blackboard = Blackboard.Value });
         }
 
         public override void Tick()

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
+using Unity.Assertions;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
-using Debug = UnityEngine.Debug;
 
 namespace EntitiesBT.Variant
 {
@@ -44,7 +44,7 @@ namespace EntitiesBT.Variant
             var @delegate = DelegateRegistry<ReaderMethodAttribute.Delegate<T, TNodeBlob, TBlackboard>>
                 .TryGetValue(blobVariant.VariantId)
             ;
-            Debug.Assert(@delegate != null, nameof(@delegate) + " != null");
+            Assert.IsNotNull(@delegate, nameof(@delegate) + " != null");
             return @delegate.Invoke(ref blobVariant, index, ref blob, ref bb);
         }
 
@@ -55,7 +55,7 @@ namespace EntitiesBT.Variant
             var @delegate = DelegateRegistry<ReadOnlyPointerMethodAttribute.Delegate<TNodeBlob, TBlackboard>>
                 .TryGetValue(blobVariant.VariantId)
             ;
-            Debug.Assert(@delegate != null, nameof(@delegate) + " != null");
+            Assert.IsNotNull(@delegate, nameof(@delegate) + " != null");
             return @delegate.Invoke(ref blobVariant, index, ref blob, ref bb);
         }
 
@@ -66,7 +66,7 @@ namespace EntitiesBT.Variant
             var @delegate = DelegateRegistry<ReadWritePointerMethodAttribute.Delegate<TNodeBlob, TBlackboard>>
                 .TryGetValue(blobVariant.VariantId)
             ;
-            Debug.Assert(@delegate != null, nameof(@delegate) + " != null");
+            Assert.IsNotNull(@delegate, nameof(@delegate) + " != null");
             return @delegate.Invoke(ref blobVariant, index, ref blob, ref bb);
         }
 
@@ -89,7 +89,7 @@ namespace EntitiesBT.Variant
             var @delegate = DelegateRegistry<RefReaderMethodAttribute.Delegate<T, TNodeBlob, TBlackboard>>
                 .TryGetValue(blobVariant.VariantId)
             ;
-            Debug.Assert(@delegate != null, nameof(@delegate) + " != null");
+            Assert.IsNotNull(@delegate, nameof(@delegate) + " != null");
             return ref @delegate(ref blobVariant, index, ref blob, ref bb);
         }
 
@@ -113,7 +113,7 @@ namespace EntitiesBT.Variant
             var @delegate = DelegateRegistry<WriterMethodAttribute.Delegate<T, TNodeBlob, TBlackboard>>
                 .TryGetValue(blobVariant.VariantId)
             ;
-            Debug.Assert(@delegate != null, nameof(@delegate) + " != null");
+            Assert.IsNotNull(@delegate, nameof(@delegate) + " != null");
             @delegate(ref blobVariant, index, ref blob, ref bb, value);
         }
 

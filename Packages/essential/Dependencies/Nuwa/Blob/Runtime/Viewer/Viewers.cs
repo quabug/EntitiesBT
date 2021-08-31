@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unity.Assertions;
@@ -11,7 +12,7 @@ namespace Nuwa.Blob
 {
     public interface IViewer
     {
-        void View(IntPtr dataPtr, Type type);
+        void View(IntPtr dataPtr, Type type, RuntimeViewerFactoryRegister register);
     }
 
     public interface IDynamicViewerFactory
@@ -32,7 +33,7 @@ namespace Nuwa.Blob
 
     public abstract class Viewer<T> : IViewer where T : unmanaged
     {
-        public unsafe void View(IntPtr dataPtr, Type type)
+        public unsafe void View(IntPtr dataPtr, Type type, RuntimeViewerFactoryRegister register)
         {
             Assert.AreEqual(type, typeof(T));
             View(ref UnsafeUtility.AsRef<T>(dataPtr.ToPointer()));
@@ -60,7 +61,7 @@ namespace Nuwa.Blob
     {
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IViewer[] Elements;
 
-        public unsafe void View(IntPtr dataPtr, Type type)
+        public unsafe void View(IntPtr dataPtr, Type type, RuntimeViewerFactoryRegister register)
         {
             Assert.IsTrue(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BlobArray<>));
             ref var offsetPtr = ref UnsafeUtility.AsRef<int>(dataPtr.ToPointer());
@@ -68,7 +69,7 @@ namespace Nuwa.Blob
             var elementType = type.GenericTypeArguments[0];
             Array.Resize(ref Elements, length);
 
-            var viewerFactory = elementType.FindViewerType();
+            var viewerFactory = register.FindFactory(elementType);
             var elementSize = UnsafeUtility.SizeOf(elementType);
             var arrayPtr = dataPtr + offsetPtr;
 
@@ -77,7 +78,7 @@ namespace Nuwa.Blob
                 if (Elements[i] == null || Elements[i].GetType() != viewerFactory.Type)
                     Elements[i] = (IViewer) viewerFactory.Create();
                 var elementPtr = arrayPtr + elementSize * i;
-                Elements[i].View(elementPtr, elementType);
+                Elements[i].View(elementPtr, elementType, register);
             }
         }
 
@@ -103,7 +104,7 @@ namespace Nuwa.Blob
         public string TypeName;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IViewer[] FieldsViewer;
 
-        public void View(IntPtr dataPtr, Type type)
+        public void View(IntPtr dataPtr, Type type, RuntimeViewerFactoryRegister register)
         {
             Assert.IsTrue(!type.IsPrimitive && !type.IsEnum && type.IsValueType);
             TypeName = type.AssemblyQualifiedName;
@@ -112,11 +113,11 @@ namespace Nuwa.Blob
             for (var i = 0; i < fields.Length; i++)
             {
                 var field = fields[i];
-                var viewerFactory = field.FieldType.FindViewerType(field);
+                var viewerFactory = register.FindFactory(field.FieldType, field);
                 if (FieldsViewer[i] == null || FieldsViewer[i].GetType() != viewerFactory.Type)
                     FieldsViewer[i] = (IViewer) viewerFactory.Create();
                 var fieldOffset = UnsafeUtility.GetFieldOffset(field);
-                FieldsViewer[i].View(dataPtr + fieldOffset, field.FieldType);
+                FieldsViewer[i].View(dataPtr + fieldOffset, field.FieldType, register);
             }
         }
 
@@ -141,14 +142,14 @@ namespace Nuwa.Blob
     {
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IViewer Value;
 
-        public unsafe void View(IntPtr dataPtr, Type type)
+        public unsafe void View(IntPtr dataPtr, Type type, RuntimeViewerFactoryRegister register)
         {
             Assert.IsTrue(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BlobPtr<>));
             var dataType = type.GenericTypeArguments[0];
-            var viewerFactory = dataType.FindViewerType();
+            var viewerFactory = register.FindFactory(dataType);
             if (Value == null || Value.GetType() != viewerFactory.Type) Value = (IViewer) viewerFactory.Create();
             ref var offsetPtr = ref UnsafeUtility.AsRef<int>(dataPtr.ToPointer());
-            Value.View(dataPtr + offsetPtr, dataType);
+            Value.View(dataPtr + offsetPtr, dataType, register);
         }
 
         public class Factory : DynamicViewerFactory<DynamicPtrViewer>
@@ -173,7 +174,7 @@ namespace Nuwa.Blob
         public long Ptr;
         public string EnumType;
 
-        public void View(IntPtr dataPtr, Type type)
+        public void View(IntPtr dataPtr, Type type, RuntimeViewerFactoryRegister register)
         {
             Assert.IsTrue(type.IsEnum);
             Ptr = dataPtr.ToInt64();
@@ -196,9 +197,27 @@ namespace Nuwa.Blob
         }
     }
 
+    public class RuntimeViewerFactoryRegister
+    {
+        private readonly SortedList<int, IDynamicViewerFactory> _factories = new SortedList<int, IDynamicViewerFactory>();
+
+        public void Register(IDynamicViewerFactory factory)
+        {
+            Assert.IsFalse(_factories.ContainsValue(factory));
+            _factories.Add(factory.Order, factory);
+        }
+
+        public TypeFactory FindFactory(Type dataType, FieldInfo fieldInfo = null)
+        {
+            var factory = _factories.Values.FirstOrDefault(f => f.IsValid(dataType, fieldInfo));
+            if (factory != null) return new TypeFactory(dataType, () => factory.Create(dataType, fieldInfo));
+            return dataType.FindViewerFactory(fieldInfo);
+        }
+    }
+
     static class ViewerExtension
     {
-        public static TypeFactory FindViewerType(this Type dataType, FieldInfo fieldInfo = null)
+        public static TypeFactory FindViewerFactory(this Type dataType, FieldInfo fieldInfo = null)
         {
             var viewerType = typeof(Viewer<>).MakeGenericType(dataType);
             viewerType = TypeCache.GetTypesDerivedFrom(viewerType).SingleOrDefault();

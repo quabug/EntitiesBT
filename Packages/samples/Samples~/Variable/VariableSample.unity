@@ -516,12 +516,10 @@ MonoBehaviour:
       data:
         ComponentValueName: EntitiesBT.Sample.ComponentVariableData.LongValue
     0000000B:
-      type: {class: <IVariantReader>/SingleScriptableObjectVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        ScriptableObject: {fileID: 11400000, guid: cee16ca8c8b594efb867f66c8d699937,
-          type: 2}
-        ScriptableObjectValueName: AnotherFloatValue
+        Value: 12333
     0000000C:
       type: {class: <IVariantReader>/SingleNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
