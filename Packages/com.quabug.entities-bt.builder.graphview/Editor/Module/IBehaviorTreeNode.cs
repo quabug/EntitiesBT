@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public interface IBehaviorTreeNode
+    public interface IBehaviorTreeNode : IDisposable
     {
         int Id { get; }
         string Name { get; }

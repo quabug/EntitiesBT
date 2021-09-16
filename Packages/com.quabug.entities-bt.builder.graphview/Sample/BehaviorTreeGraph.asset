@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: BehaviorTreeGraph
   m_EditorClassIdentifier: 
   Prefab: {fileID: 0}
-  RootPosition: {x: 0, y: 0}
-  _nodeList: []
+  _rootNodeIndex: 0
+  _nodePositionList: []
+  _nodeReferenceList: []

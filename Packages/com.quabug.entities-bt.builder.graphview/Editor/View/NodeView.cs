@@ -1,13 +1,14 @@
+using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public class NodeView : Node
+    public class NodeView : Node, IDisposable
     {
         public int Id { get; }
 
-        private IBehaviorTreeNode _node;
+        private readonly IBehaviorTreeNode _node;
 
         public NodeView(IBehaviorTreeNode node)
         {
@@ -31,6 +32,11 @@ namespace EntitiesBT.Editor
         {
             base.SetPosition(newPos);
             _node.Position = newPos.position;
+        }
+
+        public void Dispose()
+        {
+            _node.Dispose();
         }
     }
 }

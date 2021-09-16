@@ -46,17 +46,22 @@ namespace EntitiesBT.Editor
 
             GraphViewChange OnGraphChanged(GraphViewChange @event)
             {
-                // foreach (var moved in @event.movedElements)
-                // {
-                //     if (moved is NodeView node)
-                //         _graph.MoveNode(node.Id, node.Position);
-                // }
+                if (@event.elementsToRemove != null)
+                {
+                    foreach (var node in @event.elementsToRemove.OfType<NodeView>()) node.Dispose();
+                }
                 return @event;
             }
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
+            if (selection != null && selection.Any())
+            {
+                evt.menu.AppendAction("Delete", _ => DeleteSelection());
+                evt.menu.AppendSeparator();
+            }
+
             var types = TypeCache.GetTypesWithAttribute<BehaviorNodeAttribute>();
             foreach (var (type, attribute) in
                 from type in types

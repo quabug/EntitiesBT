@@ -13,93 +13,92 @@ using UnityEngine.Assertions;
 namespace EntitiesBT.Editor
 {
     [CreateAssetMenu(fileName = "BehaviorTreeGraph", menuName = "EntitiesBT/BehaviorTreeGraph", order = 0)]
-    public class BehaviorTreeGraph : ScriptableObject, IBehaviorTreeGraph, ISerializationCallbackReceiver
+    public class BehaviorTreeGraph : ScriptableObject, IBehaviorTreeGraph
     {
         [Serializable]
         private class Node : IBehaviorTreeNode
         {
             private readonly BehaviorTreeGraph _graph;
 
+            public GameObject Prefab { get; }
+
+            // TODO: optimize?
+            public int Id => _graph._nodePrefabList.IndexOf(Prefab);
+            public string Name => Prefab.name;
             public Vector2 Position
             {
                 get => _graph._nodePositionList[Id];
                 set => _graph._nodePositionList[Id] = value;
             }
-            public int Id { get; set; }
-            public string Name => Reference.name;
-            public GameObject Reference => _graph._nodeReferenceList[Id];
 
-            public Node(BehaviorTreeGraph graph, int id)
+            public Node(BehaviorTreeGraph graph, GameObject prefab)
             {
                 _graph = graph;
-                Id = id;
+                Prefab = prefab;
+            }
+
+            public void Dispose()
+            {
+                _graph.RemoveNodeAt(Id);
             }
         }
 
-        private readonly List<Node> _nodes = new List<Node>();
+        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private int _rootNodeIndex;
 
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] internal GameObject Prefab;
-        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private int _rootNodeIndex;
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<Vector2> _nodePositionList = new List<Vector2>();
-        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<GameObject> _nodeReferenceList = new List<GameObject>();
+        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<GameObject> _nodePrefabList = new List<GameObject>();
 
         private string PrefabPath => AssetDatabase.GetAssetPath(Prefab);
         public string Name => name;
+        private GameObject InstanceRoot => PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot;
 
-        private IDictionary<GameObject, int> _objectIdMap;
+        private readonly Lazy<List<Node>> _nodes;
+
+        public BehaviorTreeGraph()
+        {
+            _nodes = new Lazy<List<Node>>(() => _nodePrefabList.Select(prefab => new Node(this, prefab)).ToList());
+        }
+
+        IDictionary<GameObject, int> ToNodeMap(List<GameObject> nodes)
+        {
+            return nodes.Select((node, index) => (node, index)).ToDictionary(t => t.node, t => t.index);
+        }
 
         public IBehaviorTreeNode AddNode(Type nodeType, Vector2 position)
         {
-            EnsureNodeList();
-
-            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
-            Assert.IsNotNull(prefabStage);
             CreateNodeObject();
             SavePrefab();
-            var nodeId = AddObject();
-            return new Node(this, nodeId);
+            return CreateAndAddNode();
 
             GameObject CreateNodeObject()
             {
                 var node = new GameObject();
-                node.transform.SetParent(prefabStage.prefabContentsRoot.transform);
+                node.transform.SetParent(InstanceRoot.transform);
                 var dynamicNode = node.AddComponent<BTDynamicNode>();
                 dynamicNode.NodeData = new NodeAsset { NodeType = nodeType.AssemblyQualifiedName };
                 node.name = nodeType.Name;
                 return node;
             }
 
-            void SavePrefab()
+            Node CreateAndAddNode()
             {
-                // force save the prefab asset to be able to fetch saved GameObject from it
-                PrefabUtility.SaveAsPrefabAsset(prefabStage.prefabContentsRoot, PrefabPath);
-                // EditorSceneManager.MarkSceneDirty(prefabStage.scene);
-            }
-
-            int AddObject()
-            {
-                Assert.AreEqual(_nodePositionList.Count, _objectIdMap.Count);
-                Assert.AreEqual(_nodeReferenceList.Count, _objectIdMap.Count);
-
                 var addedObject = Prefab.transform.GetChild(Prefab.transform.childCount - 1).gameObject;
                 return AddNode(addedObject, position);
             }
         }
 
-        public void OnBeforeSerialize() {}
-
-        public void OnAfterDeserialize()
+        private void SavePrefab()
         {
-            _objectIdMap = _nodeReferenceList
-                .Select((node, index) => (node, index))
-                .ToDictionary(t => t.node, t => t.index)
-            ;
+            // force save the prefab asset to be able to fetch saved GameObject from it
+            PrefabUtility.SaveAsPrefabAsset(InstanceRoot, PrefabPath);
+            // EditorSceneManager.MarkSceneDirty(prefabStage.scene);
         }
 
         public IEnumerator<IBehaviorTreeNode> GetEnumerator()
         {
             EnsureNodeList();
-            return _nodeReferenceList.Select((_, index) => new Node(this, index)).GetEnumerator();
+            return _nodes.Value.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -107,61 +106,65 @@ namespace EntitiesBT.Editor
             return GetEnumerator();
         }
 
-        private int AddNode(GameObject reference, Vector2 position)
+        private Node AddNode(GameObject prefab, Vector2 position)
         {
-            var id = _nodeReferenceList.Count;
-            _nodeReferenceList.Add(reference);
+            _nodePrefabList.Add(prefab);
             _nodePositionList.Add(position);
-            _objectIdMap.Add(reference, id);
-            _nodes.Add(new Node(this, id));
-            return id;
+            var node = new Node(this, prefab);
+            _nodes.Value.Add(node);
+            return node;
         }
 
-        private void RemoveNodesAt(IEnumerable<int> indices)
+        private void RemoveNodeAt(int index)
         {
-            foreach (var index in indices.OrderByDescending(i => i))
+            var prefab = _nodePrefabList[index];
+            _nodePrefabList.RemoveAt(index);
+            _nodePositionList.RemoveAt(index);
+            _nodes.Value.RemoveAt(index);
+
+            DestroyImmediate(FindCorrespondingInstance(prefab));
+            SavePrefab();
+        }
+
+        GameObject FindCorrespondingInstance(GameObject prefab)
+        {
+            return FindGameObjectByIndices(InstanceRoot, FindIndices(prefab));
+
+            Stack<int> FindIndices(GameObject targetPrefab)
             {
-                var reference = _nodeReferenceList[index];
-                _nodeReferenceList.RemoveAt(index);
-                _nodePositionList.RemoveAt(index);
-                _objectIdMap.Remove(reference);
+                var indices = new Stack<int>();
+                var transform = targetPrefab.transform;
+                while (transform.parent != null)
+                {
+                    indices.Push(transform.GetSiblingIndex());
+                    transform = transform.parent;
+                }
+                return indices;
             }
-            ResetNodes();
+
+            GameObject FindGameObjectByIndices(GameObject root, Stack<int> indices)
+            {
+                var transform = root.transform;
+                while (indices.Count > 0) transform = transform.GetChild(indices.Pop());
+                return transform.gameObject;
+            }
         }
 
-        private void ResetNodes()
+        private void RemoveMultipleNodes(IEnumerable<int> indices)
         {
-            for (var id = 0; id < _nodes.Count; id++) _nodes[id].Id = id;
+            foreach (var index in indices.OrderByDescending(i => i)) RemoveNodeAt(index);
         }
 
         private void EnsureNodeList()
         {
-            Assert.IsTrue(ValidateNodeList());
-
-            var nodeKeys = new HashSet<GameObject>(_nodeReferenceList);
+            var nodeMap = ToNodeMap(_nodePrefabList);
             foreach (var descendant in Prefab.Descendants())
             {
-                if (!nodeKeys.Contains(descendant) && descendant.GetComponent<INodeDataBuilder>() != null)
+                if (!nodeMap.ContainsKey(descendant) && descendant.GetComponent<INodeDataBuilder>() != null)
                     AddNode(descendant, Vector2.zero);
-                nodeKeys.Remove(descendant);
+                nodeMap.Remove(descendant);
             }
-
-            RemoveNodesAt(nodeKeys.Select(key => _objectIdMap[key]));
-        }
-
-        bool ValidateNodeList()
-        {
-            if (_nodeReferenceList.Count != _nodePositionList.Count) return false;
-            if (_nodeReferenceList.Count != _objectIdMap.Count) return false;
-
-            return _nodeReferenceList
-                .Select((node, index) => (node, index))
-                .All(t =>
-                {
-                    var (reference, index) = t;
-                    var hasObject = _objectIdMap.TryGetValue(reference, out var objectIndex);
-                    return hasObject && objectIndex == index;
-                });
+            RemoveMultipleNodes(nodeMap.Values);
         }
     }
 }
