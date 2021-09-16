@@ -12,7 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466c8a3962f124f9a9790f01ebd879bc, type: 3}
   m_Name: BehaviorTreeGraph
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 0}
   _rootNodeIndex: 0
-  _nodePositionList: []
-  _nodeReferenceList: []
+  Prefab: {fileID: 4956237284023093843, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}
+  _nodePositionList:
+  - {x: 65.5, y: 104.5}
+  - {x: 483, y: 27.5}
+  - {x: 260, y: 181.5}
+  - {x: 483, y: 318}
+  - {x: 260, y: 307.5}
+  - {x: 260, y: 16.139984}
+  _nodePrefabList:
+  - {fileID: 6326522086552561172, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}
+  - {fileID: 5686794348555813007, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}
+  - {fileID: 8210318212660104434, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}
+  - {fileID: 8786287652970311522, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}
+  - {fileID: 3767470188353967569, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}
+  - {fileID: 7541701986439081900, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
@@ -52,6 +53,17 @@ namespace EntitiesBT.Editor
                 }
                 return @event;
             }
+        }
+
+        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        {
+            var compatiblePorts = new List<Port>();
+            ports.ForEach(port =>
+            {
+                if (port.direction != startPort.direction && port.node != startPort.node && port.portType == startPort.portType)
+                    compatiblePorts.Add(port);
+            });
+            return compatiblePorts;
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)

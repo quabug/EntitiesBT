@@ -8,7 +8,6 @@ using Nuwa;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace EntitiesBT.Editor
 {
@@ -30,6 +29,8 @@ namespace EntitiesBT.Editor
                 get => _graph._nodePositionList[Id];
                 set => _graph._nodePositionList[Id] = value;
             }
+
+            public BehaviorNodeType NodeType => Prefab.GetComponent<BTDynamicNode>().BehaviorNodeType;
 
             public Node(BehaviorTreeGraph graph, GameObject prefab)
             {
