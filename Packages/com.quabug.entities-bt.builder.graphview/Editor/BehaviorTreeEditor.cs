@@ -20,16 +20,39 @@ namespace EntitiesBT.Editor
             void ClearEditorView(PrefabStage _) => ResetEditorView(null);
         }
 
-        static void ResetEditorView()
+        [MenuItem("EntitiesBT/BehaviorTreeEditor")]
+        public static void ShowEditor()
+        {
+            GetWindow();
+            ResetEditorView();
+        }
+
+        public void CreateGUI()
+        {
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Packages/com.quabug.entities-bt.builder.graphview/Editor/BehaviorTreeEditor.uxml");
+            visualTree.CloneTree(rootVisualElement);
+
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Packages/com.quabug.entities-bt.builder.graphview/Editor/BehaviorTreeEditor.uss");
+            rootVisualElement.styleSheets.Add(styleSheet);
+
+            ResetEditorView();
+        }
+
+        private static BehaviorTreeEditor GetWindow()
+        {
+            return GetWindow<BehaviorTreeEditor>("BehaviorTree");
+        }
+
+        private static void ResetEditorView()
         {
             ResetEditorView(PrefabStageUtility.GetCurrentPrefabStage());
         }
 
-        static void ResetEditorView([CanBeNull] PrefabStage prefabStage)
+        private static void ResetEditorView([CanBeNull] PrefabStage prefabStage)
         {
             if (!HasOpenInstances<BehaviorTreeEditor>()) return;
 
-            var window = GetWindow<BehaviorTreeEditor>();
+            var window = GetWindow();
             var graph = prefabStage == null ? null : FindGraph();
             window.rootVisualElement.Q<BehaviorTreeView>().Reset(graph);
 
@@ -38,28 +61,6 @@ namespace EntitiesBT.Editor
                 var graphPath = Path.ChangeExtension(prefabStage.assetPath, "asset");
                 return AssetDatabase.LoadAssetAtPath<BehaviorTreeGraph>(graphPath);
             }
-        }
-
-        [MenuItem("EntitiesBT/BehaviorTreeEditor")]
-        public static void ShowEditor()
-        {
-            GetWindow<BehaviorTreeEditor>();
-            ResetEditorView();
-        }
-
-        public void CreateGUI()
-        {
-            // Each editor window contains a root VisualElement object
-            VisualElement root = rootVisualElement;
-
-            // Import UXML
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Packages/com.quabug.entities-bt.builder.graphview/Editor/BehaviorTreeEditor.uxml");
-            visualTree.CloneTree(root);
-
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Packages/com.quabug.entities-bt.builder.graphview/Editor/BehaviorTreeEditor.uss");
-            root.styleSheets.Add(styleSheet);
-
-            ResetEditorView();
         }
 
         private void OnSelectionChange()

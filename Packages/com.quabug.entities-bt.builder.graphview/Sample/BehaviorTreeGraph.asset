@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52c094a6b6b24234b64246534c1ba2ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 466c8a3962f124f9a9790f01ebd879bc, type: 3}
   m_Name: BehaviorTreeGraph
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 8533897703554012430, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}
-  _nodeList:
-  - Position: {x: 0, y: 0}
-    Reference: {fileID: 8533897703554012430, guid: 5eba86f94f077244c985fc0b1cb2228e,
-      type: 3}
-  - Position: {x: 498, y: 293}
-    Reference: {fileID: 4255843290516030029, guid: 5eba86f94f077244c985fc0b1cb2228e,
-      type: 3}
+  Prefab: {fileID: 0}
+  RootPosition: {x: 0, y: 0}
+  _nodeList: []
