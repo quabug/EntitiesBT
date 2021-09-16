@@ -39,5 +39,23 @@ namespace EntitiesBT.Components
         {
             return !gameObject.scene.IsValid() && !gameObject.scene.isLoaded;
         }
+
+        [Pure]
+        public static IEnumerable<GameObject> DescendantsAndSelf(this GameObject gameObject)
+        {
+            yield return gameObject;
+
+            foreach (var descendant in
+                from child in Children(gameObject)
+                from descendant in DescendantsAndSelf(child)
+                select descendant
+            ) yield return descendant;
+        }
+
+        [Pure]
+        public static IEnumerable<GameObject> Descendants(this GameObject gameObject)
+        {
+            return DescendantsAndSelf(gameObject).Skip(1); // skip self
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -82,8 +83,8 @@ namespace Nuwa.Editor
                 {
                     i++;
                     var itemIndex = int.Parse(_arrayData.Match(pathList[i]).Groups[1].Value);
-                    var array = ((Array)obj);
-                    obj = array != null && itemIndex < array.Length ? array.GetValue(itemIndex) : null;
+                    var array = (IList)obj;
+                    obj = array != null && itemIndex < array.Count ? array[itemIndex] : null;
                     yield return (obj, fi);
                 }
                 else

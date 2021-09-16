@@ -1,16 +1,14 @@
 {
-    "name": "EntitiesBT.Builder.GraphView.Editor",
-    "rootNamespace": "EntitiesBT.Editor",
+    "name": "EntitiesBT.Builder.GraphView",
+    "rootNamespace": "",
     "references": [
         "GUID:c7babe7561eb244059259745ef27b866",
         "GUID:abe4851e67df59644865a60dae54a845",
-        "GUID:f320ee23a990e5640812e0939a441a2b"
+        "GUID:734d92eba21c94caba915361bd5ac177"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
