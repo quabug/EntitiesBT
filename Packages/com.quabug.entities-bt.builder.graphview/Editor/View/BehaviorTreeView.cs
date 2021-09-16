@@ -46,11 +46,11 @@ namespace EntitiesBT.Editor
 
             GraphViewChange OnGraphChanged(GraphViewChange @event)
             {
-                foreach (var moved in @event.movedElements)
-                {
-                    if (moved is NodeView node)
-                        _graph.MoveNode(node.Id, node.Position);
-                }
+                // foreach (var moved in @event.movedElements)
+                // {
+                //     if (moved is NodeView node)
+                //         _graph.MoveNode(node.Id, node.Position);
+                // }
                 return @event;
             }
         }
@@ -77,7 +77,7 @@ namespace EntitiesBT.Editor
             }
         }
 
-        private void CreateNode(in BehaviorTreeGraphNode node)
+        private void CreateNode(IBehaviorTreeNode node)
         {
             AddElement(new NodeView(node));
         }

@@ -12,62 +12,43 @@ using UnityEngine.Assertions;
 
 namespace EntitiesBT.Editor
 {
-    public interface IBehaviorTreeGraph : IEnumerable<BehaviorTreeGraphNode>
-    {
-        string Name { get; }
-        BehaviorTreeGraphNode AddNode(Type nodeType, Vector2 position);
-        BehaviorTreeGraphNode MoveNode(int id, Vector2 position);
-    }
-
-    public readonly struct BehaviorTreeGraphNode
-    {
-        public readonly int Id;
-        public readonly string Title;
-        public readonly Vector2 Position;
-
-        public BehaviorTreeGraphNode(int id, string title, Vector2 position)
-        {
-            Id = id;
-            Title = title;
-            Position = position;
-        }
-    }
-
     [CreateAssetMenu(fileName = "BehaviorTreeGraph", menuName = "EntitiesBT/BehaviorTreeGraph", order = 0)]
-    public class BehaviorTreeGraph : ScriptableObject, IBehaviorTreeGraph
+    public class BehaviorTreeGraph : ScriptableObject, IBehaviorTreeGraph, ISerializationCallbackReceiver
     {
         [Serializable]
-        private class Node
+        private class Node : IBehaviorTreeNode
         {
-            public GameObject Reference;
-            public Vector2 Position;
+            private readonly BehaviorTreeGraph _graph;
+
+            public Vector2 Position
+            {
+                get => _graph._nodePositionList[Id];
+                set => _graph._nodePositionList[Id] = value;
+            }
+            public int Id { get; set; }
+            public string Name => Reference.name;
+            public GameObject Reference => _graph._nodeReferenceList[Id];
+
+            public Node(BehaviorTreeGraph graph, int id)
+            {
+                _graph = graph;
+                Id = id;
+            }
         }
 
-        private const int _rootId = -1;
-        private const string _rootName = "Root";
+        private readonly List<Node> _nodes = new List<Node>();
 
-        [Nuwa.ReadOnly, UnityDrawProperty] public GameObject Prefab;
-        [Nuwa.ReadOnly, UnityDrawProperty] public Vector2 RootPosition;
-        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<Node> _nodeList = new List<Node>();
+        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] internal GameObject Prefab;
+        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private int _rootNodeIndex;
+        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<Vector2> _nodePositionList = new List<Vector2>();
+        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<GameObject> _nodeReferenceList = new List<GameObject>();
 
         private string PrefabPath => AssetDatabase.GetAssetPath(Prefab);
         public string Name => name;
 
-        private Lazy<IDictionary<GameObject, int>> _objectIdMap;
+        private IDictionary<GameObject, int> _objectIdMap;
 
-        public BehaviorTreeGraph()
-        {
-            ResetObjectIdMap();
-        }
-
-        void ResetObjectIdMap()
-        {
-            _objectIdMap = new Lazy<IDictionary<GameObject, int>>(
-                () => _nodeList.Select((node, index) => (node, index)).ToDictionary(t => t.node.Reference, t => t.index)
-            );
-        }
-
-        public BehaviorTreeGraphNode AddNode(Type nodeType, Vector2 position)
+        public IBehaviorTreeNode AddNode(Type nodeType, Vector2 position)
         {
             EnsureNodeList();
 
@@ -76,7 +57,7 @@ namespace EntitiesBT.Editor
             CreateNodeObject();
             SavePrefab();
             var nodeId = AddObject();
-            return new BehaviorTreeGraphNode(nodeId, _nodeList[nodeId].Reference.name, position);
+            return new Node(this, nodeId);
 
             GameObject CreateNodeObject()
             {
@@ -97,97 +78,90 @@ namespace EntitiesBT.Editor
 
             int AddObject()
             {
-                Assert.AreEqual(_nodeList.Count, _objectIdMap.Value.Count);
-                var id = _nodeList.Count;
+                Assert.AreEqual(_nodePositionList.Count, _objectIdMap.Count);
+                Assert.AreEqual(_nodeReferenceList.Count, _objectIdMap.Count);
+
                 var addedObject = Prefab.transform.GetChild(Prefab.transform.childCount - 1).gameObject;
-                _nodeList.Add(new Node { Reference = addedObject, Position = position });
-                _objectIdMap.Value.Add(addedObject, id);
-                return id;
+                return AddNode(addedObject, position);
             }
         }
 
-        public BehaviorTreeGraphNode MoveNode(int id, Vector2 position)
-        {
-            SetNodePosition(id, position);
-            return GetNodeData(id);
-        }
+        public void OnBeforeSerialize() {}
 
-        private void SetNodePosition(int id, Vector2 position)
+        public void OnAfterDeserialize()
         {
-            if (id == _rootId) RootPosition = position;
-            else _nodeList[id].Position = position;
-        }
-
-        private BehaviorTreeGraphNode GetNodeData(int id)
-        {
-            return id == _rootId
-                ? GetRootNode()
-                : new BehaviorTreeGraphNode(id, _nodeList[id].Reference.name, _nodeList[id].Position)
+            _objectIdMap = _nodeReferenceList
+                .Select((node, index) => (node, index))
+                .ToDictionary(t => t.node, t => t.index)
             ;
         }
 
-        private BehaviorTreeGraphNode GetRootNode()
-        {
-            return new BehaviorTreeGraphNode(_rootId, _rootName, RootPosition);
-        }
-
-        public void Remove()
-        {
-
-        }
-
-        public void Connect()
-        {
-
-        }
-
-        public IEnumerator<BehaviorTreeGraphNode> GetEnumerator()
+        public IEnumerator<IBehaviorTreeNode> GetEnumerator()
         {
             EnsureNodeList();
-            var root = GetRootNode();
-            return _nodeList.Select((node, index) => GetNodeData(index)).Append(root).GetEnumerator();
-        }
-
-        private void EnsureNodeList()
-        {
-            Assert.AreEqual(_nodeList.Count, _objectIdMap.Value.Count);
-            Assert.IsTrue(CheckNodeListMap());
-
-            var nodeKeys = new HashSet<GameObject>(_objectIdMap.Value.Keys);
-            foreach (var descendant in Prefab.Descendants())
-            {
-                if (!nodeKeys.Contains(descendant) && descendant.GetComponent<INodeDataBuilder>() != null)
-                {
-                    var id = _nodeList.Count;
-                    _nodeList.Add(new Node { Reference = descendant, Position = Vector2.zero });
-                    _objectIdMap.Value.Add(descendant, id);
-                }
-                nodeKeys.Remove(descendant);
-            }
-
-            foreach (var removedIndex in nodeKeys.Select(key => _objectIdMap.Value[key]).OrderByDescending(i => i))
-            {
-                var nodeObject = _nodeList[removedIndex].Reference;
-                _nodeList.RemoveAt(removedIndex);
-                _objectIdMap.Value.Remove(nodeObject);
-            }
-
-            bool CheckNodeListMap()
-            {
-                return _nodeList
-                    .Select((node, index) => (node.Reference, index))
-                    .All(t =>
-                    {
-                        var (reference, index) = t;
-                        var hasObject = _objectIdMap.Value.TryGetValue(reference, out var objectIndex);
-                        return hasObject && objectIndex == index;
-                    });
-            }
+            return _nodeReferenceList.Select((_, index) => new Node(this, index)).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private int AddNode(GameObject reference, Vector2 position)
+        {
+            var id = _nodeReferenceList.Count;
+            _nodeReferenceList.Add(reference);
+            _nodePositionList.Add(position);
+            _objectIdMap.Add(reference, id);
+            _nodes.Add(new Node(this, id));
+            return id;
+        }
+
+        private void RemoveNodesAt(IEnumerable<int> indices)
+        {
+            foreach (var index in indices.OrderByDescending(i => i))
+            {
+                var reference = _nodeReferenceList[index];
+                _nodeReferenceList.RemoveAt(index);
+                _nodePositionList.RemoveAt(index);
+                _objectIdMap.Remove(reference);
+            }
+            ResetNodes();
+        }
+
+        private void ResetNodes()
+        {
+            for (var id = 0; id < _nodes.Count; id++) _nodes[id].Id = id;
+        }
+
+        private void EnsureNodeList()
+        {
+            Assert.IsTrue(ValidateNodeList());
+
+            var nodeKeys = new HashSet<GameObject>(_nodeReferenceList);
+            foreach (var descendant in Prefab.Descendants())
+            {
+                if (!nodeKeys.Contains(descendant) && descendant.GetComponent<INodeDataBuilder>() != null)
+                    AddNode(descendant, Vector2.zero);
+                nodeKeys.Remove(descendant);
+            }
+
+            RemoveNodesAt(nodeKeys.Select(key => _objectIdMap[key]));
+        }
+
+        bool ValidateNodeList()
+        {
+            if (_nodeReferenceList.Count != _nodePositionList.Count) return false;
+            if (_nodeReferenceList.Count != _objectIdMap.Count) return false;
+
+            return _nodeReferenceList
+                .Select((node, index) => (node, index))
+                .All(t =>
+                {
+                    var (reference, index) = t;
+                    var hasObject = _objectIdMap.TryGetValue(reference, out var objectIndex);
+                    return hasObject && objectIndex == index;
+                });
         }
     }
 }

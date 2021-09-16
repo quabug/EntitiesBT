@@ -6,11 +6,14 @@ namespace EntitiesBT.Editor
     public class NodeView : Node
     {
         public int Id { get; }
-        public Vector2 Position => transform.position;
 
-        public NodeView(in BehaviorTreeGraphNode node)
+        private IBehaviorTreeNode _node;
+
+        public NodeView(IBehaviorTreeNode node)
         {
-            title = node.Title;
+            _node = node;
+
+            title = node.Name;
             Id = node.Id;
             viewDataKey = Id.ToString();
 
@@ -22,6 +25,12 @@ namespace EntitiesBT.Editor
         {
             get => base.title;
             set => base.title = value;
+        }
+
+        public override void SetPosition(Rect newPos)
+        {
+            base.SetPosition(newPos);
+            _node.Position = newPos.position;
         }
     }
 }
