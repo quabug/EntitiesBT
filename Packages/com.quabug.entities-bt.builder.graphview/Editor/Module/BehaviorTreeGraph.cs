@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Components;
@@ -76,19 +75,31 @@ namespace EntitiesBT.Editor
 
         private string PrefabPath => AssetDatabase.GetAssetPath(Prefab);
         public string Name => name;
-        private GameObject InstanceRoot => PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot;
+        private GameObject RootInstance => PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot;
 
-        private readonly Lazy<List<Node>> _nodes;
-        private readonly Lazy<IDictionary<GameObject, int>> _objectIdMap;
+        private Lazy<List<Node>> _nodes;
+        private Lazy<IDictionary<GameObject, int>> _objectIdMap;
 
         public BehaviorTreeGraph()
         {
+            ResetNodes();
+            ResetObjectIdMap();
+        }
+
+        void ResetNodes()
+        {
             _nodes = new Lazy<List<Node>>(() => _nodePrefabList.Select(prefab => new Node(this, prefab)).ToList());
+        }
+
+        void ResetObjectIdMap()
+        {
             _objectIdMap = new Lazy<IDictionary<GameObject, int>>(() => ToNodeMap(_nodePrefabList));
         }
 
         public void RecreateData()
         {
+            ResetNodes();
+            ResetObjectIdMap();
             EnsureNodeList();
         }
 
@@ -106,7 +117,7 @@ namespace EntitiesBT.Editor
             GameObject CreateNodeObject()
             {
                 var node = new GameObject();
-                node.transform.SetParent(InstanceRoot.transform);
+                node.transform.SetParent(RootInstance.transform);
                 var dynamicNode = node.AddComponent<BTDynamicNode>();
                 dynamicNode.NodeData = new NodeAsset { NodeType = nodeType.AssemblyQualifiedName };
                 node.name = nodeType.Name;
@@ -123,7 +134,7 @@ namespace EntitiesBT.Editor
         private void ForceSavePrefab()
         {
             // force save the prefab asset to be able to fetch saved GameObject from it immediately
-            PrefabUtility.SaveAsPrefabAsset(InstanceRoot, PrefabPath);
+            PrefabUtility.SaveAsPrefabAsset(RootInstance, PrefabPath);
         }
 
         private void SavePrefab()
@@ -175,16 +186,24 @@ namespace EntitiesBT.Editor
             _nodePositionList.RemoveAt(index);
             _nodes.Value.RemoveAt(index);
 
+            ResetNodes();
+            ResetObjectIdMap();
+
             EditorUtility.SetDirty(this);
 
-            if (prefab != null) DestroyImmediate(FindCorrespondingInstance(prefab));
+            if (prefab != null)
+            {
+                var instance = FindCorrespondingInstance(prefab);
+                foreach (var child in instance.Children().Reverse()) child.transform.SetParent(RootInstance.transform);
+                DestroyImmediate(instance);
+            }
             SavePrefab();
         }
 
         GameObject FindCorrespondingInstance(GameObject prefab)
         {
             var indices = prefab.FindHierarchyIndices();
-            return InstanceRoot.FindGameObjectByHierarchyIndices(indices.Skip(1) /* skip root */);
+            return RootInstance.FindGameObjectByHierarchyIndices(indices.Skip(1) /* skip root */);
         }
 
         GameObject FindCorrespondingPrefab(GameObject instance)

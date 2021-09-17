@@ -50,8 +50,12 @@ namespace EntitiesBT.Editor
             {
                 if (@event.elementsToRemove != null)
                 {
-                    foreach (var node in @event.elementsToRemove.OfType<NodeView>()) node.Dispose();
                     foreach (var edge in @event.elementsToRemove.OfType<Edge>()) OnEdgeDeleted(edge);
+                    foreach (var node in @event.elementsToRemove.OfType<NodeView>().ToArray())
+                    {
+                        node.Dispose();
+                        @event.elementsToRemove.AddRange(edges.ToList().Where(edge => edge.input.node == node || edge.output.node == node));
+                    }
                 }
 
                 if (@event.edgesToCreate != null)
@@ -121,9 +125,7 @@ namespace EntitiesBT.Editor
             foreach (var child in node.Children)
             {
                 var childView = CreateNode(child);
-                var edge = new Edge();
-                edge.output = nodeView.Output;
-                edge.input = childView.Input;
+                var edge = nodeView.Output.ConnectTo(childView.Input);
                 AddElement(edge);
             }
             return nodeView;
