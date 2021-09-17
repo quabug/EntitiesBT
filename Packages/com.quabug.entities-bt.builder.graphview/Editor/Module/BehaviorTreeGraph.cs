@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using Nuwa;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace EntitiesBT.Editor
 {
@@ -27,11 +29,7 @@ namespace EntitiesBT.Editor
             public Vector2 Position
             {
                 get => _graph._nodePositionList[Id];
-                set
-                {
-                    _graph._nodePositionList[Id] = value;
-                    EditorUtility.SetDirty(_graph);
-                }
+                set => _graph.SetPosition(Prefab, value);
             }
 
             public BehaviorNodeType BehaviorType => Prefab.GetComponent<BTDynamicNode>().BehaviorNodeType;
@@ -58,12 +56,9 @@ namespace EntitiesBT.Editor
                 _graph.Unselect(Prefab);
             }
 
-            public void SetParent(IBehaviorTreeNode node)
+            public void SetParent(IBehaviorTreeNode parent)
             {
-                var childInstance = _graph.FindCorrespondingInstance(Prefab);
-                var parentInstance = node == null ? _graph.RootInstance : _graph.FindCorrespondingInstance(_graph._nodePrefabList[node.Id]);
-                childInstance.transform.SetParent(parentInstance.transform);
-                _graph.SavePrefab();
+                _graph.SetParent(childPrefab: Prefab, parentPrefab: parent == null ? null : _graph._nodePrefabList[parent.Id]);
             }
 
             public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenNodes(Prefab);
@@ -77,6 +72,7 @@ namespace EntitiesBT.Editor
         public string Name => name;
         private GameObject RootInstance => PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot;
 
+        private Lazy<List<GameObject>> _instances;
         private Lazy<List<Node>> _nodes;
         private Lazy<IDictionary<GameObject, int>> _objectIdMap;
 
@@ -142,6 +138,54 @@ namespace EntitiesBT.Editor
             EditorSceneManager.MarkSceneDirty(PrefabStageUtility.GetCurrentPrefabStage().scene);
         }
 
+        private void SetPosition([NotNull] GameObject prefab, Vector2 position)
+        {
+            var id = _objectIdMap.Value[prefab];
+            _nodePositionList[id] = position;
+            var parent = prefab.Parent();
+            Assert.IsNotNull(parent);
+            ReorderChildrenByPosition(parent);
+            EditorUtility.SetDirty(this);
+        }
+
+        private void ReorderChildrenByPosition([NotNull] GameObject parentPrefab)
+        {
+            var positionOrderedIndices = parentPrefab.Children()
+                .Select((child, index) => (child, index))
+                .Where(t => _objectIdMap.Value.ContainsKey(t.child))
+                .Select(t => (id: _objectIdMap.Value[t.child], index: t.index))
+                .OrderBy(t => _nodePositionList[t.id].x)
+                .Select(t => t.index)
+                .ToArray()
+            ;
+
+            if (!IsOrdered())
+            {
+                var parentInstance = FindCorrespondingInstance(parentPrefab);
+                var childrenInstance = parentInstance.Children().ToArray();
+                foreach (var index in positionOrderedIndices) childrenInstance[index].transform.SetAsLastSibling();
+                ForceSavePrefab();
+            }
+
+            bool IsOrdered()
+            {
+                return positionOrderedIndices.Zip(positionOrderedIndices.Skip(1), (current, next) => current < next).All(isLess => isLess);
+            }
+        }
+
+        private void SetParent([NotNull] GameObject childPrefab, [CanBeNull] GameObject parentPrefab)
+        {
+            if (parentPrefab == null) parentPrefab = Prefab;
+
+            var childInstance = FindCorrespondingInstance(childPrefab);
+            var parentInstance = FindCorrespondingInstance(parentPrefab);
+
+            childInstance.transform.SetParent(parentInstance.transform);
+            ForceSavePrefab();
+
+            ReorderChildrenByPosition(parentPrefab);
+        }
+
         public IEnumerable<IBehaviorTreeNode> RootNodes => GetChildrenNodes(Prefab);
 
         private IEnumerable<IBehaviorTreeNode> GetChildrenNodes(GameObject root)
@@ -186,7 +230,6 @@ namespace EntitiesBT.Editor
             _nodePositionList.RemoveAt(index);
             _nodes.Value.RemoveAt(index);
 
-            ResetNodes();
             ResetObjectIdMap();
 
             EditorUtility.SetDirty(this);
@@ -203,13 +246,13 @@ namespace EntitiesBT.Editor
         GameObject FindCorrespondingInstance(GameObject prefab)
         {
             var indices = prefab.FindHierarchyIndices();
-            return RootInstance.FindGameObjectByHierarchyIndices(indices.Skip(1) /* skip root */);
+            return RootInstance.FindGameObjectByHierarchyIndices(indices);
         }
 
         GameObject FindCorrespondingPrefab(GameObject instance)
         {
             var indices = instance.FindHierarchyIndices();
-            return Prefab.FindGameObjectByHierarchyIndices(indices.Skip(1) /* skip root */);
+            return Prefab.FindGameObjectByHierarchyIndices(indices);
         }
 
         private void RemoveMultipleNodes(IEnumerable<int> indices)
@@ -243,7 +286,7 @@ namespace EntitiesBT.Editor
 
         public static GameObject FindGameObjectByHierarchyIndices(this GameObject root, IEnumerable<int> indices)
         {
-            return indices.Aggregate(root.transform, (current, index) => current.GetChild(index)).gameObject;
+            return indices.Skip(1).Aggregate(root.transform, (current, index) => current.GetChild(index)).gameObject;
         }
     }
 }

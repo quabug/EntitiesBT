@@ -58,6 +58,13 @@ namespace EntitiesBT.Components
             return DescendantsAndSelf(gameObject).Skip(1); // skip self
         }
 
+        [Pure, CanBeNull]
+        public static GameObject Parent(this GameObject gameObject)
+        {
+            var parent = gameObject.transform.parent;
+            return parent == null ? null : parent.gameObject;
+        }
+
         [Pure]
         public static IEnumerable<GameObject> AncestorsAndSelf(this GameObject gameObject)
         {
