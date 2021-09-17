@@ -50,8 +50,24 @@ namespace EntitiesBT.Editor
                 if (@event.elementsToRemove != null)
                 {
                     foreach (var node in @event.elementsToRemove.OfType<NodeView>()) node.Dispose();
+
+                    foreach (var edge in @event.elementsToRemove.OfType<Edge>())
+                    {
+
+                    }
                 }
+
+                if (@event.edgesToCreate != null)
+                {
+                    foreach (var edge in @event.edgesToCreate) OnCreateEdge(edge);
+                }
+
                 return @event;
+            }
+
+            void OnCreateEdge(Edge edge)
+            {
+
             }
         }
 

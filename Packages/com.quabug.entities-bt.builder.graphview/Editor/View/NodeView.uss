@@ -1,0 +1,99 @@
+#node-border {
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    border-left-color: rgb(37, 37, 37);
+    border-right-color: rgb(37, 37, 37);
+    border-top-color: rgb(37, 37, 37);
+    border-bottom-color: rgb(37, 37, 37);
+    background-color: rgb(56, 56, 56);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#input {
+    align-items: center;
+    justify-content: center;
+    height: 15px;
+}
+
+.action #input {
+    background-color: rgba(29, 157, 168, 255);
+}
+
+.action #output {
+    display: none;
+}
+
+.composite #input {
+    background-color: rgba(179, 183, 15, 255);
+}
+
+.decorate #input {
+    background-color: rgba(97, 51, 178, 255);
+}
+
+#output {
+    align-items: center;
+    justify-content: center;
+    height: 15px;
+}
+
+#selection-border {
+    border-left-color: rgb(0, 160, 255);
+    border-right-color: rgb(0, 160, 255);
+    border-top-color: rgb(0, 160, 255);
+    border-bottom-color: rgb(0, 160, 255);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+:hover > #selection-border {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+:selected > #selection-border {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+:hover:selected > #selection-border {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+}
+
+.node {
+}
+
+.port > #type {
+    display: none;
+}
+
+#title {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

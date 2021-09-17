@@ -1,4 +1,5 @@
 using System.IO;
+using EntitiesBT.Core;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
@@ -29,10 +30,14 @@ namespace EntitiesBT.Editor
 
         public void CreateGUI()
         {
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Packages/com.quabug.entities-bt.builder.graphview/Editor/BehaviorTreeEditor.uxml");
+            var relativeDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
+            var uxmlPath = Path.Combine(relativeDirectory, "BehaviorTreeEditor.uxml");
+            var ussPath = Path.Combine(relativeDirectory, "BehaviorTreeEditor.uss");
+
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlPath);
             visualTree.CloneTree(rootVisualElement);
 
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Packages/com.quabug.entities-bt.builder.graphview/Editor/BehaviorTreeEditor.uss");
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
             rootVisualElement.styleSheets.Add(styleSheet);
 
             ResetEditorView();

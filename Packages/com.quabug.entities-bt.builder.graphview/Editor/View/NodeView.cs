@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using EntitiesBT.Core;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -12,19 +13,21 @@ namespace EntitiesBT.Editor
         private readonly IBehaviorTreeNode _node;
 
         public NodeView(IBehaviorTreeNode node)
+            : base(Path.Combine(Utilities.GetCurrentDirectoryProjectRelativePath(), "NodeView.uxml"))
         {
             _node = node;
 
             title = node.Name;
+            if (title.EndsWith("Node")) title = title.Substring(0, title.Length - "Node".Length);
+
             Id = node.Id;
             viewDataKey = Id.ToString();
 
             style.left = node.Position.x;
             style.top = node.Position.y;
 
-
             CreateInputPort();
-            switch (node.NodeType)
+            switch (node.BehaviorType)
             {
                 case BehaviorNodeType.Composite:
                     CreateOutputPort(Port.Capacity.Multi);
@@ -38,16 +41,19 @@ namespace EntitiesBT.Editor
                     throw new ArgumentOutOfRangeException();
             }
 
+            AddToClassList(node.BehaviorType.ToString().ToLower());
+            AddToClassList(node.NodeType.Name);
+
             void CreateInputPort()
             {
-                var port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(NodeView));
+                var port = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(NodeView));
                 port.portName = "";
                 inputContainer.Add(port);
             }
 
             void CreateOutputPort(Port.Capacity capacity)
             {
-                var port = InstantiatePort(Orientation.Horizontal, Direction.Output, capacity, typeof(NodeView));
+                var port = InstantiatePort(Orientation.Vertical, Direction.Output, capacity, typeof(NodeView));
                 port.portName = "";
                 outputContainer.Add(port);
             }
@@ -62,6 +68,16 @@ namespace EntitiesBT.Editor
         public void Dispose()
         {
             _node.Dispose();
+        }
+
+        public void SetParent(int parentNodeId)
+        {
+
+        }
+
+        public override void OnSelected()
+        {
+            _node.OnSelected();
         }
     }
 }

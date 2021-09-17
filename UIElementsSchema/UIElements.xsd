@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:editor="UnityEditor.UIElements" xmlns:engine="UnityEngine.UIElements" xmlns="UnityEditor.PackageManager.UI" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:editor="UnityEditor.UIElements" xmlns:engine="UnityEngine.UIElements" xmlns="UnityEditor.Experimental.GraphView" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="UnityEngine.UIElements.xsd" namespace="UnityEngine.UIElements" />
   <xs:import schemaLocation="UnityEditor.UIElements.xsd" namespace="UnityEditor.UIElements" />
   <xs:import schemaLocation="UnityEditor.UIElements.Debugger.xsd" namespace="UnityEditor.UIElements.Debugger" />
   <xs:import schemaLocation="Unity.Entities.Editor.xsd" namespace="Unity.Entities.Editor" />
+  <xs:import schemaLocation="EntitiesBT.Editor.xsd" namespace="EntitiesBT.Editor" />
   <xs:import schemaLocation="Unity.Editor.Bridge.xsd" namespace="Unity.Editor.Bridge" />
   <xs:import schemaLocation="Unity.Properties.UI.xsd" namespace="Unity.Properties.UI" />
   <xs:import schemaLocation="Unity.UI.Builder.xsd" namespace="Unity.UI.Builder" />
   <xs:import schemaLocation="UnityEngine.UIExtras.xsd" namespace="UnityEngine.UIExtras" />
   <xs:import schemaLocation="UnityEditor.PackageManager.UI.xsd" namespace="UnityEditor.PackageManager.UI" />
+  <xs:import schemaLocation="UnityEditor.Experimental.GraphView.xsd" namespace="UnityEditor.Experimental.GraphView" />
 </xs:schema>

@@ -27,10 +27,15 @@ namespace EntitiesBT.Editor
             public Vector2 Position
             {
                 get => _graph._nodePositionList[Id];
-                set => _graph._nodePositionList[Id] = value;
+                set
+                {
+                    _graph._nodePositionList[Id] = value;
+                    EditorUtility.SetDirty(_graph);
+                }
             }
 
-            public BehaviorNodeType NodeType => Prefab.GetComponent<BTDynamicNode>().BehaviorNodeType;
+            public BehaviorNodeType BehaviorType => Prefab.GetComponent<BTDynamicNode>().BehaviorNodeType;
+            public Type NodeType => Type.GetType(Prefab.GetComponent<BTDynamicNode>().NodeData.NodeType);
 
             public Node(BehaviorTreeGraph graph, GameObject prefab)
             {
@@ -42,10 +47,14 @@ namespace EntitiesBT.Editor
             {
                 _graph.RemoveNodeAt(Id);
             }
+
+            public void OnSelected()
+            {
+                _graph.Select(Prefab);
+            }
         }
 
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private int _rootNodeIndex;
-
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] internal GameObject Prefab;
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<Vector2> _nodePositionList = new List<Vector2>();
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<GameObject> _nodePrefabList = new List<GameObject>();
@@ -91,7 +100,7 @@ namespace EntitiesBT.Editor
 
         private void SavePrefab()
         {
-            // force save the prefab asset to be able to fetch saved GameObject from it
+            // force save the prefab asset to be able to fetch saved GameObject from it immediately
             PrefabUtility.SaveAsPrefabAsset(InstanceRoot, PrefabPath);
             // EditorSceneManager.MarkSceneDirty(prefabStage.scene);
         }
@@ -107,12 +116,27 @@ namespace EntitiesBT.Editor
             return GetEnumerator();
         }
 
+        public void Select(int id)
+        {
+            var prefab = _nodePrefabList[id];
+            Select(prefab);
+        }
+
+        private void Select(GameObject prefab)
+        {
+            var instance = FindCorrespondingInstance(prefab);
+            Selection.activeObject = instance;
+        }
+
         private Node AddNode(GameObject prefab, Vector2 position)
         {
             _nodePrefabList.Add(prefab);
             _nodePositionList.Add(position);
             var node = new Node(this, prefab);
             _nodes.Value.Add(node);
+
+            EditorUtility.SetDirty(this);
+
             return node;
         }
 
@@ -123,32 +147,22 @@ namespace EntitiesBT.Editor
             _nodePositionList.RemoveAt(index);
             _nodes.Value.RemoveAt(index);
 
-            DestroyImmediate(FindCorrespondingInstance(prefab));
+            EditorUtility.SetDirty(this);
+
+            if (prefab != null) DestroyImmediate(FindCorrespondingInstance(prefab));
             SavePrefab();
         }
 
         GameObject FindCorrespondingInstance(GameObject prefab)
         {
-            return FindGameObjectByIndices(InstanceRoot, FindIndices(prefab));
+            var indices = prefab.FindHierarchyIndices();
+            return InstanceRoot.FindGameObjectByHierarchyIndices(indices.Skip(1) /* skip root */);
+        }
 
-            Stack<int> FindIndices(GameObject targetPrefab)
-            {
-                var indices = new Stack<int>();
-                var transform = targetPrefab.transform;
-                while (transform.parent != null)
-                {
-                    indices.Push(transform.GetSiblingIndex());
-                    transform = transform.parent;
-                }
-                return indices;
-            }
-
-            GameObject FindGameObjectByIndices(GameObject root, Stack<int> indices)
-            {
-                var transform = root.transform;
-                while (indices.Count > 0) transform = transform.GetChild(indices.Pop());
-                return transform.gameObject;
-            }
+        GameObject FindCorrespondingPrefab(GameObject instance)
+        {
+            var indices = instance.FindHierarchyIndices();
+            return Prefab.FindGameObjectByHierarchyIndices(indices.Skip(1) /* skip root */);
         }
 
         private void RemoveMultipleNodes(IEnumerable<int> indices)
@@ -166,6 +180,23 @@ namespace EntitiesBT.Editor
                 nodeMap.Remove(descendant);
             }
             RemoveMultipleNodes(nodeMap.Values);
+        }
+    }
+
+    public static partial class Extension
+    {
+        public static IReadOnlyList<int> FindHierarchyIndices(this GameObject target)
+        {
+            return target.AncestorsAndSelf().Aggregate(new List<int>(), (indices, ancestor) =>
+            {
+                indices.Insert(0, ancestor.transform.GetSiblingIndex());
+                return indices;
+            });
+        }
+
+        public static GameObject FindGameObjectByHierarchyIndices(this GameObject root, IEnumerable<int> indices)
+        {
+            return indices.Aggregate(root.transform, (current, index) => current.GetChild(index)).gameObject;
         }
     }
 }

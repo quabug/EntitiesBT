@@ -9,6 +9,9 @@ namespace EntitiesBT.Editor
         int Id { get; }
         string Name { get; }
         Vector2 Position { get; set; }
-        BehaviorNodeType NodeType { get; }
+        BehaviorNodeType BehaviorType { get; }
+        Type NodeType { get; }
+
+        void OnSelected();
     }
 }
