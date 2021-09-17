@@ -69,12 +69,13 @@ namespace EntitiesBT.Editor
             void OnEdgeCreated(Edge edge)
             {
                 if (edge.input.node is NodeView inputNode && edge.output.node is NodeView outputNode)
-                    inputNode.ConnectTo(outputNode);
+                    outputNode.ConnectTo(inputNode);
             }
 
             void OnEdgeDeleted(Edge edge)
             {
-
+                if (edge.input.node is NodeView inputNode && edge.output.node is NodeView outputNode)
+                    inputNode.DisconnectFrom(outputNode);
             }
         }
 

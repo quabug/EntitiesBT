@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -72,9 +73,14 @@ namespace EntitiesBT.Editor
             Node.Dispose();
         }
 
-        public void ConnectTo(NodeView end)
+        public void ConnectTo([NotNull] NodeView child)
         {
-            Node.SetParent(end.Node);
+            child.Node.SetParent(Node);
+        }
+
+        public void DisconnectFrom([NotNull] NodeView parent)
+        {
+            Node.SetParent(null);
         }
 
         public override void OnSelected()

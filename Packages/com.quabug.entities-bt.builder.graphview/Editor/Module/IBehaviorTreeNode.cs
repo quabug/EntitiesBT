@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
@@ -16,7 +17,7 @@ namespace EntitiesBT.Editor
         void OnSelected();
         void OnUnselected();
 
-        void SetParent(IBehaviorTreeNode node);
+        void SetParent([CanBeNull] IBehaviorTreeNode node);
 
         IEnumerable<IBehaviorTreeNode> Children { get; }
     }

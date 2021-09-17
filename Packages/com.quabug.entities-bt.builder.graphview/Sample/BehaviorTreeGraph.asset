@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 4956237284023093843, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}
   _nodePositionList:
-  - {x: 514.50006, y: 319.75}
-  - {x: 788, y: 172}
+  - {x: 415.5, y: 301.14}
+  - {x: 714.5, y: 17.5}
   - {x: 334.2501, y: 164.99998}
   - {x: 619.0001, y: 9.55003}
-  - {x: 583, y: 172}
+  - {x: 556, y: 173}
   _nodePrefabList:
   - {fileID: 6755345079179741781, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}
   - {fileID: 5014970071916131109, guid: 5eba86f94f077244c985fc0b1cb2228e, type: 3}

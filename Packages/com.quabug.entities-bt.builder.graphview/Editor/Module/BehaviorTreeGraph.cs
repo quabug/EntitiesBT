@@ -61,7 +61,7 @@ namespace EntitiesBT.Editor
             public void SetParent(IBehaviorTreeNode node)
             {
                 var childInstance = _graph.FindCorrespondingInstance(Prefab);
-                var parentInstance = _graph.FindCorrespondingInstance(_graph._nodePrefabList[node.Id]);
+                var parentInstance = node == null ? _graph.RootInstance : _graph.FindCorrespondingInstance(_graph._nodePrefabList[node.Id]);
                 childInstance.transform.SetParent(parentInstance.transform);
                 _graph.SavePrefab();
             }
