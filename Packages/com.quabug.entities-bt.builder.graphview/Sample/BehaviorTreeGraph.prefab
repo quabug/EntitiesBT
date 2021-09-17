@@ -27,9 +27,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4006737053775458707}
-  m_RootOrder: 3
+  m_Children:
+  - {fileID: 3615689170167320847}
+  m_Father: {fileID: 2382579039403995230}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6608275798823631826
 MonoBehaviour:
@@ -47,12 +48,27 @@ MonoBehaviour:
     NodeType: EntitiesBT.Nodes.RepeatDurationNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Nodes.RepeatDurationNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - CountdownSeconds
+      - BreakStates
+      Builders:
+      - id: 0
+      - id: 1
   RunOnMainThread: 0
   references:
     version: 1
+    00000000:
+      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000001:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
 --- !u!1 &2199699583193436731
 GameObject:
   m_ObjectHideFlags: 0
@@ -81,8 +97,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4006737053775458707}
-  m_RootOrder: 2
+  m_Father: {fileID: 2382579039403995230}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4361520934520451471
 MonoBehaviour:
@@ -100,12 +116,21 @@ MonoBehaviour:
     NodeType: EntitiesBT.Nodes.PrioritySelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Nodes.PrioritySelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Weights
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
+    00000000:
+      type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+        Value: []
 --- !u!1 &2573369142439891879
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,8 +159,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4006737053775458707}
-  m_RootOrder: 6
+  m_Father: {fileID: 8172782546427716660}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6314640786344797422
 MonoBehaviour:
@@ -153,7 +178,8 @@ MonoBehaviour:
     NodeType: EntitiesBT.Nodes.SuccessNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
+      BlobDataType: EntitiesBT.Nodes.SuccessNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       FieldNames: []
       Builders: []
   RunOnMainThread: 0
@@ -187,8 +213,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4006737053775458707}
-  m_RootOrder: 1
+  m_Father: {fileID: 8172782546427716660}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8724413710402214898
 MonoBehaviour:
@@ -206,12 +232,28 @@ MonoBehaviour:
     NodeType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Axis
+      - RadianPerSecond
+      Builders:
+      - id: 0
+      - id: 1
   RunOnMainThread: 0
   references:
     version: 1
+    00000000:
+      type: {class: float3Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value:
+          x: 0
+          y: 0
+          z: 0
+    00000001:
+      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
 --- !u!1 &4492831737845162464
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,9 +281,11 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4006737053775458707}
-  m_RootOrder: 4
+  m_Children:
+  - {fileID: 8280295182546515908}
+  - {fileID: 383648624083505054}
+  m_Father: {fileID: 8172782546427716660}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4586955386347013675
 MonoBehaviour:
@@ -259,12 +303,21 @@ MonoBehaviour:
     NodeType: EntitiesBT.Nodes.PrioritySelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Nodes.PrioritySelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Weights
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
+    00000000:
+      type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+        Value: []
 --- !u!1 &4956237284023093843
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,12 +346,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8172782546427716660}
-  - {fileID: 3522794839269818313}
-  - {fileID: 383648624083505054}
-  - {fileID: 8280295182546515908}
-  - {fileID: 2382579039403995230}
-  - {fileID: 3615689170167320847}
-  - {fileID: 759767311988594583}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -330,8 +377,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4006737053775458707}
-  m_RootOrder: 5
+  m_Father: {fileID: 8280295182546515908}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4107411846864980450
 MonoBehaviour:
@@ -349,12 +396,19 @@ MonoBehaviour:
     NodeType: EntitiesBT.Nodes.HasComponentNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
-      FieldNames: []
-      Builders: []
+      BlobDataType: EntitiesBT.Nodes.HasComponentNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - StableTypeHash
+      Builders:
+      - id: 0
   RunOnMainThread: 0
   references:
     version: 1
+    00000000:
+      type: {class: UInt64Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
 --- !u!1 &6326522086552561172
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +436,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 759767311988594583}
+  - {fileID: 2382579039403995230}
+  - {fileID: 3522794839269818313}
   m_Father: {fileID: 4006737053775458707}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -402,7 +459,8 @@ MonoBehaviour:
     NodeType: EntitiesBT.Nodes.SelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: 
+      BlobDataType: EntitiesBT.Nodes.SelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       FieldNames: []
       Builders: []
   RunOnMainThread: 0

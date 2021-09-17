@@ -3,7 +3,6 @@ using System.IO;
 using EntitiesBT.Core;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
@@ -11,12 +10,14 @@ namespace EntitiesBT.Editor
     {
         public int Id { get; }
 
-        private readonly IBehaviorTreeNode _node;
+        internal readonly IBehaviorTreeNode Node;
+        internal Port Input { get; private set; }
+        internal Port Output { get; private set; }
 
         public NodeView(IBehaviorTreeNode node)
             : base(Path.Combine(Utilities.GetCurrentDirectoryProjectRelativePath(), "NodeView.uxml"))
         {
-            _node = node;
+            Node = node;
 
             title = node.Name;
             if (title.EndsWith("Node")) title = title.Substring(0, title.Length - "Node".Length);
@@ -47,45 +48,45 @@ namespace EntitiesBT.Editor
 
             void CreateInputPort()
             {
-                var port = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(NodeView));
-                port.portName = "";
-                inputContainer.Add(port);
+                Input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(NodeView));
+                Input.portName = "";
+                inputContainer.Add(Input);
             }
 
             void CreateOutputPort(Port.Capacity capacity)
             {
-                var port = InstantiatePort(Orientation.Vertical, Direction.Output, capacity, typeof(NodeView));
-                port.portName = "";
-                outputContainer.Add(port);
+                Output = InstantiatePort(Orientation.Vertical, Direction.Output, capacity, typeof(NodeView));
+                Output.portName = "";
+                outputContainer.Add(Output);
             }
         }
 
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
-            _node.Position = newPos.position;
+            Node.Position = newPos.position;
         }
 
         public void Dispose()
         {
-            _node.Dispose();
+            Node.Dispose();
         }
 
-        public void SetParent(int parentNodeId)
+        public void ConnectTo(NodeView end)
         {
-
+            Node.SetParent(end.Node);
         }
 
         public override void OnSelected()
         {
             base.OnSelected();
-            _node.OnSelected();
+            Node.OnSelected();
         }
 
         public override void OnUnselected()
         {
             base.OnUnselected();
-            _node.OnUnselected();
+            Node.OnUnselected();
         }
     }
 }

@@ -7,6 +7,7 @@ using EntitiesBT.Core;
 using Nuwa;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
@@ -22,7 +23,7 @@ namespace EntitiesBT.Editor
             public GameObject Prefab { get; }
 
             // TODO: optimize?
-            public int Id => _graph._nodePrefabList.IndexOf(Prefab);
+            public int Id => _graph._objectIdMap.Value[Prefab];
             public string Name => Prefab.name;
             public Vector2 Position
             {
@@ -57,9 +58,18 @@ namespace EntitiesBT.Editor
             {
                 _graph.Unselect(Prefab);
             }
+
+            public void SetParent(IBehaviorTreeNode node)
+            {
+                var childInstance = _graph.FindCorrespondingInstance(Prefab);
+                var parentInstance = _graph.FindCorrespondingInstance(_graph._nodePrefabList[node.Id]);
+                childInstance.transform.SetParent(parentInstance.transform);
+                _graph.SavePrefab();
+            }
+
+            public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenNodes(Prefab);
         }
 
-        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private int _rootNodeIndex;
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] internal GameObject Prefab;
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<Vector2> _nodePositionList = new List<Vector2>();
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<GameObject> _nodePrefabList = new List<GameObject>();
@@ -69,10 +79,17 @@ namespace EntitiesBT.Editor
         private GameObject InstanceRoot => PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot;
 
         private readonly Lazy<List<Node>> _nodes;
+        private readonly Lazy<IDictionary<GameObject, int>> _objectIdMap;
 
         public BehaviorTreeGraph()
         {
             _nodes = new Lazy<List<Node>>(() => _nodePrefabList.Select(prefab => new Node(this, prefab)).ToList());
+            _objectIdMap = new Lazy<IDictionary<GameObject, int>>(() => ToNodeMap(_nodePrefabList));
+        }
+
+        public void RecreateData()
+        {
+            EnsureNodeList();
         }
 
         IDictionary<GameObject, int> ToNodeMap(List<GameObject> nodes)
@@ -83,7 +100,7 @@ namespace EntitiesBT.Editor
         public IBehaviorTreeNode AddNode(Type nodeType, Vector2 position)
         {
             CreateNodeObject();
-            SavePrefab();
+            ForceSavePrefab();
             return CreateAndAddNode();
 
             GameObject CreateNodeObject()
@@ -103,28 +120,26 @@ namespace EntitiesBT.Editor
             }
         }
 
-        private void SavePrefab()
+        private void ForceSavePrefab()
         {
             // force save the prefab asset to be able to fetch saved GameObject from it immediately
             PrefabUtility.SaveAsPrefabAsset(InstanceRoot, PrefabPath);
-            // EditorSceneManager.MarkSceneDirty(prefabStage.scene);
         }
 
-        public IEnumerator<IBehaviorTreeNode> GetEnumerator()
+        private void SavePrefab()
         {
-            EnsureNodeList();
-            return _nodes.Value.GetEnumerator();
+            EditorSceneManager.MarkSceneDirty(PrefabStageUtility.GetCurrentPrefabStage().scene);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public IEnumerable<IBehaviorTreeNode> RootNodes => GetChildrenNodes(Prefab);
 
-        public void Select(int id)
+        private IEnumerable<IBehaviorTreeNode> GetChildrenNodes(GameObject root)
         {
-            var prefab = _nodePrefabList[id];
-            Select(prefab);
+            foreach (var child in root.Children())
+            {
+                if (_objectIdMap.Value.TryGetValue(child, out var id))
+                    yield return _nodes.Value[id];
+            }
         }
 
         private void Select(GameObject prefab)
@@ -141,6 +156,7 @@ namespace EntitiesBT.Editor
 
         private Node AddNode(GameObject prefab, Vector2 position)
         {
+            _objectIdMap.Value.Add(prefab, _nodePrefabList.Count);
             _nodePrefabList.Add(prefab);
             _nodePositionList.Add(position);
             var node = new Node(this, prefab);
@@ -154,6 +170,7 @@ namespace EntitiesBT.Editor
         private void RemoveNodeAt(int index)
         {
             var prefab = _nodePrefabList[index];
+            _objectIdMap.Value.Remove(prefab);
             _nodePrefabList.RemoveAt(index);
             _nodePositionList.RemoveAt(index);
             _nodes.Value.RemoveAt(index);

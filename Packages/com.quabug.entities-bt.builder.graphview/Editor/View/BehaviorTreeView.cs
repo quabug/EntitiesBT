@@ -41,8 +41,9 @@ namespace EntitiesBT.Editor
 
             if (_graph != null)
             {
+                _graph.RecreateData();
                 Debug.Log($"open behavior tree graph: {_graph.Name}");
-                foreach (var node in _graph) CreateNode(node);
+                foreach (var node in _graph.RootNodes) CreateNode(node);
             }
 
             GraphViewChange OnGraphChanged(GraphViewChange @event)
@@ -50,22 +51,24 @@ namespace EntitiesBT.Editor
                 if (@event.elementsToRemove != null)
                 {
                     foreach (var node in @event.elementsToRemove.OfType<NodeView>()) node.Dispose();
-
-                    foreach (var edge in @event.elementsToRemove.OfType<Edge>())
-                    {
-
-                    }
+                    foreach (var edge in @event.elementsToRemove.OfType<Edge>()) OnEdgeDeleted(edge);
                 }
 
                 if (@event.edgesToCreate != null)
                 {
-                    foreach (var edge in @event.edgesToCreate) OnCreateEdge(edge);
+                    foreach (var edge in @event.edgesToCreate) OnEdgeCreated(edge);
                 }
 
                 return @event;
             }
 
-            void OnCreateEdge(Edge edge)
+            void OnEdgeCreated(Edge edge)
+            {
+                if (edge.input.node is NodeView inputNode && edge.output.node is NodeView outputNode)
+                    inputNode.ConnectTo(outputNode);
+            }
+
+            void OnEdgeDeleted(Edge edge)
             {
 
             }
@@ -110,9 +113,20 @@ namespace EntitiesBT.Editor
             }
         }
 
-        private void CreateNode(IBehaviorTreeNode node)
+        // TODO: optimize?
+        private NodeView CreateNode(IBehaviorTreeNode node)
         {
-            AddElement(new NodeView(node));
+            var nodeView = new NodeView(node);
+            AddElement(nodeView);
+            foreach (var child in node.Children)
+            {
+                var childView = CreateNode(child);
+                var edge = new Edge();
+                edge.output = nodeView.Output;
+                edge.input = childView.Input;
+                AddElement(edge);
+            }
+            return nodeView;
         }
     }
 }
