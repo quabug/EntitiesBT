@@ -3,6 +3,7 @@ using System.IO;
 using EntitiesBT.Core;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
@@ -77,7 +78,14 @@ namespace EntitiesBT.Editor
 
         public override void OnSelected()
         {
+            base.OnSelected();
             _node.OnSelected();
+        }
+
+        public override void OnUnselected()
+        {
+            base.OnUnselected();
+            _node.OnUnselected();
         }
     }
 }

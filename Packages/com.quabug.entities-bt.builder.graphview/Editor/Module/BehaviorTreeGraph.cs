@@ -52,6 +52,11 @@ namespace EntitiesBT.Editor
             {
                 _graph.Select(Prefab);
             }
+
+            public void OnUnselected()
+            {
+                _graph.Unselect(Prefab);
+            }
         }
 
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private int _rootNodeIndex;
@@ -126,6 +131,12 @@ namespace EntitiesBT.Editor
         {
             var instance = FindCorrespondingInstance(prefab);
             Selection.activeObject = instance;
+        }
+
+        private void Unselect(GameObject prefab)
+        {
+            var instance = FindCorrespondingInstance(prefab);
+            if (Selection.activeObject == instance) Selection.activeObject = this;
         }
 
         private Node AddNode(GameObject prefab, Vector2 position)

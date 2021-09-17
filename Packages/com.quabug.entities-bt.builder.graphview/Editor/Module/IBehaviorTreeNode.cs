@@ -13,5 +13,6 @@ namespace EntitiesBT.Editor
         Type NodeType { get; }
 
         void OnSelected();
+        void OnUnselected();
     }
 }
