@@ -100,11 +100,11 @@ namespace EntitiesBT.Editor
             Node CreateNodeObject()
             {
                 var nodeObj = new GameObject();
-                var dynamicNode = nodeObj.AddComponent<BTDynamicNode>();
+                var dynamicNode = nodeObj.AddComponent<GraphViewNode>();
                 var node = new Node(this, nodeObj);
                 _nodes.Value.Add(nodeObj.GetInstanceID(), node);
                 nodeObj.transform.SetParent(RootInstance.transform);
-                nodeObj.transform.localPosition = position;
+                nodeObj.transform.position = position;
                 dynamicNode.NodeData = new NodeAsset { NodeType = nodeType.AssemblyQualifiedName };
                 nodeObj.name = nodeType.Name;
                 return node;

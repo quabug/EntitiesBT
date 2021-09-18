@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
+using Shtif;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -97,35 +98,44 @@ namespace EntitiesBT.Editor
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
-            if (selection != null && selection.Any())
+            var context = new GenericMenu();
+            FillContextMenu();
+            var popup = GenericMenuPopup.Get(context, "");
+            popup.showSearch = true;
+            popup.showTooltip = false;
+            popup.resizeToContent = true;
+            popup.Show(evt.mousePosition);
+
+            void FillContextMenu()
             {
-                evt.menu.AppendAction("Delete", _ => DeleteSelection());
-                evt.menu.AppendSeparator();
+                if (selection != null && selection.Any())
+                {
+                    context.AddItem(new GUIContent("Delete"), false, () => DeleteSelection());
+                    context.AddSeparator("");
+                }
+
+                var types = TypeCache.GetTypesWithAttribute<BehaviorNodeAttribute>();
+                foreach (var (type, attribute) in (
+                    from type in types
+                    from attribute in type.GetCustomAttributes<BehaviorNodeAttribute>()
+                    where !attribute.Ignore
+                    select (type, attribute)
+                ).OrderBy(t => t.type.Name))
+                {
+                    var path = $"{attribute.Type}/{type.Name}";
+                    var action = AddNode(type, attribute, evt.originalMousePosition);
+                    context.AddItem(new GUIContent(path), false, action);
+                }
             }
 
-            var types = TypeCache.GetTypesWithAttribute<BehaviorNodeAttribute>();
-            foreach (var (type, attribute) in
-                from type in types
-                from attribute in type.GetCustomAttributes<BehaviorNodeAttribute>()
-                where !attribute.Ignore
-                select (type, attribute))
+            GenericMenu.MenuFunction AddNode(Type type, BehaviorNodeAttribute attribute, Vector2 position)
             {
-                evt.menu.AppendAction($"{attribute.Type}/{type.Name}", AddNode(type, attribute, evt.localMousePosition));
-            }
-
-            Action<DropdownMenuAction> AddNode(Type type, BehaviorNodeAttribute attribute, Vector2 position)
-            {
-                return action =>
+                return () =>
                 {
                     var node = _graph.AddNode(type, position);
                     CreateNode(node);
                 };
             }
-        }
-
-        public override void HandleEvent(EventBase evt)
-        {
-            base.HandleEvent(evt);
         }
 
         // TODO: optimize?
