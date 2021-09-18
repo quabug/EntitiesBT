@@ -4,3 +4,32 @@ GridBackground {
     --thick-line-color: rgba(193, 196, 192, 0.1);
     --spacing: 15;
 }
+
+BehaviorTreeView {
+    flex-grow: 1;
+}
+
+MiniMapView {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100px;
+    height: 100px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgb(95, 95, 95);
+    border-right-color: rgb(95, 95, 95);
+    border-top-color: rgb(95, 95, 95);
+    border-bottom-color: rgb(95, 95, 95);
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.13);
+}
+
+MiniMapView > .unity-label {
+    display: none;
+}

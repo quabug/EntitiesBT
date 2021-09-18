@@ -123,7 +123,7 @@ namespace EntitiesBT.Editor
                 ).OrderBy(t => t.type.Name))
                 {
                     var path = $"{attribute.Type}/{type.Name}";
-                    var action = AddNode(type, attribute, evt.originalMousePosition);
+                    var action = AddNode(type, attribute, evt.mousePosition);
                     context.AddItem(new GUIContent(path), false, action);
                 }
             }
