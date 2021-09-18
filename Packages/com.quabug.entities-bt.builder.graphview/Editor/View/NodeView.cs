@@ -62,12 +62,6 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public override void SetPosition(Rect newPos)
-        {
-            base.SetPosition(newPos);
-            Node.Position = newPos.position;
-        }
-
         public void Dispose()
         {
             Node.Dispose();
@@ -93,6 +87,11 @@ namespace EntitiesBT.Editor
         {
             base.OnUnselected();
             Node.OnUnselected();
+        }
+
+        public void SyncPosition()
+        {
+            Node.Position = GetPosition().position;
         }
     }
 }

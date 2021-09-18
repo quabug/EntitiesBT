@@ -63,6 +63,11 @@ namespace EntitiesBT.Editor
                     foreach (var edge in @event.edgesToCreate) OnEdgeCreated(edge);
                 }
 
+                if (@event.movedElements != null)
+                {
+                    foreach (var node in @event.movedElements.OfType<NodeView>()) node.SyncPosition();
+                }
+
                 return @event;
             }
 
@@ -116,6 +121,11 @@ namespace EntitiesBT.Editor
                     CreateNode(node);
                 };
             }
+        }
+
+        public override void HandleEvent(EventBase evt)
+        {
+            base.HandleEvent(evt);
         }
 
         // TODO: optimize?
