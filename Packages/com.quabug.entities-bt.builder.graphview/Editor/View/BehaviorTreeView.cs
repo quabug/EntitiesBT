@@ -21,17 +21,23 @@ namespace EntitiesBT.Editor
 
         public BehaviorTreeView()
         {
-            Insert(0, new GridBackground());
+            Insert(0, new GridBackground { name = "grid" });
+
+            var miniMap = new MiniMap();
+            miniMap.graphView = this;
+            miniMap.windowed = true;
+            miniMap.name = "minimap";
+            Add(miniMap);
 
             this.AddManipulator(new ContentZoomer());
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
-
-            var relativeDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
-            var ussPath = Path.Combine(relativeDirectory, "BehaviorTreeView.uss");
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
-            styleSheets.Add(styleSheet);
+            //
+            // var relativeDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
+            // var ussPath = Path.Combine(relativeDirectory, "BehaviorTreeView.uss");
+            // var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
+            // styleSheets.Add(styleSheet);
         }
 
         public void Reset([CanBeNull] IBehaviorTreeGraph graph)
