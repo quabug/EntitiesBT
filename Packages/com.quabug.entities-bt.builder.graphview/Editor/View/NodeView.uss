@@ -13,6 +13,8 @@
     border-bottom-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    min-width: 100px;
+    -unity-text-align: upper-center;
 }
 
 #input {
@@ -22,7 +24,7 @@
 }
 
 .action #input {
-    background-color: rgba(29, 157, 168, 255);
+    background-color: rgb(29, 157, 168);
 }
 
 .action #output {
@@ -30,11 +32,11 @@
 }
 
 .composite #input {
-    background-color: rgba(179, 183, 15, 255);
+    background-color: rgb(179, 183, 15);
 }
 
 .decorate #input {
-    background-color: rgba(97, 51, 178, 255);
+    background-color: rgb(97, 51, 178);
 }
 
 #output {

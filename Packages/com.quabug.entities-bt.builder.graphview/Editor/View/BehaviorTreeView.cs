@@ -37,14 +37,14 @@ namespace EntitiesBT.Editor
             _graph = graph;
             DeleteElements(graphElements.ToList());
 
-            graphViewChanged += OnGraphChanged;
-
             if (_graph != null)
             {
                 _graph.RecreateData();
                 Debug.Log($"open behavior tree graph: {_graph.Name}");
                 foreach (var node in _graph.RootNodes) CreateNode(node);
             }
+
+            graphViewChanged += OnGraphChanged;
 
             GraphViewChange OnGraphChanged(GraphViewChange @event)
             {

@@ -93,21 +93,21 @@ namespace EntitiesBT.Editor
 
         public IBehaviorTreeNode AddNode(Type nodeType, Vector2 position)
         {
-            var instance = CreateNodeObject();
-            var node = AddNode(instance);
+            var createdNode = CreateNodeObject();
             SavePrefab();
-            return node;
+            return createdNode;
 
-            GameObject CreateNodeObject()
+            Node CreateNodeObject()
             {
-                // TODO: copy prefab file?
                 var nodeObj = new GameObject();
+                var dynamicNode = nodeObj.AddComponent<BTDynamicNode>();
+                var node = new Node(this, nodeObj);
+                _nodes.Value.Add(nodeObj.GetInstanceID(), node);
                 nodeObj.transform.SetParent(RootInstance.transform);
                 nodeObj.transform.localPosition = position;
-                var dynamicNode = nodeObj.AddComponent<BTDynamicNode>();
                 dynamicNode.NodeData = new NodeAsset { NodeType = nodeType.AssemblyQualifiedName };
                 nodeObj.name = nodeType.Name;
-                return nodeObj;
+                return node;
             }
         }
 
@@ -183,13 +183,6 @@ namespace EntitiesBT.Editor
         private void Unselect(Node node)
         {
             if (Selection.activeObject == node.Instance) Selection.activeObject = this;
-        }
-
-        private Node AddNode(GameObject instance)
-        {
-            var node = new Node(this, instance);
-            _nodes.Value.Add(instance.GetInstanceID(), node);
-            return node;
         }
 
         private void RemoveNode(int id)
