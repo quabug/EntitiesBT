@@ -127,12 +127,12 @@ namespace EntitiesBT.Editor
                 ).OrderBy(t => t.type.Name))
                 {
                     var path = $"{attribute.Type}/{type.Name}";
-                    var action = AddNode(type, attribute, evt.mousePosition);
+                    var action = AddNode(type, viewTransform.matrix.inverse.MultiplyPoint(evt.localMousePosition));
                     context.AddItem(new GUIContent(path), false, action);
                 }
             }
 
-            GenericMenu.MenuFunction AddNode(Type type, BehaviorNodeAttribute attribute, Vector2 position)
+            GenericMenu.MenuFunction AddNode(Type type, Vector2 position)
             {
                 return () =>
                 {

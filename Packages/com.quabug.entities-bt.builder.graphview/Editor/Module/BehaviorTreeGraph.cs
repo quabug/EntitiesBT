@@ -93,7 +93,6 @@ namespace EntitiesBT.Editor
 
         public IBehaviorTreeNode AddNode(Type nodeType, Vector2 position)
         {
-            Debug.Log($"create {nodeType.Name} at {position}");
             var createdNode = CreateNodeObject();
             SavePrefab();
             return createdNode;
