@@ -2,6 +2,7 @@ using System.IO;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -39,6 +40,10 @@ namespace EntitiesBT.Editor
 
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
             rootVisualElement.styleSheets.Add(styleSheet);
+
+            var miniMap = rootVisualElement.Q<MiniMap>();
+            var graph = rootVisualElement.Q<GraphView>();
+            if (miniMap != null && graph != null) miniMap.graphView = graph;
 
             ResetEditorView();
         }

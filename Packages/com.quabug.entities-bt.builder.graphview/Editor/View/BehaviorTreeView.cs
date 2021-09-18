@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
@@ -27,7 +28,9 @@ namespace EntitiesBT.Editor
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
 
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Packages/com.quabug.entities-bt.builder.graphview/Editor/BehaviorTreeEditor.uss");
+            var relativeDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
+            var ussPath = Path.Combine(relativeDirectory, "BehaviorTreeView.uss");
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
             styleSheets.Add(styleSheet);
         }
 
@@ -74,6 +77,7 @@ namespace EntitiesBT.Editor
 
             void OnEdgeCreated(Edge edge)
             {
+                edge.showInMiniMap = true;
                 if (edge.input.node is NodeView inputNode && edge.output.node is NodeView outputNode)
                     outputNode.ConnectTo(inputNode);
             }

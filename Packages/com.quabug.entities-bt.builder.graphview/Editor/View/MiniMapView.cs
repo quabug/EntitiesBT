@@ -6,5 +6,10 @@ namespace EntitiesBT.Editor
     public class MiniMapView : MiniMap
     {
         public new class UxmlFactory : UxmlFactory<MiniMapView, UxmlTraits> {}
+
+        public MiniMapView()
+        {
+            windowed = true;
+        }
     }
 }
