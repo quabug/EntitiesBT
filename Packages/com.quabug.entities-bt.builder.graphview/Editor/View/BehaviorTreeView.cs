@@ -33,11 +33,6 @@ namespace EntitiesBT.Editor
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
-            //
-            // var relativeDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
-            // var ussPath = Path.Combine(relativeDirectory, "BehaviorTreeView.uss");
-            // var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
-            // styleSheets.Add(styleSheet);
         }
 
         public void Reset([CanBeNull] IBehaviorTreeGraph graph)

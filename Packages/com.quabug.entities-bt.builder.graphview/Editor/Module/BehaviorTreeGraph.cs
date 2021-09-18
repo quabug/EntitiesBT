@@ -127,6 +127,7 @@ namespace EntitiesBT.Editor
             var parent = node.Instance.Parent();
             Assert.IsNotNull(parent);
             ReorderChildrenByPosition(parent);
+            SavePrefab();
         }
 
         private void ReorderChildrenByPosition([NotNull] GameObject parentInstance)
