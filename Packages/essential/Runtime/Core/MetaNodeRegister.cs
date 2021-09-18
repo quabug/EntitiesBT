@@ -85,7 +85,7 @@ namespace EntitiesBT.Core
                     )
                 );
             }
-            NODES = new ReadOnlyDictionary<int, Node>(nodes);
+            NODES = nodes;
             
             T CreateDelegate<T>(string methodName, Type type) where T : Delegate
             {
@@ -155,7 +155,7 @@ namespace EntitiesBT.Core
                 }
             }
 
-            NODES = new ReadOnlyDictionary<int, Node>(nodes);
+            NODES = nodes;
 
             MethodInfo GetMethod(string methodName)
             {

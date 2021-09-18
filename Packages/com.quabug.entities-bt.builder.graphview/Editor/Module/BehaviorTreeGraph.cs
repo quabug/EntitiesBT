@@ -21,116 +21,94 @@ namespace EntitiesBT.Editor
         {
             private readonly BehaviorTreeGraph _graph;
 
-            public GameObject Prefab { get; }
-
-            // TODO: optimize?
-            public int Id => _graph._objectIdMap.Value[Prefab];
-            public string Name => Prefab.name;
+            public GameObject Instance { get; }
+            public int Id => Instance.GetInstanceID();
+            public string Name => Instance.name;
             public Vector2 Position
             {
-                get => _graph._nodePositionList[Id];
-                set => _graph.SetPosition(Prefab, value);
+                get => Instance.transform.localPosition;
+                set => _graph.SetPosition(this, value);
             }
 
-            public BehaviorNodeType BehaviorType => Prefab.GetComponent<BTDynamicNode>().BehaviorNodeType;
-            public Type NodeType => Type.GetType(Prefab.GetComponent<BTDynamicNode>().NodeData.NodeType);
+            public BehaviorNodeType BehaviorType => Instance.GetComponent<INodeDataBuilder>().GetBehaviorNodeType();
+            public Type NodeType => Instance.GetComponent<INodeDataBuilder>().GetNodeType();
 
-            public Node(BehaviorTreeGraph graph, GameObject prefab)
+            public Node(BehaviorTreeGraph graph, GameObject instance)
             {
                 _graph = graph;
-                Prefab = prefab;
+                Instance = instance;
             }
 
             public void Dispose()
             {
-                _graph.RemoveNodeAt(Id);
+                _graph.RemoveNode(Id);
             }
 
             public void OnSelected()
             {
-                _graph.Select(Prefab);
+                _graph.Select(this);
             }
 
             public void OnUnselected()
             {
-                _graph.Unselect(Prefab);
+                _graph.Unselect(this);
             }
 
             public void SetParent(IBehaviorTreeNode parent)
             {
-                _graph.SetParent(childPrefab: Prefab, parentPrefab: parent == null ? null : _graph._nodePrefabList[parent.Id]);
+                _graph.SetParent(child: this, parent: parent);
             }
 
-            public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenNodes(Prefab);
+            public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenNodes(Id);
         }
 
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] internal GameObject Prefab;
-        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<Vector2> _nodePositionList = new List<Vector2>();
-        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private List<GameObject> _nodePrefabList = new List<GameObject>();
 
         private string PrefabPath => AssetDatabase.GetAssetPath(Prefab);
         public string Name => name;
         private GameObject RootInstance => PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot;
 
-        private Lazy<List<GameObject>> _instances;
-        private Lazy<List<Node>> _nodes;
-        private Lazy<IDictionary<GameObject, int>> _objectIdMap;
+        private Lazy<IDictionary<int, Node>> _nodes;
 
         public BehaviorTreeGraph()
         {
             ResetNodes();
-            ResetObjectIdMap();
         }
+
+        private Node GetNodeById(int id) => _nodes.Value[id];
+        private Node GetNodeByGameObject(GameObject obj) => GetNodeById(obj.GetInstanceID());
 
         void ResetNodes()
         {
-            _nodes = new Lazy<List<Node>>(() => _nodePrefabList.Select(prefab => new Node(this, prefab)).ToList());
-        }
-
-        void ResetObjectIdMap()
-        {
-            _objectIdMap = new Lazy<IDictionary<GameObject, int>>(() => ToNodeMap(_nodePrefabList));
+            _nodes = new Lazy<IDictionary<int, Node>>(() => RootInstance.Descendants()
+                .Where(descendant => descendant.GetComponent<INodeDataBuilder>() != null)
+                .ToDictionary(descendant => descendant.GetInstanceID(), descendant => new Node(this, descendant))
+            );
         }
 
         public void RecreateData()
         {
             ResetNodes();
-            ResetObjectIdMap();
-            EnsureNodeList();
-        }
-
-        IDictionary<GameObject, int> ToNodeMap(List<GameObject> nodes)
-        {
-            return nodes.Select((node, index) => (node, index)).ToDictionary(t => t.node, t => t.index);
         }
 
         public IBehaviorTreeNode AddNode(Type nodeType, Vector2 position)
         {
-            CreateNodeObject();
-            ForceSavePrefab();
-            return CreateAndAddNode();
+            var instance = CreateNodeObject();
+            var node = AddNode(instance);
+            SavePrefab();
+            return node;
 
             GameObject CreateNodeObject()
             {
-                var node = new GameObject();
-                node.transform.SetParent(RootInstance.transform);
-                var dynamicNode = node.AddComponent<BTDynamicNode>();
+                // TODO: copy prefab file?
+                var nodeObj = new GameObject();
+                nodeObj.transform.SetParent(RootInstance.transform);
+                nodeObj.transform.localPosition = position;
+                var dynamicNode = nodeObj.AddComponent<BTDynamicNode>();
                 dynamicNode.NodeData = new NodeAsset { NodeType = nodeType.AssemblyQualifiedName };
-                node.name = nodeType.Name;
-                return node;
+                nodeObj.name = nodeType.Name;
+                return nodeObj;
             }
-
-            Node CreateAndAddNode()
-            {
-                var addedObject = Prefab.transform.GetChild(Prefab.transform.childCount - 1).gameObject;
-                return AddNode(addedObject, position);
-            }
-        }
-
-        private void ForceSavePrefab()
-        {
-            // force save the prefab asset to be able to fetch saved GameObject from it immediately
-            PrefabUtility.SaveAsPrefabAsset(RootInstance, PrefabPath);
         }
 
         private void SavePrefab()
@@ -138,33 +116,33 @@ namespace EntitiesBT.Editor
             EditorSceneManager.MarkSceneDirty(PrefabStageUtility.GetCurrentPrefabStage().scene);
         }
 
-        private void SetPosition([NotNull] GameObject prefab, Vector2 position)
+        private void SaveGraph()
         {
-            var id = _objectIdMap.Value[prefab];
-            _nodePositionList[id] = position;
-            var parent = prefab.Parent();
-            Assert.IsNotNull(parent);
-            ReorderChildrenByPosition(parent);
             EditorUtility.SetDirty(this);
         }
 
-        private void ReorderChildrenByPosition([NotNull] GameObject parentPrefab)
+        private void SetPosition([NotNull] Node node, Vector2 position)
         {
-            var positionOrderedIndices = parentPrefab.Children()
+            node.Instance.transform.localPosition = position;
+            var parent = node.Instance.Parent();
+            Assert.IsNotNull(parent);
+            ReorderChildrenByPosition(parent);
+        }
+
+        private void ReorderChildrenByPosition([NotNull] GameObject parentInstance)
+        {
+            var childrenInstance = parentInstance.Children().ToArray();
+            var positionOrderedIndices = childrenInstance
                 .Select((child, index) => (child, index))
-                .Where(t => _objectIdMap.Value.ContainsKey(t.child))
-                .Select(t => (id: _objectIdMap.Value[t.child], index: t.index))
-                .OrderBy(t => _nodePositionList[t.id].x)
+                .OrderBy(t => t.child.transform.localPosition.x)
                 .Select(t => t.index)
                 .ToArray()
             ;
 
             if (!IsOrdered())
             {
-                var parentInstance = FindCorrespondingInstance(parentPrefab);
-                var childrenInstance = parentInstance.Children().ToArray();
-                foreach (var index in positionOrderedIndices) childrenInstance[index].transform.SetAsLastSibling();
-                ForceSavePrefab();
+                foreach (var index in positionOrderedIndices.Reverse()) childrenInstance[index].transform.SetAsFirstSibling();
+                SavePrefab();
             }
 
             bool IsOrdered()
@@ -173,73 +151,54 @@ namespace EntitiesBT.Editor
             }
         }
 
-        private void SetParent([NotNull] GameObject childPrefab, [CanBeNull] GameObject parentPrefab)
+        private void SetParent([NotNull] Node child, [CanBeNull] IBehaviorTreeNode parent)
         {
-            if (parentPrefab == null) parentPrefab = Prefab;
-
-            var childInstance = FindCorrespondingInstance(childPrefab);
-            var parentInstance = FindCorrespondingInstance(parentPrefab);
-
+            var childInstance = child.Instance;
+            var parentInstance = parent == null ? RootInstance : GetNodeById(parent.Id).Instance;
+            var position = childInstance.transform.localPosition;
             childInstance.transform.SetParent(parentInstance.transform);
-            ForceSavePrefab();
-
-            ReorderChildrenByPosition(parentPrefab);
+            childInstance.transform.localPosition = position;
+            ReorderChildrenByPosition(parentInstance);
+            SavePrefab();
         }
 
-        public IEnumerable<IBehaviorTreeNode> RootNodes => GetChildrenNodes(Prefab);
+        public IEnumerable<IBehaviorTreeNode> RootNodes => GetChildrenNodes(RootInstance);
 
-        private IEnumerable<IBehaviorTreeNode> GetChildrenNodes(GameObject root)
+        private IEnumerable<IBehaviorTreeNode> GetChildrenNodes(GameObject instance) =>
+            from child in instance.Children()
+            where IsNodeGameObject(child)
+            select GetNodeByGameObject(child)
+        ;
+
+        private IEnumerable<IBehaviorTreeNode> GetChildrenNodes(int nodeId) => GetChildrenNodes(_nodes.Value[nodeId].Instance);
+
+        private bool IsNodeGameObject(GameObject obj) => obj.GetComponent<INodeDataBuilder>() != null;
+
+
+        private void Select(Node node)
         {
-            foreach (var child in root.Children())
-            {
-                if (_objectIdMap.Value.TryGetValue(child, out var id))
-                    yield return _nodes.Value[id];
-            }
+            Selection.activeObject = node.Instance;
         }
 
-        private void Select(GameObject prefab)
+        private void Unselect(Node node)
         {
-            var instance = FindCorrespondingInstance(prefab);
-            Selection.activeObject = instance;
+            if (Selection.activeObject == node.Instance) Selection.activeObject = this;
         }
 
-        private void Unselect(GameObject prefab)
+        private Node AddNode(GameObject instance)
         {
-            var instance = FindCorrespondingInstance(prefab);
-            if (Selection.activeObject == instance) Selection.activeObject = this;
-        }
-
-        private Node AddNode(GameObject prefab, Vector2 position)
-        {
-            _objectIdMap.Value.Add(prefab, _nodePrefabList.Count);
-            _nodePrefabList.Add(prefab);
-            _nodePositionList.Add(position);
-            var node = new Node(this, prefab);
-            _nodes.Value.Add(node);
-
-            EditorUtility.SetDirty(this);
-
+            var node = new Node(this, instance);
+            _nodes.Value.Add(instance.GetInstanceID(), node);
             return node;
         }
 
-        private void RemoveNodeAt(int index)
+        private void RemoveNode(int id)
         {
-            var prefab = _nodePrefabList[index];
-            _objectIdMap.Value.Remove(prefab);
-            _nodePrefabList.RemoveAt(index);
-            _nodePositionList.RemoveAt(index);
-            _nodes.Value.RemoveAt(index);
-
-            ResetObjectIdMap();
-
-            EditorUtility.SetDirty(this);
-
-            if (prefab != null)
-            {
-                var instance = FindCorrespondingInstance(prefab);
-                foreach (var child in instance.Children().Reverse()) child.transform.SetParent(RootInstance.transform);
-                DestroyImmediate(instance);
-            }
+            var node = _nodes.Value[id];
+            _nodes.Value.Remove(id);
+            var instance = node.Instance;
+            foreach (var child in instance.Children().Reverse()) child.transform.SetParent(RootInstance.transform);
+            DestroyImmediate(instance);
             SavePrefab();
         }
 
@@ -253,23 +212,6 @@ namespace EntitiesBT.Editor
         {
             var indices = instance.FindHierarchyIndices();
             return Prefab.FindGameObjectByHierarchyIndices(indices);
-        }
-
-        private void RemoveMultipleNodes(IEnumerable<int> indices)
-        {
-            foreach (var index in indices.OrderByDescending(i => i)) RemoveNodeAt(index);
-        }
-
-        private void EnsureNodeList()
-        {
-            var nodeMap = ToNodeMap(_nodePrefabList);
-            foreach (var descendant in Prefab.Descendants())
-            {
-                if (!nodeMap.ContainsKey(descendant) && descendant.GetComponent<INodeDataBuilder>() != null)
-                    AddNode(descendant, Vector2.zero);
-                nodeMap.Remove(descendant);
-            }
-            RemoveMultipleNodes(nodeMap.Values);
         }
     }
 
