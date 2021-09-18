@@ -13,12 +13,11 @@ namespace EntitiesBT.Editor
         Vector2 Position { get; set; }
         BehaviorNodeType BehaviorType { get; }
         Type NodeType { get; }
-
-        void OnSelected();
-        void OnUnselected();
+        bool IsSelected { get; set; }
 
         void SetParent([CanBeNull] IBehaviorTreeNode node);
-
         IEnumerable<IBehaviorTreeNode> Children { get; }
+
+        event Action OnSelected;
     }
 }

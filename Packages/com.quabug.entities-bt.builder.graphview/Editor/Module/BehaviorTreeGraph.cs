@@ -4,7 +4,6 @@ using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
-using Nuwa;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
@@ -13,8 +12,7 @@ using UnityEngine.Assertions;
 
 namespace EntitiesBT.Editor
 {
-    [CreateAssetMenu(fileName = "BehaviorTreeGraph", menuName = "EntitiesBT/BehaviorTreeGraph", order = 0)]
-    public class BehaviorTreeGraph : ScriptableObject, IBehaviorTreeGraph
+    public class BehaviorTreeGraph : IBehaviorTreeGraph
     {
         [Serializable]
         private class Node : IBehaviorTreeNode
@@ -33,6 +31,16 @@ namespace EntitiesBT.Editor
             public BehaviorNodeType BehaviorType => Instance.GetComponent<INodeDataBuilder>().GetBehaviorNodeType();
             public Type NodeType => Instance.GetComponent<INodeDataBuilder>().GetNodeType();
 
+            public bool IsSelected
+            {
+                get => _graph.IsSelected(this);
+                set
+                {
+                    if (value) _graph.Select(this);
+                    else _graph.Unselect(this);
+                }
+            }
+
             public Node(BehaviorTreeGraph graph, GameObject instance)
             {
                 _graph = graph;
@@ -44,35 +52,45 @@ namespace EntitiesBT.Editor
                 _graph.RemoveNode(Id);
             }
 
-            public void OnSelected()
-            {
-                _graph.Select(this);
-            }
-
-            public void OnUnselected()
-            {
-                _graph.Unselect(this);
-            }
-
             public void SetParent(IBehaviorTreeNode parent)
             {
                 _graph.SetParent(child: this, parent: parent);
             }
 
             public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenNodes(Id);
+
+            public event Action OnSelected;
+
+            public void EmitOnSelected() => OnSelected?.Invoke();
         }
 
-        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] internal GameObject Prefab;
-
-        private string PrefabPath => AssetDatabase.GetAssetPath(Prefab);
-        public string Name => name;
-        private GameObject RootInstance => PrefabStageUtility.GetCurrentPrefabStage().prefabContentsRoot;
+        [NotNull] private readonly GameObject _prefab;
+        [NotNull] private readonly PrefabStage _stage;
+        private string PrefabPath => AssetDatabase.GetAssetPath(_prefab);
+        public string Name => _prefab.name;
+        private GameObject RootInstance => _stage.prefabContentsRoot;
 
         private Lazy<IDictionary<int, Node>> _nodes;
 
-        public BehaviorTreeGraph()
+        public BehaviorTreeGraph([NotNull] GameObject prefab, PrefabStage prefabStage)
         {
+            _prefab = prefab;
+            _stage = prefabStage;
             ResetNodes();
+
+            Selection.selectionChanged += OnSelectionChanged;
+        }
+
+        public void Dispose()
+        {
+            Selection.selectionChanged -= OnSelectionChanged;
+        }
+
+        void OnSelectionChanged()
+        {
+            var selectedInstance = Selection.activeGameObject;
+            if (selectedInstance != null && _nodes.Value.TryGetValue(selectedInstance.GetInstanceID(), out var node))
+                node.EmitOnSelected();
         }
 
         private Node GetNodeById(int id) => _nodes.Value[id];
@@ -84,11 +102,6 @@ namespace EntitiesBT.Editor
                 .Where(descendant => descendant.GetComponent<INodeDataBuilder>() != null)
                 .ToDictionary(descendant => descendant.GetInstanceID(), descendant => new Node(this, descendant))
             );
-        }
-
-        public void RecreateData()
-        {
-            ResetNodes();
         }
 
         public IBehaviorTreeNode AddNode(Type nodeType, Vector2 position)
@@ -113,12 +126,7 @@ namespace EntitiesBT.Editor
 
         private void SavePrefab()
         {
-            EditorSceneManager.MarkSceneDirty(PrefabStageUtility.GetCurrentPrefabStage().scene);
-        }
-
-        private void SaveGraph()
-        {
-            EditorUtility.SetDirty(this);
+            EditorSceneManager.MarkSceneDirty(_stage.scene);
         }
 
         private void SetPosition([NotNull] Node node, Vector2 position)
@@ -171,19 +179,21 @@ namespace EntitiesBT.Editor
             select GetNodeByGameObject(child)
         ;
 
-        private IEnumerable<IBehaviorTreeNode> GetChildrenNodes(int nodeId) => GetChildrenNodes(_nodes.Value[nodeId].Instance);
+        private IEnumerable<IBehaviorTreeNode> GetChildrenNodes(int nodeId) =>
+            GetChildrenNodes(_nodes.Value[nodeId].Instance);
 
         private bool IsNodeGameObject(GameObject obj) => obj.GetComponent<INodeDataBuilder>() != null;
 
+        private bool IsSelected(Node node) => Selection.activeGameObject == node.Instance;
 
         private void Select(Node node)
         {
-            Selection.activeObject = node.Instance;
+            if (Selection.activeGameObject != node.Instance) Selection.activeGameObject = node.Instance;
         }
 
         private void Unselect(Node node)
         {
-            if (Selection.activeObject == node.Instance) Selection.activeObject = this;
+            if (Selection.activeGameObject == node.Instance) Selection.activeGameObject = RootInstance;
         }
 
         private void RemoveNode(int id)
@@ -192,7 +202,7 @@ namespace EntitiesBT.Editor
             _nodes.Value.Remove(id);
             var instance = node.Instance;
             foreach (var child in instance.Children().Reverse()) child.transform.SetParent(RootInstance.transform);
-            DestroyImmediate(instance);
+            GameObject.DestroyImmediate(instance);
             SavePrefab();
         }
 
@@ -205,7 +215,12 @@ namespace EntitiesBT.Editor
         GameObject FindCorrespondingPrefab(GameObject instance)
         {
             var indices = instance.FindHierarchyIndices();
-            return Prefab.FindGameObjectByHierarchyIndices(indices);
+            return _prefab.FindGameObjectByHierarchyIndices(indices);
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            // TODO release unmanaged resources here
         }
     }
 

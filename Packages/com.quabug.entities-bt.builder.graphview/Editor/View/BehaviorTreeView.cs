@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
@@ -24,10 +23,11 @@ namespace EntitiesBT.Editor
             Insert(0, new GridBackground { name = "grid" });
 
             var miniMap = new MiniMap();
+            Add(miniMap);
+            // NOTE: not working... have to set `graphView` on `CreateGUI` of `BehaviorTreeEditor`
             miniMap.graphView = this;
             miniMap.windowed = true;
             miniMap.name = "minimap";
-            Add(miniMap);
 
             this.AddManipulator(new ContentZoomer());
             this.AddManipulator(new ContentDragger());
@@ -39,13 +39,12 @@ namespace EntitiesBT.Editor
         {
             graphViewChanged -= OnGraphChanged;
 
+            _graph?.Dispose();
             _graph = graph;
             DeleteElements(graphElements.ToList());
 
             if (_graph != null)
             {
-                _graph.RecreateData();
-                Debug.Log($"open behavior tree graph: {_graph.Name}");
                 foreach (var node in _graph.RootNodes) CreateNode(node);
             }
 
@@ -103,6 +102,8 @@ namespace EntitiesBT.Editor
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
+            evt.StopPropagation();
+
             var context = new GenericMenu();
             FillContextMenu();
             var popup = GenericMenuPopup.Get(context, "");
@@ -143,10 +144,15 @@ namespace EntitiesBT.Editor
             }
         }
 
+        public void Focus(int nodeId)
+        {
+            // graphElements.AtIndex()
+        }
+
         // TODO: optimize?
         private NodeView CreateNode(IBehaviorTreeNode node)
         {
-            var nodeView = new NodeView(node);
+            var nodeView = new NodeView(this, node);
             AddElement(nodeView);
             foreach (var child in node.Children)
             {

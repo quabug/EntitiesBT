@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &88952040523226875
+--- !u!1 &188394609368969832
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,51 +8,108 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9047578785592422611}
-  - component: {fileID: 5291421619017244989}
+  - component: {fileID: 7544789502778352028}
+  - component: {fileID: 4808077775183501582}
   m_Layer: 0
-  m_Name: EntityMoveNode
+  m_Name: SelectorNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9047578785592422611
+--- !u!4 &7544789502778352028
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 88952040523226875}
+  m_GameObject: {fileID: 188394609368969832}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 777, y: 389.5, z: 0}
+  m_LocalPosition: {x: 389, y: 15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4588954155254887952}
+  m_Children:
+  - {fileID: 6546106756673525177}
+  - {fileID: 7927235513627682821}
+  m_Father: {fileID: 1114355261066075675}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5291421619017244989
+--- !u!114 &4808077775183501582
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 88952040523226875}
+  m_GameObject: {fileID: 188394609368969832}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    NodeType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
+    NodeType: EntitiesBT.Nodes.SelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
+      BlobDataType: EntitiesBT.Nodes.SelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames: []
+      Builders: []
+  references:
+    version: 1
+--- !u!1 &1706539554990031035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6058587801628406474}
+  - component: {fileID: 2132936386324970759}
+  m_Layer: 0
+  m_Name: EntityRotateNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6058587801628406474
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706539554990031035}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 458, y: 212, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7927235513627682821}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2132936386324970759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706539554990031035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NodeData:
+    NodeType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       FieldNames:
-      - Velocity
+      - Axis
+      - RadianPerSecond
       Builders:
       - id: 0
+      - id: 1
   references:
     version: 1
     00000000:
@@ -62,7 +119,11 @@ MonoBehaviour:
           x: 0
           y: 0
           z: 0
---- !u!1 &1817356693279744347
+    00000001:
+      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+--- !u!1 &3058250547648811760
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,262 +131,137 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8443443211453439401}
-  - component: {fileID: 5681881739633028399}
+  - component: {fileID: 7927235513627682821}
+  - component: {fileID: 3045880255448785822}
   m_Layer: 0
-  m_Name: RecursiveResetStateNode
+  m_Name: StateMapNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8443443211453439401
+--- !u!4 &7927235513627682821
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817356693279744347}
+  m_GameObject: {fileID: 3058250547648811760}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 429, y: 278.5, z: 0}
+  m_LocalPosition: {x: 450, y: 110, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8082748638914546153}
-  m_RootOrder: 0
+  m_Children:
+  - {fileID: 6058587801628406474}
+  m_Father: {fileID: 7544789502778352028}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5681881739633028399
+--- !u!114 &3045880255448785822
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817356693279744347}
+  m_GameObject: {fileID: 3058250547648811760}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    NodeType: EntitiesBT.Nodes.RecursiveResetStateNode, EntitiesBT.Runtime, Version=0.0.0.0,
+    NodeType: EntitiesBT.Nodes.StateMapNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: EntitiesBT.Nodes.RecursiveResetStateNode, EntitiesBT.Runtime,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      BlobDataType: EntitiesBT.Nodes.StateMapNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - MapSuccess
+      - MapFailure
+      - MapRunning
+      - MapError
+      Builders:
+      - id: 0
+      - id: 1
+      - id: 2
+      - id: 3
+  references:
+    version: 1
+    00000000:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
+    00000001:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
+    00000002:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
+    00000003:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
+--- !u!1 &6813309973935196122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6546106756673525177}
+  - component: {fileID: 2781831968567617585}
+  m_Layer: 0
+  m_Name: ResetBranchNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6546106756673525177
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6813309973935196122}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 286, y: 118, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7544789502778352028}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2781831968567617585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6813309973935196122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NodeData:
+    NodeType: EntitiesBT.Nodes.ResetBranchNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Nodes.ResetBranchNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       FieldNames: []
       Builders: []
   references:
     version: 1
---- !u!1 &3332146735966536466
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6001349073330817158}
-  - component: {fileID: 6210437680479009326}
-  m_Layer: 0
-  m_Name: RepeatDurationNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6001349073330817158
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3332146735966536466}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 624, y: 283.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8082748638914546153}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6210437680479009326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3332146735966536466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NodeData:
-    NodeType: EntitiesBT.Nodes.RepeatDurationNode, EntitiesBT.Runtime, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    Builder:
-      BlobDataType: EntitiesBT.Nodes.RepeatDurationNode, EntitiesBT.Runtime, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - CountdownSeconds
-      - BreakStates
-      Builders:
-      - id: 0
-      - id: 1
-  references:
-    version: 1
-    00000000:
-      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000001:
-      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        Value: 0
---- !u!1 &4931282252638772614
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4588954155254887952}
-  - component: {fileID: 1562181292006854725}
-  m_Layer: 0
-  m_Name: RepeatForeverNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4588954155254887952
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4931282252638772614}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 777.5, y: 275.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 9047578785592422611}
-  m_Father: {fileID: 8082748638914546153}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1562181292006854725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4931282252638772614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NodeData:
-    NodeType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    Builder:
-      BlobDataType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - BreakStates
-      Builders:
-      - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        Value: 0
---- !u!1 &6527368470757146979
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7475393369761033222}
-  - component: {fileID: 3202997900322099946}
-  m_Layer: 0
-  m_Name: DelayTimerNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7475393369761033222
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6527368470757146979}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 901, y: 283.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8082748638914546153}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3202997900322099946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6527368470757146979}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NodeData:
-    NodeType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    Builder:
-      BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - TimerSeconds
-      Builders:
-      - id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _isLinked: 1
-        _reader:
-          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 1
-        _writer:
-          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 1
-        _readerAndWriter:
-          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
-            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 1
-    00000001:
-      type: {class: , ns: , asm: }
 --- !u!1 &7347161265191484792
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,64 +289,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8082748638914546153}
+  - {fileID: 7544789502778352028}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7759106211726452656
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8082748638914546153}
-  - component: {fileID: 1432321658785956830}
-  m_Layer: 0
-  m_Name: RandomSelectorNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8082748638914546153
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7759106211726452656}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 751.5, y: 105, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 8443443211453439401}
-  - {fileID: 6001349073330817158}
-  - {fileID: 4588954155254887952}
-  - {fileID: 7475393369761033222}
-  m_Father: {fileID: 1114355261066075675}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1432321658785956830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7759106211726452656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NodeData:
-    NodeType: EntitiesBT.Nodes.RandomSelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    Builder:
-      BlobDataType: EntitiesBT.Nodes.RandomSelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      FieldNames: []
-      Builders: []
-  references:
-    version: 1

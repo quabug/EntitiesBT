@@ -19,8 +19,15 @@ namespace EntitiesBT.Editor
             PrefabStage.prefabStageClosing -= ClearEditorView;
             PrefabStage.prefabStageClosing += ClearEditorView;
 
-            void ClearEditorView(PrefabStage _) => ResetEditorView(null);
+            void ClearEditorView(PrefabStage closingStage)
+            {
+                var currentStage = PrefabStageUtility.GetCurrentPrefabStage();
+                // do NOT clear editor if current stage is not closing
+                ResetEditorView(currentStage == closingStage ? null : currentStage);
+            }
         }
+
+        private BehaviorTreeView _view => rootVisualElement.Q<BehaviorTreeView>();
 
         [MenuItem("EntitiesBT/BehaviorTreeEditor")]
         public static void ShowEditor()
@@ -42,7 +49,7 @@ namespace EntitiesBT.Editor
             rootVisualElement.styleSheets.Add(styleSheet);
 
             var miniMap = rootVisualElement.Q<MiniMap>();
-            var graph = rootVisualElement.Q<GraphView>();
+            var graph = _view;
             if (miniMap != null && graph != null) miniMap.graphView = graph;
 
             ResetEditorView();
@@ -63,51 +70,13 @@ namespace EntitiesBT.Editor
             if (!HasOpenInstances<BehaviorTreeEditor>()) return;
 
             var window = GetWindow();
-            var graph = prefabStage == null ? null : FindGraph();
+            BehaviorTreeGraph graph = null;
+            if (prefabStage != null)
+            {
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabStage.assetPath);
+                graph = new BehaviorTreeGraph(prefab, prefabStage);
+            }
             window.rootVisualElement.Q<BehaviorTreeView>().Reset(graph);
-
-            BehaviorTreeGraph FindGraph()
-            {
-                var graphPath = Path.ChangeExtension(prefabStage.assetPath, "asset");
-                return AssetDatabase.LoadAssetAtPath<BehaviorTreeGraph>(graphPath);
-            }
-        }
-
-        private void OnSelectionChange()
-        {
-            var graph = Selection.activeObject as BehaviorTreeGraph;
-            if (graph != null)
-            {
-                var prefab = GetOrCreateCorrespondingPrefab();
-                AssetDatabase.OpenAsset(prefab);
-            }
-
-            GameObject GetOrCreateCorrespondingPrefab()
-            {
-                if (graph.Prefab == null)
-                {
-                    var assetPath = AssetDatabase.GetAssetPath(graph);
-                    var prefabPath = Path.ChangeExtension(assetPath, "prefab");
-                    var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
-                    if (prefab == null)
-                    {
-                        Debug.Log($"create new root game object for {assetPath}");
-                        var currentDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
-                        var emptyPrefabPath = Path.Combine(currentDirectory, "EmptyPrefab.prefab");
-                        File.Copy(emptyPrefabPath, prefabPath);
-                        AssetDatabase.ImportAsset(prefabPath);
-                        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
-                    }
-                    else
-                    {
-                        Debug.Log($"use existing root game object for {assetPath}");
-                    }
-
-                    graph.Prefab = prefab;
-                }
-
-                return graph.Prefab;
-            }
         }
     }
 }
