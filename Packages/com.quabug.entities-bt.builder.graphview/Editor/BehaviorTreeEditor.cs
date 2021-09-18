@@ -92,9 +92,11 @@ namespace EntitiesBT.Editor
                     if (prefab == null)
                     {
                         Debug.Log($"create new root game object for {assetPath}");
-                        var tempGameObject = new GameObject();
-                        prefab = PrefabUtility.SaveAsPrefabAsset(tempGameObject, prefabPath);
-                        DestroyImmediate(tempGameObject);
+                        var currentDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
+                        var emptyPrefabPath = Path.Combine(currentDirectory, "EmptyPrefab.prefab");
+                        File.Copy(emptyPrefabPath, prefabPath);
+                        AssetDatabase.ImportAsset(prefabPath);
+                        prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
                     }
                     else
                     {
