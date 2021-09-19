@@ -21,7 +21,10 @@ namespace EntitiesBT.Editor
 
             public GameObject Instance { get; }
             public int Id => Instance.GetInstanceID();
-            public string Name => Instance.name;
+
+            public SerializedProperty Name { get; }
+            public SerializedProperty IsActive { get; }
+
             public Vector2 Position
             {
                 get => Instance.transform.localPosition;
@@ -45,6 +48,9 @@ namespace EntitiesBT.Editor
             {
                 _graph = graph;
                 Instance = instance;
+                var serializedInstance = new SerializedObject(instance);
+                Name = serializedInstance.FindProperty("m_Name");
+                IsActive = serializedInstance.FindProperty("m_IsActive");
             }
 
             public void Dispose()
@@ -79,11 +85,18 @@ namespace EntitiesBT.Editor
             ResetNodes();
 
             Selection.selectionChanged += OnSelectionChanged;
+            EditorApplication.update += OnUpdate;
         }
 
         public void Dispose()
         {
+            EditorApplication.update -= OnUpdate;
             Selection.selectionChanged -= OnSelectionChanged;
+        }
+
+        void OnUpdate()
+        {
+
         }
 
         void OnSelectionChanged()

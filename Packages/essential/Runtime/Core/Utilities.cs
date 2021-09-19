@@ -224,5 +224,11 @@ namespace EntitiesBT.Core
             var projectPath = Application.dataPath.Substring(0, Application.dataPath.Length - "Assets".Length);
             return path.Substring(projectPath.Length);
         }
+
+        [Pure, NotNull]
+        public static string TrimEnd([NotNull] this string str, [NotNull] string trim)
+        {
+            return str.EndsWith(trim) ? str.Substring(0, str.Length - trim.Length) : str;
+        }
     }
 }

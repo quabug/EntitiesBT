@@ -2,7 +2,9 @@ using System;
 using System.IO;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
@@ -17,14 +19,14 @@ namespace EntitiesBT.Editor
 
         private readonly BehaviorTreeView _graph;
 
+        private Toggle ToggleActivation => this.Q<Toggle>("activation");
+        private Label LabelTitle => this.Q<Label>("title-label");
+
         public NodeView(BehaviorTreeView graph, IBehaviorTreeNode node)
             : base(Path.Combine(Utilities.GetCurrentDirectoryProjectRelativePath(), "NodeView.uxml"))
         {
             Node = node;
             _graph = graph;
-
-            title = node.Name;
-            if (title.EndsWith("Node")) title = title.Substring(0, title.Length - "Node".Length);
 
             Id = node.Id;
 
@@ -37,23 +39,40 @@ namespace EntitiesBT.Editor
             AddToClassList(node.BehaviorType.ToString().ToLower());
             AddToClassList(node.NodeType.Name);
 
-            Bind();
+            Bind(Node);
         }
 
         public void Dispose()
         {
-            Unbind();
+            Unbind(Node);
             Node.Dispose();
         }
 
-        void Bind()
+        private void Bind(IBehaviorTreeNode node)
         {
-            Node.OnSelected += Select;
+            node.OnSelected += Select;
+            ToggleActivation.BindProperty(node.IsActive);
+            SetName(node.Name);
+            this.TrackPropertyValue(node.Name, SetName);
+            this.TrackPropertyValue(node.IsActive, ResetActiveClass);
+
+            void SetName(SerializedProperty nameProperty)
+            {
+                title = nameProperty.stringValue.TrimEnd("Node");
+            }
+
+            void ResetActiveClass(SerializedProperty isActive)
+            {
+                if (isActive.boolValue) RemoveFromClassList("disabled");
+                else AddToClassList("disabled");
+            }
         }
 
-        void Unbind()
+        void Unbind(IBehaviorTreeNode node)
         {
-            Node.OnSelected -= Select;
+            this.Unbind();
+            ToggleActivation.Unbind();
+            node.OnSelected -= Select;
         }
 
         private void CreateInputPort()
@@ -68,10 +87,10 @@ namespace EntitiesBT.Editor
             switch (Node.BehaviorType)
             {
                 case BehaviorNodeType.Composite:
-                    CreateOutputPort(Port.Capacity.Multi);
+                    Create(Port.Capacity.Multi);
                     break;
                 case BehaviorNodeType.Decorate:
-                    CreateOutputPort(Port.Capacity.Single);
+                    Create(Port.Capacity.Single);
                     break;
                 case BehaviorNodeType.Action:
                     break;
@@ -79,7 +98,7 @@ namespace EntitiesBT.Editor
                     throw new ArgumentOutOfRangeException();
             }
 
-            void CreateOutputPort(Port.Capacity capacity)
+            void Create(Port.Capacity capacity)
             {
                 Output = InstantiatePort(Orientation.Vertical, Direction.Output, capacity, typeof(NodeView));
                 Output.portName = "";
@@ -116,8 +135,11 @@ namespace EntitiesBT.Editor
 
         private void Select()
         {
-            Select(_graph, additive: false);
-            _graph.FrameSelection();
+            if (!_graph.selection.Contains(this))
+            {
+                Select(_graph, additive: false);
+                _graph.FrameSelection();
+            }
         }
     }
 }

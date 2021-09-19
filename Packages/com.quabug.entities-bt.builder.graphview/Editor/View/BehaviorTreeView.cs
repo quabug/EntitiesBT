@@ -144,11 +144,6 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public void Focus(int nodeId)
-        {
-            // graphElements.AtIndex()
-        }
-
         // TODO: optimize?
         private NodeView CreateNode(IBehaviorTreeNode node)
         {

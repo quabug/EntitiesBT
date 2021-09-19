@@ -29,7 +29,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6546106756673525177}
-  - {fileID: 7927235513627682821}
   m_Father: {fileID: 1114355261066075675}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -66,7 +65,7 @@ GameObject:
   - component: {fileID: 6058587801628406474}
   - component: {fileID: 2132936386324970759}
   m_Layer: 0
-  m_Name: EntityRotateNode
+  m_Name: ParallelNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,11 +79,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706539554990031035}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 458, y: 212, z: 0}
+  m_LocalPosition: {x: 592.5, y: 15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 7927235513627682821}
-  m_RootOrder: 0
+  m_Children:
+  - {fileID: 7927235513627682821}
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2132936386324970759
 MonoBehaviour:
@@ -99,30 +99,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    NodeType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
+    NodeType: EntitiesBT.Nodes.ParallelNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
+      BlobDataType: EntitiesBT.Nodes.ParallelNode, EntitiesBT.Runtime, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - Axis
-      - RadianPerSecond
-      Builders:
-      - id: 0
-      - id: 1
+      FieldNames: []
+      Builders: []
   references:
     version: 1
-    00000000:
-      type: {class: float3Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value:
-          x: 0
-          y: 0
-          z: 0
-    00000001:
-      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
 --- !u!1 &3058250547648811760
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +119,7 @@ GameObject:
   - component: {fileID: 7927235513627682821}
   - component: {fileID: 3045880255448785822}
   m_Layer: 0
-  m_Name: StateMapNode
+  m_Name: RepeatDurationNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,12 +133,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3058250547648811760}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 450, y: 110, z: 0}
+  m_LocalPosition: {x: 526, y: 127, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 6058587801628406474}
-  m_Father: {fileID: 7544789502778352028}
-  m_RootOrder: 1
+  m_Children: []
+  m_Father: {fileID: 6058587801628406474}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3045880255448785822
 MonoBehaviour:
@@ -168,42 +152,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    NodeType: EntitiesBT.Nodes.StateMapNode, EntitiesBT.Runtime, Version=0.0.0.0,
+    NodeType: EntitiesBT.Nodes.RepeatDurationNode, EntitiesBT.Runtime, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: EntitiesBT.Nodes.StateMapNode, EntitiesBT.Runtime, Version=0.0.0.0,
+      BlobDataType: EntitiesBT.Nodes.RepeatDurationNode, EntitiesBT.Runtime, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       FieldNames:
-      - MapSuccess
-      - MapFailure
-      - MapRunning
-      - MapError
+      - CountdownSeconds
+      - BreakStates
       Builders:
       - id: 0
       - id: 1
-      - id: 2
-      - id: 3
   references:
     version: 1
     00000000:
-      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
         Value: 0
     00000001:
-      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        Value: 0
-    00000002:
-      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        Value: 0
-    00000003:
       type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
@@ -234,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6813309973935196122}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 286, y: 118, z: 0}
+  m_LocalPosition: {x: 288, y: 127, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7544789502778352028}
@@ -290,6 +256,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7544789502778352028}
+  - {fileID: 6058587801628406474}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
