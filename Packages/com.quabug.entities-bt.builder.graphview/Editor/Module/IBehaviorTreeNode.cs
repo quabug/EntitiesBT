@@ -21,6 +21,7 @@ namespace EntitiesBT.Editor
         // for binding
         SerializedProperty IsActive { get; }
         SerializedProperty Name { get; }
+        SerializedObject NodeObject { get; }
 
         event Action OnSelected;
     }

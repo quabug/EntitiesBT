@@ -86,11 +86,12 @@
     border-bottom-width: 2px;
 }
 
-.node {
-}
-
 .port > #type {
     display: none;
+}
+
+.port.variant > #type {
+    display: flex;
 }
 
 #title {
@@ -102,9 +103,9 @@
 
 #activation {
     position: absolute;
-    right: 0;
     width: 8px;
     height: 8px;
+    left: 0;
 }
 
 #activation #unity-checkmark {

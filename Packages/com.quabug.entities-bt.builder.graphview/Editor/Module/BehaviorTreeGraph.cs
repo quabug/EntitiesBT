@@ -24,6 +24,7 @@ namespace EntitiesBT.Editor
 
             public SerializedProperty Name { get; }
             public SerializedProperty IsActive { get; }
+            public SerializedObject NodeObject { get; }
 
             public Vector2 Position
             {
@@ -51,6 +52,7 @@ namespace EntitiesBT.Editor
                 var serializedInstance = new SerializedObject(instance);
                 Name = serializedInstance.FindProperty("m_Name");
                 IsActive = serializedInstance.FindProperty("m_IsActive");
+                NodeObject = new SerializedObject((MonoBehaviour)Instance.GetComponent<INodeDataBuilder>());
             }
 
             public void Dispose()

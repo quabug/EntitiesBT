@@ -18,9 +18,8 @@ namespace EntitiesBT.Editor
         internal Port Output { get; private set; }
 
         private readonly BehaviorTreeView _graph;
-
-        private Toggle ToggleActivation => this.Q<Toggle>("activation");
-        private Label LabelTitle => this.Q<Label>("title-label");
+        private readonly Toggle _toggleActivation;
+        private readonly VisualElement _contentContainer;
 
         public NodeView(BehaviorTreeView graph, IBehaviorTreeNode node)
             : base(Path.Combine(Utilities.GetCurrentDirectoryProjectRelativePath(), "NodeView.uxml"))
@@ -32,6 +31,9 @@ namespace EntitiesBT.Editor
 
             style.left = node.Position.x;
             style.top = node.Position.y;
+
+            _contentContainer = this.Q<VisualElement>("contents");
+            _toggleActivation = this.Q<Toggle>("activation");
 
             CreateInputPort();
             CreateOutputPort();
@@ -51,10 +53,18 @@ namespace EntitiesBT.Editor
         private void Bind(IBehaviorTreeNode node)
         {
             node.OnSelected += Select;
-            ToggleActivation.BindProperty(node.IsActive);
+            _toggleActivation.BindProperty(node.IsActive);
             SetName(node.Name);
             this.TrackPropertyValue(node.Name, SetName);
             this.TrackPropertyValue(node.IsActive, ResetActiveClass);
+
+            var nodeProperty = node.NodeObject.GetIterator();
+            nodeProperty.NextVisible(true);
+            do
+            {
+                var propertyElements = nodeProperty.CreateNodeProperty();
+                foreach (var element in propertyElements) _contentContainer.Add(element);
+            } while (nodeProperty.NextVisible(false));
 
             void SetName(SerializedProperty nameProperty)
             {
@@ -71,7 +81,7 @@ namespace EntitiesBT.Editor
         void Unbind(IBehaviorTreeNode node)
         {
             this.Unbind();
-            ToggleActivation.Unbind();
+            _toggleActivation.Unbind();
             node.OnSelected -= Select;
         }
 
