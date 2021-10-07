@@ -1,8 +1,10 @@
 using System.IO;
-using EntitiesBT.Core;
+using EntitiesBT.Variant;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using Utilities = EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Editor
 {
@@ -16,10 +18,8 @@ namespace EntitiesBT.Editor
             set => _labelTitle.text = value;
         }
 
-        public Port LeftPort
-        {
-            get =>
-        }
+        public Port LeftPort { get; }
+        public Port RightPort { get; }
 
         public NodePropertyView(SerializedProperty property)
         {
@@ -29,6 +29,17 @@ namespace EntitiesBT.Editor
             visualTree.CloneTree(this);
 
             _labelTitle = this.Q<Label>("title");
+            Title = property.name;
+
+            LeftPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(IVariant));
+            LeftPort.portName = "";
+            LeftPort.AddToClassList("variant");
+            this.Q<VisualElement>("left-port").Add(LeftPort);
+
+            RightPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(IVariant));
+            RightPort.portName = "";
+            RightPort.AddToClassList("variant");
+            this.Q<VisualElement>("right-port").Add(RightPort);
         }
     }
 }

@@ -7,7 +7,6 @@ using Nuwa.Blob;
 using Nuwa.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
@@ -55,9 +54,7 @@ namespace EntitiesBT.Editor
 
         public bool CanCreate(SerializedProperty property)
         {
-            if (property.propertyType != SerializedPropertyType.Generic) return false;
-            if (property.type != nameof(NodeAsset)) return false;
-            return true;
+            return property.propertyType == SerializedPropertyType.Generic && property.type == nameof(NodeAsset);
         }
 
         public IEnumerable<NodePropertyView> Create(SerializedProperty property)
@@ -76,6 +73,7 @@ namespace EntitiesBT.Editor
 
                 foreach (var element in creator.Create(builder))
                 {
+                    element.Title = fields.GetArrayElementAtIndex(i).stringValue;
                     yield return element;
                 }
             }
@@ -88,21 +86,22 @@ namespace EntitiesBT.Editor
 
         public bool CanCreate(SerializedProperty property)
         {
-            if (property.propertyType != SerializedPropertyType.ManagedReference) return false;
-            if (property.managedReferenceFullTypename != "EntitiesBT.Runtime EntitiesBT.Variant.BlobVariantLinkedRWBuilder") return false;
-            return true;
+            return property.propertyType == SerializedPropertyType.ManagedReference &&
+                   property.managedReferenceFullTypename == "EntitiesBT.Runtime EntitiesBT.Variant.BlobVariantLinkedRWBuilder";
         }
 
         public IEnumerable<NodePropertyView> Create(SerializedProperty property)
         {
-            if (!CanCreate(property)) return Enumerable.Empty<NodePropertyView>();
-
-            var propertyView = new NodePropertyView(property);
-
-            var port = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(int));
-            port.portName = property.name;
-            port.AddToClassList("variant");
-            return port.Yield();
+            if (CanCreate(property))
+            {
+                var reader = new NodePropertyView(property);
+                reader.AddToClassList("reader");
+                yield return reader;
+                //
+                // var writer = new NodePropertyView(property);
+                // writer.AddToClassList("writer");
+                // yield return writer;
+            }
         }
     }
 }

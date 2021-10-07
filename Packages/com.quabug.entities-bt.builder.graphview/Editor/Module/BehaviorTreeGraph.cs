@@ -14,71 +14,13 @@ namespace EntitiesBT.Editor
 {
     public class BehaviorTreeGraph : IBehaviorTreeGraph
     {
-        [Serializable]
-        private class Node : IBehaviorTreeNode
-        {
-            private readonly BehaviorTreeGraph _graph;
-
-            public GameObject Instance { get; }
-            public int Id => Instance.GetInstanceID();
-
-            public SerializedProperty Name { get; }
-            public SerializedProperty IsActive { get; }
-            public SerializedObject NodeObject { get; }
-
-            public Vector2 Position
-            {
-                get => Instance.transform.localPosition;
-                set => _graph.SetPosition(this, value);
-            }
-
-            public BehaviorNodeType BehaviorType => Instance.GetComponent<INodeDataBuilder>().GetBehaviorNodeType();
-            public Type NodeType => Instance.GetComponent<INodeDataBuilder>().GetNodeType();
-
-            public bool IsSelected
-            {
-                get => _graph.IsSelected(this);
-                set
-                {
-                    if (value) _graph.Select(this);
-                    else _graph.Unselect(this);
-                }
-            }
-
-            public Node(BehaviorTreeGraph graph, GameObject instance)
-            {
-                _graph = graph;
-                Instance = instance;
-                var serializedInstance = new SerializedObject(instance);
-                Name = serializedInstance.FindProperty("m_Name");
-                IsActive = serializedInstance.FindProperty("m_IsActive");
-                NodeObject = new SerializedObject((MonoBehaviour)Instance.GetComponent<INodeDataBuilder>());
-            }
-
-            public void Dispose()
-            {
-                _graph.RemoveNode(Id);
-            }
-
-            public void SetParent(IBehaviorTreeNode parent)
-            {
-                _graph.SetParent(child: this, parent: parent);
-            }
-
-            public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenNodes(Id);
-
-            public event Action OnSelected;
-
-            public void EmitOnSelected() => OnSelected?.Invoke();
-        }
-
         [NotNull] private readonly GameObject _prefab;
         [NotNull] private readonly PrefabStage _stage;
         private string PrefabPath => AssetDatabase.GetAssetPath(_prefab);
         public string Name => _prefab.name;
         private GameObject RootInstance => _stage.prefabContentsRoot;
 
-        private Lazy<IDictionary<int, Node>> _nodes;
+        private Lazy<IDictionary<int, BehaviorTreeNode>> _nodes;
 
         public BehaviorTreeGraph([NotNull] GameObject prefab, PrefabStage prefabStage)
         {
@@ -108,14 +50,14 @@ namespace EntitiesBT.Editor
                 node.EmitOnSelected();
         }
 
-        private Node GetNodeById(int id) => _nodes.Value[id];
-        private Node GetNodeByGameObject(GameObject obj) => GetNodeById(obj.GetInstanceID());
+        private BehaviorTreeNode GetNodeById(int id) => _nodes.Value[id];
+        private BehaviorTreeNode GetNodeByGameObject(GameObject obj) => GetNodeById(obj.GetInstanceID());
 
         void ResetNodes()
         {
-            _nodes = new Lazy<IDictionary<int, Node>>(() => RootInstance.Descendants()
+            _nodes = new Lazy<IDictionary<int, BehaviorTreeNode>>(() => RootInstance.Descendants()
                 .Where(descendant => descendant.GetComponent<INodeDataBuilder>() != null)
-                .ToDictionary(descendant => descendant.GetInstanceID(), descendant => new Node(this, descendant))
+                .ToDictionary(descendant => descendant.GetInstanceID(), descendant => new BehaviorTreeNode(this, descendant))
             );
         }
 
@@ -125,11 +67,11 @@ namespace EntitiesBT.Editor
             SavePrefab();
             return createdNode;
 
-            Node CreateNodeObject()
+            BehaviorTreeNode CreateNodeObject()
             {
                 var nodeObj = new GameObject();
                 var dynamicNode = nodeObj.AddComponent<GraphViewNode>();
-                var node = new Node(this, nodeObj);
+                var node = new BehaviorTreeNode(this, nodeObj);
                 _nodes.Value.Add(nodeObj.GetInstanceID(), node);
                 nodeObj.transform.SetParent(RootInstance.transform);
                 nodeObj.transform.position = position;
@@ -139,12 +81,32 @@ namespace EntitiesBT.Editor
             }
         }
 
+        public IVariantNode AddVariant(Type nodeType, Vector2 position)
+        {
+            var createdNode = CreateNodeObject();
+            SavePrefab();
+            return createdNode;
+
+            VariantNode CreateNodeObject()
+            {
+                var variantObj = new GameObject();
+                var variantNode = variantObj.AddComponent<GraphVariantNode>();
+                var node = new VariantNode(this, variantObj);
+                // _nodes.Value.Add(variantObj.GetInstanceID(), node);
+                variantObj.transform.SetParent(RootInstance.transform);
+                variantObj.transform.position = position;
+                // variantNode.NodeData = new NodeAsset { NodeType = nodeType.AssemblyQualifiedName };
+                variantObj.name = nodeType.Name;
+                return node;
+            }
+        }
+
         private void SavePrefab()
         {
             EditorSceneManager.MarkSceneDirty(_stage.scene);
         }
 
-        private void SetPosition([NotNull] Node node, Vector2 position)
+        internal void SetPosition([NotNull] BehaviorTreeNode node, Vector2 position)
         {
             node.Instance.transform.localPosition = position;
             var parent = node.Instance.Parent();
@@ -175,7 +137,7 @@ namespace EntitiesBT.Editor
             }
         }
 
-        private void SetParent([NotNull] Node child, [CanBeNull] IBehaviorTreeNode parent)
+        internal void SetParent([NotNull] BehaviorTreeNode child, [CanBeNull] IBehaviorTreeNode parent)
         {
             var childInstance = child.Instance;
             var parentInstance = parent == null ? RootInstance : GetNodeById(parent.Id).Instance;
@@ -188,30 +150,30 @@ namespace EntitiesBT.Editor
 
         public IEnumerable<IBehaviorTreeNode> RootNodes => GetChildrenNodes(RootInstance);
 
-        private IEnumerable<IBehaviorTreeNode> GetChildrenNodes(GameObject instance) =>
+        internal IEnumerable<IBehaviorTreeNode> GetChildrenNodes(GameObject instance) =>
             from child in instance.Children()
             where IsNodeGameObject(child)
             select GetNodeByGameObject(child)
         ;
 
-        private IEnumerable<IBehaviorTreeNode> GetChildrenNodes(int nodeId) =>
+        internal IEnumerable<IBehaviorTreeNode> GetChildrenNodes(int nodeId) =>
             GetChildrenNodes(_nodes.Value[nodeId].Instance);
 
         private bool IsNodeGameObject(GameObject obj) => obj.GetComponent<INodeDataBuilder>() != null;
 
-        private bool IsSelected(Node node) => Selection.activeGameObject == node.Instance;
+        internal bool IsSelected(BehaviorTreeNode node) => Selection.activeGameObject == node.Instance;
 
-        private void Select(Node node)
+        internal void Select(BehaviorTreeNode node)
         {
             if (Selection.activeGameObject != node.Instance) Selection.activeGameObject = node.Instance;
         }
 
-        private void Unselect(Node node)
+        internal void Unselect(BehaviorTreeNode node)
         {
             if (Selection.activeGameObject == node.Instance) Selection.activeGameObject = RootInstance;
         }
 
-        private void RemoveNode(int id)
+        internal void RemoveNode(int id)
         {
             var node = _nodes.Value[id];
             _nodes.Value.Remove(id);

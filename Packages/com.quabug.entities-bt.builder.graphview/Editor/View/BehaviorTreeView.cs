@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EntitiesBT.Core;
+using EntitiesBT.Variant;
 using JetBrains.Annotations;
 using Shtif;
 using UnityEditor;
@@ -105,21 +106,25 @@ namespace EntitiesBT.Editor
             evt.StopPropagation();
 
             var context = new GenericMenu();
-            FillContextMenu();
+            FillSelectionActions();
+            FillBehaviorNodes();
             var popup = GenericMenuPopup.Get(context, "");
             popup.showSearch = true;
             popup.showTooltip = false;
             popup.resizeToContent = true;
             popup.Show(evt.mousePosition);
 
-            void FillContextMenu()
+            void FillSelectionActions()
             {
                 if (selection != null && selection.Any())
                 {
                     context.AddItem(new GUIContent("Delete"), false, () => DeleteSelection());
                     context.AddSeparator("");
                 }
+            }
 
+            void FillBehaviorNodes()
+            {
                 var types = TypeCache.GetTypesWithAttribute<BehaviorNodeAttribute>();
                 foreach (var (type, attribute) in (
                     from type in types
@@ -134,12 +139,33 @@ namespace EntitiesBT.Editor
                 }
             }
 
+            void FillVariantNodes()
+            {
+                var types = TypeCache.GetTypesDerivedFrom<IVariantReader>().Where(type => !type.IsAbstract && type.IsGenericType);
+                foreach (var type in types.OrderBy(type => type.Name))
+                {
+                    var path = $"Variant (ReadOnly)/{type.FullName}";
+                    var action = AddNode(type, viewTransform.matrix.inverse.MultiplyPoint(evt.localMousePosition));
+                    context.AddItem(new GUIContent(path), false, action);
+                }
+            }
+
             GenericMenu.MenuFunction AddNode(Type type, Vector2 position)
             {
                 return () =>
                 {
                     var node = _graph.AddNode(type, position);
                     CreateNode(node);
+                };
+            }
+
+            GenericMenu.MenuFunction AddVariant(Type type, Vector2 position)
+            {
+                return () =>
+                {
+                    var variant = _graph.AddVariant(type, position);
+                    var view = new VariantView(this, variant);
+                    AddElement(view);
                 };
             }
         }

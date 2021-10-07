@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace EntitiesBT
 {
-    public class GraphViewNode :MonoBehaviour, INodeDataBuilder
+    public class GraphViewNode : MonoBehaviour, INodeDataBuilder
     {
         public NodeAsset NodeData;
 
