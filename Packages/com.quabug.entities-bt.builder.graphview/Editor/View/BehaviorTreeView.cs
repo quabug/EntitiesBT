@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using JetBrains.Annotations;
@@ -104,10 +105,14 @@ namespace EntitiesBT.Editor
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
             evt.StopPropagation();
-
+            var menuPosition = viewTransform.matrix.inverse.MultiplyPoint(evt.localMousePosition);
             var context = new GenericMenu();
+
             FillSelectionActions();
             FillBehaviorNodes();
+            context.AddSeparator("");
+            FillVariantNodes();
+
             var popup = GenericMenuPopup.Get(context, "");
             popup.showSearch = true;
             popup.showTooltip = false;
@@ -134,18 +139,18 @@ namespace EntitiesBT.Editor
                 ).OrderBy(t => t.type.Name))
                 {
                     var path = $"{attribute.Type}/{type.Name}";
-                    var action = AddNode(type, viewTransform.matrix.inverse.MultiplyPoint(evt.localMousePosition));
+                    var action = AddNode(type, menuPosition);
                     context.AddItem(new GUIContent(path), false, action);
                 }
             }
 
             void FillVariantNodes()
             {
-                var types = TypeCache.GetTypesDerivedFrom<IVariantReader>().Where(type => !type.IsAbstract && type.IsGenericType);
-                foreach (var type in types.OrderBy(type => type.Name))
+                var variantWrappers = TypeCache.GetTypesWithAttribute<VariantClassAttribute>();
+                foreach (var type in variantWrappers.OrderBy(type => type.Name))
                 {
-                    var path = $"Variant (ReadOnly)/{type.FullName}";
-                    var action = AddNode(type, viewTransform.matrix.inverse.MultiplyPoint(evt.localMousePosition));
+                    var path = $"Variant/{type.Name}";
+                    var action = AddVariant(type, menuPosition);
                     context.AddItem(new GUIContent(path), false, action);
                 }
             }
