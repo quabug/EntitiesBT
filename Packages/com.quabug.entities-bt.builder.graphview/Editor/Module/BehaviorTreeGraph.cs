@@ -81,25 +81,28 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public IVariantNode AddVariant(Type nodeType, Vector2 position)
+        public ISyntaxTreeNode AddVariant(Type variantBaseType, Vector2 position)
         {
             var createdNode = CreateNodeObject();
             SavePrefab();
             return createdNode;
 
-            VariantNode CreateNodeObject()
+            SyntaxTreeNode CreateNodeObject()
             {
                 var variantObj = new GameObject();
                 var variantNode = variantObj.AddComponent<GraphVariantNode>();
-                var node = new VariantNode(this, variantObj);
+                variantNode.VariantClass = variantBaseType.AssemblyQualifiedName;
+                var node = new SyntaxTreeNode(this, variantObj);
                 // _nodes.Value.Add(variantObj.GetInstanceID(), node);
                 variantObj.transform.SetParent(RootInstance.transform);
                 variantObj.transform.position = position;
                 // variantNode.NodeData = new NodeAsset { NodeType = nodeType.AssemblyQualifiedName };
-                variantObj.name = nodeType.Name;
+                variantObj.name = variantBaseType.Name;
                 return node;
             }
         }
+
+        public IEnumerable<ISyntaxTreeNode> RootSyntaxTreeNode { get; }
 
         private void SavePrefab()
         {

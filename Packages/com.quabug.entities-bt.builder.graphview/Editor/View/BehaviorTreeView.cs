@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using JetBrains.Annotations;
+using Nuwa.Blob;
 using Shtif;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -139,39 +140,39 @@ namespace EntitiesBT.Editor
                 ).OrderBy(t => t.type.Name))
                 {
                     var path = $"{attribute.Type}/{type.Name}";
-                    var action = AddNode(type, menuPosition);
-                    context.AddItem(new GUIContent(path), false, action);
+                    context.AddItem(new GUIContent(path), false, Action);
+
+                    void Action()
+                    {
+                        var node = _graph.AddNode(type, menuPosition);
+                        CreateNode(node);
+                    }
                 }
             }
 
             void FillVariantNodes()
             {
                 var variantWrappers = TypeCache.GetTypesWithAttribute<VariantClassAttribute>();
-                foreach (var type in variantWrappers.OrderBy(type => type.Name))
+                foreach (var (wrapper, variant) in
+                    from wrapper in variantWrappers
+                    orderby wrapper.Name
+                    from variant in wrapper.GetNestedTypes()
+                    where typeof(IVariantReader).IsAssignableFrom(variant)
+                          || typeof(IVariantWriter).IsAssignableFrom(variant)
+                          || typeof(IVariantReaderAndWriter).IsAssignableFrom(variant)
+                    select (wrapper, variant)
+                )
                 {
-                    var path = $"Variant/{type.Name}";
-                    var action = AddVariant(type, menuPosition);
-                    context.AddItem(new GUIContent(path), false, action);
+                    var path = $"Variant/{wrapper.Name}/{variant.Name.Remove(variant.Name.LastIndexOf('`'))}";
+                    context.AddItem(new GUIContent(path), false, Action);
+
+                    void Action()
+                    {
+                        var variantNode = _graph.AddVariant(variant, menuPosition);
+                        var view = new VariantView(this, variantNode);
+                        AddElement(view);
+                    }
                 }
-            }
-
-            GenericMenu.MenuFunction AddNode(Type type, Vector2 position)
-            {
-                return () =>
-                {
-                    var node = _graph.AddNode(type, position);
-                    CreateNode(node);
-                };
-            }
-
-            GenericMenu.MenuFunction AddVariant(Type type, Vector2 position)
-            {
-                return () =>
-                {
-                    var variant = _graph.AddVariant(type, position);
-                    var view = new VariantView(this, variant);
-                    AddElement(view);
-                };
             }
         }
 
