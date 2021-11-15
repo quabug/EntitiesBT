@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
@@ -15,10 +16,20 @@ namespace EntitiesBT.Editor
             set => Instance.transform.localPosition = value;
         }
 
+        public SerializedProperty Name { get; }
+
         public SyntaxTreeNode(BehaviorTreeGraph graph, GameObject instance)
         {
             _graph = graph;
             Instance = instance;
+
+            var serializedInstance = new SerializedObject(instance);
+            Name = serializedInstance.FindProperty("m_Name");
+        }
+
+        public void Dispose()
+        {
+            _graph.RemoveNode(Instance);
         }
     }
 }

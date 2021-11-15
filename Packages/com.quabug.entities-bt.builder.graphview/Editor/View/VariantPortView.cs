@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using EntitiesBT.Variant;
 using UnityEditor;
@@ -21,7 +22,7 @@ namespace EntitiesBT.Editor
         public Port LeftPort { get; }
         public Port RightPort { get; }
 
-        public NodePropertyView(SerializedProperty property)
+        public NodePropertyView(Type type, Direction direction = Direction.Input)
         {
             var relativeDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
             var uxmlPath = Path.Combine(relativeDirectory, "NodePropertyView.uxml");
@@ -29,14 +30,13 @@ namespace EntitiesBT.Editor
             visualTree.CloneTree(this);
 
             _labelTitle = this.Q<Label>("title");
-            Title = property.name;
 
-            LeftPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(IVariant));
+            LeftPort = Port.Create<Edge>(Orientation.Horizontal, direction, Port.Capacity.Multi, type);
             LeftPort.portName = "";
             LeftPort.AddToClassList("variant");
             this.Q<VisualElement>("left-port").Add(LeftPort);
 
-            RightPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(IVariant));
+            RightPort = Port.Create<Edge>(Orientation.Horizontal, direction, Port.Capacity.Multi, type);
             RightPort.portName = "";
             RightPort.AddToClassList("variant");
             this.Q<VisualElement>("right-port").Add(RightPort);

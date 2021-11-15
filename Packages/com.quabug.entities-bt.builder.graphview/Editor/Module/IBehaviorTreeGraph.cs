@@ -8,10 +8,10 @@ namespace EntitiesBT.Editor
     {
         string Name { get; }
 
-        IBehaviorTreeNode AddNode(Type nodeType, Vector2 position);
-        IEnumerable<IBehaviorTreeNode> RootNodes { get; }
+        IBehaviorTreeNode AddBehaviorNode(Type nodeType, Vector2 position);
+        IEnumerable<IBehaviorTreeNode> BehaviorTreeRootNodes { get; }
 
-        ISyntaxTreeNode AddVariant(Type variantBaseType, Vector2 position);
+        ISyntaxTreeNode AddSyntaxNode(Type variantBaseType, Vector2 position);
         IEnumerable<ISyntaxTreeNode> SyntaxTreeRootNodes { get; }
     }
 

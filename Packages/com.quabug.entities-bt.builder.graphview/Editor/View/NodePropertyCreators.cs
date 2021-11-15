@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Components;
+using EntitiesBT.Variant;
 using JetBrains.Annotations;
 using Nuwa.Blob;
 using Nuwa.Editor;
@@ -86,21 +87,24 @@ namespace EntitiesBT.Editor
 
         public bool CanCreate(SerializedProperty property)
         {
+            var builderType = typeof(BlobVariantLinkedRWBuilder);
             return property.propertyType == SerializedPropertyType.ManagedReference &&
-                   property.managedReferenceFullTypename == "EntitiesBT.Runtime EntitiesBT.Variant.BlobVariantLinkedRWBuilder";
+                   property.managedReferenceFullTypename == $"EntitiesBT.Runtime {builderType.FullName}";
         }
 
         public IEnumerable<NodePropertyView> Create(SerializedProperty property)
         {
             if (CanCreate(property))
             {
-                var reader = new NodePropertyView(property);
-                reader.AddToClassList("reader");
-                yield return reader;
-                //
-                // var writer = new NodePropertyView(property);
-                // writer.AddToClassList("writer");
-                // yield return writer;
+                var readerType = Type.GetType(property.FindPropertyRelative("_reader._variantTypeName").stringValue);
+                var readerView = new NodePropertyView(readerType, Direction.Input);
+                readerView.AddToClassList("reader");
+                yield return readerView;
+
+                var writerType = Type.GetType(property.FindPropertyRelative("_writer._variantTypeName").stringValue);
+                var writerView = new NodePropertyView(writerType, Direction.Output);
+                writerView.AddToClassList("writer");
+                yield return writerView;
             }
         }
     }

@@ -21,7 +21,7 @@ namespace EntitiesBT.Editor
         public Vector2 Position
         {
             get => Instance.transform.localPosition;
-            set => _graph.SetPosition(this, value);
+            set => _graph.SetPosition(Instance, value, Order);
         }
 
         public BehaviorNodeType BehaviorType => Instance.GetComponent<INodeDataBuilder>().GetBehaviorNodeType();
@@ -29,11 +29,11 @@ namespace EntitiesBT.Editor
 
         public bool IsSelected
         {
-            get => _graph.IsSelected(this);
+            get => _graph.IsSelected(Instance);
             set
             {
-                if (value) _graph.Select(this);
-                else _graph.Unselect(this);
+                if (value) _graph.Select(Instance);
+                else _graph.Unselect(Instance);
             }
         }
 
@@ -49,15 +49,17 @@ namespace EntitiesBT.Editor
 
         public void Dispose()
         {
-            _graph.RemoveNode(Id);
+            _graph.RemoveNode(Instance);
         }
+
+        private float Order(GameObject obj) => obj.transform.localPosition.x;
 
         public void SetParent(IBehaviorTreeNode parent)
         {
-            _graph.SetParent(child: this, parent: parent);
+            _graph.SetParent(child: Instance, parent: parent == null ? null : _graph.GetBehaviorNodeById(parent.Id).Instance, Order);
         }
 
-        public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenNodes(Id);
+        public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenBehaviorNodes(Id);
 
         public event Action OnSelected;
 

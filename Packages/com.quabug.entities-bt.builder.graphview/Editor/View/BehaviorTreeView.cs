@@ -48,7 +48,8 @@ namespace EntitiesBT.Editor
 
             if (_graph != null)
             {
-                foreach (var node in _graph.RootNodes) CreateNode(node);
+                foreach (var node in _graph.BehaviorTreeRootNodes) CreateBehaviorNode(node);
+                foreach (var node in _graph.SyntaxTreeRootNodes) CreateSyntaxNode(node);
             }
 
             graphViewChanged += OnGraphChanged;
@@ -58,7 +59,7 @@ namespace EntitiesBT.Editor
                 if (@event.elementsToRemove != null)
                 {
                     foreach (var edge in @event.elementsToRemove.OfType<Edge>()) OnEdgeDeleted(edge);
-                    foreach (var node in @event.elementsToRemove.OfType<NodeView>().ToArray())
+                    foreach (var node in @event.elementsToRemove.OfType<INodeView>().ToArray())
                     {
                         node.Dispose();
                         @event.elementsToRemove.AddRange(edges.ToList().Where(edge => edge.input.node == node || edge.output.node == node));
@@ -72,7 +73,7 @@ namespace EntitiesBT.Editor
 
                 if (@event.movedElements != null)
                 {
-                    foreach (var node in @event.movedElements.OfType<NodeView>()) node.SyncPosition();
+                    foreach (var node in @event.movedElements.OfType<INodeView>()) node.SyncPosition();
                 }
 
                 return @event;
@@ -81,13 +82,13 @@ namespace EntitiesBT.Editor
             void OnEdgeCreated(Edge edge)
             {
                 edge.showInMiniMap = true;
-                if (edge.input.node is NodeView inputNode && edge.output.node is NodeView outputNode)
+                if (edge.input.node is BehaviorNodeView inputNode && edge.output.node is BehaviorNodeView outputNode)
                     outputNode.ConnectTo(inputNode);
             }
 
             void OnEdgeDeleted(Edge edge)
             {
-                if (edge.input.node is NodeView inputNode && edge.output.node is NodeView outputNode)
+                if (edge.input.node is BehaviorNodeView inputNode && edge.output.node is BehaviorNodeView outputNode)
                     inputNode.DisconnectFrom(outputNode);
             }
         }
@@ -144,8 +145,8 @@ namespace EntitiesBT.Editor
 
                     void Action()
                     {
-                        var node = _graph.AddNode(type, menuPosition);
-                        CreateNode(node);
+                        var node = _graph.AddBehaviorNode(type, menuPosition);
+                        CreateBehaviorNode(node);
                     }
                 }
             }
@@ -168,8 +169,8 @@ namespace EntitiesBT.Editor
 
                     void Action()
                     {
-                        var variantNode = _graph.AddVariant(variant, menuPosition);
-                        var view = new VariantView(this, variantNode);
+                        var variantNode = _graph.AddSyntaxNode(variant, menuPosition);
+                        var view = new SyntaxNodeView(this, variantNode);
                         AddElement(view);
                     }
                 }
@@ -177,16 +178,23 @@ namespace EntitiesBT.Editor
         }
 
         // TODO: optimize?
-        private NodeView CreateNode(IBehaviorTreeNode node)
+        private BehaviorNodeView CreateBehaviorNode(IBehaviorTreeNode node)
         {
-            var nodeView = new NodeView(this, node);
+            var nodeView = new BehaviorNodeView(this, node);
             AddElement(nodeView);
             foreach (var child in node.Children)
             {
-                var childView = CreateNode(child);
+                var childView = CreateBehaviorNode(child);
                 var edge = nodeView.Output.ConnectTo(childView.Input);
                 AddElement(edge);
             }
+            return nodeView;
+        }
+
+        private SyntaxNodeView CreateSyntaxNode(ISyntaxTreeNode node)
+        {
+            var nodeView = new SyntaxNodeView(this, node);
+            AddElement(nodeView);
             return nodeView;
         }
     }

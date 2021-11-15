@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="NodeView.uss" />
+    <Style src="BehaviorNodeView.uss" />
     <ui:VisualElement name="node-border">
         <ui:VisualElement name="input">
             <ui:Toggle name="activation" />

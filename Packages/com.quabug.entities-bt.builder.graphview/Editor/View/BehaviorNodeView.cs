@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
-    public sealed class NodeView : Node, IDisposable
+    public sealed class BehaviorNodeView : Node, IDisposable, INodeView
     {
         public int Id { get; }
 
@@ -21,8 +21,8 @@ namespace EntitiesBT.Editor
         private readonly Toggle _toggleActivation;
         private readonly VisualElement _contentContainer;
 
-        public NodeView(BehaviorTreeView graph, IBehaviorTreeNode node)
-            : base(Path.Combine(Utilities.GetCurrentDirectoryProjectRelativePath(), "NodeView.uxml"))
+        public BehaviorNodeView(BehaviorTreeView graph, IBehaviorTreeNode node)
+            : base(Path.Combine(Utilities.GetCurrentDirectoryProjectRelativePath(), "BehaviorNodeView.uxml"))
         {
             Node = node;
             _graph = graph;
@@ -87,7 +87,7 @@ namespace EntitiesBT.Editor
 
         private void CreateInputPort()
         {
-            Input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(NodeView));
+            Input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(BehaviorNodeView));
             Input.portName = "";
             inputContainer.Add(Input);
         }
@@ -110,18 +110,18 @@ namespace EntitiesBT.Editor
 
             void Create(Port.Capacity capacity)
             {
-                Output = InstantiatePort(Orientation.Vertical, Direction.Output, capacity, typeof(NodeView));
+                Output = InstantiatePort(Orientation.Vertical, Direction.Output, capacity, typeof(BehaviorNodeView));
                 Output.portName = "";
                 outputContainer.Add(Output);
             }
         }
 
-        public void ConnectTo([NotNull] NodeView child)
+        public void ConnectTo([NotNull] BehaviorNodeView child)
         {
             child.Node.SetParent(Node);
         }
 
-        public void DisconnectFrom([NotNull] NodeView parent)
+        public void DisconnectFrom([NotNull] BehaviorNodeView parent)
         {
             Node.SetParent(null);
         }

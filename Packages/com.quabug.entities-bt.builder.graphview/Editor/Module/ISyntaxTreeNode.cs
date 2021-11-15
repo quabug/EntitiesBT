@@ -1,13 +1,13 @@
-using System.Collections.Generic;
-using JetBrains.Annotations;
+using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public interface ISyntaxTreeNode
+    public interface ISyntaxTreeNode : IDisposable
     {
         Vector2 Position { get; set; }
-        void SetParent([CanBeNull] ISyntaxTreeNode node);
-        IEnumerable<ISyntaxTreeNode> Children { get; }
+
+        SerializedProperty Name { get; }
     }
 }
