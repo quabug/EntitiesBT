@@ -3,7 +3,7 @@
     <ui:VisualElement name="node-border" style="padding-top: 15px; padding-bottom: 15px;">
         <ui:VisualElement name="left" class="port-container" />
         <ui:VisualElement name="center">
-            <ui:VisualElement name="titoure">
+            <ui:VisualElement name="title">
                 <ui:Label name="title-label" text="SequenceNode" class="unity-text-element unity-label" />
                 <ui:VisualElement name="title-button-container">
                     <ui:VisualElement name="collapse-button">
