@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
+using Nuwa.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
@@ -50,26 +53,42 @@ namespace EntitiesBT.Editor
             Node.Dispose();
         }
 
+        private readonly IDictionary<string /* property path */, NodePropertyView> _propertyViews = new Dictionary<string, NodePropertyView>();
+
         public void Tick()
         {
             title = Node.Name.TrimEnd("Node");
             _toggleActivation.SetValueWithoutNotify(Node.IsActive);
             if (Node.IsActive) RemoveFromClassList("disabled");
             else AddToClassList("disabled");
+
+            var removedViews = new HashSet<string>(_propertyViews.Keys);
+            foreach (var property in Node.NodeObject.FindGraphNodeVariantProperties())
+            {
+                if (removedViews.Contains(property.propertyPath))
+                {
+                    removedViews.Remove(property.propertyPath);
+                }
+                else
+                {
+                    var view = new NodePropertyView(property.GetManagedFullType());
+                    _propertyViews.Add(property.propertyPath, view);
+                    _contentContainer.Add(view);
+                }
+            }
+
+            foreach (var removed in removedViews)
+            {
+                var view = _propertyViews[removed];
+                _propertyViews.Remove(removed);
+                _contentContainer.Remove(view);
+            }
         }
 
         private void Bind(IBehaviorTreeNode node)
         {
             node.OnSelected += Select;
             _toggleActivation.RegisterValueChangedCallback(ActiveToggleChanged);
-
-            // var nodeProperty = node.NodeObject.GetIterator();
-            // nodeProperty.NextVisible(true);
-            // do
-            // {
-            //     var propertyElements = nodeProperty.CreateNodeProperty();
-            //     foreach (var element in propertyElements) _contentContainer.Add(element);
-            // } while (nodeProperty.NextVisible(false));
         }
 
         void Unbind(IBehaviorTreeNode node)

@@ -41,14 +41,17 @@ namespace EntitiesBT.Editor
             }
         }
 
+        public SerializedObject NodeObject => new SerializedObject((MonoBehaviour)Instance.GetComponent<INodeDataBuilder>());
+
+        public event Action OnSelected;
+        public void EmitOnSelected() => OnSelected?.Invoke();
+
+        public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenBehaviorNodes(Id);
+
         public BehaviorTreeNode(BehaviorTreeGraph graph, GameObject instance)
         {
             _graph = graph;
             Instance = instance;
-            // var serializedInstance = new SerializedObject(instance);
-            // Name = serializedInstance.FindProperty("m_Name");
-            // IsActive = serializedInstance.FindProperty("m_IsActive");
-            // NodeObject = new SerializedObject((MonoBehaviour)Instance.GetComponent<INodeDataBuilder>());
         }
 
         public void Dispose()
@@ -62,11 +65,5 @@ namespace EntitiesBT.Editor
         {
             _graph.SetParent(child: Instance, parent: parent == null ? null : _graph.GetBehaviorNodeById(parent.Id).Instance, Order);
         }
-
-        public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenBehaviorNodes(Id);
-
-        public event Action OnSelected;
-
-        public void EmitOnSelected() => OnSelected?.Invoke();
     }
 }

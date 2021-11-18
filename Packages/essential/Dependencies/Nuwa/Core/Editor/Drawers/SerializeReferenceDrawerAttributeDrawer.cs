@@ -77,7 +77,7 @@ namespace Nuwa.Editor
                 buttonPosition.width = position.width - EditorGUIUtility.labelWidth - 1 * EditorGUIUtility.standardVerticalSpacing;
                 buttonPosition.height = EditorGUIUtility.singleLineHeight;
 
-                var referenceType = GetTypeFromName(property.managedReferenceFullTypename);
+                var referenceType = property.GetManagedFullType();
 
                 var storedIndent = EditorGUI.indentLevel;
                 EditorGUI.indentLevel = 0;

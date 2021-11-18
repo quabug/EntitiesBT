@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -223,6 +224,28 @@ namespace Nuwa.Editor
         public static IEnumerable<T> Yield<T>(this T value)
         {
             yield return value;
+        }
+
+        [CanBeNull] public static Type GetManagedFullType([NotNull] this SerializedProperty property)
+        {
+            return property.propertyType != SerializedPropertyType.ManagedReference
+                ? null
+                : GetTypeByTypename(property.managedReferenceFullTypename)
+            ;
+        }
+
+        [CanBeNull] public static Type GetManagedFieldType([NotNull] this SerializedProperty property)
+        {
+            return property.propertyType != SerializedPropertyType.ManagedReference
+                ? null
+                : GetTypeByTypename(property.managedReferenceFieldTypename)
+            ;
+        }
+
+        private static Type GetTypeByTypename(string typename)
+        {
+            var names = typename.Split(' ');
+            return names.Length != 2 ? null : Type.GetType($"{names[1]}, {names[0]}");
         }
     }
 }

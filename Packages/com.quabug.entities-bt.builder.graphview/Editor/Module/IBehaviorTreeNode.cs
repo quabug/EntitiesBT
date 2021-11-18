@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
@@ -20,5 +21,7 @@ namespace EntitiesBT.Editor
         IEnumerable<IBehaviorTreeNode> Children { get; }
 
         event Action OnSelected;
+
+        SerializedObject NodeObject { get; }
     }
 }
