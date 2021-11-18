@@ -14,9 +14,13 @@ namespace EntitiesBT.Editor
         public GameObject Instance { get; }
         public int Id => Instance.GetInstanceID();
 
-        public SerializedProperty Name { get; }
-        public SerializedProperty IsActive { get; }
-        public SerializedObject NodeObject { get; }
+        public string Name => Instance.name;
+
+        public bool IsActive
+        {
+            get => Instance.activeInHierarchy;
+            set => Instance.SetActive(value);
+        }
 
         public Vector2 Position
         {
@@ -41,10 +45,10 @@ namespace EntitiesBT.Editor
         {
             _graph = graph;
             Instance = instance;
-            var serializedInstance = new SerializedObject(instance);
-            Name = serializedInstance.FindProperty("m_Name");
-            IsActive = serializedInstance.FindProperty("m_IsActive");
-            NodeObject = new SerializedObject((MonoBehaviour)Instance.GetComponent<INodeDataBuilder>());
+            // var serializedInstance = new SerializedObject(instance);
+            // Name = serializedInstance.FindProperty("m_Name");
+            // IsActive = serializedInstance.FindProperty("m_IsActive");
+            // NodeObject = new SerializedObject((MonoBehaviour)Instance.GetComponent<INodeDataBuilder>());
         }
 
         public void Dispose()

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
@@ -77,6 +78,17 @@ namespace EntitiesBT.Editor
                 graph = new BehaviorTreeGraph(prefab, prefabStage);
             }
             window.rootVisualElement.Q<BehaviorTreeView>().Reset(graph);
+        }
+
+        private void Update()
+        {
+            if (rootVisualElement != null) TickChildren(rootVisualElement);
+
+            void TickChildren(VisualElement parent)
+            {
+                if (parent is ITickableElement tickable) tickable.Tick();
+                foreach (var child in parent.Children()) TickChildren(child);
+            }
         }
     }
 }

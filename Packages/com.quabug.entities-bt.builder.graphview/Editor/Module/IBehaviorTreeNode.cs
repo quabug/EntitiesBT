@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
-using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
@@ -14,14 +13,11 @@ namespace EntitiesBT.Editor
         BehaviorNodeType BehaviorType { get; }
         Type NodeType { get; }
         bool IsSelected { get; set; }
+        bool IsActive { get; set; }
+        string Name { get; }
 
         void SetParent([CanBeNull] IBehaviorTreeNode node);
         IEnumerable<IBehaviorTreeNode> Children { get; }
-
-        // for binding
-        SerializedProperty IsActive { get; }
-        SerializedProperty Name { get; }
-        SerializedObject NodeObject { get; }
 
         event Action OnSelected;
     }

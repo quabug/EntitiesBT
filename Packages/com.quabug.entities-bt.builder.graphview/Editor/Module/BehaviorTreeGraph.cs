@@ -28,18 +28,11 @@ namespace EntitiesBT.Editor
             ResetSyntaxNodes();
 
             Selection.selectionChanged += OnSelectionChanged;
-            EditorApplication.update += OnUpdate;
         }
 
         public void Dispose()
         {
-            EditorApplication.update -= OnUpdate;
             Selection.selectionChanged -= OnSelectionChanged;
-        }
-
-        void OnUpdate()
-        {
-
         }
 
         void OnSelectionChanged()

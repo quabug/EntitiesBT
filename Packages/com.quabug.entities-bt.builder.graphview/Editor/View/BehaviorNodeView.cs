@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
-    public sealed class BehaviorNodeView : Node, IDisposable, INodeView
+    public sealed class BehaviorNodeView : Node, IDisposable, INodeView, ITickableElement
     {
         public int Id { get; }
 
@@ -50,39 +50,39 @@ namespace EntitiesBT.Editor
             Node.Dispose();
         }
 
+        public void Tick()
+        {
+            title = Node.Name.TrimEnd("Node");
+            _toggleActivation.SetValueWithoutNotify(Node.IsActive);
+            if (Node.IsActive) RemoveFromClassList("disabled");
+            else AddToClassList("disabled");
+        }
+
         private void Bind(IBehaviorTreeNode node)
         {
             node.OnSelected += Select;
-            _toggleActivation.BindProperty(node.IsActive);
-            SetName(node.Name);
-            this.TrackPropertyValue(node.Name, SetName);
-            this.TrackPropertyValue(node.IsActive, ResetActiveClass);
+            _toggleActivation.RegisterValueChangedCallback(ActiveToggleChanged);
 
-            var nodeProperty = node.NodeObject.GetIterator();
-            nodeProperty.NextVisible(true);
-            do
-            {
-                var propertyElements = nodeProperty.CreateNodeProperty();
-                foreach (var element in propertyElements) _contentContainer.Add(element);
-            } while (nodeProperty.NextVisible(false));
-
-            void SetName(SerializedProperty nameProperty)
-            {
-                title = nameProperty.stringValue.TrimEnd("Node");
-            }
-
-            void ResetActiveClass(SerializedProperty isActive)
-            {
-                if (isActive.boolValue) RemoveFromClassList("disabled");
-                else AddToClassList("disabled");
-            }
+            // var nodeProperty = node.NodeObject.GetIterator();
+            // nodeProperty.NextVisible(true);
+            // do
+            // {
+            //     var propertyElements = nodeProperty.CreateNodeProperty();
+            //     foreach (var element in propertyElements) _contentContainer.Add(element);
+            // } while (nodeProperty.NextVisible(false));
         }
 
         void Unbind(IBehaviorTreeNode node)
         {
             this.Unbind();
-            _toggleActivation.Unbind();
+            _toggleActivation.UnregisterValueChangedCallback(ActiveToggleChanged);
             node.OnSelected -= Select;
+        }
+
+        void ActiveToggleChanged(ChangeEvent<bool> value)
+        {
+            if (value.newValue != Node.IsActive)
+                Node.IsActive = value.newValue;
         }
 
         private void CreateInputPort()
