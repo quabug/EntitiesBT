@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
-using Nuwa.Editor;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -23,6 +19,7 @@ namespace EntitiesBT.Editor
         private readonly BehaviorTreeView _graph;
         private readonly Toggle _toggleActivation;
         private readonly VisualElement _contentContainer;
+        private readonly PropertyPortSystem _propertyPortSystem;
 
         public BehaviorNodeView(BehaviorTreeView graph, IBehaviorTreeNode node)
             : base(Path.Combine(Utilities.GetCurrentDirectoryProjectRelativePath(), "BehaviorNodeView.uxml"))
@@ -45,6 +42,8 @@ namespace EntitiesBT.Editor
             AddToClassList(node.NodeType.Name);
 
             Bind(Node);
+
+            _propertyPortSystem = new PropertyPortSystem(_contentContainer);
         }
 
         public void Dispose()
@@ -53,36 +52,13 @@ namespace EntitiesBT.Editor
             Node.Dispose();
         }
 
-        private readonly IDictionary<string /* property path */, NodePropertyView> _propertyViews = new Dictionary<string, NodePropertyView>();
-
         public void Tick()
         {
             title = Node.Name.TrimEnd("Node");
             _toggleActivation.SetValueWithoutNotify(Node.IsActive);
             if (Node.IsActive) RemoveFromClassList("disabled");
             else AddToClassList("disabled");
-
-            var removedViews = new HashSet<string>(_propertyViews.Keys);
-            foreach (var property in Node.NodeObject.FindGraphNodeVariantProperties())
-            {
-                if (removedViews.Contains(property.propertyPath))
-                {
-                    removedViews.Remove(property.propertyPath);
-                }
-                else
-                {
-                    var view = new NodePropertyView(property.GetManagedFullType());
-                    _propertyViews.Add(property.propertyPath, view);
-                    _contentContainer.Add(view);
-                }
-            }
-
-            foreach (var removed in removedViews)
-            {
-                var view = _propertyViews[removed];
-                _propertyViews.Remove(removed);
-                _contentContainer.Remove(view);
-            }
+            _propertyPortSystem.Refresh(Node.NodeObject);
         }
 
         private void Bind(IBehaviorTreeNode node)
@@ -93,7 +69,6 @@ namespace EntitiesBT.Editor
 
         void Unbind(IBehaviorTreeNode node)
         {
-            this.Unbind();
             _toggleActivation.UnregisterValueChangedCallback(ActiveToggleChanged);
             node.OnSelected -= Select;
         }
@@ -145,6 +120,11 @@ namespace EntitiesBT.Editor
             Node.SetParent(null);
         }
 
+        public void SyncPosition()
+        {
+            Node.Position = GetPosition().position;
+        }
+
         public override void OnSelected()
         {
             base.OnSelected();
@@ -155,11 +135,6 @@ namespace EntitiesBT.Editor
         {
             base.OnUnselected();
             Node.IsSelected = false;
-        }
-
-        public void SyncPosition()
-        {
-            Node.Position = GetPosition().position;
         }
 
         private void Select()

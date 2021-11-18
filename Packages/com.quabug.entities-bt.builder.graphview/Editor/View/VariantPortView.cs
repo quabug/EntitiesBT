@@ -22,7 +22,7 @@ namespace EntitiesBT.Editor
         public Port LeftPort { get; }
         public Port RightPort { get; }
 
-        public NodePropertyView(Type type, Direction direction = Direction.Input)
+        public NodePropertyView(Type type)
         {
             var relativeDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
             var uxmlPath = Path.Combine(relativeDirectory, "NodePropertyView.uxml");
@@ -31,12 +31,12 @@ namespace EntitiesBT.Editor
 
             _labelTitle = this.Q<Label>("title");
 
-            LeftPort = Port.Create<Edge>(Orientation.Horizontal, direction, Port.Capacity.Multi, type);
+            LeftPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, type);
             LeftPort.portName = "";
             LeftPort.AddToClassList("variant");
             this.Q<VisualElement>("left-port").Add(LeftPort);
 
-            RightPort = Port.Create<Edge>(Orientation.Horizontal, direction, Port.Capacity.Multi, type);
+            RightPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, type);
             RightPort.portName = "";
             RightPort.AddToClassList("variant");
             this.Q<VisualElement>("right-port").Add(RightPort);

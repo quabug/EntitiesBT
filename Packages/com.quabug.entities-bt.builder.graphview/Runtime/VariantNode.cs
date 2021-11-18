@@ -10,6 +10,7 @@ namespace EntitiesBT
     public abstract class VariantNode : MonoBehaviour
     {
         protected abstract string Name { get; }
+        public abstract Type VariantType { get; }
 
         private GraphNodeVariant.Any _graphNodeVariant = null;
         internal GraphNodeVariant.Any GraphNodeVariant
@@ -28,15 +29,15 @@ namespace EntitiesBT
         private void Update()
         {
             name = Name;
-            if (_graphNodeVariant != null)
-            {
-                if (_graphNodeVariant.Node != this)
-                {
-                    Debug.LogWarning("Reset invalid reference of GraphNodeVariant");
-                    _graphNodeVariant = null;
-                }
-                if (!IsValid()) _graphNodeVariant.Node = null;
-            }
+            // if (_graphNodeVariant != null)
+            // {
+            //     if (_graphNodeVariant.Node != this)
+            //     {
+            //         Debug.LogWarning("Reset invalid reference of GraphNodeVariant");
+            //         _graphNodeVariant = null;
+            //     }
+            //     if (!IsValid()) _graphNodeVariant.Node = null;
+            // }
         }
     }
 }

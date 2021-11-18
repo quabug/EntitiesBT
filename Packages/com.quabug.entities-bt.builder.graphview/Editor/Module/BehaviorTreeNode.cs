@@ -28,8 +28,8 @@ namespace EntitiesBT.Editor
             set => _graph.SetPosition(Instance, value, Order);
         }
 
-        public BehaviorNodeType BehaviorType => Instance.GetComponent<INodeDataBuilder>().GetBehaviorNodeType();
-        public Type NodeType => Instance.GetComponent<INodeDataBuilder>().GetNodeType();
+        public BehaviorNodeType BehaviorType => _nodeDataBuilder.GetBehaviorNodeType();
+        public Type NodeType => _nodeDataBuilder.GetNodeType();
 
         public bool IsSelected
         {
@@ -41,10 +41,11 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public SerializedObject NodeObject => new SerializedObject((MonoBehaviour)Instance.GetComponent<INodeDataBuilder>());
+        public SerializedObject NodeObject => new SerializedObject((MonoBehaviour)_nodeDataBuilder);
+        private INodeDataBuilder _nodeDataBuilder { get; }
 
         public event Action OnSelected;
-        public void EmitOnSelected() => OnSelected?.Invoke();
+        internal void EmitOnSelected() => OnSelected?.Invoke();
 
         public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenBehaviorNodes(Id);
 
@@ -52,6 +53,7 @@ namespace EntitiesBT.Editor
         {
             _graph = graph;
             Instance = instance;
+            _nodeDataBuilder = Instance.GetComponent<INodeDataBuilder>();
         }
 
         public void Dispose()

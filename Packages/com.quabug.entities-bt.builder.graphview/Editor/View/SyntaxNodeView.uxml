@@ -1,8 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="Common.uss" />
     <Style src="SyntaxNodeView.uss" />
-    <ui:VisualElement name="node-border" style="padding-top: 15px; padding-bottom: 15px;">
-        <ui:VisualElement name="left" class="port-container" />
-        <ui:VisualElement name="center">
+    <ui:VisualElement name="node-border">
+        <ui:VisualElement name="head">
+            <ui:VisualElement name="left-port" />
             <ui:VisualElement name="title">
                 <ui:Label name="title-label" text="SequenceNode" class="unity-text-element unity-label" />
                 <ui:VisualElement name="title-button-container">
@@ -11,14 +12,14 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="contents">
-                <ui:VisualElement name="divider" class="horizontal" />
-                <ui:VisualElement name="top">
-                    <ui:VisualElement name="divider" class="vertical" />
-                </ui:VisualElement>
+            <ui:VisualElement name="right-port" />
+        </ui:VisualElement>
+        <ui:VisualElement name="contents">
+            <ui:VisualElement name="divider" class="horizontal" />
+            <ui:VisualElement name="top">
+                <ui:VisualElement name="divider" class="vertical" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="right" class="port-container" />
     </ui:VisualElement>
     <ui:VisualElement name="selection-border" picking-mode="Ignore" />
 </ui:UXML>

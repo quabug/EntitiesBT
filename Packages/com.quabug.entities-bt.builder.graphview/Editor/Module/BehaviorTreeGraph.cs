@@ -38,8 +38,13 @@ namespace EntitiesBT.Editor
         void OnSelectionChanged()
         {
             var selectedInstance = Selection.activeGameObject;
-            if (selectedInstance != null && _behaviorNodes.Value.TryGetValue(selectedInstance.GetInstanceID(), out var node))
-                node.EmitOnSelected();
+            if (selectedInstance != null)
+            {
+                if (_behaviorNodes.Value.TryGetValue(selectedInstance.GetInstanceID(), out var behaviorNode))
+                    behaviorNode.EmitOnSelected();
+                if (_syntaxNodes.Value.TryGetValue(selectedInstance.GetInstanceID(), out var syntaxNode))
+                    syntaxNode.EmitOnSelected();
+            }
         }
 
         private void SavePrefab()

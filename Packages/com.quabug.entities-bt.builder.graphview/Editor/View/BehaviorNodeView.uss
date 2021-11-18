@@ -65,48 +65,6 @@
     border-bottom-right-radius: 5px;
 }
 
-:hover > #selection-border {
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-}
-
-:selected > #selection-border {
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-}
-
-:hover:selected > #selection-border {
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-}
-
-.port > #type {
-    display: none;
-}
-
-#node-border > #title {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    border-bottom-width: 1px;
-    border-bottom-color: rgb(32, 32, 32);
-    border-left-color: rgb(32, 32, 32);
-    border-right-color: rgb(32, 32, 32);
-    border-top-color: rgb(32, 32, 32);
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    -unity-font-style: bold;
-}
-
 #activation {
     position: absolute;
     width: 8px;

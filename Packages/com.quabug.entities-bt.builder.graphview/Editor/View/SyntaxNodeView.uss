@@ -9,42 +9,19 @@
     border-right-width: 2px;
     border-top-width: 2px;
     border-bottom-width: 2px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
     min-width: 100px;
     -unity-text-align: upper-center;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-}
-
-.port-container {
     align-items: center;
-    justify-content: center;
-    width: 15px;
-}
-
-.action #input {
-    background-color: rgb(29, 157, 168);
-}
-
-.action #output {
-    display: none;
-}
-
-.composite #input {
-    background-color: rgb(179, 183, 15);
-}
-
-.decorate #input {
-    background-color: rgb(97, 51, 178);
-}
-
-#output {
-    align-items: center;
-    justify-content: center;
-    height: 15px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #selection-border {
@@ -61,64 +38,9 @@
     top: 0;
     right: 0;
     bottom: 0;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
-:hover > #selection-border {
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-}
-
-:selected > #selection-border {
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-}
-
-:hover:selected > #selection-border {
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-}
-
-.port > #type {
-    display: none;
-}
-
-#node-border > #title {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    border-bottom-width: 1px;
-    border-bottom-color: rgb(32, 32, 32);
-    border-left-color: rgb(32, 32, 32);
-    border-right-color: rgb(32, 32, 32);
-    border-top-color: rgb(32, 32, 32);
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    -unity-font-style: bold;
+#head {
     flex-direction: row;
     justify-content: space-between;
-}
-
-#activation {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    left: 0;
-}
-
-#activation #unity-checkmark {
-    width: 8px;
-    height: 8px;
 }

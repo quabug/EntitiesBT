@@ -9,16 +9,16 @@ namespace EntitiesBT.Editor
     public static partial class GraphNodeVariantExtensions
     {
         [NotNull, Pure]
-        public static IEnumerable<SerializedProperty> FindGraphNodeVariantProperties([NotNull] this SerializedObject nodeObject)
+        public static IEnumerable<SerializedProperty> FindVariantProperties([NotNull] this SerializedObject nodeObject)
         {
             var property = nodeObject.GetIterator();
             var stepInto = true;
             while (property.NextVisible(stepInto))
             {
                 var fieldType = property.GetManagedFieldType();
-                var valueType = property.GetManagedFullType();
-                if (typeof(GraphNodeVariant.Any).IsAssignableFrom(valueType)) yield return property;
-                stepInto = !typeof(IVariant).IsAssignableFrom(fieldType);
+                var isVariantProperty = typeof(IVariant).IsAssignableFrom(fieldType);
+                stepInto = !isVariantProperty;
+                if (isVariantProperty) yield return property;
             }
         }
     }

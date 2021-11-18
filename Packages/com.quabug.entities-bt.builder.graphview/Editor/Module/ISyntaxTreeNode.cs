@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public interface ISyntaxTreeNode : IDisposable
+    public interface ISyntaxTreeNode : IDisposable, ISelectable
     {
         Vector2 Position { get; set; }
-
-        SerializedProperty Name { get; }
+        string Name { get; }
+        SerializedObject NodeObject { get; }
+        Type VariantType { get; }
     }
 }

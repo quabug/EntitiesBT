@@ -7,20 +7,17 @@ using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public interface IBehaviorTreeNode : IDisposable
+    public interface IBehaviorTreeNode : IDisposable, ISelectable
     {
         int Id { get; }
         Vector2 Position { get; set; }
         BehaviorNodeType BehaviorType { get; }
         Type NodeType { get; }
-        bool IsSelected { get; set; }
         bool IsActive { get; set; }
         string Name { get; }
 
         void SetParent([CanBeNull] IBehaviorTreeNode node);
         IEnumerable<IBehaviorTreeNode> Children { get; }
-
-        event Action OnSelected;
 
         SerializedObject NodeObject { get; }
     }
