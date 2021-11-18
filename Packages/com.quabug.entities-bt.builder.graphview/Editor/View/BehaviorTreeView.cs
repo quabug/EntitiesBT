@@ -153,18 +153,14 @@ namespace EntitiesBT.Editor
 
             void FillVariantNodes()
             {
-                var variantWrappers = TypeCache.GetTypesWithAttribute<VariantClassAttribute>();
-                foreach (var (wrapper, variant) in
-                    from wrapper in variantWrappers
-                    orderby wrapper.Name
-                    from variant in wrapper.GetNestedTypes()
-                    where typeof(IVariantReader).IsAssignableFrom(variant)
-                          || typeof(IVariantWriter).IsAssignableFrom(variant)
-                          || typeof(IVariantReaderAndWriter).IsAssignableFrom(variant)
-                    select (wrapper, variant)
+                var variantNodeTypes = TypeCache.GetTypesDerivedFrom<VariantNode>();
+                foreach (var variant in
+                    from variant in variantNodeTypes
+                    orderby variant.Name
+                    select variant
                 )
                 {
-                    var path = $"Variant/{wrapper.Name}/{variant.Name.Remove(variant.Name.LastIndexOf('`'))}";
+                    var path = $"Variant/{variant.Name}";
                     context.AddItem(new GUIContent(path), false, Action);
 
                     void Action()

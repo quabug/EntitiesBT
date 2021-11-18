@@ -190,12 +190,12 @@ namespace EntitiesBT.Editor
         void ResetSyntaxNodes()
         {
             _syntaxNodes = new Lazy<IDictionary<int, SyntaxTreeNode>>(() => RootInstance.Descendants()
-                .Where(descendant => descendant.GetComponent<GraphVariantNode>() != null)
+                .Where(descendant => descendant.GetComponent<VariantNode>() != null)
                 .ToDictionary(descendant => descendant.GetInstanceID(), descendant => new SyntaxTreeNode(this, descendant))
             );
         }
 
-        public ISyntaxTreeNode AddSyntaxNode(Type variantBaseType, Vector2 position)
+        public ISyntaxTreeNode AddSyntaxNode(Type variantNodeType, Vector2 position)
         {
             var createdNode = CreateNodeObject();
             SavePrefab();
@@ -204,8 +204,7 @@ namespace EntitiesBT.Editor
             SyntaxTreeNode CreateNodeObject()
             {
                 var variantObj = new GameObject();
-                var variantNode = variantObj.AddComponent<GraphVariantNode>();
-                variantNode.VariantClass = variantBaseType.AssemblyQualifiedName;
+                variantObj.AddComponent(variantNodeType);
                 var node = new SyntaxTreeNode(this, variantObj);
                 variantObj.transform.SetParent(RootInstance.transform);
                 variantObj.transform.position = position;
@@ -221,7 +220,7 @@ namespace EntitiesBT.Editor
             select GetSyntaxNodeByGameObject(child)
         ;
 
-        private bool IsSyntaxNodeGameObject(GameObject obj) => obj.GetComponent<GraphVariantNode>() != null;
+        private bool IsSyntaxNodeGameObject(GameObject obj) => obj.GetComponent<VariantNode>() != null;
 
         internal SyntaxTreeNode GetSyntaxNodeById(int id) => _syntaxNodes.Value[id];
         private SyntaxTreeNode GetSyntaxNodeByGameObject(GameObject obj) => GetSyntaxNodeById(obj.GetInstanceID());

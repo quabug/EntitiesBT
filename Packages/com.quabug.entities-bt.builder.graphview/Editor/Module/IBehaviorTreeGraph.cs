@@ -11,7 +11,7 @@ namespace EntitiesBT.Editor
         IBehaviorTreeNode AddBehaviorNode(Type nodeType, Vector2 position);
         IEnumerable<IBehaviorTreeNode> BehaviorTreeRootNodes { get; }
 
-        ISyntaxTreeNode AddSyntaxNode(Type variantBaseType, Vector2 position);
+        ISyntaxTreeNode AddSyntaxNode(Type variantNodeType, Vector2 position);
         IEnumerable<ISyntaxTreeNode> SyntaxTreeRootNodes { get; }
     }
 
