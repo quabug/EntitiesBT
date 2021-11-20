@@ -39,7 +39,7 @@ namespace EntitiesBT.Editor
 
         public void CreateGUI()
         {
-            var relativeDirectory = Utilities.GetCurrentDirectoryProjectRelativePath();
+            var relativeDirectory = Core.Utilities.GetCurrentDirectoryProjectRelativePath();
             var uxmlPath = Path.Combine(relativeDirectory, "BehaviorTreeEditor.uxml");
             var ussPath = Path.Combine(relativeDirectory, "BehaviorTreeEditor.uss");
 

@@ -1,21 +1,21 @@
+using System;
 using System.IO;
-using EntitiesBT.Core;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
-    public sealed class SyntaxNodeView : Node, INodeView, ITickableElement
+    public sealed class SyntaxNodeView : Node, INodeView, ITickableElement, INodePropertyContainer
     {
-        public ISyntaxTreeNode Node { get; }
+        private ISyntaxTreeNode _node;
         private BehaviorTreeView _graph;
         private readonly VisualElement _contentContainer;
         private readonly PropertyPortSystem _propertyPortSystem;
 
         public SyntaxNodeView(BehaviorTreeView graph, ISyntaxTreeNode node)
-            : base(Path.Combine(Utilities.GetCurrentDirectoryProjectRelativePath(), "SyntaxNodeView.uxml"))
+            : base(Path.Combine(Core.Utilities.GetCurrentDirectoryProjectRelativePath(), "SyntaxNodeView.uxml"))
         {
-            Node = node;
+            _node = node;
             _graph = graph;
             _contentContainer = this.Q<VisualElement>("contents");
 
@@ -33,38 +33,49 @@ namespace EntitiesBT.Editor
             {
                 var port = InstantiatePort(Orientation.Horizontal, direction, Port.Capacity.Multi, node.VariantType);
                 port.portName = "";
-                port.AddToClassList("variant");
+                port.AddToClassList(Utilities.VariantPortClass);
+                port.AddToClassList(Utilities.VariantAccessMode(node.VariantType));
                 return port;
             }
         }
 
         public void SyncPosition()
         {
-            Node.Position = GetPosition().position;
+            _node.Position = GetPosition().position;
+        }
+
+        public void Connect(ConnectableVariant variant)
+        {
+            _node.Connect(variant);
+        }
+
+        public void Disconnect(ConnectableVariant variant)
+        {
+            _node.Disconnect(variant);
         }
 
         public void Dispose()
         {
-            Node.OnSelected -= Select;
-            Node.Dispose();
+            _node.OnSelected -= Select;
+            _node.Dispose();
         }
 
         public void Tick()
         {
-            title = Node.Name;
-            _propertyPortSystem.Refresh(Node.NodeObject);
+            title = _node.Name;
+            _propertyPortSystem.Refresh(_node);
         }
 
         public override void OnSelected()
         {
             base.OnSelected();
-            Node.IsSelected = true;
+            _node.IsSelected = true;
         }
 
         public override void OnUnselected()
         {
             base.OnUnselected();
-            Node.IsSelected = false;
+            _node.IsSelected = false;
         }
 
         private void Select()
@@ -74,6 +85,11 @@ namespace EntitiesBT.Editor
                 Select(_graph, additive: false);
                 _graph.FrameSelection();
             }
+        }
+
+        public NodePropertyView FindByPort(Port port)
+        {
+            return _propertyPortSystem.Find(port);
         }
     }
 }

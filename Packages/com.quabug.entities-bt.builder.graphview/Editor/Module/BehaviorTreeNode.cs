@@ -41,13 +41,17 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public SerializedObject NodeObject => new SerializedObject((MonoBehaviour)_nodeDataBuilder);
         private INodeDataBuilder _nodeDataBuilder { get; }
 
         public event Action OnSelected;
         internal void EmitOnSelected() => OnSelected?.Invoke();
 
         public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenBehaviorNodes(Id);
+
+        public IEnumerable<ConnectableVariant> ConnectableVariants => new SerializedObject((MonoBehaviour)_nodeDataBuilder)
+            .FindGraphNodeVariantProperties()
+            .ToConnectableVariants()
+        ;
 
         public BehaviorTreeNode(BehaviorTreeGraph graph, GameObject instance)
         {

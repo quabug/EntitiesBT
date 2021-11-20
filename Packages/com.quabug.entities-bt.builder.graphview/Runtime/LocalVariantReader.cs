@@ -9,7 +9,7 @@ namespace EntitiesBT
     public class LocalVariantReader : VariantNode
     {
         protected override string Name => $"Local<{Variant?.FindValueType()?.Name}>";
-        public override Type VariantType => Variant?.GetType();
+        public override Type VariantType => typeof(IVariantReader);
 
         [SerializeReference]
         [SerializeReferenceDrawer(TypeRestrict = typeof(LocalVariant.Reader<>), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]

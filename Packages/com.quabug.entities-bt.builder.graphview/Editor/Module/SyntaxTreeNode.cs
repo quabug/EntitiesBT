@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,7 +19,6 @@ namespace EntitiesBT.Editor
         }
 
         public string Name => Instance.name;
-        public SerializedObject NodeObject => new SerializedObject(_node);
         public Type VariantType => _node.VariantType;
 
         public bool IsSelected
@@ -35,6 +35,8 @@ namespace EntitiesBT.Editor
 
         private VariantNode _node { get; }
 
+        public IEnumerable<ConnectableVariant> ConnectableVariants => new SerializedObject(_node).FindGraphNodeVariantProperties().ToConnectableVariants();
+
         public SyntaxTreeNode(BehaviorTreeGraph graph, GameObject instance)
         {
             _graph = graph;
@@ -45,6 +47,18 @@ namespace EntitiesBT.Editor
         public void Dispose()
         {
             _graph.RemoveNode(Instance);
+        }
+
+        public void Connect(ConnectableVariant variant)
+        {
+            variant.SetVariantNode(_node);
+            _graph.SavePrefab();
+        }
+
+        public void Disconnect(ConnectableVariant variant)
+        {
+            variant.SetVariantNode(null);
+            _graph.SavePrefab();
         }
     }
 }

@@ -58,13 +58,17 @@ namespace EntitiesBT.Editor
                     foreach (var node in @event.elementsToRemove.OfType<INodeView>().ToArray())
                     {
                         node.Dispose();
-                        @event.elementsToRemove.AddRange(edges.ToList().Where(edge => edge.input.node == node || edge.output.node == node));
+                        edges.ForEach(edge =>
+                        {
+                            if (edge.input.node == node || edge.output.node == node)
+                                @event.elementsToRemove.Add(edge);
+                        });
                     }
                 }
 
                 if (@event.edgesToCreate != null)
                 {
-                    foreach (var edge in @event.edgesToCreate) OnEdgeCreated(edge);
+                    foreach (var edge in @event.edgesToCreate) OnEdgeCreated(edge, ref @event);
                 }
 
                 if (@event.movedElements != null)
@@ -75,17 +79,63 @@ namespace EntitiesBT.Editor
                 return @event;
             }
 
-            void OnEdgeCreated(Edge edge)
+            void OnEdgeCreated(Edge edge, ref GraphViewChange @event)
             {
                 edge.showInMiniMap = true;
                 if (edge.input.node is BehaviorNodeView inputNode && edge.output.node is BehaviorNodeView outputNode)
+                {
                     outputNode.ConnectTo(inputNode);
+                }
+                else
+                {
+                    var (syntaxNodeView, nodePropertyView) = FindVariantEdgeViews(edge);
+                    if (syntaxNodeView != null && nodePropertyView != null)
+                    {
+                        nodePropertyView.ConnectTo(syntaxNodeView);
+
+                        // disconnect edges on the same ports of NodePropertyView
+                        edges.ForEach(e =>
+                        {
+                            if (e != edge && nodePropertyView.IsConnected(e))
+                            {
+                                e.input.Disconnect(e);
+                                e.output.Disconnect(e);
+                                RemoveElement(e);
+                            }
+                        });
+                        // NOTE: not working since remove events are not handled in following process of `Port`
+                        // var removedEdges = edges.ToList().Where(e => e != edge && nodePropertyView.IsConnected(e));
+                        // @event.elementsToRemove ??= new List<GraphElement>();
+                        // @event.elementsToRemove.AddRange(removedEdges);
+                    }
+                }
             }
 
             void OnEdgeDeleted(Edge edge)
             {
                 if (edge.input.node is BehaviorNodeView inputNode && edge.output.node is BehaviorNodeView outputNode)
+                {
                     inputNode.DisconnectFrom(outputNode);
+                }
+                else
+                {
+                    var (syntaxNodeView, nodePropertyView) = FindVariantEdgeViews(edge);
+                    if (syntaxNodeView != null && nodePropertyView != null) nodePropertyView.DisconnectFrom(syntaxNodeView);
+                }
+            }
+
+            (SyntaxNodeView, NodePropertyView) FindVariantEdgeViews(Edge edge)
+            {
+                var syntaxNodeView = edge.input.node as SyntaxNodeView;
+                var propertyContainer = edge.output.node as INodePropertyContainer;
+                var propertyView = propertyContainer.FindByPort(edge.output);
+                if (syntaxNodeView == null || propertyContainer == null)
+                {
+                    syntaxNodeView = edge.output.node as SyntaxNodeView;
+                    propertyContainer = edge.input.node as INodePropertyContainer;
+                    propertyView = propertyContainer.FindByPort(edge.input);
+                }
+                return (syntaxNodeView, propertyView);
             }
         }
 

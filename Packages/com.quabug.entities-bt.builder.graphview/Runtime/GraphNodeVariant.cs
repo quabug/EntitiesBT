@@ -1,7 +1,6 @@
 using System;
 using EntitiesBT.Variant;
 using JetBrains.Annotations;
-using Nuwa;
 using Unity.Assertions;
 using Unity.Entities;
 
@@ -15,7 +14,8 @@ namespace EntitiesBT
         [Serializable]
         public class Any : IVariant
         {
-            [ReadOnly, UnityDrawProperty] public VariantNode Node;
+            // [ReadOnly, UnityDrawProperty]
+            public VariantNode Node;
 
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {

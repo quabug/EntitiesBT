@@ -11,6 +11,7 @@ namespace EntitiesBT
     {
         protected abstract string Name { get; }
         public abstract Type VariantType { get; }
+        public Type ValueType { get; set; }
 
         private GraphNodeVariant.Any _graphNodeVariant = null;
         internal GraphNodeVariant.Any GraphNodeVariant

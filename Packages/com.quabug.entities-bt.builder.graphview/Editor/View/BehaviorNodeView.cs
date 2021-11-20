@@ -3,12 +3,11 @@ using System.IO;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
-    public sealed class BehaviorNodeView : Node, IDisposable, INodeView, ITickableElement
+    public sealed class BehaviorNodeView : Node, INodeView, ITickableElement, INodePropertyContainer
     {
         public int Id { get; }
 
@@ -22,7 +21,7 @@ namespace EntitiesBT.Editor
         private readonly PropertyPortSystem _propertyPortSystem;
 
         public BehaviorNodeView(BehaviorTreeView graph, IBehaviorTreeNode node)
-            : base(Path.Combine(Utilities.GetCurrentDirectoryProjectRelativePath(), "BehaviorNodeView.uxml"))
+            : base(Path.Combine(Core.Utilities.GetCurrentDirectoryProjectRelativePath(), "BehaviorNodeView.uxml"))
         {
             Node = node;
             _graph = graph;
@@ -58,7 +57,7 @@ namespace EntitiesBT.Editor
             _toggleActivation.SetValueWithoutNotify(Node.IsActive);
             if (Node.IsActive) RemoveFromClassList("disabled");
             else AddToClassList("disabled");
-            _propertyPortSystem.Refresh(Node.NodeObject);
+            _propertyPortSystem.Refresh(Node);
         }
 
         private void Bind(IBehaviorTreeNode node)
@@ -144,6 +143,11 @@ namespace EntitiesBT.Editor
                 Select(_graph, additive: false);
                 _graph.FrameSelection();
             }
+        }
+
+        public NodePropertyView FindByPort(Port port)
+        {
+            return _propertyPortSystem.Find(port);
         }
     }
 }

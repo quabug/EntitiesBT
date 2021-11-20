@@ -47,18 +47,18 @@ namespace EntitiesBT.Editor
             }
         }
 
-        private void SavePrefab()
+        internal void SavePrefab()
         {
             EditorSceneManager.MarkSceneDirty(_stage.scene);
         }
 
-        GameObject FindCorrespondingInstance(GameObject prefab)
+        internal GameObject FindCorrespondingInstance(GameObject prefab)
         {
             var indices = prefab.FindHierarchyIndices();
             return RootInstance.FindGameObjectByHierarchyIndices(indices);
         }
 
-        GameObject FindCorrespondingPrefab(GameObject instance)
+        internal GameObject FindCorrespondingPrefab(GameObject instance)
         {
             var indices = instance.FindHierarchyIndices();
             return _prefab.FindGameObjectByHierarchyIndices(indices);
@@ -90,6 +90,8 @@ namespace EntitiesBT.Editor
 
         private void ReorderChildrenByPosition([NotNull] GameObject parentInstance, Func<GameObject, float> order)
         {
+            if (parentInstance == RootInstance) return;
+
             var childrenInstance = parentInstance.Children().ToArray();
             var positionOrderedIndices = childrenInstance
                 .Select((child, index) => (child, index))

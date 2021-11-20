@@ -1,6 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using EntitiesBT.Variant;
+using JetBrains.Annotations;
 using Nuwa.Editor;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
@@ -15,22 +20,29 @@ namespace EntitiesBT.Editor
             _container = container;
         }
 
-        public void Refresh(SerializedObject node)
+        [CanBeNull] public NodePropertyView Find([NotNull] Port port)
+        {
+            return _propertyViews.Values.FirstOrDefault(view => view.LeftPort == port || view.RightPort == port);
+        }
+
+        public void Refresh(IConnectableVariantContainer container)
         {
             var removedViews = new HashSet<string>(_propertyViews.Keys);
-            foreach (var property in node.FindVariantProperties())
+            foreach (var variant in container.ConnectableVariants)
             {
-                var type = property.GetManagedFullType();
-                if (!typeof(GraphNodeVariant.Any).IsAssignableFrom(type)) continue;
-
-                if (removedViews.Contains(property.propertyPath))
+                if (removedViews.Contains(variant.Id))
                 {
-                    removedViews.Remove(property.propertyPath);
+                    removedViews.Remove(variant.Id);
                 }
                 else
                 {
-                    var view = new NodePropertyView(type);
-                    _propertyViews.Add(property.propertyPath, view);
+                    Type portType = null;
+                    if (typeof(IVariantReader).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantReader);
+                    else if (typeof(IVariantWriter).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantWriter);
+                    else if (typeof(IVariantReaderAndWriter).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantReaderAndWriter);
+                    if (portType == null) throw new NotImplementedException();
+                    var view = new NodePropertyView(portType,  variant);
+                    _propertyViews.Add(variant.Id, view);
                     _container.Add(view);
                 }
             }

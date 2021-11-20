@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
-using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public interface IBehaviorTreeNode : IDisposable, ISelectable
+    public interface IBehaviorTreeNode : IDisposable, ISelectable, IConnectableVariantContainer
     {
         int Id { get; }
         Vector2 Position { get; set; }
@@ -18,7 +17,5 @@ namespace EntitiesBT.Editor
 
         void SetParent([CanBeNull] IBehaviorTreeNode node);
         IEnumerable<IBehaviorTreeNode> Children { get; }
-
-        SerializedObject NodeObject { get; }
     }
 }
