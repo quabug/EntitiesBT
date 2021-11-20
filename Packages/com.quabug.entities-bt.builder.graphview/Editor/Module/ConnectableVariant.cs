@@ -1,23 +1,17 @@
 using System;
-using System.Reflection;
-using Nuwa.Editor;
-using UnityEditor;
 
 namespace EntitiesBT.Editor
 {
     public class ConnectableVariant
     {
         public string Id { get; }
-        public Type VariantType { get; }
-        internal Action<UnityEngine.Object> SetVariantNode { get; }
+        public GraphNodeVariant.Any Variant { get; }
+        public Type VariantType => Variant.GetType();
 
-        public ConnectableVariant(SerializedProperty property)
+        public ConnectableVariant(GraphNodeVariant.Any variant, string id)
         {
-            Id = property.propertyPath;
-            VariantType = property.GetManagedFullType();
-            var fieldInfo = typeof(GraphNodeVariant.Any).GetField(nameof(GraphNodeVariant.Any.Node), BindingFlags.Instance | BindingFlags.Public);
-            var variantObject = property.GetObject();
-            SetVariantNode = obj => fieldInfo.SetValue(variantObject, obj);
+            Id = id;
+            Variant = variant;
         }
     }
 }

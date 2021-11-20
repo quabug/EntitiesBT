@@ -51,13 +51,15 @@ namespace EntitiesBT.Editor
 
         public void Connect(ConnectableVariant variant)
         {
-            variant.SetVariantNode(_node);
+            variant.Variant.Node = _node;
+            _node.OnConnected(variant.Variant);
             _graph.SavePrefab();
         }
 
         public void Disconnect(ConnectableVariant variant)
         {
-            variant.SetVariantNode(null);
+            variant.Variant.Node = null;
+            _node.OnDisconnected(variant.Variant);
             _graph.SavePrefab();
         }
     }

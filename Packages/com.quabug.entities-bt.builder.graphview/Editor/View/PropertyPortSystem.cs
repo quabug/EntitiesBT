@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using EntitiesBT.Variant;
 using JetBrains.Annotations;
-using Nuwa.Editor;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
@@ -36,12 +32,7 @@ namespace EntitiesBT.Editor
                 }
                 else
                 {
-                    Type portType = null;
-                    if (typeof(IVariantReader).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantReader);
-                    else if (typeof(IVariantWriter).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantWriter);
-                    else if (typeof(IVariantReaderAndWriter).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantReaderAndWriter);
-                    if (portType == null) throw new NotImplementedException();
-                    var view = new NodePropertyView(portType,  variant);
+                    var view = new NodePropertyView(variant);
                     _propertyViews.Add(variant.Id, view);
                     _container.Add(view);
                 }

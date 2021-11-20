@@ -144,8 +144,19 @@ namespace EntitiesBT.Editor
             var compatiblePorts = new List<Port>();
             ports.ForEach(port =>
             {
-                if (port.direction != startPort.direction && port.node != startPort.node && port.portType == startPort.portType)
-                    compatiblePorts.Add(port);
+                var isCompatibleBehaviorPorts =
+                    port.orientation == Orientation.Vertical &&
+                    port.direction != startPort.direction &&
+                    port.node != startPort.node &&
+                    port.orientation == startPort.orientation &&
+                    port.portType == startPort.portType;
+                var isCompatibleSyntaxPorts =
+                    port.orientation == Orientation.Horizontal &&
+                    port.direction != startPort.direction &&
+                    port.node != startPort.node &&
+                    port.orientation == startPort.orientation &&
+                    (port.portType.IsAssignableFrom(startPort.portType) || startPort.portType.IsAssignableFrom(port.portType));
+                if (isCompatibleBehaviorPorts || isCompatibleSyntaxPorts) compatiblePorts.Add(port);
             });
             return compatiblePorts;
         }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using EntitiesBT.Variant;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
@@ -20,9 +21,17 @@ namespace EntitiesBT.Editor
         public Port LeftPort { get; }
         public Port RightPort { get; }
 
-        public NodePropertyView(Type type, ConnectableVariant variant)
+        public NodePropertyView(ConnectableVariant variant)
         {
             _variant = variant;
+
+            Type portType = null;
+            if (typeof(IVariantReader).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantReader<>);
+            else if (typeof(IVariantWriter).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantWriter<>);
+            else if (typeof(IVariantReaderAndWriter).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantReaderAndWriter<>);
+            var valueType = variant.Variant.FindValueType();
+            if (portType == null ||  valueType == null) throw new NotImplementedException();
+            portType = portType.MakeGenericType(valueType);
 
             var relativeDirectory = Core.Utilities.GetCurrentDirectoryProjectRelativePath();
             var uxmlPath = Path.Combine(relativeDirectory, "NodePropertyView.uxml");
@@ -31,16 +40,17 @@ namespace EntitiesBT.Editor
 
             _labelTitle = this.Q<Label>("title");
 
-            LeftPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, type);
+            LeftPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, portType);
             LeftPort.portName = "";
             LeftPort.AddToClassList(Utilities.VariantPortClass);
-            LeftPort.AddToClassList(Utilities.VariantAccessMode(type));
+            LeftPort.AddToClassList(Utilities.VariantAccessMode(portType));
             this.Q<VisualElement>("left-port").Add(LeftPort);
 
-            RightPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, type);
+            RightPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, portType);
             RightPort.portName = "";
             RightPort.AddToClassList(Utilities.VariantPortClass);
-            RightPort.AddToClassList(Utilities.VariantAccessMode(type));
+            RightPort.AddToClassList(Utilities.VariantAccessMode(portType));
+
             this.Q<VisualElement>("right-port").Add(RightPort);
         }
 

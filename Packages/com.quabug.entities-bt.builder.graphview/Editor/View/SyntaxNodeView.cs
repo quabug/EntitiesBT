@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
@@ -12,6 +11,9 @@ namespace EntitiesBT.Editor
         private readonly VisualElement _contentContainer;
         private readonly PropertyPortSystem _propertyPortSystem;
 
+        private readonly Port _leftPort;
+        private readonly Port _rightPort;
+
         public SyntaxNodeView(BehaviorTreeView graph, ISyntaxTreeNode node)
             : base(Path.Combine(Core.Utilities.GetCurrentDirectoryProjectRelativePath(), "SyntaxNodeView.uxml"))
         {
@@ -22,8 +24,11 @@ namespace EntitiesBT.Editor
             style.left = node.Position.x;
             style.top = node.Position.y;
 
-            this.Q<VisualElement>("left-port").Add(CreateNodePort(Direction.Input));
-            this.Q<VisualElement>("right-port").Add(CreateNodePort(Direction.Output));
+            _leftPort = CreateNodePort(Direction.Input);
+            this.Q<VisualElement>("left-port").Add(_leftPort);
+
+            _rightPort = CreateNodePort(Direction.Output);
+            this.Q<VisualElement>("right-port").Add(_rightPort);
 
             _propertyPortSystem = new PropertyPortSystem(_contentContainer);
 
@@ -64,6 +69,9 @@ namespace EntitiesBT.Editor
         {
             title = _node.Name;
             _propertyPortSystem.Refresh(_node);
+            var variantType = _node.VariantType;
+            if (_leftPort.portType != variantType) _leftPort.portType = variantType;
+            if (_rightPort.portType != variantType) _rightPort.portType = variantType;
         }
 
         public override void OnSelected()

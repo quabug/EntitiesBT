@@ -29,7 +29,7 @@ namespace EntitiesBT.Editor
 
         public static IEnumerable<ConnectableVariant> ToConnectableVariants(this IEnumerable<SerializedProperty> serializedProperties)
         {
-            return serializedProperties.Select(property => new ConnectableVariant(property));
+            return serializedProperties.Select(property => new ConnectableVariant((GraphNodeVariant.Any)property.GetObject(), property.propertyPath));
         }
     }
 }

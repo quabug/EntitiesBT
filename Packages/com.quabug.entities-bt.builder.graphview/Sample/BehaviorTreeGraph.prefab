@@ -28,7 +28,7 @@ Transform:
   m_LocalPosition: {x: 284, y: 181.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6047713367838605037}
+  - {fileID: 6046757413512371851}
   m_Father: {fileID: 1114355261066075675}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -68,7 +68,7 @@ MonoBehaviour:
         EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
         Value: 0
---- !u!1 &3517781013531186417
+--- !u!1 &6133747636661300097
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,8 +76,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6047713367838605037}
-  - component: {fileID: 3229951555710274276}
+  - component: {fileID: 6046757413512371851}
+  - component: {fileID: 3889816744231278629}
   m_Layer: 0
   m_Name: DelayTimerNode
   m_TagString: Untagged
@@ -85,27 +85,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6047713367838605037
+--- !u!4 &6046757413512371851
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3517781013531186417}
+  m_GameObject: {fileID: 6133747636661300097}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 300, y: 296, z: 0}
+  m_LocalPosition: {x: 364, y: 340.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3405981330891785012}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3229951555710274276
+--- !u!114 &3889816744231278629
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3517781013531186417}
+  m_GameObject: {fileID: 6133747636661300097}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
@@ -159,10 +159,7 @@ MonoBehaviour:
       data:
         Node: {fileID: 0}
     00000003:
-      type: {class: <IVariantReaderAndWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Node: {fileID: 882371488571520873}
+      type: {class: , ns: , asm: }
 --- !u!1 &6154044202753470551
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +171,7 @@ GameObject:
   - component: {fileID: 4353043394503934287}
   - component: {fileID: 882371488571520873}
   m_Layer: 0
-  m_Name: Local<float2>
+  m_Name: Local<Single>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,7 +185,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6154044202753470551}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 112.4, y: 319.59998, z: 0}
+  m_LocalPosition: {x: 143.2, y: 383.19998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1114355261066075675}
@@ -211,12 +208,10 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReader>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value:
-          x: 0
-          y: 0
+        Value: 0
 --- !u!1 &7347161265191484792
 GameObject:
   m_ObjectHideFlags: 0

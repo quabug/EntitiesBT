@@ -1,7 +1,6 @@
 using System;
 using EntitiesBT.Variant;
-using JetBrains.Annotations;
-using Unity.Assertions;
+using Nuwa;
 using Unity.Entities;
 
 namespace EntitiesBT
@@ -14,20 +13,13 @@ namespace EntitiesBT
         [Serializable]
         public class Any : IVariant
         {
-            // [ReadOnly, UnityDrawProperty]
-            public VariantNode Node;
+            [ReadOnly, UnityDrawProperty] public VariantNode Node;
 
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
-                Assert.IsTrue(Node.IsValid());
+                // TODO: check validation
+                // Assert.IsTrue(Node.IsValid());
                 return Node.Allocate(ref builder, ref blobVariant);
-            }
-
-            public void ConnectTo([CanBeNull] VariantNode node)
-            {
-                if (Node != null) Node.GraphNodeVariant = null;
-                Node = node;
-                if (Node != null) Node.GraphNodeVariant = this;
             }
         }
 
