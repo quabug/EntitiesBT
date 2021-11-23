@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
@@ -42,7 +43,7 @@ namespace EntitiesBT.Editor
 
             Bind(Node);
 
-            _propertyPortSystem = new PropertyPortSystem(_contentContainer);
+            _propertyPortSystem = new PropertyPortSystem(_contentContainer, node);
         }
 
         public void Dispose()
@@ -57,7 +58,7 @@ namespace EntitiesBT.Editor
             _toggleActivation.SetValueWithoutNotify(Node.IsActive);
             if (Node.IsActive) RemoveFromClassList("disabled");
             else AddToClassList("disabled");
-            _propertyPortSystem.Refresh(Node);
+            _propertyPortSystem.Refresh();
         }
 
         private void Bind(IBehaviorTreeNode node)
@@ -145,9 +146,7 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public ConnectableVariantView FindByPort(Port port)
-        {
-            return _propertyPortSystem.Find(port);
-        }
+        public ConnectableVariantView FindByPort(Port port) => _propertyPortSystem.Find(port);
+        public IEnumerable<ConnectableVariantView> Views => _propertyPortSystem.Views;
     }
 }

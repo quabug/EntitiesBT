@@ -16,6 +16,7 @@ namespace EntitiesBT.Editor
         public new class UxmlFactory : UxmlFactory<BehaviorTreeView, UxmlTraits> {}
 
         private IBehaviorTreeGraph _graph;
+        private IDictionary<int, Node> _nodes = new Dictionary<int, Node>();
 
         public BehaviorTreeView()
         {
@@ -40,12 +41,14 @@ namespace EntitiesBT.Editor
 
             _graph?.Dispose();
             _graph = graph;
+            _nodes.Clear();
             DeleteElements(graphElements.ToList());
 
             if (_graph != null)
             {
                 foreach (var node in _graph.BehaviorTreeRootNodes) CreateBehaviorNode(node);
                 foreach (var node in _graph.SyntaxTreeRootNodes) CreateSyntaxNode(node);
+                foreach (var node in _nodes.Values.Cast<IConnectableVariantViewContainer>()) CreateVariantSyntaxEdge(node);
             }
 
             graphViewChanged += OnGraphChanged;
@@ -57,6 +60,7 @@ namespace EntitiesBT.Editor
                     foreach (var edge in @event.elementsToRemove.OfType<Edge>()) OnEdgeDeleted(edge);
                     foreach (var node in @event.elementsToRemove.OfType<INodeView>().ToArray())
                     {
+                        _nodes.Remove(node.Id);
                         node.Dispose();
                         edges.ForEach(edge =>
                         {
@@ -221,8 +225,7 @@ namespace EntitiesBT.Editor
                     void Action()
                     {
                         var variantNode = _graph.AddSyntaxNode(variant, menuPosition);
-                        var view = new SyntaxNodeView(this, variantNode);
-                        AddElement(view);
+                        CreateSyntaxNode(variantNode);
                     }
                 }
             }
@@ -232,6 +235,7 @@ namespace EntitiesBT.Editor
         private BehaviorNodeView CreateBehaviorNode(IBehaviorTreeNode node)
         {
             var nodeView = new BehaviorNodeView(this, node);
+            _nodes.Add(nodeView.Id, nodeView);
             AddElement(nodeView);
             foreach (var child in node.Children)
             {
@@ -245,8 +249,19 @@ namespace EntitiesBT.Editor
         private SyntaxNodeView CreateSyntaxNode(ISyntaxTreeNode node)
         {
             var nodeView = new SyntaxNodeView(this, node);
+            _nodes.Add(nodeView.Id, nodeView);
             AddElement(nodeView);
             return nodeView;
+        }
+
+        private void CreateVariantSyntaxEdge(IConnectableVariantViewContainer container)
+        {
+            foreach (var view in container.Views.Where(v => v.Variant.IsConnected))
+            {
+                var syntaxNode = (SyntaxNodeView)_nodes[view.Variant.SyntaxNodeId];
+                var edge = view.Ports[view.Variant.VariantPortIndex].ConnectTo(syntaxNode.Ports[view.Variant.SyntaxNodePortIndex]);
+                AddElement(edge);
+            }
         }
     }
 }

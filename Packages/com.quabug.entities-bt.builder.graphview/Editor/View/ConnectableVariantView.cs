@@ -11,7 +11,6 @@ namespace EntitiesBT.Editor
 {
     public class ConnectableVariantView : VisualElement, IVariantPortContainer
     {
-        private readonly ConnectableVariant _variant;
         private Label _labelTitle;
 
         public string Title
@@ -20,11 +19,12 @@ namespace EntitiesBT.Editor
             set => _labelTitle.text = value;
         }
 
+        public ConnectableVariant Variant { get; }
         public IReadOnlyList<Port> Ports { get; }
 
         public ConnectableVariantView(ConnectableVariant variant)
         {
-            _variant = variant;
+            Variant = variant;
 
             Type portType = null;
             if (typeof(IVariantReader).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantReader<>);
@@ -62,12 +62,12 @@ namespace EntitiesBT.Editor
         {
             var (variantPort, syntaxNodePort) = DestructEdge(edge);
             var variantPortIndex = Ports.IndexOf(variantPort);
-            GetSyntaxNodeView(edge).Connect(_variant, variantPortIndex, syntaxNodePort);
+            GetSyntaxNodeView(edge).Connect(Variant, variantPortIndex, syntaxNodePort);
         }
 
         public void Disconnect(Edge edge)
         {
-            GetSyntaxNodeView(edge).Disconnect(_variant);
+            GetSyntaxNodeView(edge).Disconnect(Variant);
         }
 
         public bool IsConnected(Edge edge)

@@ -14,6 +14,7 @@ namespace EntitiesBT.Editor
         private readonly PropertyPortSystem _propertyPortSystem;
 
         public IReadOnlyList<Port> Ports { get; }
+        public int Id { get; }
 
         public SyntaxNodeView(BehaviorTreeView graph, ISyntaxTreeNode node)
             : base(Path.Combine(Core.Utilities.GetCurrentDirectoryProjectRelativePath(), "SyntaxNodeView.uxml"))
@@ -21,6 +22,8 @@ namespace EntitiesBT.Editor
             _node = node;
             _graph = graph;
             _contentContainer = this.Q<VisualElement>("contents");
+
+            Id = node.Id;
 
             style.left = node.Position.x;
             style.top = node.Position.y;
@@ -33,7 +36,7 @@ namespace EntitiesBT.Editor
             this.Q<VisualElement>("left-port").Add(Ports[0]);
             this.Q<VisualElement>("right-port").Add(Ports[1]);
 
-            _propertyPortSystem = new PropertyPortSystem(_contentContainer);
+            _propertyPortSystem = new PropertyPortSystem(_contentContainer, node);
 
             node.OnSelected += Select;
         }
@@ -63,7 +66,7 @@ namespace EntitiesBT.Editor
         public void Tick()
         {
             title = _node.Name;
-            _propertyPortSystem.Refresh(_node);
+            _propertyPortSystem.Refresh();
             var variantType = _node.VariantType;
             foreach (var port in Ports.Where(p => p.portType != variantType)) port.portType = variantType;
         }
@@ -89,9 +92,7 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public ConnectableVariantView FindByPort(Port port)
-        {
-            return _propertyPortSystem.Find(port);
-        }
+        public ConnectableVariantView FindByPort(Port port) => _propertyPortSystem.Find(port);
+        public IEnumerable<ConnectableVariantView> Views => _propertyPortSystem.Views;
     }
 }

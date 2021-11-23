@@ -8,12 +8,15 @@ namespace EntitiesBT.Editor
 {
     public class PropertyPortSystem
     {
-        private readonly VisualElement _container;
+        private readonly VisualElement _uiRoot;
+        private readonly IConnectableVariantContainer _container;
         private readonly IDictionary<string /* property path */, ConnectableVariantView> _propertyViews = new Dictionary<string, ConnectableVariantView>();
 
-        public PropertyPortSystem(VisualElement container)
+        public PropertyPortSystem(VisualElement uiRoot, IConnectableVariantContainer container)
         {
+            _uiRoot = uiRoot;
             _container = container;
+            Refresh();
         }
 
         [CanBeNull] public ConnectableVariantView Find([NotNull] Port port)
@@ -21,10 +24,12 @@ namespace EntitiesBT.Editor
             return _propertyViews.Values.FirstOrDefault(view => view.Ports.Contains(port));
         }
 
-        public void Refresh(IConnectableVariantContainer container)
+        public IEnumerable<ConnectableVariantView> Views => _propertyViews.Values;
+
+        public void Refresh()
         {
             var removedViews = new HashSet<string>(_propertyViews.Keys);
-            foreach (var variant in container.ConnectableVariants)
+            foreach (var variant in _container.ConnectableVariants)
             {
                 if (removedViews.Contains(variant.Id))
                 {
@@ -34,7 +39,7 @@ namespace EntitiesBT.Editor
                 {
                     var view = new ConnectableVariantView(variant);
                     _propertyViews.Add(variant.Id, view);
-                    _container.Add(view);
+                    _uiRoot.Add(view);
                 }
             }
 
@@ -42,7 +47,7 @@ namespace EntitiesBT.Editor
             {
                 var view = _propertyViews[removed];
                 _propertyViews.Remove(removed);
-                _container.Remove(view);
+                _uiRoot.Remove(view);
             }
         }
     }
