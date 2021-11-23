@@ -14,11 +14,12 @@ namespace EntitiesBT
         public class Any : IVariant
         {
             [ReadOnly, UnityDrawProperty] public VariantNode Node;
+            [ReadOnly, UnityDrawProperty] public int VariantPortIndex = -1;
+            [ReadOnly, UnityDrawProperty] public int SyntaxNodePortIndex = -1;
 
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 // TODO: check validation
-                // Assert.IsTrue(Node.IsValid());
                 return Node.Allocate(ref builder, ref blobVariant);
             }
         }

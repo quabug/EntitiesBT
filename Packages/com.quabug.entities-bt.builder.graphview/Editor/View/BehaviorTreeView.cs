@@ -88,15 +88,15 @@ namespace EntitiesBT.Editor
                 }
                 else
                 {
-                    var (syntaxNodeView, nodePropertyView) = FindVariantEdgeViews(edge);
-                    if (syntaxNodeView != null && nodePropertyView != null)
+                    var view = FindConnectableVariantView(edge);
+                    if (view != null)
                     {
-                        nodePropertyView.ConnectTo(syntaxNodeView);
+                        view.Connect(edge);
 
-                        // disconnect edges on the same ports of NodePropertyView
+                        // disconnect edges on the same ports of ConnectableVariantView
                         edges.ForEach(e =>
                         {
-                            if (e != edge && nodePropertyView.IsConnected(e))
+                            if (e != edge && view.IsConnected(e))
                             {
                                 e.input.Disconnect(e);
                                 e.output.Disconnect(e);
@@ -119,23 +119,21 @@ namespace EntitiesBT.Editor
                 }
                 else
                 {
-                    var (syntaxNodeView, nodePropertyView) = FindVariantEdgeViews(edge);
-                    if (syntaxNodeView != null && nodePropertyView != null) nodePropertyView.DisconnectFrom(syntaxNodeView);
+                    var view = FindConnectableVariantView(edge);
+                    if (view != null) view.Disconnect(edge);
                 }
             }
 
-            (SyntaxNodeView, NodePropertyView) FindVariantEdgeViews(Edge edge)
+            ConnectableVariantView FindConnectableVariantView(Edge edge)
             {
-                var syntaxNodeView = edge.input.node as SyntaxNodeView;
-                var propertyContainer = edge.output.node as INodePropertyContainer;
-                var propertyView = propertyContainer.FindByPort(edge.output);
-                if (syntaxNodeView == null || propertyContainer == null)
-                {
-                    syntaxNodeView = edge.output.node as SyntaxNodeView;
-                    propertyContainer = edge.input.node as INodePropertyContainer;
-                    propertyView = propertyContainer.FindByPort(edge.input);
-                }
-                return (syntaxNodeView, propertyView);
+                return FindConnectableVariantViewByPort(edge.input) ?? FindConnectableVariantViewByPort(edge.output);
+            }
+
+            ConnectableVariantView FindConnectableVariantViewByPort(Port port)
+            {
+                if (port.node is IConnectableVariantViewContainer container)
+                    return container.FindByPort(port);
+                return null;
             }
         }
 

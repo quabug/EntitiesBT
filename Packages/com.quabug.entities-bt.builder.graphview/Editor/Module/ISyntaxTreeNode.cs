@@ -9,7 +9,7 @@ namespace EntitiesBT.Editor
         string Name { get; }
         Type VariantType { get; }
 
-        void Connect(ConnectableVariant variant);
+        void Connect(ConnectableVariant variant, int variantPortIndex, int syntaxNodePortIndex);
         void Disconnect(ConnectableVariant variant);
     }
 }

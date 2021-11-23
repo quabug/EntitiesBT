@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
-    public sealed class BehaviorNodeView : Node, INodeView, ITickableElement, INodePropertyContainer
+    public sealed class BehaviorNodeView : Node, INodeView, ITickableElement, IConnectableVariantViewContainer
     {
         public int Id { get; }
 
@@ -145,7 +145,7 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public NodePropertyView FindByPort(Port port)
+        public ConnectableVariantView FindByPort(Port port)
         {
             return _propertyPortSystem.Find(port);
         }

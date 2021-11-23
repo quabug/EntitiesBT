@@ -9,16 +9,16 @@ namespace EntitiesBT.Editor
     public class PropertyPortSystem
     {
         private readonly VisualElement _container;
-        private readonly IDictionary<string /* property path */, NodePropertyView> _propertyViews = new Dictionary<string, NodePropertyView>();
+        private readonly IDictionary<string /* property path */, ConnectableVariantView> _propertyViews = new Dictionary<string, ConnectableVariantView>();
 
         public PropertyPortSystem(VisualElement container)
         {
             _container = container;
         }
 
-        [CanBeNull] public NodePropertyView Find([NotNull] Port port)
+        [CanBeNull] public ConnectableVariantView Find([NotNull] Port port)
         {
-            return _propertyViews.Values.FirstOrDefault(view => view.LeftPort == port || view.RightPort == port);
+            return _propertyViews.Values.FirstOrDefault(view => view.Ports.Contains(port));
         }
 
         public void Refresh(IConnectableVariantContainer container)
@@ -32,7 +32,7 @@ namespace EntitiesBT.Editor
                 }
                 else
                 {
-                    var view = new NodePropertyView(variant);
+                    var view = new ConnectableVariantView(variant);
                     _propertyViews.Add(variant.Id, view);
                     _container.Add(view);
                 }

@@ -49,9 +49,11 @@ namespace EntitiesBT.Editor
             _graph.RemoveNode(Instance);
         }
 
-        public void Connect(ConnectableVariant variant)
+        public void Connect(ConnectableVariant variant, int variantPortIndex, int syntaxNodePortIndex)
         {
             variant.Variant.Node = _node;
+            variant.Variant.VariantPortIndex = variantPortIndex;
+            variant.Variant.SyntaxNodePortIndex = syntaxNodePortIndex;
             _node.OnConnected(variant.Variant);
             _graph.SavePrefab();
         }
@@ -59,6 +61,8 @@ namespace EntitiesBT.Editor
         public void Disconnect(ConnectableVariant variant)
         {
             variant.Variant.Node = null;
+            variant.Variant.VariantPortIndex = -1;
+            variant.Variant.SyntaxNodePortIndex = -1;
             _node.OnDisconnected(variant.Variant);
             _graph.SavePrefab();
         }
