@@ -40,6 +40,7 @@ namespace EntitiesBT.Editor
             visualTree.CloneTree(this);
 
             _labelTitle = this.Q<Label>("title");
+            Title = variant.Name;
 
             Ports = new[]
             {

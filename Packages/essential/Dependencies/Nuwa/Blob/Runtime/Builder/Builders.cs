@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -9,6 +10,12 @@ namespace Nuwa.Blob
     public interface IBuilder
     {
         void Build(BlobBuilder builder, IntPtr dataPtr);
+    }
+
+    public interface IObjectBuilder
+    {
+        IReadOnlyList<string> GetFieldNames();
+        IReadOnlyList<IBuilder> GetBuilders();
     }
 
     public abstract class Builder<T> : IBuilder where T : unmanaged
@@ -45,7 +52,7 @@ namespace Nuwa.Blob
     /// </summary>
     /// <typeparam name="T">type of blob structure</typeparam>
     [Serializable]
-    public class BlobDataBuilder<T> : Builder<T> where T : unmanaged
+    public class BlobDataBuilder<T> : Builder<T>, IObjectBuilder where T : unmanaged
     {
         [HideInInspector] public string[] FieldNames;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder[] Builders;
@@ -60,6 +67,9 @@ namespace Nuwa.Blob
                 Builders[i].Build(builder, dataPtr + offset);
             }
         }
+
+        public IReadOnlyList<string> GetFieldNames() => FieldNames;
+        public IReadOnlyList<IBuilder> GetBuilders() => Builders;
     }
 
     [Serializable]

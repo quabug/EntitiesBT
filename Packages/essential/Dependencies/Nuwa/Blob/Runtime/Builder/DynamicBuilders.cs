@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -88,7 +89,7 @@ namespace Nuwa.Blob
     }
 
     [Serializable]
-    public class DynamicBlobDataBuilder : IBuilder
+    public class DynamicBlobDataBuilder : IBuilder, IObjectBuilder
     {
         public string BlobDataType;
         public string[] FieldNames;
@@ -103,6 +104,9 @@ namespace Nuwa.Blob
                 Builders[i].Build(builder, dataPtr + offset);
             }
         }
+
+        public IReadOnlyList<string> GetFieldNames() => FieldNames;
+        public IReadOnlyList<IBuilder> GetBuilders() => Builders;
 
         public class Factory : DynamicBuilderFactory<DynamicBlobDataBuilder>
         {
