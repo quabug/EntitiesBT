@@ -9,10 +9,10 @@ namespace EntitiesBT.Editor
     public class GraphNodeVariantPortSystem
     {
         private readonly VisualElement _uiRoot;
-        private readonly IConnectableVariantContainer _container;
+        private readonly IGraphNodeVariantContainer _container;
         private readonly IDictionary<string /* property path */, ConnectableVariantView> _propertyViews = new Dictionary<string, ConnectableVariantView>();
 
-        public GraphNodeVariantPortSystem(VisualElement uiRoot, IConnectableVariantContainer container)
+        public GraphNodeVariantPortSystem(VisualElement uiRoot, IGraphNodeVariantContainer container)
         {
             _uiRoot = uiRoot;
             _container = container;
@@ -29,7 +29,7 @@ namespace EntitiesBT.Editor
         public void Refresh()
         {
             var removedViews = new HashSet<string>(_propertyViews.Keys);
-            foreach (var variant in _container.ConnectableVariants)
+            foreach (var variant in _container.GraphNodeVariants)
             {
                 if (removedViews.Contains(variant.PropertyPath))
                 {

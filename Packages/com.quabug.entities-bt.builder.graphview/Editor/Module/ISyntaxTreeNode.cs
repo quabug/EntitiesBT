@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public interface ISyntaxTreeNode : IDisposable, ISelectable, IConnectableVariantContainer
+    public interface ISyntaxTreeNode : IDisposable, ISelectable, IGraphNodeVariantContainer
     {
         int Id { get; }
         Vector2 Position { get; set; }

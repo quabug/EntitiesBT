@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public interface IBehaviorTreeNode : IDisposable, ISelectable, IConnectableVariantContainer
+    public interface IBehaviorTreeNode : IDisposable, ISelectable, IGraphNodeVariantContainer
     {
         int Id { get; }
         Vector2 Position { get; set; }

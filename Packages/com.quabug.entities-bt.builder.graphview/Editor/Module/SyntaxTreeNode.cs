@@ -35,7 +35,7 @@ namespace EntitiesBT.Editor
 
         private VariantNode _node { get; }
 
-        public IEnumerable<GraphNodeVariant.Any> ConnectableVariants => new SerializedObject(_node).FindGraphNodeVariantProperties().ToGraphNodeVariant();
+        public IEnumerable<GraphNodeVariant.Any> GraphNodeVariants => new SerializedObject(_node).FindGraphNodeVariantProperties().ToGraphNodeVariant();
 
         public SyntaxTreeNode(BehaviorTreeGraph graph, GameObject instance)
         {
