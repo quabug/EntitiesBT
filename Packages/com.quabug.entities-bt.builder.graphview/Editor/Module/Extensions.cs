@@ -29,9 +29,15 @@ namespace EntitiesBT.Editor
             return nodeObject.FindVariantProperties().Where(property => typeof(GraphNodeVariant.Any).IsAssignableFrom(property.GetManagedFullType()));
         }
 
-        public static IEnumerable<ConnectableVariant> ToConnectableVariants(this IEnumerable<SerializedProperty> serializedProperties)
+        public static IEnumerable<GraphNodeVariant.Any> ToGraphNodeVariant(this IEnumerable<SerializedProperty> serializedProperties)
         {
-            return serializedProperties.Select(property => new ConnectableVariant((GraphNodeVariant.Any)property.GetObject(), property.propertyPath, VariantName(property)));
+            foreach (var property in serializedProperties)
+            {
+                var variant = (GraphNodeVariant.Any)property.GetObject();
+                variant.PropertyPath ??= property.propertyPath;
+                variant.Name ??= VariantName(property);
+                yield return variant;
+            }
 
             string VariantName(SerializedProperty property)
             {

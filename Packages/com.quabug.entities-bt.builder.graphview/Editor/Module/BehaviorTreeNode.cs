@@ -48,9 +48,9 @@ namespace EntitiesBT.Editor
 
         public IEnumerable<IBehaviorTreeNode> Children => _graph.GetChildrenBehaviorNodes(Id);
 
-        public IEnumerable<ConnectableVariant> ConnectableVariants => new SerializedObject((MonoBehaviour)_nodeDataBuilder)
+        public IEnumerable<GraphNodeVariant.Any> ConnectableVariants => new SerializedObject((MonoBehaviour)_nodeDataBuilder)
             .FindGraphNodeVariantProperties()
-            .ToConnectableVariants()
+            .ToGraphNodeVariant()
         ;
 
         public BehaviorTreeNode(BehaviorTreeGraph graph, GameObject instance)

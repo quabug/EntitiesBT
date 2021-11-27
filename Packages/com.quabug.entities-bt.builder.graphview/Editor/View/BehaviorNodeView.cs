@@ -19,7 +19,7 @@ namespace EntitiesBT.Editor
         private readonly BehaviorTreeView _graph;
         private readonly Toggle _toggleActivation;
         private readonly VisualElement _contentContainer;
-        private readonly PropertyPortSystem _propertyPortSystem;
+        private readonly GraphNodeVariantPortSystem _graphNodeVariantPortSystem;
 
         public BehaviorNodeView(BehaviorTreeView graph, IBehaviorTreeNode node)
             : base(Path.Combine(Core.Utilities.GetCurrentDirectoryProjectRelativePath(), "BehaviorNodeView.uxml"))
@@ -43,7 +43,7 @@ namespace EntitiesBT.Editor
 
             Bind(Node);
 
-            _propertyPortSystem = new PropertyPortSystem(_contentContainer, node);
+            _graphNodeVariantPortSystem = new GraphNodeVariantPortSystem(_contentContainer, node);
         }
 
         public void Dispose()
@@ -58,7 +58,7 @@ namespace EntitiesBT.Editor
             _toggleActivation.SetValueWithoutNotify(Node.IsActive);
             if (Node.IsActive) RemoveFromClassList("disabled");
             else AddToClassList("disabled");
-            _propertyPortSystem.Refresh();
+            _graphNodeVariantPortSystem.Refresh();
         }
 
         private void Bind(IBehaviorTreeNode node)
@@ -146,7 +146,7 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public ConnectableVariantView FindByPort(Port port) => _propertyPortSystem.Find(port);
-        public IEnumerable<ConnectableVariantView> Views => _propertyPortSystem.Views;
+        public ConnectableVariantView FindByPort(Port port) => _graphNodeVariantPortSystem.Find(port);
+        public IEnumerable<ConnectableVariantView> Views => _graphNodeVariantPortSystem.Views;
     }
 }

@@ -258,7 +258,7 @@ namespace EntitiesBT.Editor
         {
             foreach (var view in container.Views.Where(v => v.Variant.IsConnected))
             {
-                var syntaxNode = (SyntaxNodeView)_nodes[view.Variant.SyntaxNodeId];
+                var syntaxNode = (SyntaxNodeView)_nodes[view.Variant.NodeId];
                 var edge = view.Ports[view.Variant.VariantPortIndex].ConnectTo(syntaxNode.Ports[view.Variant.SyntaxNodePortIndex]);
                 AddElement(edge);
             }

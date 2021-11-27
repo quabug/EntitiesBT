@@ -4,6 +4,6 @@ namespace EntitiesBT.Editor
 {
     public interface IConnectableVariantContainer
     {
-        IEnumerable<ConnectableVariant> ConnectableVariants { get; }
+        IEnumerable<GraphNodeVariant.Any> ConnectableVariants { get; }
     }
 }

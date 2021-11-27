@@ -13,6 +13,14 @@ namespace EntitiesBT
         [Serializable]
         public class Any : IVariant
         {
+            public string PropertyPath { get; set; }
+            public string Name { get; set; }
+
+            public Type VariantType => GetType();
+            public Type ValueType => this.FindValueType();
+            public int NodeId => Node.gameObject.GetInstanceID();
+            public bool IsConnected => Node != null;
+
             [ReadOnly, UnityDrawProperty] public VariantNode Node;
             [ReadOnly, UnityDrawProperty] public int VariantPortIndex = -1;
             [ReadOnly, UnityDrawProperty] public int SyntaxNodePortIndex = -1;
@@ -20,7 +28,8 @@ namespace EntitiesBT
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 // TODO: check validation
-                return Node.Allocate(ref builder, ref blobVariant);
+                // return Node.Allocate(ref builder, ref blobVariant);
+                return IntPtr.Zero;
             }
         }
 

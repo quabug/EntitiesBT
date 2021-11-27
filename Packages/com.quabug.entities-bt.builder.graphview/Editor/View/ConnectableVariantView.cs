@@ -19,10 +19,10 @@ namespace EntitiesBT.Editor
             set => _labelTitle.text = value;
         }
 
-        public ConnectableVariant Variant { get; }
+        public GraphNodeVariant.Any Variant { get; }
         public IReadOnlyList<Port> Ports { get; }
 
-        public ConnectableVariantView(ConnectableVariant variant)
+        public ConnectableVariantView(GraphNodeVariant.Any variant)
         {
             Variant = variant;
 
@@ -30,7 +30,7 @@ namespace EntitiesBT.Editor
             if (typeof(IVariantReader).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantReader<>);
             else if (typeof(IVariantWriter).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantWriter<>);
             else if (typeof(IVariantReaderAndWriter).IsAssignableFrom(variant.VariantType)) portType = typeof(IVariantReaderAndWriter<>);
-            var valueType = variant.Variant.FindValueType();
+            var valueType = variant.ValueType;
             if (portType == null || valueType == null) throw new NotImplementedException();
             portType = portType.MakeGenericType(valueType);
 

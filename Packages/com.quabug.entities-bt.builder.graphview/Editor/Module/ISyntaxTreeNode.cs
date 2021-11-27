@@ -10,7 +10,7 @@ namespace EntitiesBT.Editor
         string Name { get; }
         Type VariantType { get; }
 
-        void Connect(ConnectableVariant variant, int variantPortIndex, int syntaxNodePortIndex);
-        void Disconnect(ConnectableVariant variant);
+        void Connect(GraphNodeVariant.Any variant, int variantPortIndex, int syntaxNodePortIndex);
+        void Disconnect(GraphNodeVariant.Any variant);
     }
 }

@@ -6,13 +6,13 @@ using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
-    public class PropertyPortSystem
+    public class GraphNodeVariantPortSystem
     {
         private readonly VisualElement _uiRoot;
         private readonly IConnectableVariantContainer _container;
         private readonly IDictionary<string /* property path */, ConnectableVariantView> _propertyViews = new Dictionary<string, ConnectableVariantView>();
 
-        public PropertyPortSystem(VisualElement uiRoot, IConnectableVariantContainer container)
+        public GraphNodeVariantPortSystem(VisualElement uiRoot, IConnectableVariantContainer container)
         {
             _uiRoot = uiRoot;
             _container = container;
@@ -31,14 +31,14 @@ namespace EntitiesBT.Editor
             var removedViews = new HashSet<string>(_propertyViews.Keys);
             foreach (var variant in _container.ConnectableVariants)
             {
-                if (removedViews.Contains(variant.Id))
+                if (removedViews.Contains(variant.PropertyPath))
                 {
-                    removedViews.Remove(variant.Id);
+                    removedViews.Remove(variant.PropertyPath);
                 }
                 else
                 {
                     var view = new ConnectableVariantView(variant);
-                    _propertyViews.Add(variant.Id, view);
+                    _propertyViews.Add(variant.PropertyPath, view);
                     _uiRoot.Add(view);
                 }
             }

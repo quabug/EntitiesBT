@@ -35,7 +35,7 @@ namespace EntitiesBT.Editor
 
         private VariantNode _node { get; }
 
-        public IEnumerable<ConnectableVariant> ConnectableVariants => new SerializedObject(_node).FindGraphNodeVariantProperties().ToConnectableVariants();
+        public IEnumerable<GraphNodeVariant.Any> ConnectableVariants => new SerializedObject(_node).FindGraphNodeVariantProperties().ToGraphNodeVariant();
 
         public SyntaxTreeNode(BehaviorTreeGraph graph, GameObject instance)
         {
@@ -49,21 +49,21 @@ namespace EntitiesBT.Editor
             _graph.RemoveNode(Instance);
         }
 
-        public void Connect(ConnectableVariant variant, int variantPortIndex, int syntaxNodePortIndex)
+        public void Connect(GraphNodeVariant.Any variant, int variantPortIndex, int syntaxNodePortIndex)
         {
-            variant.Variant.Node = _node;
-            variant.Variant.VariantPortIndex = variantPortIndex;
-            variant.Variant.SyntaxNodePortIndex = syntaxNodePortIndex;
-            _node.OnConnected(variant.Variant);
+            variant.Node = _node;
+            variant.VariantPortIndex = variantPortIndex;
+            variant.SyntaxNodePortIndex = syntaxNodePortIndex;
+            _node.OnConnected(variant);
             _graph.SavePrefab();
         }
 
-        public void Disconnect(ConnectableVariant variant)
+        public void Disconnect(GraphNodeVariant.Any variant)
         {
-            variant.Variant.Node = null;
-            variant.Variant.VariantPortIndex = -1;
-            variant.Variant.SyntaxNodePortIndex = -1;
-            _node.OnDisconnected(variant.Variant);
+            variant.Node = null;
+            variant.VariantPortIndex = -1;
+            variant.SyntaxNodePortIndex = -1;
+            _node.OnDisconnected(variant);
             _graph.SavePrefab();
         }
     }
