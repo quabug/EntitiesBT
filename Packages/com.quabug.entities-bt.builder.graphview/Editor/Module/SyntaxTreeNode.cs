@@ -19,7 +19,7 @@ namespace EntitiesBT.Editor
         }
 
         public string Name => Instance.name;
-        public Type VariantType => _node.VariantType;
+        public Type VariantType => _node.Variant.GetType();
 
         public bool IsSelected
         {

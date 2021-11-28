@@ -9,16 +9,12 @@ namespace EntitiesBT
 {
     public class LocalVariantNode : VariantNode
     {
-        protected override string Name => $"Local<{Reader?.FindValueType()?.Name}>";
-        public override Type VariantType => Reader?.GetType();
+        public override string Name => $"Local<{Reader?.FindValueType()?.Name}>";
+        public override IVariant Variant => Reader;
 
         [SerializeReference]
         [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_baseTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
         public IVariantReader Reader;
-
-        public IVariantReaderAndWriter ReaderAndWriter;
-
-        public override IReadOnlyList<IVariant> Variants => new IVariant[] { Reader, ReaderAndWriter };
 
         private string _baseTypeName => _baseType.AssemblyQualifiedName;
         private Type _baseType => _valueType == null ? typeof(LocalVariant.Reader<>) : typeof(LocalVariant.Reader<>).MakeGenericType(_valueType);
@@ -35,26 +31,5 @@ namespace EntitiesBT
         {
             if (graphNodeVariant == _graphNodeVariant) _graphNodeVariant = null;
         }
-
-        public LocalVariantNodeA A;
-    }
-
-    public class VariantPortAttribute : Attribute
-    {
-        public string Name { get; }
-    }
-
-    [Serializable]
-    public class LocalVariantNodeA
-    {
-        [VariantPort]
-        [SerializeReference]
-        [SerializeReferenceDrawer(RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
-        public IVariantReader Reader;
-
-        [VariantPort]
-        [SerializeReference]
-        [SerializeReferenceDrawer(RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
-        public IVariantReaderAndWriter ReaderAndWriter;
     }
 }

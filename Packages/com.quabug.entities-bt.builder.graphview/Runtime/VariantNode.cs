@@ -6,34 +6,24 @@ using UnityEngine;
 
 namespace EntitiesBT
 {
-    public interface IVariantNode
-    {
-        IReadOnlyList<IVariant> Variants { get; }
-    }
-
-    public static class VariantNodeExtension
-    {
-        internal static IntPtr Allocate(this IVariantNode node, ref BlobBuilder builder, ref BlobVariant blobVariant, int variantIndex)
-        {
-            return node.Variants[variantIndex].Allocate(ref builder, ref blobVariant);
-        }
-    }
-
     [DisallowMultipleComponent]
     [ExecuteAlways]
-    public abstract class VariantNode : MonoBehaviour, IVariantNode
+    public abstract class VariantNode : MonoBehaviour
     {
-        protected abstract string Name { get; }
-        public abstract Type VariantType { get; }
+        public abstract IVariant Variant { get; }
+        public abstract string Name { get; }
 
         public virtual void OnConnected(GraphNodeVariant.Any graphNodeVariant) {}
         public virtual void OnDisconnected(GraphNodeVariant.Any graphNodeVariant) {}
+
+        public virtual IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+        {
+            return Variant.Allocate(ref builder, ref blobVariant);
+        }
 
         private void Update()
         {
             name = Name;
         }
-
-        public abstract IReadOnlyList<IVariant> Variants { get; }
     }
 }
