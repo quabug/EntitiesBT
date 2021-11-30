@@ -94,7 +94,7 @@ namespace EntitiesBT.Components
             path = string.IsNullOrEmpty(path) ? Application.dataPath : Path.GetDirectoryName(path);
             path = UnityEditor.EditorUtility.SaveFilePanel("save path", path, name, "bytes");
             if (string.IsNullOrEmpty(path)) return;
-            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(file);
+            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(this.FindScopeValuesList(), file);
             UnityEditor.AssetDatabase.Refresh();
         }
 #endif

@@ -102,7 +102,7 @@ namespace EntitiesBT.Test
         {
             var root = CreateBTNode("!seq>yes|no|b:1,1|a:111|run");
             var rootNode = root.GetComponent<BTNode>();
-            var blobRef = rootNode.ToBlob();
+            var blobRef = rootNode.ToBlob(rootNode.FindScopeValuesList());
             
             Assert.True(blobRef.IsCreated);
             Assert.AreEqual(blobRef.Value.Count, 6);

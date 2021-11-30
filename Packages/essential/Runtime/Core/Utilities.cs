@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using JetBrains.Annotations;
+using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -50,7 +51,7 @@ namespace EntitiesBT.Core
         }
 
         [Pure]
-        public static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc)
+        internal static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc)
         {
             return node.Flatten(childrenFunc, default(ITreeNode<T>)).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
         }
@@ -64,7 +65,7 @@ namespace EntitiesBT.Core
         }
         
         [Pure]
-        public static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, SelfFunc<T> selfFunc)
+        internal static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, SelfFunc<T> selfFunc)
         {
             return selfFunc(node).Flatten(childrenFunc, default, selfFunc).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
         }
@@ -76,26 +77,27 @@ namespace EntitiesBT.Core
             var treeNode = new TreeNode<T>(node, parent);
             return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => selfFunc(child).Flatten(childrenFunc, treeNode, selfFunc)));
         }
-
-        [Pure]
-        public static IEnumerable<float> NormalizeUnsafe([NotNull] this IEnumerable<float> weights)
-        {
-            var sum = weights.Sum();
-            return weights.Select(w => w / sum);
-        }
+        //
+        // [Pure]
+        // public static IEnumerable<float> NormalizeUnsafe([NotNull] this IEnumerable<float> weights)
+        // {
+        //     var sum = weights.Sum();
+        //     return weights.Select(w => w / sum);
+        // }
+        //
+        // [Pure]
+        // public static IEnumerable<float> Normalize([NotNull] this IEnumerable<float> weights)
+        // {
+        //     var sum = weights.Where(w => w > 0).Sum();
+        //     if (sum <= math.FLT_MIN_NORMAL) sum = 1;
+        //     return weights.Select(w => math.max(w, 0) / sum);
+        // }
         
-        [Pure]
-        public static IEnumerable<float> Normalize([NotNull] this IEnumerable<float> weights)
-        {
-            var sum = weights.Where(w => w > 0).Sum();
-            if (sum <= math.FLT_MIN_NORMAL) sum = 1;
-            return weights.Select(w => math.max(w, 0) / sum);
-        }
-        
-        // https://stackoverflow.com/a/27851610
         [Pure]
         public static bool IsZeroSizeStruct([NotNull] this Type t)
         {
+            // return TypeManager.IsZeroSized(TypeManager.GetTypeIndex(t));
+            // https://stackoverflow.com/a/27851610
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
             return t.IsValueType
                    && !t.IsPrimitive
@@ -103,7 +105,7 @@ namespace EntitiesBT.Core
             ;
         }
 
-        public static Type[] GetTypesWithoutException(this Assembly assembly)
+        internal static Type[] GetTypesWithoutException(this Assembly assembly)
         {
             try
             {

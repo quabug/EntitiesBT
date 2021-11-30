@@ -1,7 +1,6 @@
 using System;
 using EntitiesBT.Core;
 using Unity.Entities;
-using UnityEngine;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variant

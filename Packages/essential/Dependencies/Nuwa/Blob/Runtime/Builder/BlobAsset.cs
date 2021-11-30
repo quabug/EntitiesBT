@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Nuwa.Blob
 {
     [Serializable]
-    public class BlobAsset<T> where T : unmanaged
+    public class BlobAsset<T> : IDisposable where T : unmanaged
     {
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] internal IBuilder Builder;
 
@@ -30,6 +30,11 @@ namespace Nuwa.Blob
             ref var root = ref builder.ConstructRoot<T>();
             Builder.Build(builder, new IntPtr(UnsafeUtility.AddressOf(ref root)));
             return builder.CreateBlobAssetReference<T>(Allocator.Persistent);
+        }
+
+        public void Dispose()
+        {
+            if (_blobAssetReference.IsCreated) _blobAssetReference.Dispose();
         }
     }
 }

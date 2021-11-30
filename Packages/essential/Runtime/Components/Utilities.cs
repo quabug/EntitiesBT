@@ -75,5 +75,21 @@ namespace EntitiesBT.Components
                 transform = transform.parent;
             }
         }
+
+        [Pure]
+        public static IReadOnlyList<IScopeValues> FindScopeValuesList(this GameObject root)
+        {
+            return root.DescendantsAndSelf()
+                .Select(obj => obj.GetComponent<IScopeValues>())
+                .Where(scopeValues => scopeValues != null)
+                .ToArray()
+            ;
+        }
+
+        [Pure]
+        public static IReadOnlyList<IScopeValues> FindScopeValuesList(this Component root)
+        {
+            return root.gameObject.FindScopeValuesList();
+        }
     }
 }

@@ -28,6 +28,8 @@ namespace EntitiesBT.Test
             public void ResetStates(int index, int count = 1) => throw new NotImplementedException();
             public IntPtr GetDefaultDataPtr(int nodeIndex) => throw new NotImplementedException();
             public IntPtr GetRuntimeDataPtr(int nodeIndex) => throw new NotImplementedException();
+            public IntPtr GetDefaultScopeValuePtr(int offset) => throw new NotImplementedException();
+            public IntPtr GetRuntimeScopeValuePtr(int offset) => throw new NotImplementedException();
         }
 
         private struct MockBlackboard : IBlackboard
