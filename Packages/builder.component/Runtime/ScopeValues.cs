@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Variant
 {
-    public abstract class ScopeValues : MonoBehaviour, IScopeValues
+    public abstract class ScopeValues : MonoBehaviour, IScopeValuesBuilder
     {
         public int Offset { get; set; }
         public abstract IntPtr ValuePtr { get; }
@@ -13,11 +13,11 @@ namespace EntitiesBT.Variant
         public abstract Type BlobType { get; }
     }
 
-    public class ScopeValues<T> : ScopeValues where T : unmanaged, IScopeValues
+    public class ScopeValues<T> : ScopeValues where T : unmanaged, IScopeValuesBlob
     {
         public BlobAsset<T> Value;
 
-        public override IntPtr ValuePtr => Value.Value.ValuePtr;
+        public override unsafe IntPtr ValuePtr => new IntPtr(Value.Reference.GetUnsafePtr());
         public override int Size => Value.Value.Size;
         public override Type BlobType => typeof(T);
 

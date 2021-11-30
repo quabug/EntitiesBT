@@ -77,17 +77,17 @@ namespace EntitiesBT.Components
         }
 
         [Pure]
-        public static IReadOnlyList<IScopeValues> FindScopeValuesList(this GameObject root)
+        public static IReadOnlyList<IScopeValuesBuilder> FindScopeValuesList(this GameObject root)
         {
             return root.DescendantsAndSelf()
-                .Select(obj => obj.GetComponent<IScopeValues>())
+                .Select(obj => obj.GetComponent<IScopeValuesBuilder>())
                 .Where(scopeValues => scopeValues != null)
                 .ToArray()
             ;
         }
 
         [Pure]
-        public static IReadOnlyList<IScopeValues> FindScopeValuesList(this Component root)
+        public static IReadOnlyList<IScopeValuesBuilder> FindScopeValuesList(this Component root)
         {
             return root.gameObject.FindScopeValuesList();
         }

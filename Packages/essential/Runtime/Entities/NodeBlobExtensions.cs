@@ -17,7 +17,7 @@ namespace EntitiesBT.Entities
         [Pure]
         public static BlobAssetReference<NodeBlob> ToBlob(
             [NotNull] this INodeDataBuilder root
-            , IReadOnlyList<IScopeValues> scopeValuesList
+            , IReadOnlyList<IScopeValuesBuilder> scopeValuesList
             , Allocator allocator = Allocator.Persistent
         )
         {
@@ -27,7 +27,7 @@ namespace EntitiesBT.Entities
         [Pure]
         public static unsafe BlobAssetReference<NodeBlob> ToBlob(
             [NotNull] this ITreeNode<INodeDataBuilder>[] nodes
-            , IReadOnlyList<IScopeValues> scopeValuesList
+            , IReadOnlyList<IScopeValuesBuilder> scopeValuesList
             , Allocator allocator
         )
         {
@@ -35,6 +35,13 @@ namespace EntitiesBT.Entities
             var nodeDataList = new NativeArray<BlobAssetReference>(nodes.Length, Allocator.Temp);
             try
             {
+                var scopeValuesSize = 0;
+                foreach (var values in scopeValuesList)
+                {
+                    values.Offset = scopeValuesSize;
+                    scopeValuesSize += values.Size;
+                }
+
                 for (var i = 0; i < nodes.Length; i++) nodes[i].Value.NodeIndex = i;
 
                 for (var i = 0; i < nodes.Length; i++)
@@ -45,12 +52,6 @@ namespace EntitiesBT.Entities
                     dataSize += data.Length;
                 }
 
-                var scopeValuesSize = 0;
-                foreach (var values in scopeValuesList)
-                {
-                    values.Offset = scopeValuesSize;
-                    scopeValuesSize += values.Size;
-                }
                 var size = NodeBlob.CalculateSize(count: nodes.Length, dataSize: dataSize, scopeValuesSize: scopeValuesSize);
 
                 using var blobBuilder = new BlobBuilder(Allocator.Temp, size);
@@ -123,7 +124,7 @@ namespace EntitiesBT.Entities
 
         public static unsafe void SaveToStream(
             [NotNull] this INodeDataBuilder builder
-            , [NotNull] IReadOnlyList<IScopeValues> scopeValuesList
+            , [NotNull] IReadOnlyList<IScopeValuesBuilder> scopeValuesList
             , [NotNull] Stream stream
         )
         {

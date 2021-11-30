@@ -1,0 +1,14 @@
+using EntitiesBT.Core;
+using EntitiesBT.Variant;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.Entities;
+
+public struct TestValues : IScopeValuesBlob
+{
+    public int IntValue;
+    public float FloatValue;
+    public BlobArray<int> IntArray;
+    public int Size => UnsafeUtility.SizeOf<TestValues>() + sizeof(int) * IntArray.Length;
+}
+
+public class TestScopeValues : ScopeValues<TestValues> {}
