@@ -157,6 +157,7 @@ namespace EntitiesBT.Editor
                     port.direction != startPort.direction &&
                     port.node != startPort.node &&
                     port.orientation == startPort.orientation &&
+                    port.portType != null && startPort.portType != null &&
                     (port.portType.IsAssignableFrom(startPort.portType) || startPort.portType.IsAssignableFrom(port.portType));
                 if (isCompatibleBehaviorPorts || isCompatibleSyntaxPorts) compatiblePorts.Add(port);
             });

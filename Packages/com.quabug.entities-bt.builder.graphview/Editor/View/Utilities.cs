@@ -21,7 +21,7 @@ namespace EntitiesBT.Editor
             var port = Port.Create<Edge>(Orientation.Horizontal, direction, capacity, type);
             port.portName = "";
             port.AddToClassList(VariantPortClass);
-            port.AddToClassList(VariantAccessMode(type));
+            if (type != null) port.AddToClassList(VariantAccessMode(type));
             return port;
         }
     }

@@ -18,6 +18,7 @@ namespace EntitiesBT.Variant
         [Serializable]
         public class Any<T> : IVariant<T> where T : unmanaged
         {
+            // TODO: check whether `Value` is part of behavior tree or not.
             public ScopeValues Value;
 
             [FieldName(DeclaringTypeVariable = nameof(_declaringType), FieldTypeVariable = nameof(_fieldType))]

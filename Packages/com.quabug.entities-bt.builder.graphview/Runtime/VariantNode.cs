@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using EntitiesBT.Variant;
 using Unity.Entities;
 using UnityEngine;
@@ -10,8 +9,10 @@ namespace EntitiesBT
     [ExecuteAlways]
     public abstract class VariantNode : MonoBehaviour
     {
-        public abstract IVariant Variant { get; }
+        public Type VariantType => Variant?.GetType() ?? DefaultVariantType;
         public abstract string Name { get; }
+        protected abstract IVariant Variant { get; }
+        protected abstract Type DefaultVariantType { get; }
 
         public virtual void OnConnected(GraphNodeVariant.Any graphNodeVariant) {}
         public virtual void OnDisconnected(GraphNodeVariant.Any graphNodeVariant) {}

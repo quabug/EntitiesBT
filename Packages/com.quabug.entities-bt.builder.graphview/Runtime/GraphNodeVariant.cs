@@ -28,7 +28,7 @@ namespace EntitiesBT
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 // TODO: check validation
-                return Node.Variant.Allocate(ref builder, ref blobVariant);
+                return Node.Allocate(ref builder, ref blobVariant);
             }
         }
 
