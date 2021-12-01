@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4607829407059430150}
   - component: {fileID: 1222971294301114767}
   m_Layer: 0
-  m_Name: Local<Single>
+  m_Name: ScopeReader<Single>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,22 +43,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d1e4f3377a421d89df84293be5055b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reader:
+  Value:
     id: 0
-  A:
-    Reader:
-      id: 1
-    ReaderAndWriter:
-      id: 1
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 0
-    00000001:
-      type: {class: , ns: , asm: }
+        Value: {fileID: 0}
+        ValueFieldName: 
 --- !u!1 &3455376831270014219
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,9 +348,9 @@ MonoBehaviour:
       type: {class: <IVariantReader>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Node: {fileID: 1222971294301114767}
-        VariantPortIndex: 1
-        SyntaxNodePortIndex: 0
+        Node: {fileID: 0}
+        VariantPortIndex: -1
+        SyntaxNodePortIndex: -1
     00000002:
       type: {class: <IVariantWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
