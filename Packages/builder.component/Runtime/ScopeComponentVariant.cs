@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using EntitiesBT.Core;
+using Nuwa;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
@@ -18,7 +19,12 @@ namespace EntitiesBT.Variant
         public class Any<T> : IVariant<T> where T : unmanaged
         {
             public ScopeValues Value;
+
+            [FieldName(DeclaringTypeVariable = nameof(_declaringType), FieldTypeVariable = nameof(_fieldType))]
             public string ValueFieldName;
+
+            protected Type _declaringType => Value?.BlobType;
+            protected Type _fieldType => typeof(T);
 
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {

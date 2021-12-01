@@ -6,6 +6,7 @@ using Unity.Entities;
 public struct TestValues : IScopeValuesBlob
 {
     public int IntValue;
+    public int IntValue2;
     public float FloatValue;
     public BlobArray<int> IntArray;
     public int Size => UnsafeUtility.SizeOf<TestValues>() + sizeof(int) * IntArray.Length;

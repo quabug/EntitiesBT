@@ -216,7 +216,7 @@ MonoBehaviour:
         asm: Assembly-CSharp}
       data:
         Value: {fileID: 1638146791}
-        ValueFieldName: IntValue
+        ValueFieldName: IntValue2
     00000004:
       type: {class: <IVariantReader>/SingleScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
@@ -498,38 +498,44 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
         FieldNames:
         - IntValue
+        - IntValue2
         - FloatValue
         - IntArray
         Builders:
         - id: 1
         - id: 2
         - id: 3
+        - id: 4
     00000001:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         Value: 1
     00000002:
+      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 111
+    00000003:
       type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         Value: 2
-    00000003:
+    00000004:
       type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
         Value:
-        - id: 4
         - id: 5
         - id: 6
-    00000004:
-      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 3
+        - id: 7
     00000005:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 4
+        Value: 3
     00000006:
+      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 4
+    00000007:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         Value: 5
@@ -660,33 +666,39 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
         FieldNames:
         - IntValue
+        - IntValue2
         - FloatValue
         - IntArray
         Builders:
         - id: 1
         - id: 2
         - id: 3
+        - id: 4
     00000001:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         Value: 5
     00000002:
+      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000003:
       type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         Value: 4
-    00000003:
+    00000004:
       type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
         Value:
-        - id: 4
         - id: 5
-    00000004:
+        - id: 6
+    00000005:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         Value: 3
-    00000005:
+    00000006:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         Value: 2
