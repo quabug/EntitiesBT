@@ -20,4 +20,4 @@ public struct PrintTestScopeValues : INodeData
     }
 }
 
-public class IntArrayScopeVariant : ScopeVariant.Reader<BlobArray<int>> {}
+public class IntArrayScopeValuesComponentVariant : ScopeComponentVariant.Reader<BlobArray<int>> {}

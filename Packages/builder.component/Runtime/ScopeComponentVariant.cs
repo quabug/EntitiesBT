@@ -10,7 +10,7 @@ using static EntitiesBT.Core.Utilities;
 namespace EntitiesBT.Variant
 {
     [VariantClass(GUID)]
-    public static class ScopeVariant
+    public static class ScopeComponentVariant
     {
         public const string GUID = "6AB4A2A7-E99F-4940-9FFA-7E734DE771C9";
 

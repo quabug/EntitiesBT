@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,111 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &162520214
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 162520215}
-  - component: {fileID: 162520216}
-  m_Layer: 0
-  m_Name: PrintTestScopeValues
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &162520215
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162520214}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1638146788}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &162520216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162520214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aa8e40e4654495e832b55e693d52966, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NodeData:
-    NodeType: PrintTestScopeValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    Builder:
-      BlobDataType: PrintTestScopeValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - IntValue
-      - FloatValue
-      - IntArray
-      Builders:
-      - id: 0
-      - id: 1
-      - id: 2
-  RunOnMainThread: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Int32, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 3
-    00000001:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 4
-    00000002:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[Unity.Entities.BlobArray`1[[System.Int32,
-          mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-          Unity.Entities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
-          EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 5
-    00000003:
-      type: {class: <IVariantReader>/Int32ScopeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: {fileID: 1638146791}
-        ValueFieldName: IntValue
-    00000004:
-      type: {class: <IVariantReader>/SingleScopeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: {fileID: 1638146791}
-        ValueFieldName: FloatValue
-    00000005:
-      type: {class: IntArrayScopeVariant, ns: , asm: EntitiesBT.Sample.ScopeVariant}
-      data:
-        Value: {fileID: 1638146791}
-        ValueFieldName: IntArray
 --- !u!1 &407608392
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 407608393}
   - component: {fileID: 407608395}
-  - component: {fileID: 407608394}
   m_Layer: 0
   m_Name: PrintTestScopeValues
   m_TagString: Untagged
@@ -260,60 +154,6 @@ Transform:
   m_Father: {fileID: 1638146788}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &407608394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 407608392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5387200838e5e43c788b2cb7874bb0ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Value:
-    Builder:
-      id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: DynamicBlobDataBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        BlobDataType: TestValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        FieldNames:
-        - IntValue
-        - FloatValue
-        - IntArray
-        Builders:
-        - id: 1
-        - id: 2
-        - id: 3
-    00000001:
-      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 123
-    00000002:
-      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 234
-    00000003:
-      type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-        Value:
-        - id: 4
-        - id: 5
-    00000004:
-      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 555
-    00000005:
-      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 666
 --- !u!114 &407608395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,21 +212,21 @@ MonoBehaviour:
         _variant:
           id: 5
     00000003:
-      type: {class: <IVariantReader>/Int32ScopeVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/Int32ScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: {fileID: 407608394}
+        Value: {fileID: 1638146791}
         ValueFieldName: IntValue
     00000004:
-      type: {class: <IVariantReader>/SingleScopeVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: {fileID: 407608394}
+        Value: {fileID: 1638146791}
         ValueFieldName: FloatValue
     00000005:
-      type: {class: IntArrayScopeVariant, ns: , asm: EntitiesBT.Sample.ScopeVariant}
+      type: {class: IntArrayScopeValuesComponentVariant, ns: , asm: EntitiesBT.Sample.ScopeVariant}
       data:
-        Value: {fileID: 407608394}
+        Value: {fileID: 1638146791}
         ValueFieldName: IntArray
 --- !u!1 &916602049
 GameObject:
@@ -596,7 +436,6 @@ Transform:
   m_Children:
   - {fileID: 407608393}
   - {fileID: 2130573359}
-  - {fileID: 162520215}
   m_Father: {fileID: 1991274529}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -668,11 +507,11 @@ MonoBehaviour:
     00000001:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 9
+        Value: 1
     00000002:
       type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 8
+        Value: 2
     00000003:
       type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
@@ -685,11 +524,11 @@ MonoBehaviour:
     00000004:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 7
+        Value: 3
     00000005:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 6
+        Value: 4
     00000006:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
@@ -775,7 +614,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2130573359}
   - component: {fileID: 2130573362}
-  - component: {fileID: 2130573361}
+  - component: {fileID: 2130573360}
   m_Layer: 0
   m_Name: PrintTestScopeValues
   m_TagString: Untagged
@@ -797,7 +636,7 @@ Transform:
   m_Father: {fileID: 1638146788}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2130573361
+--- !u!114 &2130573360
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -830,11 +669,11 @@ MonoBehaviour:
     00000001:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 1
+        Value: 5
     00000002:
       type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 2
+        Value: 4
     00000003:
       type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
@@ -842,10 +681,15 @@ MonoBehaviour:
           PublicKeyToken=b77a5c561934e089
         Value:
         - id: 4
+        - id: 5
     00000004:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
         Value: 3
+    00000005:
+      type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 2
 --- !u!114 &2130573362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -904,19 +748,19 @@ MonoBehaviour:
         _variant:
           id: 5
     00000003:
-      type: {class: <IVariantReader>/Int32ScopeVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/Int32ScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: {fileID: 2130573361}
+        Value: {fileID: 2130573360}
         ValueFieldName: IntValue
     00000004:
-      type: {class: <IVariantReader>/SingleScopeVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: {fileID: 2130573361}
+        Value: {fileID: 2130573360}
         ValueFieldName: FloatValue
     00000005:
-      type: {class: IntArrayScopeVariant, ns: , asm: EntitiesBT.Sample.ScopeVariant}
+      type: {class: IntArrayScopeValuesComponentVariant, ns: , asm: EntitiesBT.Sample.ScopeVariant}
       data:
-        Value: {fileID: 2130573361}
+        Value: {fileID: 2130573360}
         ValueFieldName: IntArray
