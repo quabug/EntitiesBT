@@ -3,7 +3,7 @@
     <Style src="SyntaxNodeView.uss" />
     <ui:VisualElement name="node-border">
         <ui:VisualElement name="head">
-            <ui:VisualElement name="left-port" />
+            <ui:VisualElement name="input" />
             <ui:VisualElement name="title">
                 <ui:Label name="title-label" text="SequenceNode" class="unity-text-element unity-label" />
                 <ui:VisualElement name="title-button-container">
@@ -12,7 +12,7 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="right-port" />
+            <ui:VisualElement name="output" />
         </ui:VisualElement>
         <ui:VisualElement name="contents">
             <ui:VisualElement name="divider" class="horizontal" />

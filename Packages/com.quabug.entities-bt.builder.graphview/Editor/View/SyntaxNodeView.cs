@@ -11,7 +11,7 @@ namespace EntitiesBT.Editor
         private ISyntaxTreeNode _node;
         private BehaviorTreeView _graph;
         private readonly VisualElement _contentContainer;
-        private readonly GraphNodeVariantPortSystem m_GraphNodeVariantPortSystem;
+        private readonly GraphNodeVariantPortSystem _graphNodeVariantPortSystem;
 
         public IReadOnlyList<Port> Ports { get; }
         public int Id { get; }
@@ -33,10 +33,10 @@ namespace EntitiesBT.Editor
                 Utilities.CreateVariantPort(Direction.Input, Port.Capacity.Multi, node.VariantType),
                 Utilities.CreateVariantPort(Direction.Output, Port.Capacity.Multi, node.VariantType)
             };
-            this.Q<VisualElement>("left-port").Add(Ports[0]);
-            this.Q<VisualElement>("right-port").Add(Ports[1]);
+            inputContainer.Add(Ports[0]);
+            outputContainer.Add(Ports[1]);
 
-            m_GraphNodeVariantPortSystem = new GraphNodeVariantPortSystem(_contentContainer, node);
+            _graphNodeVariantPortSystem = new GraphNodeVariantPortSystem(_contentContainer, node);
 
             node.OnSelected += Select;
         }
@@ -66,9 +66,14 @@ namespace EntitiesBT.Editor
         public void Tick()
         {
             title = _node.Name;
-            m_GraphNodeVariantPortSystem.Refresh();
+            _graphNodeVariantPortSystem.Refresh();
             var variantType = _node.VariantType;
-            foreach (var port in Ports.Where(p => p.portType != variantType)) port.portType = variantType;
+            foreach (var port in Ports.Where(p => p.portType != variantType))
+            {
+                port.RemoveFromClassList(Utilities.VariantAccessMode(port.portType));
+                port.portType = variantType;
+                port.AddToClassList(Utilities.VariantAccessMode(port.portType));
+            }
         }
 
         public override void OnSelected()
@@ -92,7 +97,7 @@ namespace EntitiesBT.Editor
             }
         }
 
-        public ConnectableVariantView FindByPort(Port port) => m_GraphNodeVariantPortSystem.Find(port);
-        public IEnumerable<ConnectableVariantView> Views => m_GraphNodeVariantPortSystem.Views;
+        public ConnectableVariantView FindByPort(Port port) => _graphNodeVariantPortSystem.Find(port);
+        public IEnumerable<ConnectableVariantView> Views => _graphNodeVariantPortSystem.Views;
     }
 }
