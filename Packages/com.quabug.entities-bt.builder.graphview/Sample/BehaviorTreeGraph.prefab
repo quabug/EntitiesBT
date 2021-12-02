@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1979549972695775822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4134071810252551687}
+  - component: {fileID: 2565651588433141937}
+  m_Layer: 0
+  m_Name: NodeRO<float2>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4134071810252551687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979549972695775822}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 856.5, y: 574, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2565651588433141937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979549972695775822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 893755cf2dfaa9443ad9b63d31811b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <IVariantReader>/float2NodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        NodeObject: {fileID: 0}
+        ValueFieldName: 
 --- !u!1 &3455376831270014219
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,11 +211,64 @@ MonoBehaviour:
       type: {class: <IVariantReader>/float2GraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Node: {fileID: 7961529264102514266}
-        VariantPortIndex: 0
-        SyntaxNodePortIndex: 1
+        Node: {fileID: 2565651588433141937}
+        VariantPortIndex: 1
+        SyntaxNodePortIndex: 0
     00000003:
       type: {class: , ns: , asm: }
+--- !u!1 &4154396629191486922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7707647279706015122}
+  - component: {fileID: 3623709530225499296}
+  m_Layer: 0
+  m_Name: ScriptableObjectRO<>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7707647279706015122
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4154396629191486922}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 515.5, y: 620, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3623709530225499296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4154396629191486922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 706498f1b6183704dad93eeb55abb730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <IVariantReader>/SingleScriptableObjectVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        ScriptableObject: {fileID: 0}
+        ScriptableObjectValueName: 
 --- !u!1 &4356845846559289229
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,9 +408,9 @@ MonoBehaviour:
       type: {class: <IVariantReader>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Node: {fileID: 0}
-        VariantPortIndex: -1
-        SyntaxNodePortIndex: -1
+        Node: {fileID: 4432547728307704364}
+        VariantPortIndex: 1
+        SyntaxNodePortIndex: 0
     00000002:
       type: {class: , ns: , asm: }
     00000003:
@@ -312,6 +418,58 @@ MonoBehaviour:
         asm: Assembly-CSharp}
       data:
         Value: 0
+--- !u!1 &5336252117700885740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7928226061905486181}
+  - component: {fileID: 4432547728307704364}
+  m_Layer: 0
+  m_Name: ComponentRO<Single>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7928226061905486181
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5336252117700885740}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 989, y: 516, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4432547728307704364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5336252117700885740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511ab620a7e837348991eff42dede156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <IVariantReader>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        ComponentValueName: Unity.Transforms.Scale.Value
 --- !u!1 &6133747636661300097
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,14 +554,14 @@ MonoBehaviour:
       type: {class: <IVariantReader>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Node: {fileID: 7631195515782487228}
-        VariantPortIndex: 0
-        SyntaxNodePortIndex: 1
+        Node: {fileID: 3623709530225499296}
+        VariantPortIndex: 1
+        SyntaxNodePortIndex: 0
     00000002:
       type: {class: <IVariantWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Node: {fileID: 0}
+        Node: {fileID: 4650737414686521657}
         VariantPortIndex: 0
         SyntaxNodePortIndex: 1
     00000003:
@@ -433,7 +591,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6177275274913980882}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 268, y: 436, z: 0}
+  m_LocalPosition: {x: 255, y: 325.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1114355261066075675}
@@ -461,7 +619,7 @@ MonoBehaviour:
       data:
         Value: {fileID: 0}
         ValueFieldName: 
---- !u!1 &6381970377474947712
+--- !u!1 &6243528566685042399
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -469,39 +627,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3268473628705927078}
-  - component: {fileID: 7961529264102514266}
+  - component: {fileID: 6978180147351623381}
+  - component: {fileID: 4650737414686521657}
   m_Layer: 0
-  m_Name: LocalRO<>
+  m_Name: LocalWO<Single>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3268473628705927078
+--- !u!4 &6978180147351623381
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6381970377474947712}
+  m_GameObject: {fileID: 6243528566685042399}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 471, y: 538, z: 0}
+  m_LocalPosition: {x: 239, y: 395.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1114355261066075675}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7961529264102514266
+--- !u!114 &4650737414686521657
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6381970377474947712}
+  m_GameObject: {fileID: 6243528566685042399}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 167e2274c0fd5f94bae6fafdc777b66d, type: 3}
+  m_Script: {fileID: 11500000, guid: 052e93eea9ea461db8054e575484cc3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Value:
@@ -509,12 +667,10 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: <IVariantReader>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value:
-          x: 0
-          y: 0
+        Value: 0
 --- !u!1 &7347161265191484792
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,7 +702,60 @@ Transform:
   - {fileID: 6547912769734693993}
   - {fileID: 8132513425673779786}
   - {fileID: 4763070772506947764}
-  - {fileID: 3268473628705927078}
+  - {fileID: 6978180147351623381}
+  - {fileID: 7928226061905486181}
+  - {fileID: 4134071810252551687}
+  - {fileID: 1808692725976357676}
+  - {fileID: 7707647279706015122}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8611597841908217591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1808692725976357676}
+  - component: {fileID: 7787557383812032341}
+  m_Layer: 0
+  m_Name: NodeWO<>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1808692725976357676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611597841908217591}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 775.67505, y: 669.30005, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7787557383812032341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611597841908217591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b37953be6e6ba264f81924850c3deb12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: , ns: , asm: }

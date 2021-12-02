@@ -14,7 +14,7 @@ namespace EntitiesBT
     public abstract class VariantNode : MonoBehaviour
     {
         public Type VariantType => ConnectedVariants.Any() && Variant != null ? Variant.GetType() : DefaultVariantType;
-        public virtual string Name => $"{VariantTypeName}{AccessName}<{ValueType?.Name}>";
+        public virtual string Name => $"{VariantTypeName}{AccessName}<{Variant?.FindValueType()?.Name}>";
         protected abstract string VariantTypeName { get; }
         protected abstract IVariant Variant { get; set; }
         protected abstract Type DefaultVariantType { get; }
