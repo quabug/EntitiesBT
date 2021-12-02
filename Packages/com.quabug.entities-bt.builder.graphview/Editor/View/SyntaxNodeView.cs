@@ -46,10 +46,15 @@ namespace EntitiesBT.Editor
             _node.Position = GetPosition().position;
         }
 
+        public void Connect(GraphNodeVariant.Any variant, int variantPortIndex, int syntaxNodePortIndex)
+        {
+            _node.Connect(variant, variantPortIndex: variantPortIndex, syntaxNodePortIndex: syntaxNodePortIndex);
+        }
+
         public void Connect(GraphNodeVariant.Any variant, int variantPortIndex, Port syntaxNodePort)
         {
             var syntaxNodePortIndex = Ports.IndexOf(syntaxNodePort);
-            _node.Connect(variant, variantPortIndex: variantPortIndex, syntaxNodePortIndex: syntaxNodePortIndex);
+            Connect(variant, variantPortIndex: variantPortIndex, syntaxNodePortIndex: syntaxNodePortIndex);
         }
 
         public void Disconnect(GraphNodeVariant.Any variant)

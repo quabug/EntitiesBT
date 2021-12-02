@@ -1,58 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1654767173830455361
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4607829407059430150}
-  - component: {fileID: 1222971294301114767}
-  m_Layer: 0
-  m_Name: ScopeReader<Single>
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4607829407059430150
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1654767173830455361}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 616, y: 421, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1114355261066075675}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1222971294301114767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1654767173830455361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71d1e4f3377a421d89df84293be5055b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Value:
-    id: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: <IVariantReader>/SingleScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: {fileID: 0}
-        ValueFieldName: 
 --- !u!1 &3455376831270014219
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3455376831270014219}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 438.4, y: 169.6, z: 0}
+  m_LocalPosition: {x: 455.5, y: 192.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1114355261066075675}
@@ -120,6 +67,102 @@ MonoBehaviour:
         EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
         Value: 0
+--- !u!1 &3826622239561940666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4763070772506947764}
+  - component: {fileID: 6417493839318218256}
+  m_Layer: 0
+  m_Name: InputMoveNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4763070772506947764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3826622239561940666}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 672, y: 446, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6417493839318218256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3826622239561940666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f730794e6244ee9c583a948f20fe62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NodeData:
+    NodeType: EntitiesBT.Extensions.InputSystem.InputMoveNode, EntitiesBT.Extensions.InputSystem,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Builder:
+      BlobDataType: EntitiesBT.Extensions.InputSystem.InputMoveNode, EntitiesBT.Extensions.InputSystem,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - <ActionId>k__BackingField
+      - Output
+      Builders:
+      - id: 0
+      - id: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: InputActionGuidBuilder, ns: EntitiesBT.Extensions.InputSystem,
+        asm: EntitiesBT.Extensions.InputSystem}
+      data:
+        InputAction: {fileID: 0}
+    00000001:
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _isLinked: 0
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[Unity.Mathematics.float2,
+            Unity.Mathematics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
+          _variant:
+            id: 2
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[Unity.Mathematics.float2,
+            Unity.Mathematics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
+          _variant:
+            id: 3
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[Unity.Mathematics.float2,
+            Unity.Mathematics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
+          _variant:
+            id: 3
+    00000002:
+      type: {class: <IVariantReader>/float2GraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Node: {fileID: 7961529264102514266}
+        VariantPortIndex: 0
+        SyntaxNodePortIndex: 1
+    00000003:
+      type: {class: , ns: , asm: }
 --- !u!1 &4356845846559289229
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,16 +297,21 @@ MonoBehaviour:
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           IsOptional: 0
           _variant:
-            id: 2
+            id: 3
     00000001:
       type: {class: <IVariantReader>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Node: {fileID: 1222971294301114767}
-        VariantPortIndex: 0
-        SyntaxNodePortIndex: 1
+        Node: {fileID: 0}
+        VariantPortIndex: -1
+        SyntaxNodePortIndex: -1
     00000002:
       type: {class: , ns: , asm: }
+    00000003:
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value: 0
 --- !u!1 &6133747636661300097
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,7 +337,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6133747636661300097}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 360, y: 373.59998, z: 0}
+  m_LocalPosition: {x: 451.5, y: 392.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6547912769734693993}
@@ -348,18 +396,125 @@ MonoBehaviour:
       type: {class: <IVariantReader>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Node: {fileID: 0}
-        VariantPortIndex: -1
-        SyntaxNodePortIndex: -1
+        Node: {fileID: 7631195515782487228}
+        VariantPortIndex: 0
+        SyntaxNodePortIndex: 1
     00000002:
       type: {class: <IVariantWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Node: {fileID: 0}
         VariantPortIndex: 0
-        SyntaxNodePortIndex: 0
+        SyntaxNodePortIndex: 1
     00000003:
       type: {class: , ns: , asm: }
+--- !u!1 &6177275274913980882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8132513425673779786}
+  - component: {fileID: 7631195515782487228}
+  m_Layer: 0
+  m_Name: ScopeRO<Single>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8132513425673779786
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6177275274913980882}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 268, y: 436, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7631195515782487228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6177275274913980882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4230403461b14d87b2457506ce330958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <IVariantReader>/SingleScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value: {fileID: 0}
+        ValueFieldName: 
+--- !u!1 &6381970377474947712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3268473628705927078}
+  - component: {fileID: 7961529264102514266}
+  m_Layer: 0
+  m_Name: LocalRO<>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3268473628705927078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6381970377474947712}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 471, y: 538, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7961529264102514266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6381970377474947712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 167e2274c0fd5f94bae6fafdc777b66d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: <IVariantReader>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value:
+          x: 0
+          y: 0
 --- !u!1 &7347161265191484792
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,7 +544,9 @@ Transform:
   m_Children:
   - {fileID: 3405981330891785012}
   - {fileID: 6547912769734693993}
-  - {fileID: 4607829407059430150}
+  - {fileID: 8132513425673779786}
+  - {fileID: 4763070772506947764}
+  - {fileID: 3268473628705927078}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

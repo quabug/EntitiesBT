@@ -216,6 +216,7 @@ namespace EntitiesBT.Editor
                 var variantNodeTypes = TypeCache.GetTypesDerivedFrom<VariantNode>();
                 foreach (var variant in
                     from variant in variantNodeTypes
+                    where !variant.IsAbstract && !variant.IsGenericType
                     orderby variant.Name
                     select variant
                 )
@@ -260,6 +261,7 @@ namespace EntitiesBT.Editor
             foreach (var view in container.Views.Where(v => v.Variant.IsConnected))
             {
                 var syntaxNode = (SyntaxNodeView)_nodes[view.Variant.NodeId];
+                syntaxNode.Connect(view.Variant, view.Variant.VariantPortIndex, view.Variant.SyntaxNodePortIndex);
                 var edge = view.Ports[view.Variant.VariantPortIndex].ConnectTo(syntaxNode.Ports[view.Variant.SyntaxNodePortIndex]);
                 AddElement(edge);
             }
