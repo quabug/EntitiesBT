@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 7707647279706015122}
   - component: {fileID: 3623709530225499296}
   m_Layer: 0
-  m_Name: ScriptableObjectRO<>
+  m_Name: ScriptableObjectRO<Single>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -382,7 +382,7 @@ MonoBehaviour:
     00000000:
       type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        _isLinked: 0
+        _isLinked: 1
         _reader:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
@@ -414,10 +414,12 @@ MonoBehaviour:
     00000002:
       type: {class: , ns: , asm: }
     00000003:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReaderAndWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 0
+        Node: {fileID: 0}
+        VariantPortIndex: -1
+        SyntaxNodePortIndex: -1
 --- !u!1 &5336252117700885740
 GameObject:
   m_ObjectHideFlags: 0

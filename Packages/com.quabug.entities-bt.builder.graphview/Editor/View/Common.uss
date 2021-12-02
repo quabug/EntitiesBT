@@ -40,6 +40,18 @@
     display: none;
 }
 
+.port.variant.WriteOnly {
+    background-color: #407e7c;
+}
+
+.port.variant.ReadOnly {
+    background-color: #6e930b;
+}
+
+.port.variant.ReadWrite {
+    background-color: #ae313a;
+}
+
 :hover > #selection-border {
     border-left-width: 1px;
     border-right-width: 1px;
