@@ -20,6 +20,8 @@ namespace EntitiesBT.Variant
                 blobVariant.VariantId = GuidHashCode(GUID);
                 return builder.Allocate(ref blobVariant, Value);
             }
+
+            public object PreviewValue => Value;
         }
 
         [Serializable] public class Reader<T> : Any<T>, IVariantReader<T> where T : unmanaged {}

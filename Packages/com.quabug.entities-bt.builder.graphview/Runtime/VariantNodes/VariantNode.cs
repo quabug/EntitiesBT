@@ -15,6 +15,7 @@ namespace EntitiesBT
     {
         public Type VariantType => ConnectedVariants.Any() && Variant != null ? Variant.GetType() : DefaultVariantType;
         public virtual string Name => $"{VariantTypeName}{AccessName}<{Variant?.FindValueType()?.Name}>";
+        public object PreviewValue => Variant.PreviewValue;
         protected abstract string VariantTypeName { get; }
         protected abstract IVariant Variant { get; set; }
         protected abstract Type DefaultVariantType { get; }

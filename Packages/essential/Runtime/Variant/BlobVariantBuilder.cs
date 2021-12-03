@@ -20,6 +20,8 @@ namespace EntitiesBT.Variant
         [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", NullableVariable = nameof(IsOptional))]
         private IVariantReader _variant;
 
+        public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
+
         public override void Build(BlobBuilder builder, ref BlobVariant data)
         {
             if (_variant != null) _variant.Allocate(ref builder, ref data);
@@ -51,6 +53,8 @@ namespace EntitiesBT.Variant
         [SerializeReference]
         [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", NullableVariable = nameof(IsOptional))]
         private IVariantWriter _variant;
+
+        public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
         public override void Build(BlobBuilder builder, ref BlobVariant data)
         {
@@ -84,6 +88,8 @@ namespace EntitiesBT.Variant
         [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(_variantTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", NullableVariable = nameof(IsOptional))]
         private IVariantReaderAndWriter _variant;
 
+        public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
+
         public override unsafe void Build(BlobBuilder builder, ref BlobVariantRW data)
         {
             var metaDataPtr = _variant.Allocate(ref builder, ref data.Reader);
@@ -102,6 +108,8 @@ namespace EntitiesBT.Variant
         [HideIf(nameof(_isLinked)), SerializeField, UnboxSingleProperty, UnityDrawProperty] private BlobVariantROBuilder _reader;
         [HideIf(nameof(_isLinked)), SerializeField, UnboxSingleProperty, UnityDrawProperty] private BlobVariantWOBuilder _writer;
         [HideIf(nameof(_isLinked), false), SerializeField, UnboxSingleProperty, UnityDrawProperty] private BlobVariantRWBuilder _readerAndWriter;
+
+        public override object PreviewValue { get => _isLinked ? _readerAndWriter.PreviewValue : _reader.PreviewValue; set => throw new NotImplementedException(); }
 
         public override void Build(BlobBuilder builder, ref BlobVariantRW data)
         {

@@ -11,6 +11,9 @@ namespace EntitiesBT.Core
         int NodeIndex { get; set; }
         INodeDataBuilder Self { get; }
         IEnumerable<INodeDataBuilder> Children { get; }
+
+        object GetPreviewValue(string path);
+        void SetPreviewValue(string path, object value);
     }
 
     public static partial class NodeDataBuilderExtension

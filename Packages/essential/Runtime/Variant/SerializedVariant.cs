@@ -48,6 +48,8 @@ namespace EntitiesBT.Variant
             return Reader.Allocate(ref builder, ref blobVariant);
         }
 
+        public object PreviewValue => Reader.PreviewValue;
+
         public bool IsNull() => _reader == null;
     }
 
@@ -63,6 +65,8 @@ namespace EntitiesBT.Variant
         {
             return Writer.Allocate(ref builder, ref blobVariant);
         }
+
+        public object PreviewValue => Writer.PreviewValue;
 
         public bool IsNull() => _writer == null;
     }

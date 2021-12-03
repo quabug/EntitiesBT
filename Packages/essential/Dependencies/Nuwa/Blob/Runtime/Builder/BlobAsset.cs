@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -23,6 +24,12 @@ namespace Nuwa.Blob
         }
 
         public ref T Value => ref Reference.Value;
+
+        public IBuilder FindBuilderByPath(string path)
+        {
+            var pathList = path.Split('.');
+            return pathList.Aggregate(Builder, (builder, name) => builder.GetBuilder(name));
+        }
 
         private unsafe BlobAssetReference<T> Create()
         {

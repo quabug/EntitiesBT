@@ -20,6 +20,9 @@ namespace EntitiesBT.Components
         public int NodeIndex { get; set; } = 0;
 
         public virtual IEnumerable<INodeDataBuilder> Children => this.Children();
+        public virtual object GetPreviewValue(string path) => throw new NotImplementedException();
+        public virtual void SetPreviewValue(string path, object value) => throw new NotImplementedException();
+
         public INodeDataBuilder Self => gameObject.activeSelf ? SelfImpl : null;
 
         protected virtual INodeDataBuilder SelfImpl => this;

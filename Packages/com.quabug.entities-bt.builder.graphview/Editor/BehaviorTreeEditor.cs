@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using EntitiesBT.Core;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -58,7 +56,7 @@ namespace EntitiesBT.Editor
 
         private static BehaviorTreeEditor GetWindow()
         {
-            return GetWindow<BehaviorTreeEditor>("BehaviorTree");
+            return GetWindow<BehaviorTreeEditor>();
         }
 
         private static void ResetEditorView()

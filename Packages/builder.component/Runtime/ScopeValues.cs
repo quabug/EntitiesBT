@@ -11,6 +11,8 @@ namespace EntitiesBT.Variant
         public abstract IntPtr ValuePtr { get; }
         public abstract int Size { get; }
         public abstract Type BlobType { get; }
+        public virtual object GetPreviewValue(string path) => throw new NotImplementedException();
+        public virtual void SetPreviewValue(string path, object value) => throw new NotImplementedException();
     }
 
     public class ScopeValues<T> : ScopeValues where T : unmanaged, IScopeValuesBlob
@@ -24,6 +26,18 @@ namespace EntitiesBT.Variant
         private void OnDestroy()
         {
             Value?.Dispose();
+        }
+
+        public override object GetPreviewValue(string path)
+        {
+            var builder = Value.FindBuilderByPath(path);
+            return builder.PreviewValue;
+        }
+
+        public override void SetPreviewValue(string path, object value)
+        {
+            var builder = Value.FindBuilderByPath(path);
+            builder.PreviewValue = value;
         }
     }
 }

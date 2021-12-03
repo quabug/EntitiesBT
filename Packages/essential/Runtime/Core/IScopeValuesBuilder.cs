@@ -7,5 +7,8 @@ namespace EntitiesBT.Core
         IntPtr ValuePtr { get; }
         int Size { get; }
         int Offset { get; set; }
+
+        object GetPreviewValue(string path);
+        void SetPreviewValue(string path, object value);
     }
 }

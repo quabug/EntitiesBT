@@ -16,6 +16,19 @@ namespace EntitiesBT
 
         public INodeDataBuilder Self => this;
         public IEnumerable<INodeDataBuilder> Children => this.Children();
+
+        public object GetPreviewValue(string path)
+        {
+            var builder = NodeData.FindBuilderByPath(path);
+            return builder.PreviewValue;
+        }
+
+        public void SetPreviewValue(string path, object value)
+        {
+            var builder = NodeData.FindBuilderByPath(path);
+            builder.PreviewValue = value;
+        }
+
         public int NodeIndex { get; set; }
         public int NodeId => NodeType.GetBehaviorNodeAttribute().Id;
 

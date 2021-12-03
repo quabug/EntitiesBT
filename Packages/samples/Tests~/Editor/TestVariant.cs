@@ -21,6 +21,8 @@ namespace EntitiesBT.Test
             {
                 throw new NotImplementedException();
             }
+
+            public object PreviewValue => throw new NotImplementedException();
         }
 
         [Test]

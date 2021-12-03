@@ -40,6 +40,8 @@ namespace EntitiesBT.Variant
                 var valueOffset = Value.Offset + Marshal.OffsetOf(Value.BlobType, ValueFieldName).ToInt32();
                 return builder.Allocate(ref blobVariant, valueOffset);
             }
+
+            public object PreviewValue => Value?.GetPreviewValue(ValueFieldName);
         }
 
         [Serializable] public class Reader<T> : Any<T>, IVariantReader<T> where T : unmanaged {}

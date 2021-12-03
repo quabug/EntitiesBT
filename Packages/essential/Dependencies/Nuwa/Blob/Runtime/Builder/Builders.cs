@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using UnityEngine;
@@ -10,6 +12,8 @@ namespace Nuwa.Blob
     public interface IBuilder
     {
         void Build(BlobBuilder builder, IntPtr dataPtr);
+        IBuilder GetBuilder([NotNull] string name);
+        object PreviewValue { get; set; }
     }
 
     public interface IObjectBuilder
@@ -25,6 +29,14 @@ namespace Nuwa.Blob
             Build(builder, ref UnsafeUtility.AsRef<T>(dataPtr.ToPointer()));
         }
 
+        public virtual IBuilder GetBuilder(string name) => throw new NotImplementedException();
+
+        public virtual object PreviewValue
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+
         public abstract void Build(BlobBuilder builder, ref T data);
     }
 
@@ -38,6 +50,12 @@ namespace Nuwa.Blob
     public class PlainDataBuilder<T> : Builder<T> where T : unmanaged
     {
         public T Value;
+
+        public override object PreviewValue
+        {
+            get => Value;
+            set => Value = (T)value;
+        }
 
         public override void Build(BlobBuilder builder, ref T data)
         {
@@ -70,6 +88,26 @@ namespace Nuwa.Blob
 
         public IReadOnlyList<string> GetFieldNames() => FieldNames;
         public IReadOnlyList<IBuilder> GetBuilders() => Builders;
+
+        public override IBuilder GetBuilder(string name)
+        {
+            var index = Array.IndexOf(FieldNames, name);
+            if (index < 0) throw new ArgumentException($"cannot find field by name {name}");
+            return Builders[index];
+        }
+
+        public override object PreviewValue
+        {
+            get => FieldNames.Zip(Builders, (field, builder) => (field, builder.PreviewValue)).ToDictionary(t => t.field, t => t.PreviewValue);
+            set
+            {
+                foreach (var t in (IDictionary<string, object>)value)
+                {
+                    var index = Array.IndexOf(FieldNames, t.Key);
+                    Builders[index].PreviewValue = t.Value;
+                }
+            }
+        }
     }
 
     [Serializable]
@@ -82,12 +120,33 @@ namespace Nuwa.Blob
             var arrayBuilder = builder.Allocate(ref data, Value.Length);
             for (var i = 0; i < Value.Length; i++) ((Builder<T>)Value[i]).Build(builder, ref arrayBuilder[i]);
         }
+
+        public override IBuilder GetBuilder(string name)
+        {
+            var index = int.Parse(name);
+            return Value[index];
+        }
+
+        public override object PreviewValue
+        {
+            get => Value.Select(v => v.PreviewValue).ToArray();
+            set
+            {
+                for (var i = 0; i < Value.Length; i++) Value[i].PreviewValue = ((Array)value).GetValue(i);
+            }
+        }
     }
 
     [Serializable, DefaultBuilder]
     public class StringBuilder : Builder<BlobString>
     {
         public string Value;
+
+        public override object PreviewValue
+        {
+            get => Value;
+            set => Value = (string)value;
+        }
 
         public override void Build(BlobBuilder builder, ref BlobString data)
         {
@@ -107,6 +166,12 @@ namespace Nuwa.Blob
         {
             ref var value = ref builder.Allocate(ref data);
             Value.Build(builder, new IntPtr(UnsafeUtility.AddressOf(ref value)));
+        }
+
+        public override IBuilder GetBuilder(string name)
+        {
+            if (name != "*") throw new ArgumentException("it must be * to access builder of BlobPtr");
+            return Value;
         }
     }
 }

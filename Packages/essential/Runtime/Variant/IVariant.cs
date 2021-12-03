@@ -9,6 +9,8 @@ namespace EntitiesBT.Variant
     {
         // return: pointer of meta data
         IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant);
+
+        object PreviewValue { get; }
     }
 
     public interface IVariantReader : IVariant {}

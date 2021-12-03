@@ -30,6 +30,8 @@ namespace EntitiesBT
                 // TODO: check validation
                 return Node.Allocate(ref builder, ref blobVariant);
             }
+
+            public object PreviewValue => Node == null ? null : Node.PreviewValue;
         }
 
         [Serializable] public class Reader<T> : Any, IVariantReader<T> where T : unmanaged {}

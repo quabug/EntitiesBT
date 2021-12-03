@@ -34,23 +34,30 @@ namespace EntitiesBT.Variant
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
-                var type = ScriptableObject.GetType();
-                FieldInfo fieldInfo = null;
-                PropertyInfo propertyInfo = null;
-                if (ScriptableObject != null)
-                    fieldInfo = type.GetField(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
-                if (fieldInfo == null)
-                    propertyInfo = type.GetProperty(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
+                return builder.Allocate(ref blobVariant, (T) PreviewValue);
+            }
 
-                if ((fieldInfo == null || fieldInfo.FieldType != typeof(T))
-                    && (propertyInfo == null || !propertyInfo.CanRead || propertyInfo.PropertyType != typeof(T)))
+            public object PreviewValue
+            {
+                get
                 {
-                    Debug.LogError($"{ScriptableObject.name}.{ScriptableObjectValueName} is not valid");
-                    throw new ArgumentException();
-                }
+                    var type = ScriptableObject.GetType();
+                    FieldInfo fieldInfo = null;
+                    PropertyInfo propertyInfo = null;
+                    if (ScriptableObject != null)
+                        fieldInfo = type.GetField(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
+                    if (fieldInfo == null)
+                        propertyInfo = type.GetProperty(ScriptableObjectValueName, BindingFlags.Instance | BindingFlags.Public);
 
-                var value = fieldInfo?.GetValue(ScriptableObject) ?? propertyInfo?.GetValue(ScriptableObject);
-                return builder.Allocate(ref blobVariant, (T) value);
+                    if ((fieldInfo == null || fieldInfo.FieldType != typeof(T))
+                        && (propertyInfo == null || !propertyInfo.CanRead || propertyInfo.PropertyType != typeof(T)))
+                    {
+                        Debug.LogError($"{ScriptableObject.name}.{ScriptableObjectValueName} is not valid");
+                        throw new ArgumentException();
+                    }
+
+                    return fieldInfo?.GetValue(ScriptableObject) ?? propertyInfo?.GetValue(ScriptableObject);
+                }
             }
         }
 

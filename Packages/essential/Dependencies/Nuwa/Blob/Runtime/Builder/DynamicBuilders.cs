@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -29,9 +30,20 @@ namespace Nuwa.Blob
         public string EnumTypeName;
         public T Value;
 
+        public object PreviewValue
+        {
+            get => Value;
+            set => Value = (T)value;
+        }
+
         public unsafe void Build(BlobBuilder builder, IntPtr dataPtr)
         {
             UnsafeUtility.AsRef<T>(dataPtr.ToPointer()) = Value;
+        }
+
+        public IBuilder GetBuilder(string name)
+        {
+            throw new NotImplementedException();
         }
 
         public class Factory<U> : DynamicBuilderFactory<U> where U : DynamicEnumBuilder<T>, new()
@@ -105,6 +117,26 @@ namespace Nuwa.Blob
             }
         }
 
+        public IBuilder GetBuilder(string name)
+        {
+            var index = Array.IndexOf(FieldNames, name);
+            if (index < 0) throw new ArgumentException($"cannot find field by name {name}");
+            return Builders[index];
+        }
+
+        public object PreviewValue
+        {
+            get => FieldNames.Zip(Builders, (field, builder) => (field, builder.PreviewValue)).ToDictionary(t => t.field, t => t.PreviewValue);
+            set
+            {
+                foreach (var t in (IDictionary<string, object>)value)
+                {
+                    var index = Array.IndexOf(FieldNames, t.Key);
+                    Builders[index].PreviewValue = t.Value;
+                }
+            }
+        }
+
         public IReadOnlyList<string> GetFieldNames() => FieldNames;
         public IReadOnlyList<IBuilder> GetBuilders() => Builders;
 
@@ -122,11 +154,26 @@ namespace Nuwa.Blob
         public string ArrayElementType;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder[] Value;
 
+        public object PreviewValue
+        {
+            get => Value.Select(v => v.PreviewValue).ToArray();
+            set
+            {
+                for (var i = 0; i < Value.Length; i++) Value[i].PreviewValue = ((Array)value).GetValue(i);
+            }
+        }
+
         public void Build(BlobBuilder builder, IntPtr dataPtr)
         {
             var elementType = Type.GetType(ArrayElementType);
             var arrayBuilder = builder.AllocateDynamicArray(elementType, dataPtr, Value.Length);
             for (var i = 0; i < Value.Length; i++) Value[i].Build(builder, arrayBuilder[i]);
+        }
+
+        public IBuilder GetBuilder(string name)
+        {
+            var index = int.Parse(name);
+            return Value[index];
         }
 
         public class Factory : DynamicBuilderFactory<DynamicArrayBuilder>
@@ -147,6 +194,18 @@ namespace Nuwa.Blob
         {
             var blobPtr = builder.AllocateDynamicPtr(Type.GetType(DataType), dataPtr);
             Value.Build(builder, blobPtr);
+        }
+
+        public IBuilder GetBuilder(string name)
+        {
+            if (name != "*") throw new ArgumentException("it must be * to access builder of BlobPtr");
+            return Value;
+        }
+
+        public object PreviewValue
+        {
+            get => Value.PreviewValue;
+            set => Value.PreviewValue = value;
         }
 
         public class Factory : DynamicBuilderFactory<DynamicPtrBuilder>
