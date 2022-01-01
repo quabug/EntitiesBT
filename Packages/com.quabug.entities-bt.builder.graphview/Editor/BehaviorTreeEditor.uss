@@ -1,38 +1,15 @@
-BehaviorTreeView {
-    flex-grow: 1;
+.Action .vertical-ports {
+    background-color: rgb(29, 157, 168);
 }
 
-#grid {
-    --grid-background-color: rgb(40, 40, 40);
-    --line-color: rgba(193, 196, 192, 0.1);
-    --thick-line-color: rgba(193, 196, 192, 0.1);
-    --spacing: 15;
+.Action #output-ports-vertical {
+    display: none;
 }
 
-#minimap {
-    width: 100px;
-    height: 100px;
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-top-width: 1px;
-    border-bottom-width: 1px;
-    border-left-color: rgb(95, 95, 95);
-    border-right-color: rgb(95, 95, 95);
-    border-top-color: rgb(95, 95, 95);
-    border-bottom-color: rgb(95, 95, 95);
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    background-color: rgba(0, 0, 0, 0.24);
-    max-width: 200px;
-    max-height: 200px;
-    min-width: 50px;
-    min-height: 50px;
-    flex-shrink: 0;
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: auto;
-    bottom: auto;
+.Composite .vertical-ports {
+    background-color: rgb(179, 183, 15);
+}
+
+.Decorate .vertical-ports {
+    background-color: rgb(97, 51, 178);
 }

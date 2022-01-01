@@ -1,6 +1,7 @@
 using System;
-using EntitiesBT.Components;
+using EntitiesBT.Editor;
 using GraphExt;
+using Nuwa.Blob;
 
 namespace EntitiesBT
 {
@@ -9,10 +10,10 @@ namespace EntitiesBT
     [Serializable]
     public class BehaviorTreeNode : IBehaviorTreeNode
     {
-        [NodeProperty(CustomFactory = typeof(Editor.BehaviorNodeAssetProperty.Factory))] public NodeAsset Data;
-
-        [NodePort(Orientation = PortOrientation.Vertical, SerializeId = "in")] protected static BehaviorTreeNode Input;
-        [NodePort(Orientation = PortOrientation.Vertical, SerializeId = "out")] protected static BehaviorTreeNode[] Output;
+        [NodePort(Orientation = PortOrientation.Vertical, SerializeId = "in")] protected static IBehaviorTreeNode Input;
+        [NodePort(Orientation = PortOrientation.Vertical, SerializeId = "out")] protected static IBehaviorTreeNode[] Output;
+        [NodeProperty(CustomFactory = typeof(BehaviorBlobDataProperty.Factory))] public DynamicBlobDataBuilder Blob;
+        [NodeProperty(CustomFactory = typeof(BehaviorNodeTypeClassProperty.Factory))] public Type BehaviorNodeType => Type.GetType(Blob.BlobDataType);
 
         public string InputPortName => nameof(Input);
         public string OutputPortName => nameof(Output);

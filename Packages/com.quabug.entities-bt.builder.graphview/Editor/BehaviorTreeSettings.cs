@@ -5,8 +5,10 @@ using System.Linq;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using GraphExt.Editor;
+using Nuwa.Blob;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -44,10 +46,15 @@ namespace EntitiesBT.Editor
                     var path = $"{attribute.Type}/{type.Name}";
                     menu.AddItem(new GUIContent(path), false, () =>
                     {
+                        var stage = PrefabStageUtility.GetCurrentPrefabStage();
+                        if (stage == null) return;
+
                         var id = Guid.NewGuid();
                         var node = new EntitiesBT.BehaviorTreeNode();
-                        node.Data = new NodeAsset { NodeType = type.AssemblyQualifiedName };
+                        node.Blob = new DynamicBlobDataBuilder { BlobDataType = type.AssemblyQualifiedName };
                         module.AddGameObjectNode(id, node, menuPosition);
+                        module.GameObjectNodes[id].name = type.Name;
+                        EditorSceneManager.MarkSceneDirty(stage.scene);
                     });
                 }
             }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &417372130390005032
+--- !u!1 &1543873105550853188
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,36 +8,36 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 688158204344812198}
-  - component: {fileID: 8415772884012727677}
+  - component: {fileID: 7085522886642504914}
+  - component: {fileID: 2352921132931129465}
   m_Layer: 0
-  m_Name: CharacterSimpleMoveNode
+  m_Name: EntityMoveNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &688158204344812198
+--- !u!4 &7085522886642504914
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 417372130390005032}
+  m_GameObject: {fileID: 1543873105550853188}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5193850651252227743}
+  m_Father: {fileID: 172816029300552744}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8415772884012727677
+--- !u!114 &2352921132931129465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 417372130390005032}
+  m_GameObject: {fileID: 1543873105550853188}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
@@ -45,42 +45,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _node:
     id: 0
-  _nodeId: 3f009ef7-7479-4ad2-9565-9178862d1338
-  <Position>k__BackingField: {x: 915.2, y: 215.2}
+  _nodeId: 6ac96a3d-0e7c-4c04-a765-34d0baba9948
+  <Position>k__BackingField: {x: 655, y: 202}
   references:
     version: 1
     00000000:
       type: {class: BehaviorTreeNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
       data:
-        Data:
-          NodeType: EntitiesBT.Extensions.UnityMovement.CharacterSimpleMoveNode,
-            EntitiesBT.Extensions.CharacterController, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          Builder:
-            BlobDataType: EntitiesBT.Extensions.UnityMovement.CharacterSimpleMoveNode,
-              EntitiesBT.Extensions.CharacterController, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            FieldNames:
-            - IsLocal
-            - Velocity
-            Builders:
-            - id: 1
-            - id: 2
+        Blob:
+          BlobDataType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          FieldNames:
+          - Velocity
+          Builders:
+          - id: 1
     00000001:
-      type: {class: BooleanBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      type: {class: float3Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 0
-    00000002:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[Unity.Mathematics.float3,
-          Unity.Mathematics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]],
-          EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 3
-    00000003:
-      type: {class: , ns: , asm: }
+        Value:
+          x: 0
+          y: 0
+          z: 0
 --- !u!1 &1979549972695775822
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,6 +282,77 @@ MonoBehaviour:
         SyntaxNodePortIndex: 0
     00000003:
       type: {class: , ns: , asm: }
+--- !u!1 &3958169306310918599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7674293739246356074}
+  - component: {fileID: 2454922450547135754}
+  m_Layer: 0
+  m_Name: RepeatDurationNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7674293739246356074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3958169306310918599}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2454922450547135754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3958169306310918599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _node:
+    id: 0
+  _nodeId: cf035d2f-35a2-4915-b560-5270f4946224
+  <Position>k__BackingField: {x: 283, y: 140}
+  references:
+    version: 1
+    00000000:
+      type: {class: BehaviorTreeNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
+      data:
+        Blob:
+          BlobDataType: EntitiesBT.Nodes.RepeatDurationNode, EntitiesBT.Runtime,
+            Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          FieldNames:
+          - CountdownSeconds
+          - BreakStates
+          Builders:
+          - id: 1
+          - id: 2
+    00000001:
+      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000002:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        Value: 0
 --- !u!1 &4154396629191486922
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,108 +557,6 @@ MonoBehaviour:
         Node: {fileID: 0}
         VariantPortIndex: -1
         SyntaxNodePortIndex: -1
---- !u!1 &5314671329874177299
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2918068779085008964}
-  - component: {fileID: 5371116567593522360}
-  m_Layer: 0
-  m_Name: DelayTimerNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2918068779085008964
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5314671329874177299}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4937419323912993655}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5371116567593522360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5314671329874177299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _node:
-    id: 0
-  _nodeId: 31e0b86d-5a3b-43dd-b652-692b5292edda
-  <Position>k__BackingField: {x: 1341.6, y: 66.399994}
-  references:
-    version: 1
-    00000000:
-      type: {class: BehaviorTreeNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
-      data:
-        Data:
-          NodeType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
-          Builder:
-            BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            FieldNames:
-            - TimerSeconds
-            Builders:
-            - id: 1
-    00000001:
-      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _isLinked: 1
-        _reader:
-          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 2
-        _writer:
-          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 3
-        _readerAndWriter:
-          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
-            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 4
-    00000002:
-      type: {class: <IVariantReader>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        ComponentValueName: 
-    00000003:
-      type: {class: <IVariantWriter>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        ComponentValueName: 
-    00000004:
-      type: {class: <IVariantReaderAndWriter>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        ComponentValueName: EntitiesBT.Sample.SampleTimeDelayData.OneSecond
 --- !u!1 &5336252117700885740
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,68 +810,6 @@ MonoBehaviour:
         asm: Assembly-CSharp}
       data:
         Value: 0
---- !u!1 &6424295993723325750
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4937419323912993655}
-  - component: {fileID: 5206468157212787383}
-  m_Layer: 0
-  m_Name: SelectorNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4937419323912993655
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6424295993723325750}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 5193850651252227743}
-  - {fileID: 2918068779085008964}
-  m_Father: {fileID: 1114355261066075675}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5206468157212787383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6424295993723325750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _node:
-    id: 0
-  _nodeId: dcf36159-f844-4f41-8609-7f9ce6d1d861
-  <Position>k__BackingField: {x: 1077.6, y: -131.2}
-  references:
-    version: 1
-    00000000:
-      type: {class: BehaviorTreeNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
-      data:
-        Data:
-          NodeType: EntitiesBT.Nodes.SelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
-          Builder:
-            BlobDataType: EntitiesBT.Nodes.SelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            FieldNames: []
-            Builders: []
 --- !u!1 &7347161265191484792
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,11 +846,12 @@ Transform:
   - {fileID: 4134071810252551687}
   - {fileID: 1808692725976357676}
   - {fileID: 7707647279706015122}
-  - {fileID: 4937419323912993655}
+  - {fileID: 7674293739246356074}
+  - {fileID: 172816029300552744}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8038927687290119810
+--- !u!1 &7660475037505736028
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -966,37 +859,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5193850651252227743}
-  - component: {fileID: 4881726263776071727}
+  - component: {fileID: 172816029300552744}
+  - component: {fileID: 4928815077195358927}
   m_Layer: 0
-  m_Name: ErrorRerunOnceNode
+  m_Name: EntityRotateNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5193850651252227743
+--- !u!4 &172816029300552744
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8038927687290119810}
+  m_GameObject: {fileID: 7660475037505736028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 688158204344812198}
-  m_Father: {fileID: 4937419323912993655}
-  m_RootOrder: 0
+  - {fileID: 7085522886642504914}
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4881726263776071727
+--- !u!114 &4928815077195358927
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8038927687290119810}
+  m_GameObject: {fileID: 7660475037505736028}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
@@ -1004,21 +897,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _node:
     id: 0
-  _nodeId: 43e889b4-616a-4b63-813e-0f0be03477bf
-  <Position>k__BackingField: {x: 934.4, y: 50.399998}
+  _nodeId: 8840513b-a438-4dcc-a5ed-19597ab900fd
+  <Position>k__BackingField: {x: 670.5, y: 2}
   references:
     version: 1
     00000000:
       type: {class: BehaviorTreeNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
       data:
-        Data:
-          NodeType: EntitiesBT.Nodes.ErrorRerunOnceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Blob:
+          BlobDataType: EntitiesBT.Sample.EntityRotateNode, EntitiesBT.Sample, Version=0.0.0.0,
             Culture=neutral, PublicKeyToken=null
-          Builder:
-            BlobDataType: EntitiesBT.Nodes.ErrorRerunOnceNode, EntitiesBT.Runtime,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            FieldNames: []
-            Builders: []
+          FieldNames:
+          - Axis
+          - RadianPerSecond
+          Builders:
+          - id: 1
+          - id: 2
+    00000001:
+      type: {class: float3Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value:
+          x: 0
+          y: 0
+          z: 0
+    00000002:
+      type: {class: SingleBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
 --- !u!1 &8611597841908217591
 GameObject:
   m_ObjectHideFlags: 0
