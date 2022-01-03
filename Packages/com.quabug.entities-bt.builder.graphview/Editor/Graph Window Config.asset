@@ -24,6 +24,8 @@ MonoBehaviour:
     id: 4
   EdgeViewFactory:
     id: 5
+  WindowStyleSheet: {fileID: 7433441132597879392, guid: 5022eddd1d5d4486c86383f30e20af58,
+    type: 3}
   references:
     version: 1
     00000000:

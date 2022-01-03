@@ -1,34 +1,25 @@
 using System;
-using EntitiesBT.Editor;
+using System.Reflection;
+using EntitiesBT.Core;
 using GraphExt;
 using Nuwa.Blob;
 
 namespace EntitiesBT
 {
-    public interface IBehaviorTreeNode : GraphExt.ITreeNode<GraphRuntime<IBehaviorTreeNode>> {}
-
     [Serializable]
-    public class BehaviorTreeNode : IBehaviorTreeNode
+    public sealed class BehaviorTreeNode : GraphExt.ITreeNode<GraphRuntime<BehaviorTreeNode>>
     {
-        [NodePort(Orientation = PortOrientation.Vertical, SerializeId = "in")] protected static IBehaviorTreeNode Input;
-        [NodePort(Orientation = PortOrientation.Vertical, SerializeId = "out")] protected static IBehaviorTreeNode[] Output;
-        [NodeProperty(CustomFactory = typeof(BehaviorBlobDataProperty.Factory))] public DynamicBlobDataBuilder Blob;
-        [NodeProperty(CustomFactory = typeof(BehaviorNodeTypeClassProperty.Factory))] public Type BehaviorNodeType => Type.GetType(Blob.BlobDataType);
+        public DynamicBlobDataBuilder Blob;
 
-        public string InputPortName => nameof(Input);
-        public string OutputPortName => nameof(Output);
+        public Type BehaviorNodeDataType => Type.GetType(Blob.BlobDataType);
+        public BehaviorNodeAttribute BehaviorNodeAttribute => BehaviorNodeDataType.GetCustomAttribute<BehaviorNodeAttribute>();
+        public BehaviorNodeType BehaviorNodeType => BehaviorNodeAttribute.Type;
 
-        public bool IsPortCompatible(GraphRuntime<IBehaviorTreeNode> graph, in PortId input, in PortId output)
-        {
-            return true;
-        }
+        public string InputPortName => "input-port";
+        public string OutputPortName => "output-port";
 
-        public void OnConnected(GraphRuntime<IBehaviorTreeNode> graph, in PortId input, in PortId output)
-        {
-        }
-
-        public void OnDisconnected(GraphRuntime<IBehaviorTreeNode> graph, in PortId input, in PortId output)
-        {
-        }
+        public bool IsPortCompatible(GraphRuntime<BehaviorTreeNode> graph, in PortId input, in PortId output) => true;
+        public void OnConnected(GraphRuntime<BehaviorTreeNode> graph, in PortId input, in PortId output) {}
+        public void OnDisconnected(GraphRuntime<BehaviorTreeNode> graph, in PortId input, in PortId output) {}
     }
 }

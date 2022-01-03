@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using System.IO;
 using System.Linq;
-using EntitiesBT.Components;
 using EntitiesBT.Core;
 using GraphExt.Editor;
 using Nuwa.Blob;
@@ -26,14 +25,14 @@ namespace EntitiesBT.Editor
         }
     }
 
-    public class BehaviorTreeWindowExtension : PrefabStageWindowExtension<EntitiesBT.IBehaviorTreeNode, BehaviorTreeNodeComponent> {}
+    public class BehaviorTreeWindowExtension : PrefabStageWindowExtension<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent> {}
 
     public class BehaviorTreeCreationMenuEntry : IMenuEntry
     {
         public void MakeEntry(GraphView graph, ContextualMenuPopulateEvent evt, GenericMenu menu)
         {
             var menuPosition = graph.viewTransform.matrix.inverse.MultiplyPoint(evt.localMousePosition);
-            if (graph.Module is GameObjectHierarchyGraphViewModule<EntitiesBT.IBehaviorTreeNode, BehaviorTreeNodeComponent> module && PrefabStageUtility.GetCurrentPrefabStage() != null)
+            if (graph.Module is GameObjectHierarchyGraphViewModule<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent> module && PrefabStageUtility.GetCurrentPrefabStage() != null)
             {
                 var types = TypeCache.GetTypesWithAttribute<BehaviorNodeAttribute>();
                 foreach (var (type, attribute) in (

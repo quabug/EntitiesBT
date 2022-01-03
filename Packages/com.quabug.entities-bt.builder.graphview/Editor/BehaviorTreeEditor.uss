@@ -1,15 +1,37 @@
-.Action .vertical-ports {
+.action .vertical-ports {
     background-color: rgb(29, 157, 168);
 }
 
-.Action #output-ports-vertical {
+.action #output-ports-vertical {
     display: none;
 }
 
-.Composite .vertical-ports {
+.composite .vertical-ports {
     background-color: rgb(179, 183, 15);
 }
 
-.Decorate .vertical-ports {
+.decorate .vertical-ports {
     background-color: rgb(97, 51, 178);
+}
+
+Port.port.tree {
+    --port-color: rgb(12, 234, 30);
+}
+
+Port.port.tree > #connector {
+    border-radius: 0;
+}
+
+Node #title-property {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+Node #behavior-node-property {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+Node.action #contents {
+    padding-bottom: 10px;
 }
