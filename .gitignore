@@ -81,3 +81,5 @@ Packages/codegen/Tests.meta
 Packages/variant.expression/Tests.meta
 
 Packages/com.quabug.graph-ext
+
+/UIElementsSchema
