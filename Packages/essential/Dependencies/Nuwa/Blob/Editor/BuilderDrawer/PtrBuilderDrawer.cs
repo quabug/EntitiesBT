@@ -30,6 +30,8 @@ namespace Nuwa.Blob.Editor
             var valueProperty = UpdateValueProperty(property);
             var propertyField = new PropertyField(valueProperty);
             propertyField.BindProperty(property.serializedObject);
+            propertyField.name = valueProperty.name;
+            propertyField.AddToClassList(valueProperty.propertyPath);
             return propertyField;
         }
 

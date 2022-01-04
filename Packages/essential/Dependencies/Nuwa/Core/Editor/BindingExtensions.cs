@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine.UIElements;
 
-namespace EntitiesBT.Editor
+namespace Nuwa.Editor
 {
     public static class BindingExtensions
     {

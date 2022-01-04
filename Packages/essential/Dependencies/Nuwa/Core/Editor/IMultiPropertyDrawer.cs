@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nuwa.Editor
 {
@@ -14,5 +15,6 @@ namespace Nuwa.Editor
 
         void OnGUI(Rect position, SerializedProperty property, GUIContent label);
         float GetPropertyHeight(SerializedProperty property, GUIContent label);
+        VisualElement CreatePropertyGUI(SerializedProperty property);
     }
 }

@@ -6,6 +6,7 @@ using System.Reflection;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nuwa.Editor
 {
@@ -84,6 +85,11 @@ namespace Nuwa.Editor
         internal static DrawFunc DrawMultiProperty([NotNull] FieldInfo fieldInfo)
         {
             return (position, property, label) => GetOrCreateDrawer(fieldInfo, property).FirstOrDefault()?.OnGUI(position, property, label);
+        }
+
+        internal static VisualElement CreatePropertyGUI(FieldInfo fieldInfo, SerializedProperty property)
+        {
+            return GetOrCreateDrawer(fieldInfo, property).FirstOrDefault()?.CreatePropertyGUI(property);
         }
 
         private static IReadOnlyList<IMultiPropertyDrawer> GetOrCreateDrawer(FieldInfo fieldInfo, SerializedProperty property)

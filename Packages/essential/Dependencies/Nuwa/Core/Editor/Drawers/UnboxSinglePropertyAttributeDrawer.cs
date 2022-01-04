@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nuwa.Editor
 {
@@ -16,6 +17,12 @@ namespace Nuwa.Editor
         {
             property = property.FindProperProperty();
             base.OnGUI(position, property, label);
+        }
+
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            property = property.FindProperProperty();
+            return base.CreatePropertyGUI(property);
         }
     }
 }

@@ -66,7 +66,9 @@ namespace Nuwa.Blob.Editor
                 var builder = buildersProperty.GetArrayElementAtIndex(i);
                 var fieldName = fieldNamesProperty.GetArrayElementAtIndex(i).stringValue;
                 var field = new PropertyField(builder, fieldName);
+                field.name = fieldName;
                 field.BindProperty(property.serializedObject);
+                field.AddToClassList(builder.propertyPath);
                 root.Add(field);
             }
             return root;

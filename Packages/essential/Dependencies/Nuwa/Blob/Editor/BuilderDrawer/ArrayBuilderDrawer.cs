@@ -28,17 +28,25 @@ namespace Nuwa.Blob.Editor
         {
             var array = UpdateArrayElements(property);
             // TODO: set array size by an integer field
-            var root = new Foldout();
-            root.text = property.displayName;
-            for (var i = 0; i < array.arraySize; i++)
-            {
-                var builder = array.GetArrayElementAtIndex(i);
-                // TODO: hide property label
-                var field = new PropertyField(builder);
-                field.BindProperty(property.serializedObject);
-                root.Add(field);
-            }
+            var root = new PropertyFieldFoldOut();
+            Refresh(array);
+            // TODO: working but throw NullReferenceException?
+            //       NullReferenceException: Object reference not set to an instance of an object
+            //       UnityEditor.UIElements.Bindings.SerializedObjectBindingContext.UpdateValidProperties () (at /Users/bokken/buildslave/unity/build/External/MirroredPackageSources/com.unity.ui/Editor/Bindings/BindingExtensions.cs:800)
+            // root.TrackPropertyValue(array, Refresh);
             return root;
+
+            void Refresh(SerializedProperty elements)
+            {
+                root.Clear();
+                for (var i = 0; i < elements.arraySize; i++)
+                {
+                    var builder = elements.GetArrayElementAtIndex(i);
+                    var field = new PropertyFieldWithoutLabel(builder);
+                    field.AddToClassList(builder.propertyPath);
+                    root.Add(field);
+                }
+            }
         }
 
         private SerializedProperty UpdateArrayElements(SerializedProperty property)
