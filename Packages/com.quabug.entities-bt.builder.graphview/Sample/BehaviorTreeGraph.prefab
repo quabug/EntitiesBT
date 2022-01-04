@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 44bd958f-d057-44a3-9b7b-1c57ad298cc0
-  _position: {x: 517.5, y: 70}
+  _position: {x: 367, y: 62.5}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
@@ -117,8 +117,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1187471459281953741}
-  m_RootOrder: 1
+  m_Father: {fileID: 177755546624706288}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5358347222617105360
 MonoBehaviour:
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 6954879f-5c1f-44c1-84cc-21fb0fd27416
-  _position: {x: 180.5, y: -130.5}
+  _position: {x: 711, y: 33.5}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
@@ -234,7 +234,7 @@ Transform:
   m_Children:
   - {fileID: 8348087959182893753}
   m_Father: {fileID: 1187471459281953741}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8898486369268954078
 MonoBehaviour:
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 0c0efc06-995e-4c43-8241-db49e0de07d4
-  _position: {x: 509.5, y: -134.5}
+  _position: {x: 362, y: -134.5}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Nodes.RepeatDurationNode, EntitiesBT.Runtime, Version=0.0.0.0,
@@ -301,7 +301,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1928271522778251557}
-  - {fileID: 8911035514384382043}
   - {fileID: 2843293090620613440}
   - {fileID: 177755546624706288}
   m_Father: {fileID: 1114355261066075675}
@@ -597,7 +596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 8c82be33-2e02-4aa6-bc03-e4bd099bc5be
-  _position: {x: -147.5, y: -128.5}
+  _position: {x: 59, y: -136.5}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Extensions.UnityMovement.CharacterSimpleMoveNode,
@@ -1102,9 +1101,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8911035514384382043}
   m_Father: {fileID: 1187471459281953741}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4771625374808457902
 MonoBehaviour:
@@ -1119,7 +1119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 6bca57db-7010-4332-97c9-eed91af7c4c5
-  _position: {x: 847, y: -142.5}
+  _position: {x: 723, y: -151.5}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Nodes.SelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,

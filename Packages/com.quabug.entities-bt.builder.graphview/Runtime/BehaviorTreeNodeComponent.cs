@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using EntitiesBT.Core;
 using EntitiesBT.Editor;
+using EntitiesBT.Variant;
 using GraphExt;
 using GraphExt.Editor;
 using Nuwa;
+using Nuwa.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -43,7 +45,7 @@ namespace EntitiesBT
         private readonly Lazy<SerializedObject> _serializedObject;
         private readonly Action<Transform> _reorderChildrenTransform = NodeTransform.ReorderChildrenTransformAction(node => node.Position.x);
 
-        private SerializedProperty _SerializedBuilder =>
+        private SerializedProperty _SerializedNodeBuilder =>
             _serializedObject.Value.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorTreeNode.Blob))
         ;
 
@@ -101,7 +103,7 @@ namespace EntitiesBT
                 new NodePositionProperty(Position.x, Position.y),
                 new NodeClassesProperty(behaviorNodeType.ToString().ToLower().Yield()),
                 new DynamicTitleProperty(() => name),
-                new BehaviorBlobDataProperty { DynamicNodeBuilderProperty = _SerializedBuilder }
+                new BehaviorBlobDataProperty { Property = _SerializedNodeBuilder }
             };
             if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(Node.OutputPortName));
             return new NodeData(properties);
@@ -118,11 +120,25 @@ namespace EntitiesBT
         public IEnumerable<PortData> FindNodePorts(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data)
         {
             var behaviorNodeType = Node.BehaviorNodeType;
-            yield return CreatePortData(Node.InputPortName, PortDirection.Input, 1);
-            if (behaviorNodeType == BehaviorNodeType.Composite) yield return CreatePortData(Node.OutputPortName, PortDirection.Output, int.MaxValue);
-            else if (behaviorNodeType == BehaviorNodeType.Decorate) yield return CreatePortData(Node.OutputPortName, PortDirection.Output, 1);
+            yield return CreateBehaviorTreePortData(Node.InputPortName, PortDirection.Input, 1);
 
-            PortData CreatePortData(string portName, PortDirection direction, int capacity)
+            if (behaviorNodeType == BehaviorNodeType.Composite)
+                yield return CreateBehaviorTreePortData(Node.OutputPortName, PortDirection.Output, int.MaxValue);
+            else if (behaviorNodeType == BehaviorNodeType.Decorate)
+                yield return CreateBehaviorTreePortData(Node.OutputPortName, PortDirection.Output, 1);
+
+            var behaviorNodeProperty = _SerializedNodeBuilder;
+            while (behaviorNodeProperty.NextVisible(true))
+            {
+                var fieldType = behaviorNodeProperty.GetManagedFieldType();
+                if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
+                {
+                    yield return CreateVariantPortData(behaviorNodeProperty.propertyPath, fieldType, PortDirection.Input);
+                    yield return CreateVariantPortData(behaviorNodeProperty.propertyPath, fieldType, PortDirection.Output);
+                }
+            }
+
+            PortData CreateBehaviorTreePortData(string portName, PortDirection direction, int capacity)
             {
                 return new PortData(
                     portName,
@@ -131,6 +147,18 @@ namespace EntitiesBT
                     capacity,
                     typeof(BehaviorTreeNode),
                     new []{"tree", behaviorNodeType.ToString().ToLower()}
+                );
+            }
+
+            PortData CreateVariantPortData(string portName, Type type, PortDirection direction)
+            {
+                return new PortData(
+                    $"{portName}|{direction.ToString().ToLower()}",
+                    PortOrientation.Horizontal,
+                    direction,
+                    1,
+                    type,
+                    new []{"variant"}
                 );
             }
         }

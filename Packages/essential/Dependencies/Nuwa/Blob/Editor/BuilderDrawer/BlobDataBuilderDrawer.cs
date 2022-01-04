@@ -2,7 +2,9 @@
 using System.Reflection;
 using Nuwa.Editor;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nuwa.Blob.Editor
 {
@@ -29,12 +31,60 @@ namespace Nuwa.Blob.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            property.serializedObject.Update();
+            var (buildersProperty, fieldNamesProperty) = UpdateBuilders(property);
 
-            // var fieldType = fieldInfo?.FieldType;
-            // if (fieldType == null || !typeof(Builder<>).IsAssignableFrom(fieldType))
-            //     fieldType = property.GetObject().GetType();
-            // var blobType = fieldType.FindGenericArgumentsOf(typeof(Builder<>))[0];
+            // create inspector GUI
+            position = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+            EditorGUI.PropertyField(position, property, label);
+            if (property.isExpanded)
+            {
+                EditorGUI.indentLevel++;
+                position = EditorGUI.IndentedRect(position);
+                var propertyHeight = position.height;
+                for (var i = 0; i < buildersProperty.arraySize; i++)
+                {
+                    position = new Rect(position.x, position.y + propertyHeight, position.width, position.height);
+                    var builderProperty = buildersProperty.GetArrayElementAtIndex(i);
+                    var fieldName = fieldNamesProperty.GetArrayElementAtIndex(i).stringValue;
+                    EditorGUI.PropertyField(position, builderProperty, new GUIContent(fieldName), includeChildren: true);
+                    propertyHeight = EditorGUI.GetPropertyHeight(builderProperty, includeChildren: true);
+                    // HACK (bug?): somehow, `ApplyModifiedProperties` must be place inside `for` loop, otherwise some properties will not be changed in some cases.
+                    property.serializedObject.ApplyModifiedProperties();
+                }
+                EditorGUI.indentLevel--;
+            }
+            property.serializedObject.ApplyModifiedProperties();
+        }
+
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            var (buildersProperty, fieldNamesProperty) = UpdateBuilders(property);
+            var root = new Foldout();
+            root.text = property.displayName;
+            for (var i = 0; i < buildersProperty.arraySize; i++)
+            {
+                var builder = buildersProperty.GetArrayElementAtIndex(i);
+                var fieldName = fieldNamesProperty.GetArrayElementAtIndex(i).stringValue;
+                var field = new PropertyField(builder, fieldName);
+                field.BindProperty(property.serializedObject);
+                root.Add(field);
+            }
+            return root;
+        }
+
+        private SerializedProperty Builders(SerializedProperty property)
+        {
+            return property.FindPropertyRelative(BuildersPropertyName);
+        }
+
+        private SerializedProperty FieldNames(SerializedProperty property)
+        {
+            return property.FindPropertyRelative(FieldNamePropertyName);
+        }
+
+        private (SerializedProperty builders, SerializedProperty fieldNames) UpdateBuilders(SerializedProperty property)
+        {
+            property.serializedObject.Update();
             var blobType = GetBlobType(property);
             var blobFields = blobType?.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) ?? Array.Empty<FieldInfo>();
 
@@ -68,35 +118,7 @@ namespace Nuwa.Blob.Editor
                 }
             }
 
-            position = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-            EditorGUI.PropertyField(position, property, label);
-            if (property.isExpanded)
-            {
-                EditorGUI.indentLevel++;
-                position = EditorGUI.IndentedRect(position);
-                var propertyHeight = position.height;
-                for (var i = 0; i < blobFields.Length; i++)
-                {
-                    position = new Rect(position.x, position.y + propertyHeight, position.width, position.height);
-                    var builderProperty = buildersProperty.GetArrayElementAtIndex(i);
-                    EditorGUI.PropertyField(position, builderProperty, new GUIContent(blobFields[i].Name), includeChildren: true);
-                    propertyHeight = EditorGUI.GetPropertyHeight(builderProperty, includeChildren: true);
-                    // HACK (bug?): somehow, `ApplyModifiedProperties` must be place inside `for` loop, otherwise some properties will not be changed in some cases.
-                    property.serializedObject.ApplyModifiedProperties();
-                }
-                EditorGUI.indentLevel--;
-            }
-            property.serializedObject.ApplyModifiedProperties();
-        }
-
-        private SerializedProperty Builders(SerializedProperty property)
-        {
-            return property.FindPropertyRelative(BuildersPropertyName);
-        }
-
-        private SerializedProperty FieldNames(SerializedProperty property)
-        {
-            return property.FindPropertyRelative(FieldNamePropertyName);
+            return (buildersProperty, fieldNamesProperty);
         }
     }
 

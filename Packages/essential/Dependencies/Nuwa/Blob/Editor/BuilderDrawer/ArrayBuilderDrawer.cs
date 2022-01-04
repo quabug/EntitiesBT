@@ -1,7 +1,9 @@
 ﻿using System;
 using Nuwa.Editor;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nuwa.Blob.Editor
 {
@@ -17,6 +19,30 @@ namespace Nuwa.Blob.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            var array = UpdateArrayElements(property);
+            EditorGUI.PropertyField(position, array, label, includeChildren: true);
+            property.serializedObject.ApplyModifiedProperties();
+        }
+
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            var array = UpdateArrayElements(property);
+            // TODO: set array size by an integer field
+            var root = new Foldout();
+            root.text = property.displayName;
+            for (var i = 0; i < array.arraySize; i++)
+            {
+                var builder = array.GetArrayElementAtIndex(i);
+                // TODO: hide property label
+                var field = new PropertyField(builder);
+                field.BindProperty(property.serializedObject);
+                root.Add(field);
+            }
+            return root;
+        }
+
+        private SerializedProperty UpdateArrayElements(SerializedProperty property)
+        {
             property.serializedObject.Update();
             var elementsProperty = FindElementsProperty(property);
             var builderFactory = FindElementType(property).GetBuilderFactory(customBuilder: null);
@@ -30,8 +56,7 @@ namespace Nuwa.Blob.Editor
                     property.serializedObject.ApplyModifiedProperties();
                 }
             }
-            EditorGUI.PropertyField(position, elementsProperty, label, includeChildren: true);
-            property.serializedObject.ApplyModifiedProperties();
+            return elementsProperty;
         }
 
         private SerializedProperty FindElementsProperty(SerializedProperty property) => property.FindPropertyRelative(ElementsPropertyName);

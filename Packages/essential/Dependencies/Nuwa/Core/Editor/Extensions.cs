@@ -221,7 +221,7 @@ namespace Nuwa.Editor
             return self;
         }
 
-        public static IEnumerable<T> Yield<T>(this T value)
+        internal static IEnumerable<T> Yield<T>(this T value)
         {
             yield return value;
         }
