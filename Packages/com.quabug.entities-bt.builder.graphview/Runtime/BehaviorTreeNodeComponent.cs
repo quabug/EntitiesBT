@@ -10,12 +10,24 @@ using UnityEngine;
 
 namespace EntitiesBT
 {
+    [DisallowMultipleComponent, ExecuteAlways, AddComponentMenu("")]
     public class BehaviorTreeNodeComponent : MonoBehaviour, INodeComponent<BehaviorTreeNode, BehaviorTreeNodeComponent>, ITreeNodeComponent
     {
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private string _id;
         public NodeId Id { get => Guid.Parse(_id); set => _id = value.ToString(); }
 
-        [field: SerializeField, Nuwa.ReadOnly, UnityDrawProperty] public Vector2 Position { get; set; }
+        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private Vector2 _position;
+
+        public Vector2 Position
+        {
+            get => _position;
+            set
+            {
+                _position = value;
+                var parent = transform.parent.GetComponent<BehaviorTreeNodeComponent>();
+                if (parent) parent._reorderChildrenTransform(parent.transform);
+            }
+        }
 
         [SerializeField, UnboxSingleProperty, UnityDrawProperty] private BehaviorTreeNode _node;
         public BehaviorTreeNode Node { get => _node; set => _node = value; }
@@ -26,11 +38,10 @@ namespace EntitiesBT
         public INodeComponent.NodeComponentConnect OnNodeComponentConnect { get; set; }
         public INodeComponent.NodeComponentDisconnect OnNodeComponentDisconnect { get; set; }
 
-        private TreeEdge _TreeEdge => GetComponent<TreeEdge>() ?? gameObject.AddComponent<TreeEdge>();
-
+        private readonly TreeEdge _treeEdge;
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
-
-        private Lazy<SerializedObject> _serializedObject;
+        private readonly Lazy<SerializedObject> _serializedObject;
+        private readonly Action<Transform> _reorderChildrenTransform = NodeTransform.ReorderChildrenTransformAction(node => node.Position.x);
 
         private SerializedProperty _SerializedBuilder =>
             _serializedObject.Value.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorTreeNode.Blob))
@@ -39,12 +50,13 @@ namespace EntitiesBT
         public BehaviorTreeNodeComponent()
         {
             _serializedObject = new Lazy<SerializedObject>(() => new SerializedObject(this));
+            _treeEdge = new TreeEdge(this);
         }
 
         public IReadOnlySet<EdgeId> GetEdges(GraphRuntime<BehaviorTreeNode> graph)
         {
             _edges.Clear();
-            var treeEdge = _TreeEdge.Edge;
+            var treeEdge = _treeEdge.Edge;
             if (treeEdge.HasValue) _edges.Add(treeEdge.Value);
             return _edges;
         }
@@ -61,7 +73,7 @@ namespace EntitiesBT
             // tree port must connect to another tree port
             if (!isInputTreePort || !isOutputTreePort) return false;
             // cannot connect to input/end node which is parent of output/start node to avoid circle dependency
-            return !_TreeEdge.IsParentInputPort(input);
+            return !_treeEdge.IsParentInputPort(input);
         }
 
         public void OnConnected(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data, in EdgeId edge)
@@ -69,14 +81,14 @@ namespace EntitiesBT
             if (_edges.Contains(edge)) return;
             _edges.Add(edge);
             // set parent for tree edges
-            _TreeEdge.ConnectParent(edge, data[edge.Output.NodeId].transform);
+            _treeEdge.ConnectParent(edge, data[edge.Output.NodeId].transform);
         }
 
         public void OnDisconnected(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data, in EdgeId edge)
         {
             if (!_edges.Contains(edge)) return;
             // reset parent for tree edges
-            _TreeEdge.DisconnectParent(edge);
+            _treeEdge.DisconnectParent(edge);
             _edges.Remove(edge);
         }
 
@@ -87,7 +99,7 @@ namespace EntitiesBT
             {
                 CreateVerticalPorts(Node.InputPortName),
                 new NodePositionProperty(Position.x, Position.y),
-                new NodeClassesProperty { AdditionalClasses = new[] { behaviorNodeType.ToString().ToLower() } },
+                new NodeClassesProperty(behaviorNodeType.ToString().ToLower().Yield()),
                 new DynamicTitleProperty(() => name),
                 new BehaviorBlobDataProperty { DynamicNodeBuilderProperty = _SerializedBuilder }
             };
@@ -96,8 +108,10 @@ namespace EntitiesBT
 
             VerticalPortsProperty CreateVerticalPorts(string portName)
             {
+                var verticalPorts = new VerticalPortsProperty { Name = portName };
                 var portContainer = new PortContainerProperty(new PortId(Id, portName));
-                return new VerticalPortsProperty { Name = portName, Ports = new List<INodeProperty> { portContainer } };
+                verticalPorts.Ports.Add(portContainer);
+                return verticalPorts;
             }
         }
 
@@ -119,6 +133,21 @@ namespace EntitiesBT
                     new []{"tree", behaviorNodeType.ToString().ToLower()}
                 );
             }
+        }
+
+        private void OnTransformParentChanged()
+        {
+            _treeEdge.OnTransformParentChanged();
+        }
+
+        private void OnBeforeTransformParentChanged()
+        {
+            _treeEdge.OnBeforeTransformParentChanged();
+        }
+
+        private void OnTransformChildrenChanged()
+        {
+            _reorderChildrenTransform(transform);
         }
     }
 }
