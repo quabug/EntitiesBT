@@ -154,6 +154,102 @@ MonoBehaviour:
       data:
         NodeObject: {fileID: 0}
         ValueFieldName: 
+--- !u!1 &2483649109413883141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4392212185767148432}
+  - component: {fileID: 6426382596169624201}
+  m_Layer: 0
+  m_Name: DelayTimerNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4392212185767148432
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2483649109413883141}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6426382596169624201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2483649109413883141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 093dc73a-2058-4942-88d0-31b9839a118b
+  _position: {x: 509, y: -12}
+  _node:
+    Blob:
+      BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - TimerSeconds
+      Builders:
+      - id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _isLinked: 1
+        _reader:
+          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
+          _variant:
+            id: 1
+        _writer:
+          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
+            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
+          _variant:
+            id: 2
+        _readerAndWriter:
+          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
+            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
+          _variant:
+            id: 3
+    00000001:
+      type: {class: <IVariantReader>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Node: {fileID: 0}
+        VariantPortIndex: -1
+        SyntaxNodePortIndex: -1
+    00000002:
+      type: {class: <IVariantWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Node: {fileID: 0}
+        VariantPortIndex: -1
+        SyntaxNodePortIndex: -1
+    00000003:
+      type: {class: , ns: , asm: }
 --- !u!1 &3455376831270014219
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,6 +907,7 @@ Transform:
   - {fileID: 1808692725976357676}
   - {fileID: 7707647279706015122}
   - {fileID: 3987943193420428271}
+  - {fileID: 4392212185767148432}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

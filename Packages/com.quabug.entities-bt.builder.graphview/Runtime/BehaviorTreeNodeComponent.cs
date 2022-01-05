@@ -44,24 +44,35 @@ namespace EntitiesBT
         private readonly TreeEdge _treeEdge = new TreeEdge();
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
         private readonly Action<Transform> _reorderChildrenTransform = NodeTransform.ReorderChildrenTransformAction(node => node.Position.x);
-        private SerializedObject _serializedObject;
-        private readonly List<SerializedProperty> _variants = new List<SerializedProperty>();
+        private readonly Lazy<SerializedObject> _serializedObject;
+        private readonly Lazy<SerializedProperty[]> _variants;
 
-        private void Awake()
+        public BehaviorTreeNodeComponent()
         {
-            _serializedObject = new SerializedObject(this);
-            var serializedNodeBuilder = GetSerializedNodeBuilder();
-            while (serializedNodeBuilder.NextVisible(true))
+            _serializedObject = new Lazy<SerializedObject>(() =>
             {
-                var fieldType = serializedNodeBuilder.GetManagedFieldType();
-                if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
-                    _variants.Add(serializedNodeBuilder.Copy());
+                var obj = new SerializedObject(this);
+                obj.Update();
+                return obj;
+            });
+
+            _variants = new Lazy<SerializedProperty[]>(() => VariantProperties().ToArray());
+
+            IEnumerable<SerializedProperty> VariantProperties()
+            {
+                var serializedNodeBuilder = GetSerializedNodeBuilder();
+                while (serializedNodeBuilder.NextVisible(true))
+                {
+                    var fieldType = serializedNodeBuilder.GetManagedFieldType();
+                    if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
+                        yield return serializedNodeBuilder.Copy();
+                }
             }
         }
 
         private SerializedProperty GetSerializedNodeBuilder()
         {
-            return _serializedObject.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorTreeNode.Blob));
+            return _serializedObject.Value.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorTreeNode.Blob));
         }
 
         public IReadOnlySet<EdgeId> GetEdges(GraphRuntime<BehaviorTreeNode> graph)
@@ -140,7 +151,7 @@ namespace EntitiesBT
                 else if (behaviorNodeType == BehaviorNodeType.Decorate)
                     yield return CreateBehaviorTreePortData(Node.OutputPortName, PortDirection.Output, 1);
 
-                foreach (var variant in _variants)
+                foreach (var variant in _variants.Value)
                 {
                     var variantType = variant.GetManagedFullType();
                     if (variantType != null && typeof(GraphNodeVariant.Any).IsAssignableFrom(variantType))
