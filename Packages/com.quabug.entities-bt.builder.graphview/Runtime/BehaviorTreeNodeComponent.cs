@@ -103,7 +103,7 @@ namespace EntitiesBT
                 new NodePositionProperty(Position.x, Position.y),
                 new NodeClassesProperty(behaviorNodeType.ToString().ToLower().Yield()),
                 new DynamicTitleProperty(() => name),
-                new BehaviorBlobDataProperty { Property = _SerializedNodeBuilder }
+                new BehaviorBlobDataProperty(_SerializedNodeBuilder, Id)
             };
             if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(Node.OutputPortName));
             return new NodeData(properties);
@@ -111,7 +111,7 @@ namespace EntitiesBT
             VerticalPortsProperty CreateVerticalPorts(string portName)
             {
                 var verticalPorts = new VerticalPortsProperty { Name = portName };
-                var portContainer = new PortContainerProperty(new PortId(Id, portName));
+                var portContainer = new PortContainerProperty(portName);
                 verticalPorts.Ports.Add(portContainer);
                 return verticalPorts;
             }
@@ -133,8 +133,8 @@ namespace EntitiesBT
                 var fieldType = behaviorNodeProperty.GetManagedFieldType();
                 if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
                 {
-                    yield return CreateVariantPortData(behaviorNodeProperty.propertyPath, fieldType, PortDirection.Input);
-                    yield return CreateVariantPortData(behaviorNodeProperty.propertyPath, fieldType, PortDirection.Output);
+                    yield return CreateVariantPortData(behaviorNodeProperty, fieldType, PortDirection.Input);
+                    yield return CreateVariantPortData(behaviorNodeProperty, fieldType, PortDirection.Output);
                 }
             }
 
@@ -150,10 +150,10 @@ namespace EntitiesBT
                 );
             }
 
-            PortData CreateVariantPortData(string portName, Type type, PortDirection direction)
+            PortData CreateVariantPortData(SerializedProperty property, Type type, PortDirection direction)
             {
                 return new PortData(
-                    $"{portName}|{direction.ToString().ToLower()}",
+                    VariantPort.CreatePortName(property, direction),
                     PortOrientation.Horizontal,
                     direction,
                     1,

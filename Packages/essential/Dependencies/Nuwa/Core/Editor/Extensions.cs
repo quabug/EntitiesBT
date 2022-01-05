@@ -128,9 +128,9 @@ namespace Nuwa.Editor
             return property.GetFieldsByPath().ElementAt(1).fi;
         }
 
-        public static Type GetGenericType(this PropertyDrawer propertyDrawer)
+        public static Type FirstGenericTypeArgument(this PropertyDrawer propertyDrawer)
         {
-            return propertyDrawer.fieldInfo.DeclaringType.GetGenericType();
+            return propertyDrawer.fieldInfo.DeclaringType.FirstGenericTypeArgument();
         }
 
         public static T GetCustomAttribute<T>(this SerializedProperty property) where T : Attribute
@@ -145,7 +145,7 @@ namespace Nuwa.Editor
             return property.serializedObject.targetObject.GetType().GetField(fieldName, flags);
         }
 
-        public static Type GetGenericType(this Type type)
+        public static Type FirstGenericTypeArgument(this Type type)
         {
             while (type != null)
             {
@@ -244,6 +244,7 @@ namespace Nuwa.Editor
 
         private static Type GetTypeByTypename(string typename)
         {
+            if (string.IsNullOrEmpty(typename)) return null;
             var names = typename.Split(' ');
             return names.Length != 2 ? null : Type.GetType($"{names[1]}, {names[0]}");
         }

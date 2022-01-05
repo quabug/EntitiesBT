@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 namespace EntitiesBT.Editor
 {
     [CustomPropertyDrawer(typeof(BlobVariantLinkedRWBuilder))]
-    public class BlobVariantLinkedRwBuilderDrawer : PropertyDrawer
+    public class BlobVariantLinkedRWBuilderDrawer : PropertyDrawer
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -24,11 +24,21 @@ namespace EntitiesBT.Editor
         {
             var root = new PropertyFieldFoldOut();
             root.name = nameof(BlobVariantLinkedRWBuilder);
-            root.Add(new PropertyField(property.FindPropertyRelative("_isLinked")));
-            root.Add(new PropertyField(property.FindPropertyRelative("_reader")));
-            root.Add(new PropertyField(property.FindPropertyRelative("_writer")));
-            root.Add(new PropertyField(property.FindPropertyRelative("_readerAndWriter")));
+            AddPropertyField("_isLinked", "Is Linked");
+            AddPropertyField("_reader", "Reader");
+            AddPropertyField("_writer", "Writer");
+            AddPropertyField("_readerAndWriter", "Reader And Writer");
             return root;
+
+            void AddPropertyField(string relativeProperty, string name)
+            {
+                var childProperty = property.FindPropertyRelative(relativeProperty);
+                var propertyField = new PropertyField(childProperty);
+                propertyField.name = name;
+                propertyField.BindProperty(childProperty.serializedObject);
+                propertyField.AddToClassList(childProperty.propertyPath);
+                root.Add(propertyField);
+            }
         }
     }
 }
