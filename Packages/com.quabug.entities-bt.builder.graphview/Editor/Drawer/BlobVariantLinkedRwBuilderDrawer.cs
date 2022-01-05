@@ -34,7 +34,6 @@ namespace EntitiesBT.Editor
             {
                 var childProperty = property.FindPropertyRelative(relativeProperty);
                 var propertyField = new ImmediatePropertyField(childProperty, name);
-                propertyField.BindProperty(childProperty.serializedObject);
                 propertyField.AddToClassList(childProperty.propertyPath);
                 root.Add(propertyField);
             }

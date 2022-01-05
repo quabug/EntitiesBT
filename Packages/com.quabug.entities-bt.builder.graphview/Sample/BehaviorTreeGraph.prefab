@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1426255335944413502
+--- !u!1 &1904756524256511454
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,103 +8,54 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1220816154982435462}
-  - component: {fileID: 7950071462822653498}
+  - component: {fileID: 3987943193420428271}
+  - component: {fileID: 8511895814345964298}
   m_Layer: 0
-  m_Name: VariablesTestNode
+  m_Name: DelayTimerNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1220816154982435462
+--- !u!4 &3987943193420428271
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426255335944413502}
+  m_GameObject: {fileID: 1904756524256511454}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1114355261066075675}
-  m_RootOrder: 11
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7950071462822653498
+--- !u!114 &8511895814345964298
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1426255335944413502}
+  m_GameObject: {fileID: 1904756524256511454}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 1cb8fc21-6b12-48ed-92dd-0aaa53de41e7
-  _position: {x: 562, y: -576.5}
+  _id: a6dfc64d-7f67-428d-8733-230bbbeacda9
+  _position: {x: 159, y: 98}
   _node:
     Blob:
-      BlobDataType: EntitiesBT.Sample.VariablesTestNode, EntitiesBT.Sample.Variant,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
       FieldNames:
-      - LongReader
-      - String
-      - IntArray
-      - LongWriter
-      - SingleReader
-      - SingleReaderAndWriter
-      - Long
+      - TimerSeconds
       Builders:
       - id: 0
-      - id: 1
-      - id: 2
-      - id: 3
-      - id: 4
-      - id: 5
-      - id: 6
   references:
     version: 1
     00000000:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Int64, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 1
-        _variant:
-          id: 7
-    00000001:
-      type: {class: StringBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 
-    00000002:
-      type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-        Value: []
-    00000003:
-      type: {class: BlobVariantWOBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Int64, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 7
-    00000004:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 7
-    00000005:
       type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
         _isLinked: 1
@@ -114,27 +65,42 @@ MonoBehaviour:
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           IsOptional: 0
           _variant:
-            id: 7
+            id: 1
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           IsOptional: 0
           _variant:
-            id: 7
+            id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           IsOptional: 0
           _variant:
-            id: 7
-    00000006:
-      type: {class: Int64Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+            id: 3
+    00000001:
+      type: {class: <IVariantReader>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
       data:
-        Value: 0
-    00000007:
-      type: {class: , ns: , asm: }
+        Node: {fileID: 0}
+        VariantPortIndex: -1
+        SyntaxNodePortIndex: -1
+    00000002:
+      type: {class: <IVariantWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Node: {fileID: 0}
+        VariantPortIndex: -1
+        SyntaxNodePortIndex: -1
+    00000003:
+      type: {class: <IVariantReaderAndWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Node: {fileID: 0}
+        VariantPortIndex: -1
+        SyntaxNodePortIndex: -1
 --- !u!1 &1979549972695775822
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,141 +221,6 @@ MonoBehaviour:
         EnumTypeName: EntitiesBT.Core.NodeState, EntitiesBT.Runtime, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
         Value: 0
---- !u!1 &3639400590416055383
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 166377562488168087}
-  - component: {fileID: 5292127703316835670}
-  m_Layer: 0
-  m_Name: VariablesTestNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &166377562488168087
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3639400590416055383}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1114355261066075675}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5292127703316835670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3639400590416055383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _id: 4589f4e7-75d6-4021-ad39-3331dab4a32f
-  _position: {x: 843, y: -684}
-  _node:
-    Blob:
-      BlobDataType: EntitiesBT.Sample.VariablesTestNode, EntitiesBT.Sample.Variant,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - LongReader
-      - String
-      - IntArray
-      - LongWriter
-      - SingleReader
-      - SingleReaderAndWriter
-      - Long
-      Builders:
-      - id: 0
-      - id: 1
-      - id: 2
-      - id: 3
-      - id: 4
-      - id: 5
-      - id: 6
-  references:
-    version: 1
-    00000000:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Int64, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 1
-        _variant:
-          id: 7
-    00000001:
-      type: {class: StringBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 
-    00000002:
-      type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-        Value: []
-    00000003:
-      type: {class: BlobVariantWOBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Int64, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 7
-    00000004:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 7
-    00000005:
-      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _isLinked: 1
-        _reader:
-          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 7
-        _writer:
-          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 7
-        _readerAndWriter:
-          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
-            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 7
-    00000006:
-      type: {class: Int64Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000007:
-      type: {class: , ns: , asm: }
 --- !u!1 &3826622239561940666
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,141 +573,6 @@ MonoBehaviour:
         asm: Assembly-CSharp}
       data:
         ComponentValueName: Unity.Transforms.Scale.Value
---- !u!1 &6023211513368254681
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5412911246627909143}
-  - component: {fileID: 8178056484651436205}
-  m_Layer: 0
-  m_Name: VariablesTestNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5412911246627909143
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6023211513368254681}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1114355261066075675}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8178056484651436205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6023211513368254681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _id: a4edc6b5-ba84-439a-80c3-2e5d88d80097
-  _position: {x: 1186.9437, y: -601.07623}
-  _node:
-    Blob:
-      BlobDataType: EntitiesBT.Sample.VariablesTestNode, EntitiesBT.Sample.Variant,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - LongReader
-      - String
-      - IntArray
-      - LongWriter
-      - SingleReader
-      - SingleReaderAndWriter
-      - Long
-      Builders:
-      - id: 0
-      - id: 1
-      - id: 2
-      - id: 3
-      - id: 4
-      - id: 5
-      - id: 6
-  references:
-    version: 1
-    00000000:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Int64, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 1
-        _variant:
-          id: 7
-    00000001:
-      type: {class: StringBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 
-    00000002:
-      type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-        Value: []
-    00000003:
-      type: {class: BlobVariantWOBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Int64, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 7
-    00000004:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 7
-    00000005:
-      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _isLinked: 1
-        _reader:
-          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 7
-        _writer:
-          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 7
-        _readerAndWriter:
-          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
-            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 7
-    00000006:
-      type: {class: Int64Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000007:
-      type: {class: , ns: , asm: }
 --- !u!1 &6133747636661300097
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,10 +810,7 @@ Transform:
   - {fileID: 4134071810252551687}
   - {fileID: 1808692725976357676}
   - {fileID: 7707647279706015122}
-  - {fileID: 166377562488168087}
-  - {fileID: 5412911246627909143}
-  - {fileID: 1220816154982435462}
-  - {fileID: 57756900670017649}
+  - {fileID: 3987943193420428271}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1169,139 +862,4 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: , ns: , asm: }
---- !u!1 &8855641232168602675
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 57756900670017649}
-  - component: {fileID: 974684137953612888}
-  m_Layer: 0
-  m_Name: VariablesTestNode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &57756900670017649
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8855641232168602675}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1114355261066075675}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &974684137953612888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8855641232168602675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _id: 1a56ddd7-dd97-4a8e-ade6-2c8bebdfa78a
-  _position: {x: 1658, y: -443.5}
-  _node:
-    Blob:
-      BlobDataType: EntitiesBT.Sample.VariablesTestNode, EntitiesBT.Sample.Variant,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - LongReader
-      - String
-      - IntArray
-      - LongWriter
-      - SingleReader
-      - SingleReaderAndWriter
-      - Long
-      Builders:
-      - id: 0
-      - id: 1
-      - id: 2
-      - id: 3
-      - id: 4
-      - id: 5
-      - id: 6
-  references:
-    version: 1
-    00000000:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Int64, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 1
-        _variant:
-          id: 7
-    00000001:
-      type: {class: StringBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 
-    00000002:
-      type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-        Value: []
-    00000003:
-      type: {class: BlobVariantWOBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Int64, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 7
-    00000004:
-      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-          Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], EntitiesBT.Runtime,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        IsOptional: 0
-        _variant:
-          id: 7
-    00000005:
-      type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
-      data:
-        _isLinked: 1
-        _reader:
-          _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 7
-        _writer:
-          _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
-            Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 7
-        _readerAndWriter:
-          _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
-            mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
-            EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          IsOptional: 0
-          _variant:
-            id: 7
-    00000006:
-      type: {class: Int64Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value: 0
-    00000007:
       type: {class: , ns: , asm: }

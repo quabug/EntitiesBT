@@ -28,9 +28,7 @@ namespace Nuwa.Blob.Editor
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             var valueProperty = UpdateValueProperty(property);
-            var propertyField = new PropertyField(valueProperty);
-            propertyField.BindProperty(property.serializedObject);
-            propertyField.name = valueProperty.name;
+            var propertyField = new ImmediatePropertyField(valueProperty, valueProperty.name);
             propertyField.AddToClassList(valueProperty.propertyPath);
             return propertyField;
         }
