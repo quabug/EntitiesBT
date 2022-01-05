@@ -4,12 +4,9 @@ using UnityEngine.UIElements;
 
 namespace Nuwa.Editor
 {
-    public class PropertyFieldWithAncestorName : PropertyField
+    public class PropertyFieldWithAncestorName : ImmediatePropertyField
     {
-        public PropertyFieldWithAncestorName(SerializedProperty property) : base(property)
-        {
-            this.BindProperty(property.serializedObject);
-        }
+        public PropertyFieldWithAncestorName(SerializedProperty property) : base(property, label: null) {}
 
         protected override void ExecuteDefaultAction(EventBase evt)
         {
@@ -18,7 +15,6 @@ namespace Nuwa.Editor
                 var propertyField = GetFirstAncestorOfType<PropertyField>();
                 if (propertyField != null) label = propertyField.name;
             }
-
             base.ExecuteDefaultAction(evt);
         }
     }

@@ -33,8 +33,7 @@ namespace EntitiesBT.Editor
             void AddPropertyField(string relativeProperty, string name)
             {
                 var childProperty = property.FindPropertyRelative(relativeProperty);
-                var propertyField = new PropertyField(childProperty);
-                propertyField.name = name;
+                var propertyField = new ImmediatePropertyField(childProperty, name);
                 propertyField.BindProperty(childProperty.serializedObject);
                 propertyField.AddToClassList(childProperty.propertyPath);
                 root.Add(propertyField);

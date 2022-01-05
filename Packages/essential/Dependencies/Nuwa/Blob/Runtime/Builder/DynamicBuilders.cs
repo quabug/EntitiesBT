@@ -144,7 +144,12 @@ namespace Nuwa.Blob
         {
             public override int Order => 1000;
             public override bool IsValid(Type dataType, FieldInfo fieldInfo) => !dataType.IsEnum && !dataType.IsPrimitive;
-            public override object Create(Type dataType, FieldInfo fieldInfo) => new DynamicBlobDataBuilder { BlobDataType = dataType.AssemblyQualifiedName };
+            public override object Create(Type dataType, FieldInfo fieldInfo)
+            {
+                var builder = new DynamicBlobDataBuilder { BlobDataType = dataType.AssemblyQualifiedName };
+                BuilderUtility.SetBlobDataType(dataType, ref builder.Builders, ref builder.FieldNames);
+                return builder;
+            }
         }
     }
 

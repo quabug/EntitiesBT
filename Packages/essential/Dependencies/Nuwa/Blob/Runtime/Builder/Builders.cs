@@ -75,6 +75,11 @@ namespace Nuwa.Blob
         [HideInInspector] public string[] FieldNames;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder[] Builders;
 
+        public BlobDataBuilder()
+        {
+            BuilderUtility.SetBlobDataType(typeof(T), ref Builders, ref FieldNames);
+        }
+
         public override unsafe void Build(BlobBuilder builder, ref T data)
         {
             var dataPtr = new IntPtr(UnsafeUtility.AddressOf(ref data));

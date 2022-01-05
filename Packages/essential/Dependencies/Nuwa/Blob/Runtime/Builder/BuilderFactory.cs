@@ -1,9 +1,10 @@
+#if UNITY_EDITOR
+
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
-using Nuwa.Blob.Editor;
 using UnityEditor;
 
 namespace Nuwa.Blob
@@ -65,3 +66,5 @@ namespace Nuwa.Blob
         protected MultipleBuildersException(SerializationInfo info, StreamingContext context) : base(info, context) {}
     }
 }
+
+#endif

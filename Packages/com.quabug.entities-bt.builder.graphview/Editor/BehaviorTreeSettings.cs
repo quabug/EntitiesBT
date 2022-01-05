@@ -51,6 +51,7 @@ namespace EntitiesBT.Editor
                         var id = Guid.NewGuid();
                         var node = new EntitiesBT.BehaviorTreeNode();
                         node.Blob = new DynamicBlobDataBuilder { BlobDataType = type.AssemblyQualifiedName };
+                        BuilderUtility.SetBlobDataType(type, ref node.Blob.Builders, ref node.Blob.FieldNames);
                         module.AddGameObjectNode(id, node, menuPosition);
                         module.GameObjectNodes[id].name = type.Name;
                         EditorSceneManager.MarkSceneDirty(stage.scene);

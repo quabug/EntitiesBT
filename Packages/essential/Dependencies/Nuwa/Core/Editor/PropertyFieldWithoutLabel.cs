@@ -1,15 +1,11 @@
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace Nuwa.Editor
 {
-    public class PropertyFieldWithoutLabel : PropertyField
+    public class PropertyFieldWithoutLabel : ImmediatePropertyField
     {
-        public PropertyFieldWithoutLabel(SerializedProperty property) : base(property, label: null)
-        {
-            this.BindProperty(property.serializedObject);
-        }
+        public PropertyFieldWithoutLabel(SerializedProperty property) : base(property, label: null) {}
 
         protected override void ExecuteDefaultActionAtTarget(EventBase evt)
         {
