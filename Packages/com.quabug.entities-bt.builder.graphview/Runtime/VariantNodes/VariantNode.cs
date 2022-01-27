@@ -2,20 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Variant;
-using JetBrains.Annotations;
+using GraphExt;
 using Nuwa;
 using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT
 {
-    [DisallowMultipleComponent]
-    [ExecuteAlways]
-    public abstract class VariantNode : MonoBehaviour
+    public abstract class VariantNode : INode<GraphRuntime<VariantNode>>
     {
+        [NodeProperty(Name = "Preview")] public object PreviewValue => Variant.PreviewValue;
+
         public Type VariantType => ConnectedVariants.Any() && Variant != null ? Variant.GetType() : DefaultVariantType;
         public virtual string Name => $"{VariantTypeName}{AccessName}<{Variant?.FindValueType()?.Name}>";
-        public object PreviewValue => Variant.PreviewValue;
         protected abstract string VariantTypeName { get; }
         protected abstract IVariant Variant { get; set; }
         protected abstract Type DefaultVariantType { get; }
@@ -36,43 +35,43 @@ namespace EntitiesBT
             }
         }
 
-        protected readonly ISet<GraphNodeVariant.Any> ConnectedVariants = new HashSet<GraphNodeVariant.Any>();
-
-        public virtual void OnConnected([NotNull] GraphNodeVariant.Any graphNodeVariant)
-        {
-            var valueType = graphNodeVariant.ValueType;
-            if (ValueType != null && valueType != ValueType) throw new ArgumentException($"invalid variant value type {valueType.FullName}, expect {ValueType.FullName}");
-            if (!ConnectedVariants.Contains(graphNodeVariant)) ConnectedVariants.Add(graphNodeVariant);
-
-#if UNITY_EDITOR
-            if (Variant == null || Variant.FindValueType() != valueType)
-            {
-                try
-                {
-                    var variantType = UnityEditor.TypeCache.GetTypesDerivedFrom(BaseType).First();
-                    Variant = (IVariant)Activator.CreateInstance(variantType);
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-#endif
-        }
-
-        public virtual void OnDisconnected([NotNull] GraphNodeVariant.Any graphNodeVariant)
-        {
-            ConnectedVariants.Remove(graphNodeVariant);
-        }
+        protected readonly ISet<GraphNodeVariant.Any> ConnectedVariants = new System.Collections.Generic.HashSet<GraphNodeVariant.Any>();
 
         public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
         {
             return Variant.Allocate(ref builder, ref blobVariant);
         }
 
-        private void Update()
+        public bool IsPortCompatible(GraphRuntime<VariantNode> graph, in PortId input, in PortId output)
         {
-            name = Name;
+            return true;
+        }
+
+        public void OnConnected(GraphRuntime<VariantNode> graph, in PortId input, in PortId output)
+        {
+//             var valueType = graphNodeVariant.ValueType;
+//             if (ValueType != null && valueType != ValueType) throw new ArgumentException($"invalid variant value type {valueType.FullName}, expect {ValueType.FullName}");
+//             if (!ConnectedVariants.Contains(graphNodeVariant)) ConnectedVariants.Add(graphNodeVariant);
+//
+// #if UNITY_EDITOR
+//             if (Variant == null || Variant.FindValueType() != valueType)
+//             {
+//                 try
+//                 {
+//                     var variantType = UnityEditor.TypeCache.GetTypesDerivedFrom(BaseType).First();
+//                     Variant = (IVariant)Activator.CreateInstance(variantType);
+//                 }
+//                 catch
+//                 {
+//                     // ignored
+//                 }
+//             }
+// #endif
+        }
+
+        public void OnDisconnected(GraphRuntime<VariantNode> graph, in PortId input, in PortId output)
+        {
+            // ConnectedVariants.Remove(graphNodeVariant);
         }
     }
 
@@ -86,8 +85,9 @@ namespace EntitiesBT
 
         protected override Type DefaultVariantType => typeof(T);
 
-        [SerializeReference]
-        [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(BaseTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
+        // [NodeProperty(OutputPort = )]
+        // [SerializeReference]
+        // [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(BaseTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
         public T Value;
     }
 }

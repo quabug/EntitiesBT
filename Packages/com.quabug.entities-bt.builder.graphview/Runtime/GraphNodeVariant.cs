@@ -18,7 +18,8 @@ namespace EntitiesBT
 
             public Type VariantType => GetType();
             public Type ValueType => this.FindValueType();
-            public int NodeId => Node.gameObject.GetInstanceID();
+            // TODO:
+            public int NodeId => 0;//Node.;
             public bool IsConnected => Node != null;
 
             [ReadOnly, UnityDrawProperty] public VariantNode Node;

@@ -21,9 +21,9 @@ namespace EntitiesBT.Editor
         }
 
         [UsedImplicitly]
-        private class ViewFactory : NodePropertyViewFactory<BehaviorBlobDataProperty>
+        private class ViewFactory : SingleNodePropertyViewFactory<BehaviorBlobDataProperty>
         {
-            protected override VisualElement Create(Node node, BehaviorBlobDataProperty property, INodePropertyViewFactory factory)
+            protected override VisualElement CreateView(Node node, BehaviorBlobDataProperty property, INodePropertyViewFactory factory)
             {
                 return new ImmediatePropertyField(property.Property, label: null);
             }

@@ -1,11 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
 using System.Linq;
 using EntitiesBT.Core;
+using GraphExt;
 using GraphExt.Editor;
+using JetBrains.Annotations;
 using Nuwa.Blob;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -25,14 +29,23 @@ namespace EntitiesBT.Editor
         }
     }
 
-    public class BehaviorTreeWindowExtension : PrefabStageWindowExtension<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent> {}
+    public class BehaviorTreeWindowExtension : PrefabGraphWindowExtension<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent> {}
+    public class BehaviorTreeBasicGraphInstaller : BasicGraphInstaller<EntitiesBT.BehaviorTreeNode> {}
+    public class BehaviorTreeSerializableInstaller : SerializableGraphBackendInstaller<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent> {}
+
+    public class BehaviorTreeSelectionMenuEntry : SelectionEntry<EntitiesBT.BehaviorTreeNode>
+    {
+        public BehaviorTreeSelectionMenuEntry([NotNull] GraphRuntime<EntitiesBT.BehaviorTreeNode> graph, [NotNull] IReadOnlyDictionary<Node, NodeId> nodes, [NotNull] IReadOnlyDictionary<Edge, EdgeId> edges) : base(graph, nodes, edges)
+        {
+        }
+    }
 
     public class BehaviorTreeCreationMenuEntry : IMenuEntry
     {
-        public void MakeEntry(GraphView graph, ContextualMenuPopulateEvent evt, GenericMenu menu)
+        public void MakeEntry(UnityEditor.Experimental.GraphView.GraphView graph, ContextualMenuPopulateEvent evt, GenericMenu menu)
         {
             var menuPosition = graph.viewTransform.matrix.inverse.MultiplyPoint(evt.localMousePosition);
-            if (graph.Module is GameObjectHierarchyGraphViewModule<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent> module && PrefabStageUtility.GetCurrentPrefabStage() != null)
+            if (PrefabStageUtility.GetCurrentPrefabStage() != null)
             {
                 var types = TypeCache.GetTypesWithAttribute<BehaviorNodeAttribute>();
                 foreach (var (type, attribute) in (
@@ -52,8 +65,9 @@ namespace EntitiesBT.Editor
                         var node = new EntitiesBT.BehaviorTreeNode();
                         node.Blob = new DynamicBlobDataBuilder { BlobDataType = type.AssemblyQualifiedName };
                         BuilderUtility.SetBlobDataType(type, ref node.Blob.Builders, ref node.Blob.FieldNames);
-                        module.AddGameObjectNode(id, node, menuPosition);
-                        module.GameObjectNodes[id].name = type.Name;
+                        // TODO
+                        // module.AddGameObjectNode(id, node, menuPosition);
+                        // module.GameObjectNodes[id].name = type.Name;
                         EditorSceneManager.MarkSceneDirty(stage.scene);
                     });
                 }

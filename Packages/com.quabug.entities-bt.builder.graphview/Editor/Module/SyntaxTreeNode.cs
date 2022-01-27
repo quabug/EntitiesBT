@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -35,7 +36,9 @@ namespace EntitiesBT.Editor
 
         private VariantNode _node { get; }
 
-        public IEnumerable<GraphNodeVariant.Any> GraphNodeVariants => new SerializedObject(_node).FindGraphNodeVariantProperties().ToGraphNodeVariant();
+        public IEnumerable<GraphNodeVariant.Any> GraphNodeVariants =>
+            Enumerable.Empty<GraphNodeVariant.Any>();
+        //new SerializedObject(_node).FindGraphNodeVariantProperties().ToGraphNodeVariant();
 
         public SyntaxTreeNode(BehaviorTreeGraph graph, GameObject instance)
         {
@@ -55,7 +58,7 @@ namespace EntitiesBT.Editor
             variant.Node = _node;
             variant.VariantPortIndex = variantPortIndex;
             variant.SyntaxNodePortIndex = syntaxNodePortIndex;
-            _node.OnConnected(variant);
+            // _node.OnConnected(variant);
             if (changed) _graph.SavePrefab();
         }
 
@@ -65,7 +68,7 @@ namespace EntitiesBT.Editor
             variant.Node = null;
             variant.VariantPortIndex = -1;
             variant.SyntaxNodePortIndex = -1;
-            _node.OnDisconnected(variant);
+            // _node.OnDisconnected(variant);
             if (changed) _graph.SavePrefab();
         }
     }

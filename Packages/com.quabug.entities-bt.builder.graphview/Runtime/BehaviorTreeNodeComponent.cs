@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
-using EntitiesBT.Editor;
 using EntitiesBT.Variant;
 using GraphExt;
 using GraphExt.Editor;
 using Nuwa;
+using UnityEngine;
+
+#if UNITY_EDITOR
+using EntitiesBT.Editor;
 using Nuwa.Editor;
 using UnityEditor;
-using UnityEngine;
+#endif
 
 namespace EntitiesBT
 {
@@ -19,7 +22,7 @@ namespace EntitiesBT
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private string _id;
         public NodeId Id { get => Guid.Parse(_id); set => _id = value.ToString(); }
 
-        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private Vector2 _position;
+        [SerializeField] private Vector2 _position;
 
         public Vector2 Position
         {
@@ -44,36 +47,6 @@ namespace EntitiesBT
         private readonly TreeEdge _treeEdge = new TreeEdge();
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
         private readonly Action<Transform> _reorderChildrenTransform = NodeTransform.ReorderChildrenTransformAction(node => node.Position.x);
-        private readonly Lazy<SerializedObject> _serializedObject;
-        private readonly Lazy<SerializedProperty[]> _variants;
-
-        public BehaviorTreeNodeComponent()
-        {
-            _serializedObject = new Lazy<SerializedObject>(() =>
-            {
-                var obj = new SerializedObject(this);
-                obj.Update();
-                return obj;
-            });
-
-            _variants = new Lazy<SerializedProperty[]>(() => VariantProperties().ToArray());
-
-            IEnumerable<SerializedProperty> VariantProperties()
-            {
-                var serializedNodeBuilder = GetSerializedNodeBuilder();
-                while (serializedNodeBuilder.NextVisible(true))
-                {
-                    var fieldType = serializedNodeBuilder.GetManagedFieldType();
-                    if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
-                        yield return serializedNodeBuilder.Copy();
-                }
-            }
-        }
-
-        private SerializedProperty GetSerializedNodeBuilder()
-        {
-            return _serializedObject.Value.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorTreeNode.Blob));
-        }
 
         public IReadOnlySet<EdgeId> GetEdges(GraphRuntime<BehaviorTreeNode> graph)
         {
@@ -86,8 +59,8 @@ namespace EntitiesBT
         public bool IsPortCompatible(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data, in PortId input, in PortId output)
         {
             // free to connect each other if they are not tree ports
-            var isInputTreePort = data.Graph.IsTreePort(input);
-            var isOutputTreePort = data.Graph.IsTreePort(output);
+            var isInputTreePort = data.Runtime.IsTreePort(input);
+            var isOutputTreePort = data.Runtime.IsTreePort(output);
             if (!isInputTreePort && !isOutputTreePort) return true;
 
             if (input.NodeId == Id && output.NodeId == Id) return false; // same node
@@ -114,16 +87,34 @@ namespace EntitiesBT
             _edges.Remove(edge);
         }
 
-        public NodeData FindNodeProperties(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data)
+        private void OnTransformParentChanged()
+        {
+            _treeEdge.OnTransformParentChanged(this);
+        }
+
+        private void OnBeforeTransformParentChanged()
+        {
+            _treeEdge.OnBeforeTransformParentChanged(this);
+        }
+
+        private void OnTransformChildrenChanged()
+        {
+            _reorderChildrenTransform(transform);
+        }
+
+#if UNITY_EDITOR
+        private SerializedProperty[] _variantProperties;
+
+        public NodeData FindNodeProperties(SerializedObject nodeObject)
         {
             var behaviorNodeType = Node.BehaviorNodeType;
             var properties = new List<INodeProperty>
             {
                 CreateVerticalPorts(Node.InputPortName),
-                new NodePositionProperty(Position.x, Position.y),
+                new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
                 new NodeClassesProperty(behaviorNodeType.ToString().ToLower().Yield()),
                 new DynamicTitleProperty(() => name),
-                new BehaviorBlobDataProperty(GetSerializedNodeBuilder())
+                new BehaviorBlobDataProperty(GetSerializedNodeBuilder(nodeObject))
             };
             if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(Node.OutputPortName));
             return new NodeData(properties);
@@ -137,28 +128,24 @@ namespace EntitiesBT
             }
         }
 
-        public IReadOnlyDictionary<string, PortData> FindNodePorts(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data)
+        public IEnumerable<PortData> FindNodePorts(SerializedObject nodeObject)
         {
             var behaviorNodeType = Node.BehaviorNodeType;
-            return Ports().ToDictionary(port => port.Name, port => port);
+            yield return CreateBehaviorTreePortData(Node.InputPortName, PortDirection.Input, 1);
 
-            IEnumerable<PortData> Ports()
+            if (behaviorNodeType == BehaviorNodeType.Composite)
+                yield return CreateBehaviorTreePortData(Node.OutputPortName, PortDirection.Output, int.MaxValue);
+            else if (behaviorNodeType == BehaviorNodeType.Decorate)
+                yield return CreateBehaviorTreePortData(Node.OutputPortName, PortDirection.Output, 1);
+
+            _variantProperties ??= GetVariantProperties(nodeObject).ToArray();
+            foreach (var variant in _variantProperties)
             {
-                yield return CreateBehaviorTreePortData(Node.InputPortName, PortDirection.Input, 1);
-
-                if (behaviorNodeType == BehaviorNodeType.Composite)
-                    yield return CreateBehaviorTreePortData(Node.OutputPortName, PortDirection.Output, int.MaxValue);
-                else if (behaviorNodeType == BehaviorNodeType.Decorate)
-                    yield return CreateBehaviorTreePortData(Node.OutputPortName, PortDirection.Output, 1);
-
-                foreach (var variant in _variants.Value)
+                var variantType = variant.GetManagedFullType();
+                if (variantType != null && typeof(GraphNodeVariant.Any).IsAssignableFrom(variantType))
                 {
-                    var variantType = variant.GetManagedFullType();
-                    if (variantType != null && typeof(GraphNodeVariant.Any).IsAssignableFrom(variantType))
-                    {
-                        yield return CreateVariantPortData(variant, variantType, PortDirection.Input);
-                        yield return CreateVariantPortData(variant, variantType, PortDirection.Output);
-                    }
+                    yield return CreateVariantPortData(variant, variantType, PortDirection.Input);
+                    yield return CreateVariantPortData(variant, variantType, PortDirection.Output);
                 }
             }
 
@@ -187,19 +174,22 @@ namespace EntitiesBT
             }
         }
 
-        private void OnTransformParentChanged()
+        private IEnumerable<SerializedProperty> GetVariantProperties(SerializedObject nodeObject)
         {
-            _treeEdge.OnTransformParentChanged(this);
+            var serializedNodeBuilder = GetSerializedNodeBuilder(nodeObject);
+            while (serializedNodeBuilder.NextVisible(true))
+            {
+                var fieldType = serializedNodeBuilder.GetManagedFieldType();
+                if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
+                    yield return serializedNodeBuilder.Copy();
+            }
         }
 
-        private void OnBeforeTransformParentChanged()
+        private SerializedProperty GetSerializedNodeBuilder(SerializedObject nodeObject)
         {
-            _treeEdge.OnBeforeTransformParentChanged(this);
+            return nodeObject.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorTreeNode.Blob));
         }
+#endif
 
-        private void OnTransformChildrenChanged()
-        {
-            _reorderChildrenTransform(transform);
-        }
     }
 }
