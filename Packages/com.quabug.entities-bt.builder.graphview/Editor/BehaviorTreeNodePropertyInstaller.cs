@@ -25,6 +25,9 @@ namespace EntitiesBT.Editor
                 var nodeObjects = container.Resolve<IReadOnlyDictionary<NodeId, SerializedObject>>();
                 return (in NodeId nodeId) => nodes[nodeId].FindNodePorts(nodeObjects[nodeId]);
             });
+
+            // HACK: expose `FindPortData` to root container for other presenters
+            container.Register(() => presenterContainer.Resolve<FindPortData>());
         }
 
 

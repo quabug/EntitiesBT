@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 093dc73a-2058-4942-88d0-31b9839a118b
-  _position: {x: 351, y: 96}
+  _position: {x: 245, y: 150}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
@@ -146,10 +146,11 @@ MonoBehaviour:
         VariantPortIndex: -1
         SyntaxNodePortIndex: -1
     00000003:
-      type: {class: <IVariantReaderAndWriter>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReaderAndWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        ComponentValueName: 
+        VariantPortIndex: -1
+        SyntaxNodePortIndex: -1
 --- !u!1 &7347161265191484792
 GameObject:
   m_ObjectHideFlags: 0

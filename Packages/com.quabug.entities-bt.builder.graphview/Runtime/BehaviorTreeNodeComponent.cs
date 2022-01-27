@@ -4,14 +4,14 @@ using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using GraphExt;
-using GraphExt.Editor;
 using Nuwa;
 using UnityEngine;
+using Nuwa.Editor;
 
 #if UNITY_EDITOR
 using EntitiesBT.Editor;
-using Nuwa.Editor;
 using UnityEditor;
+using GraphExt.Editor;
 #endif
 
 namespace EntitiesBT
