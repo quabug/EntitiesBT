@@ -42,6 +42,18 @@ namespace EntitiesBT.Editor
 
     public class BehaviorTreeCreationMenuEntry : IMenuEntry
     {
+        private readonly IReadOnlyDictionary<NodeId, BehaviorTreeNodeComponent> _nodes;
+        private readonly GraphRuntime<EntitiesBT.BehaviorTreeNode> _graphRuntime;
+
+        public BehaviorTreeCreationMenuEntry(
+            GraphRuntime<EntitiesBT.BehaviorTreeNode> graphRuntime,
+            IReadOnlyDictionary<NodeId, BehaviorTreeNodeComponent> nodes
+        )
+        {
+            _graphRuntime = graphRuntime;
+            _nodes = nodes;
+        }
+
         public void MakeEntry(UnityEditor.Experimental.GraphView.GraphView graph, ContextualMenuPopulateEvent evt, GenericMenu menu)
         {
             var menuPosition = graph.viewTransform.matrix.inverse.MultiplyPoint(evt.localMousePosition);
@@ -65,9 +77,8 @@ namespace EntitiesBT.Editor
                         var node = new EntitiesBT.BehaviorTreeNode();
                         node.Blob = new DynamicBlobDataBuilder { BlobDataType = type.AssemblyQualifiedName };
                         BuilderUtility.SetBlobDataType(type, ref node.Blob.Builders, ref node.Blob.FieldNames);
-                        // TODO
-                        // module.AddGameObjectNode(id, node, menuPosition);
-                        // module.GameObjectNodes[id].name = type.Name;
+                        _graphRuntime.AddNode(id, node);
+                        _nodes[id].Position = menuPosition;
                         EditorSceneManager.MarkSceneDirty(stage.scene);
                     });
                 }
