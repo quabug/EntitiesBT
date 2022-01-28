@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using GraphExt;
 using GraphExt.Editor;
+using JetBrains.Annotations;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
+    [UsedImplicitly]
     public class DynamicPortsPresenter : ITickableWindowSystem
     {
         private readonly IPortViewFactory _portViewFactory;

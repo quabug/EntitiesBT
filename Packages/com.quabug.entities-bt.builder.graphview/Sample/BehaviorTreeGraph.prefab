@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 4392212185767148432}
   - component: {fileID: 6426382596169624201}
   m_Layer: 0
-  m_Name: DelayTimerNode
+  m_Name: 333
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

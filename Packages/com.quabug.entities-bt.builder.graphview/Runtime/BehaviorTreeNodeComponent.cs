@@ -12,6 +12,7 @@ using Nuwa.Editor;
 using EntitiesBT.Editor;
 using UnityEditor;
 using GraphExt.Editor;
+using UnityEditor.Experimental.SceneManagement;
 #endif
 
 namespace EntitiesBT
@@ -104,16 +105,32 @@ namespace EntitiesBT
 
 #if UNITY_EDITOR
         private SerializedProperty[] _variantProperties;
+        private readonly EventTitleProperty _titleProperty = new EventTitleProperty();
+
+        static BehaviorTreeNodeComponent()
+        {
+            EditorApplication.hierarchyChanged -= RefreshTitles;
+            EditorApplication.hierarchyChanged += RefreshTitles;
+
+            void RefreshTitles()
+            {
+                var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+                if (prefabStage == null) return;
+                foreach (var node in prefabStage.prefabContentsRoot.GetComponentsInChildren<BehaviorTreeNodeComponent>())
+                    node._titleProperty.Title = node.name;
+            }
+        }
 
         public NodeData FindNodeProperties(SerializedObject nodeObject)
         {
             var behaviorNodeType = Node.BehaviorNodeType;
+            _titleProperty.Title = name;
             var properties = new List<INodeProperty>
             {
                 CreateVerticalPorts(Node.InputPortName),
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
                 new NodeClassesProperty(behaviorNodeType.ToString().ToLower().Yield()),
-                new DynamicTitleProperty(() => name),
+                _titleProperty,
                 new BehaviorBlobDataProperty(GetSerializedNodeBuilder(nodeObject))
             };
             if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(Node.OutputPortName));
