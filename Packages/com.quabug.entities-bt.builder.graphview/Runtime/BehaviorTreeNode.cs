@@ -7,7 +7,7 @@ using Nuwa.Blob;
 namespace EntitiesBT
 {
     [Serializable]
-    public sealed class BehaviorTreeNode : GraphExt.ITreeNode<GraphRuntime<BehaviorTreeNode>>
+    public sealed class BehaviorTreeNode : IGraphNode, GraphExt.ITreeNode<GraphRuntime<IGraphNode>>
     {
         public DynamicBlobDataBuilder Blob;
 
@@ -18,8 +18,8 @@ namespace EntitiesBT
         public string InputPortName => "input-port";
         public string OutputPortName => "output-port";
 
-        public bool IsPortCompatible(GraphRuntime<BehaviorTreeNode> graph, in PortId input, in PortId output) => true;
-        public void OnConnected(GraphRuntime<BehaviorTreeNode> graph, in PortId input, in PortId output) {}
-        public void OnDisconnected(GraphRuntime<BehaviorTreeNode> graph, in PortId input, in PortId output) {}
+        public bool IsPortCompatible(GraphRuntime<IGraphNode> graph, in PortId input, in PortId output) => true;
+        public void OnConnected(GraphRuntime<IGraphNode> graph, in PortId input, in PortId output) {}
+        public void OnDisconnected(GraphRuntime<IGraphNode> graph, in PortId input, in PortId output) {}
     }
 }

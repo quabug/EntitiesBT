@@ -9,7 +9,8 @@ using UnityEngine;
 
 namespace EntitiesBT
 {
-    public abstract class VariantNode : INode<GraphRuntime<VariantNode>>
+    [Serializable]
+    public abstract class VariantNode : IGraphNode
     {
         [NodeProperty(Name = "Preview")] public object PreviewValue => Variant.PreviewValue;
 
@@ -42,12 +43,12 @@ namespace EntitiesBT
             return Variant.Allocate(ref builder, ref blobVariant);
         }
 
-        public bool IsPortCompatible(GraphRuntime<VariantNode> graph, in PortId input, in PortId output)
+        public bool IsPortCompatible(GraphRuntime<IGraphNode> graph, in PortId input, in PortId output)
         {
             return true;
         }
 
-        public void OnConnected(GraphRuntime<VariantNode> graph, in PortId input, in PortId output)
+        public void OnConnected(GraphRuntime<IGraphNode> graph, in PortId input, in PortId output)
         {
 //             var valueType = graphNodeVariant.ValueType;
 //             if (ValueType != null && valueType != ValueType) throw new ArgumentException($"invalid variant value type {valueType.FullName}, expect {ValueType.FullName}");
@@ -69,7 +70,7 @@ namespace EntitiesBT
 // #endif
         }
 
-        public void OnDisconnected(GraphRuntime<VariantNode> graph, in PortId input, in PortId output)
+        public void OnDisconnected(GraphRuntime<IGraphNode> graph, in PortId input, in PortId output)
         {
             // ConnectedVariants.Remove(graphNodeVariant);
         }

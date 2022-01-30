@@ -14,14 +14,14 @@ namespace EntitiesBT.Editor
 
             presenterContainer.RegisterSingleton<ConvertToNodeData>(() =>
             {
-                var nodes = container.Resolve<IReadOnlyDictionary<NodeId, BehaviorTreeNodeComponent>>();
+                var nodes = container.Resolve<IReadOnlyDictionary<NodeId, GraphNodeComponent>>();
                 var nodeObjects = container.Resolve<IReadOnlyDictionary<NodeId, SerializedObject>>();
                 return (in NodeId nodeId) => nodes[nodeId].FindNodeProperties(nodeObjects[nodeId]);
             });
 
             presenterContainer.RegisterSingleton<FindPortData>(() =>
             {
-                var nodes = container.Resolve<IReadOnlyDictionary<NodeId, BehaviorTreeNodeComponent>>();
+                var nodes = container.Resolve<IReadOnlyDictionary<NodeId, GraphNodeComponent>>();
                 var nodeObjects = container.Resolve<IReadOnlyDictionary<NodeId, SerializedObject>>();
                 return (in NodeId nodeId) => nodes[nodeId].FindNodePorts(nodeObjects[nodeId]);
             });

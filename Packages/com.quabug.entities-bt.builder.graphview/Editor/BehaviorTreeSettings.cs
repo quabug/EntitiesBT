@@ -29,25 +29,25 @@ namespace EntitiesBT.Editor
         }
     }
 
-    public class BehaviorTreeWindowExtension : PrefabGraphWindowExtension<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent> {}
-    public class BehaviorTreeBasicGraphInstaller : BasicGraphInstaller<EntitiesBT.BehaviorTreeNode> {}
-    public class BehaviorTreeSerializableInstaller : SerializableGraphBackendInstaller<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent> {}
+    public class BehaviorTreeWindowExtension : PrefabGraphWindowExtension<IGraphNode, GraphNodeComponent> {}
+    public class BehaviorTreeBasicGraphInstaller : BasicGraphInstaller<IGraphNode> {}
+    public class BehaviorTreeSerializableInstaller : SerializableGraphBackendInstaller<IGraphNode, GraphNodeComponent> {}
 
-    public class BehaviorTreeSelectionMenuEntry : SelectionEntry<EntitiesBT.BehaviorTreeNode>
+    public class BehaviorTreeSelectionMenuEntry : SelectionEntry<IGraphNode>
     {
-        public BehaviorTreeSelectionMenuEntry([NotNull] GraphRuntime<EntitiesBT.BehaviorTreeNode> graph, [NotNull] IReadOnlyDictionary<Node, NodeId> nodes, [NotNull] IReadOnlyDictionary<Edge, EdgeId> edges) : base(graph, nodes, edges)
+        public BehaviorTreeSelectionMenuEntry([NotNull] GraphRuntime<IGraphNode> graph, [NotNull] IReadOnlyDictionary<Node, NodeId> nodes, [NotNull] IReadOnlyDictionary<Edge, EdgeId> edges) : base(graph, nodes, edges)
         {
         }
     }
 
     public class BehaviorTreeCreationMenuEntry : IMenuEntry
     {
-        private readonly IReadOnlyDictionary<NodeId, BehaviorTreeNodeComponent> _nodes;
-        private readonly GraphRuntime<EntitiesBT.BehaviorTreeNode> _graphRuntime;
+        private readonly IReadOnlyDictionary<NodeId, GraphNodeComponent> _nodes;
+        private readonly GraphRuntime<IGraphNode> _graphRuntime;
 
         public BehaviorTreeCreationMenuEntry(
-            GraphRuntime<EntitiesBT.BehaviorTreeNode> graphRuntime,
-            IReadOnlyDictionary<NodeId, BehaviorTreeNodeComponent> nodes
+            GraphRuntime<IGraphNode> graphRuntime,
+            IReadOnlyDictionary<NodeId, GraphNodeComponent> nodes
         )
         {
             _graphRuntime = graphRuntime;
