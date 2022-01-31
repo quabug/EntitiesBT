@@ -78,7 +78,10 @@ namespace EntitiesBT.Editor
                         node.Blob = new DynamicBlobDataBuilder { BlobDataType = type.AssemblyQualifiedName };
                         BuilderUtility.SetBlobDataType(type, ref node.Blob.Builders, ref node.Blob.FieldNames);
                         _graphRuntime.AddNode(id, node);
-                        _nodes[id].Position = menuPosition;
+                        var component = _nodes[id];
+                        component.Node.GraphNodeComponent = component;
+                        component.Position = menuPosition;
+                        component.name = type.Name;
                         EditorSceneManager.MarkSceneDirty(stage.scene);
                     });
                 }

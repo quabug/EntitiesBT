@@ -16,7 +16,7 @@ namespace EntitiesBT.Editor
             {
                 var nodes = container.Resolve<IReadOnlyDictionary<NodeId, GraphNodeComponent>>();
                 var nodeObjects = container.Resolve<IReadOnlyDictionary<NodeId, SerializedObject>>();
-                return (in NodeId nodeId) => nodes[nodeId].FindNodeProperties(nodeObjects[nodeId]);
+                return (in NodeId nodeId) => nodes[nodeId].CreateNodeProperties(nodeObjects[nodeId]);
             });
 
             presenterContainer.RegisterSingleton<FindPortData>(() =>

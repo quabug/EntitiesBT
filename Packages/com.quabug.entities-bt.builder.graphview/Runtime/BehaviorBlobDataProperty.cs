@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using System.Reflection;
 using GraphExt;
 using GraphExt.Editor;
 using JetBrains.Annotations;
@@ -18,6 +19,14 @@ namespace EntitiesBT.Editor
         public BehaviorBlobDataProperty(SerializedProperty property)
         {
             Property = property;
+        }
+
+        public class Factory : INodePropertyFactory
+        {
+            public INodeProperty Create(MemberInfo memberInfo, object nodeObj, NodeId nodeId, SerializedProperty fieldProperty = null)
+            {
+                return new BehaviorBlobDataProperty(fieldProperty);
+            }
         }
 
         [UsedImplicitly]

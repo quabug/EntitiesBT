@@ -1,15 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GraphExt;
+using GraphExt.Editor;
 using Nuwa;
 using UnityEngine;
-
-#if UNITY_EDITOR
-using UnityEditor;
-using GraphExt.Editor;
-using UnityEditor.Experimental.SceneManagement;
-#endif
 
 namespace EntitiesBT
 {
@@ -22,11 +16,13 @@ namespace EntitiesBT
         [SerializeField] private Vector2 _position;
         public Vector2 Position { get; set; }
 
+        [SerializeField] public string _title;
+
         public INodeComponent.NodeComponentConnect OnNodeComponentConnect { get; set; }
         public INodeComponent.NodeComponentDisconnect OnNodeComponentDisconnect { get; set; }
 
-        [field: SerializeReference]
-        public IGraphNode Node { get; set; }
+        [SerializeReference] private IGraphNode _node;
+        public IGraphNode Node { get => _node; set => _node = value; }
 
         public IReadOnlySet<EdgeId> GetEdges(GraphRuntime<IGraphNode> graph)
         {
@@ -53,76 +49,46 @@ namespace EntitiesBT
         }
 
 #if UNITY_EDITOR
-        private SerializedProperty[] _variantProperties;
-        private readonly EventTitleProperty _titleProperty = new EventTitleProperty();
-
         static GraphNodeComponent()
         {
-            EditorApplication.hierarchyChanged -= RefreshTitles;
-            EditorApplication.hierarchyChanged += RefreshTitles;
+            UnityEditor.EditorApplication.hierarchyChanged -= RefreshTitles;
+            UnityEditor.EditorApplication.hierarchyChanged += RefreshTitles;
 
             void RefreshTitles()
             {
-                var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+                var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
                 if (prefabStage == null) return;
                 foreach (var node in prefabStage.prefabContentsRoot.GetComponentsInChildren<GraphNodeComponent>())
-                    node._titleProperty.Title = node.name;
+                    node._title = node.name;
             }
         }
 
-        public NodeData FindNodeProperties(SerializedObject nodeObject)
+        public NodeData CreateNodeProperties(UnityEditor.SerializedObject nodeObject)
         {
-            _titleProperty.Title = name;
-            var properties = new List<INodeProperty>
+            nodeObject.Update();
+            var properties = new List<INodeProperty>();
+            var positionProperty = new NodeSerializedPositionProperty
             {
-                new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
-                _titleProperty
+                PositionProperty = nodeObject.FindProperty(nameof(_position))
             };
+            properties.Add(positionProperty);
+
+            var titleProperty = new SerializedTitleProperty
+            {
+                Property = nodeObject.FindProperty(nameof(_title))
+            };
+            properties.Add(titleProperty);
+
+            properties.AddRange(_node.CreateNodeProperties( nodeObject.FindProperty(nameof(_node))));
+
             return new NodeData(properties);
         }
 
-        public IEnumerable<PortData> FindNodePorts(SerializedObject nodeObject)
+        public IEnumerable<PortData> FindNodePorts(UnityEditor.SerializedObject nodeObject)
         {
-            return Enumerable.Empty<PortData>();
-            // _variantProperties ??= GetVariantProperties(nodeObject).ToArray();
-            // foreach (var variant in _variantProperties)
-            // {
-            //     var variantType = variant.GetManagedFullType();
-            //     if (variantType != null && typeof(GraphNodeVariant.Any).IsAssignableFrom(variantType))
-            //     {
-            //         yield return CreateVariantPortData(variant, variantType, PortDirection.Input);
-            //         yield return CreateVariantPortData(variant, variantType, PortDirection.Output);
-            //     }
-            // }
-            //
-            // PortData CreateVariantPortData(SerializedProperty property, Type variantType, PortDirection direction)
-            // {
-            //     return new PortData(
-            //         VariantPort.CreatePortName(property, direction),
-            //         PortOrientation.Horizontal,
-            //         direction,
-            //         1,
-            //         VariantPort.GetPortType(variantType),
-            //         new []{"variant"}
-            //     );
-            // }
+            nodeObject.Update();
+            return _node.FindNodePorts(nodeObject.FindProperty(nameof(_node)));
         }
-        //
-        // private IEnumerable<SerializedProperty> GetVariantProperties(SerializedObject nodeObject)
-        // {
-        //     var serializedNodeBuilder = GetSerializedNodeBuilder(nodeObject);
-        //     while (serializedNodeBuilder.NextVisible(true))
-        //     {
-        //         var fieldType = serializedNodeBuilder.GetManagedFieldType();
-        //         if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
-        //             yield return serializedNodeBuilder.Copy();
-        //     }
-        // }
-        //
-        // private SerializedProperty GetSerializedNodeBuilder(SerializedObject nodeObject)
-        // {
-        //     return nodeObject.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorTreeNode.Blob));
-        // }
 #endif
     }
 }
