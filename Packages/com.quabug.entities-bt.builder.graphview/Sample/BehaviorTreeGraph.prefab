@@ -1,5 +1,84 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2033785344159139989
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8204273949762764713}
+  - component: {fileID: 4057928121912527711}
+  m_Layer: 0
+  m_Name: CharacterSimpleMoveNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8204273949762764713
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033785344159139989}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4057928121912527711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033785344159139989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd5a658c2244306b58c4e3388e4dc45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 5db82a71-94f1-4354-a8c6-e2e9cc9a3312
+  _position: {x: 0, y: 0}
+  _title: CharacterSimpleMoveNode
+  _node:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: BehaviorTreeNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
+      data:
+        <GraphNodeComponent>k__BackingField: {fileID: 4057928121912527711}
+        Blob:
+          BlobDataType: EntitiesBT.Extensions.UnityMovement.CharacterSimpleMoveNode,
+            EntitiesBT.Extensions.CharacterController, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          FieldNames:
+          - IsLocal
+          - Velocity
+          Builders:
+          - id: 1
+          - id: 2
+    00000001:
+      type: {class: BooleanBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000002:
+      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[Unity.Mathematics.float3,
+          Unity.Mathematics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]],
+          EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        IsOptional: 0
+        _variant:
+          id: 3
+    00000003:
+      type: {class: , ns: , asm: }
 --- !u!1 &3744606813327586089
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +180,65 @@ MonoBehaviour:
         asm: Assembly-CSharp}
       data:
         ComponentValueName: 
+--- !u!1 &4475067926545546130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6564836515109759106}
+  - component: {fileID: 2325059508783799292}
+  m_Layer: 0
+  m_Name: ParallelNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6564836515109759106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4475067926545546130}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2325059508783799292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4475067926545546130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd5a658c2244306b58c4e3388e4dc45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 5f7100e7-bffb-4cfd-8fe3-7968d28a949f
+  _position: {x: 637, y: 38}
+  _title: ParallelNode
+  _node:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: BehaviorTreeNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
+      data:
+        <GraphNodeComponent>k__BackingField: {fileID: 2325059508783799292}
+        Blob:
+          BlobDataType: EntitiesBT.Nodes.ParallelNode, EntitiesBT.Runtime, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          FieldNames: []
+          Builders: []
 --- !u!1 &6463019722975755073
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,7 +362,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1114355261066075675}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3978245500968809924
 MonoBehaviour:
@@ -285,7 +423,7 @@ Transform:
   - {fileID: 5865960142402130102}
   - {fileID: 7892404637505067264}
   m_Father: {fileID: 1114355261066075675}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5617528566354627067
 MonoBehaviour:
@@ -342,8 +480,90 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3403730730296260882}
   - {fileID: 8043712120923926868}
+  - {fileID: 3403730730296260882}
+  - {fileID: 8204273949762764713}
+  - {fileID: 6564836515109759106}
+  - {fileID: 8845720398324761982}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8736748786172754400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8845720398324761982}
+  - component: {fileID: 7852448873752825123}
+  m_Layer: 0
+  m_Name: CharacterSimpleMoveNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8845720398324761982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8736748786172754400}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7852448873752825123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8736748786172754400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd5a658c2244306b58c4e3388e4dc45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 1cc0da3c-0d5b-4dea-bda0-141d4c923b1e
+  _position: {x: 1130, y: 152}
+  _title: CharacterSimpleMoveNode
+  _node:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: BehaviorTreeNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
+      data:
+        <GraphNodeComponent>k__BackingField: {fileID: 7852448873752825123}
+        Blob:
+          BlobDataType: EntitiesBT.Extensions.UnityMovement.CharacterSimpleMoveNode,
+            EntitiesBT.Extensions.CharacterController, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          FieldNames:
+          - IsLocal
+          - Velocity
+          Builders:
+          - id: 1
+          - id: 2
+    00000001:
+      type: {class: BooleanBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000002:
+      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[Unity.Mathematics.float3,
+          Unity.Mathematics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]],
+          EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        IsOptional: 0
+        _variant:
+          id: 3
+    00000003:
+      type: {class: , ns: , asm: }

@@ -14,7 +14,7 @@ namespace EntitiesBT
         public NodeId Id { get => Guid.Parse(_id); set => _id = value.ToString(); }
 
         [SerializeField] private Vector2 _position;
-        public Vector2 Position { get; set; }
+        public Vector2 Position { get => _position; set => _position = value; }
 
         [SerializeField] public string _title;
 
