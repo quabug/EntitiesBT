@@ -24,6 +24,9 @@ namespace EntitiesBT
         public string InputPortName => "input-port";
         public string OutputPortName => "output-port";
 
+        public PortId InputPort => new PortId(GraphNodeComponent.Id, InputPortName);
+        public PortId OutputPort => new PortId(GraphNodeComponent.Id, OutputPortName);
+
         private readonly TreeEdge _treeEdge = new TreeEdge();
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
         private readonly Action<Transform> _reorderChildrenTransform = NodeTransform.ReorderChildrenTransformAction(node => node.Position.x);
@@ -31,8 +34,8 @@ namespace EntitiesBT
         public override IReadOnlySet<EdgeId> GetEdges(GraphRuntime<IGraphNode> graph)
         {
             _edges.Clear();
-            var treeEdge = _treeEdge.Edge(GraphNodeComponent.gameObject);
-            if (treeEdge.HasValue) _edges.Add(treeEdge.Value);
+            var parent = GetParentNode();
+            if (parent != null) _edges.Add(new EdgeId(InputPort, parent.OutputPort));
             return _edges;
         }
 
@@ -48,7 +51,13 @@ namespace EntitiesBT
             // tree port must connect to another tree port
             if (!isInputTreePort || !isOutputTreePort) return false;
             // cannot connect to input/end node which is parent of output/start node to avoid circle dependency
-            return !_treeEdge.IsParentInputPort(GraphNodeComponent.gameObject, input);
+            var inputPortId = input;
+            var isParentInputPort = GraphNodeComponent.GetComponentsInParent<GraphNodeComponent>()
+                .Select(node => node.Node)
+                .OfType<BehaviorTreeNode>()
+                .Any(node => node.InputPort == inputPortId)
+            ;
+            return isParentInputPort;
         }
 
         public override void OnConnected(GameObjectNodes<IGraphNode, GraphNodeComponent> data, in EdgeId edge)
@@ -77,6 +86,13 @@ namespace EntitiesBT
                 _reorderChildrenTransform(parent);
             }
             _edges.Remove(edge);
+        }
+
+        private BehaviorTreeNode GetParentNode()
+        {
+            var transform = GraphNodeComponent.transform;
+            if (transform.parent == null) return null;
+            return transform.parent.GetComponent<GraphNodeComponent>().Node as BehaviorTreeNode;
         }
 
 #if UNITY_EDITOR
