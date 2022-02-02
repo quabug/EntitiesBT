@@ -38,7 +38,6 @@ namespace EntitiesBT.Editor
             foreach (var nodePair in _currentNodeViews)
             {
                 var nodeId = nodePair.Key;
-                var node = nodePair.Value;
                 var ports = _findPorts(nodeId);
                 foreach (var port in ports)
                 {

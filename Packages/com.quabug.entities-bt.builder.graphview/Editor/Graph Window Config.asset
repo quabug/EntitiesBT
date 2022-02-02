@@ -29,7 +29,9 @@ MonoBehaviour:
         - id: 4
         MenuEntries:
         - id: 5
-        AdditionalWindowSystems: []
+        AdditionalWindowSystems:
+        - EntitiesBT.Editor.DynamicPortsPresenter, EntitiesBT.Builder.GraphView.Editor,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     00000001:
       type: {class: BehaviorTreeBasicGraphInstaller, ns: EntitiesBT.Editor, asm: EntitiesBT.Builder.GraphView.Editor}
       data:

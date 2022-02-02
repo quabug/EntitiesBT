@@ -7,8 +7,7 @@ using Unity.Entities;
 
 namespace EntitiesBT
 {
-    [Serializable]
-    public abstract class VariantNode : BaseGraphNode
+    public abstract class VariantNode : INode<GraphRuntime<VariantNode>>
     {
         [NodeProperty(Name = "Preview")] public object PreviewValue => Variant.PreviewValue;
 
@@ -40,67 +39,38 @@ namespace EntitiesBT
         {
             return Variant.Allocate(ref builder, ref blobVariant);
         }
-        //
-        // public override bool IsPortCompatible(GraphRuntime<IGraphNode> graph, in PortId input, in PortId output)
-        // {
-        //     return true;
-        // }
-//
-//         public override void OnConnected(GraphRuntime<IGraphNode> graph, in PortId input, in PortId output)
-//         {
-// //             var valueType = graphNodeVariant.ValueType;
-// //             if (ValueType != null && valueType != ValueType) throw new ArgumentException($"invalid variant value type {valueType.FullName}, expect {ValueType.FullName}");
-// //             if (!ConnectedVariants.Contains(graphNodeVariant)) ConnectedVariants.Add(graphNodeVariant);
-// //
-// // #if UNITY_EDITOR
-// //             if (Variant == null || Variant.FindValueType() != valueType)
-// //             {
-// //                 try
-// //                 {
-// //                     var variantType = UnityEditor.TypeCache.GetTypesDerivedFrom(BaseType).First();
-// //                     Variant = (IVariant)Activator.CreateInstance(variantType);
-// //                 }
-// //                 catch
-// //                 {
-// //                     // ignored
-// //                 }
-// //             }
-// // #endif
-//         }
-//
-//         public override void OnDisconnected(GraphRuntime<IGraphNode> graph, in PortId input, in PortId output)
-//         {
-//             // ConnectedVariants.Remove(graphNodeVariant);
-//         }
-        public override IReadOnlySet<EdgeId> GetEdges(GraphRuntime<IGraphNode> graph)
-        {
-            return new GraphExt.HashSet<EdgeId>();
-        }
 
-        public override bool IsPortCompatible(GameObjectNodes<IGraphNode, GraphNodeComponent> data, in PortId input, in PortId output)
+        public bool IsPortCompatible(GraphRuntime<VariantNode> graph, in PortId input, in PortId output)
         {
             return true;
         }
 
-        public override void OnConnected(GameObjectNodes<IGraphNode, GraphNodeComponent> data, in EdgeId edge)
+        public void OnConnected(GraphRuntime<VariantNode> graph, in PortId input, in PortId output)
         {
+//             var valueType = graphNodeVariant.ValueType;
+//             if (ValueType != null && valueType != ValueType) throw new ArgumentException($"invalid variant value type {valueType.FullName}, expect {ValueType.FullName}");
+//             if (!ConnectedVariants.Contains(graphNodeVariant)) ConnectedVariants.Add(graphNodeVariant);
+//
+// #if UNITY_EDITOR
+//             if (Variant == null || Variant.FindValueType() != valueType)
+//             {
+//                 try
+//                 {
+//                     var variantType = UnityEditor.TypeCache.GetTypesDerivedFrom(BaseType).First();
+//                     Variant = (IVariant)Activator.CreateInstance(variantType);
+//                 }
+//                 catch
+//                 {
+//                     // ignored
+//                 }
+//             }
+// #endif
         }
 
-        public override void OnDisconnected(GameObjectNodes<IGraphNode, GraphNodeComponent> data, in EdgeId edge)
+        public void OnDisconnected(GraphRuntime<VariantNode> graph, in PortId input, in PortId output)
         {
+            // ConnectedVariants.Remove(graphNodeVariant);
         }
-
-#if UNITY_EDITOR
-        public override IEnumerable<PortData> FindNodePorts(UnityEditor.SerializedProperty thisProperty)
-        {
-            return Enumerable.Empty<PortData>();
-        }
-
-        public override IEnumerable<INodeProperty> CreateNodeProperties(UnityEditor.SerializedProperty thisProperty)
-        {
-            return Enumerable.Empty<INodeProperty>();
-        }
-#endif
     }
 
     public abstract class VariantNode<T> : VariantNode where T : IVariant
