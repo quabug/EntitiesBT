@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using GraphExt;
 using GraphExt.Editor;
 using OneShot;
-using UnityEditor;
 
 namespace EntitiesBT.Editor
 {
@@ -14,22 +12,15 @@ namespace EntitiesBT.Editor
 
             presenterContainer.RegisterSingleton<ConvertToNodeData>(() =>
             {
-                var nodes = container.Resolve<IReadOnlyDictionary<NodeId, BehaviorTreeNodeComponent>>();
-                var nodeObjects = container.Resolve<IReadOnlyDictionary<NodeId, SerializedObject>>();
-                return (in NodeId nodeId) => nodes[nodeId].FindNodeProperties(nodeObjects[nodeId]);
+                var graph = container.Resolve<ISerializableGraphBackend<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent>>();
+                return (in NodeId nodeId) => graph.NodeMap[nodeId].FindNodeProperties(graph.SerializedObjects[nodeId]);
             });
 
             presenterContainer.RegisterSingleton<FindPortData>(() =>
             {
-                var nodes = container.Resolve<IReadOnlyDictionary<NodeId, BehaviorTreeNodeComponent>>();
-                var nodeObjects = container.Resolve<IReadOnlyDictionary<NodeId, SerializedObject>>();
-                return (in NodeId nodeId) => nodes[nodeId].FindNodePorts(nodeObjects[nodeId]);
+                var graph = container.Resolve<ISerializableGraphBackend<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent>>();
+                return (in NodeId nodeId) => graph.NodeMap[nodeId].FindNodePorts(graph.SerializedObjects[nodeId]);
             });
-
-            // HACK: expose `FindPortData` to root container for other presenters
-            container.Register(() => presenterContainer.Resolve<FindPortData>());
         }
-
-
     }
 }

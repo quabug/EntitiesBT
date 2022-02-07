@@ -4,9 +4,11 @@ using System.Linq;
 using EntitiesBT.Variant;
 using GraphExt;
 using Unity.Entities;
+using UnityEngine;
 
 namespace EntitiesBT
 {
+    [Serializable]
     public abstract class VariantNode : INode<GraphRuntime<VariantNode>>
     {
         [NodeProperty(Name = "Preview")] public object PreviewValue => Variant.PreviewValue;
@@ -83,9 +85,8 @@ namespace EntitiesBT
 
         protected override Type DefaultVariantType => typeof(T);
 
-        // [NodeProperty(OutputPort = )]
-        // [SerializeReference]
-        // [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(BaseTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
+        [SerializeReference]
+        [SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(BaseTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
         public T Value;
     }
 }

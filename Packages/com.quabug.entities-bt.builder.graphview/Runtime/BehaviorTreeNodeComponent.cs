@@ -12,6 +12,7 @@ using UnityEngine;
 using EntitiesBT.Editor;
 using Nuwa.Editor;
 using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
 #endif
 
 namespace EntitiesBT
@@ -23,7 +24,6 @@ namespace EntitiesBT
         public NodeId Id { get => Guid.Parse(_id); set => _id = value.ToString(); }
 
         [SerializeField] private Vector2 _position;
-
         public Vector2 Position
         {
             get => _position;
@@ -104,16 +104,23 @@ namespace EntitiesBT
 
 #if UNITY_EDITOR
         private SerializedProperty[] _variantProperties;
+        private readonly EventTitleProperty _titleProperty = new EventTitleProperty();
+
+        static BehaviorTreeNodeComponent()
+        {
+            GraphUtility.RegisterNameChanged<BehaviorTreeNodeComponent>(node => node._titleProperty.Title = node.name);
+        }
 
         public NodeData FindNodeProperties(SerializedObject nodeObject)
         {
+            _titleProperty.Title = name;
             var behaviorNodeType = Node.BehaviorNodeType;
             var properties = new List<INodeProperty>
             {
                 CreateVerticalPorts(Node.InputPortName, -100),
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
                 new NodeClassesProperty(behaviorNodeType.ToString().ToLower().Yield()),
-                new DynamicTitleProperty(() => name),
+                _titleProperty,
                 new BehaviorBlobDataProperty(GetSerializedNodeBuilder(nodeObject))
             };
             if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(Node.OutputPortName, 100));
