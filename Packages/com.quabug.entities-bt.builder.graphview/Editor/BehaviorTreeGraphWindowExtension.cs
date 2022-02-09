@@ -4,6 +4,7 @@ using EntitiesBT.Editor;
 using JetBrains.Annotations;
 using OneShot;
 using UnityEditor.Experimental.SceneManagement;
+using UnityEngine;
 using UnityEngine.UIElements;
 using BehaviorTreeNode = EntitiesBT.BehaviorTreeNode;
 
@@ -14,6 +15,9 @@ namespace GraphExt.Editor
         public BaseGraphInstaller BaseGraphInstaller;
         public NodeGraphInstaller<BehaviorTreeNode, BehaviorTreeNodeComponent> BehaviorGraphInstaller;
         public NodeGraphInstaller<VariantNode, VariantNodeComponent> VariantGraphInstaller;
+
+        [SerializeReference, SerializeReferenceDrawer(Nullable = false, RenamePatter = @"\w*\.||")]
+        public IMenuEntryInstaller[] MenuEntries;
 
         private Container _container;
         private MenuBuilder _menuBuilder;
@@ -61,7 +65,7 @@ namespace GraphExt.Editor
 
                 BaseGraphInstaller.Install(_container, typeContainers);
                 BehaviorGraphInstaller.Install(_container, typeContainers, prefabStage.prefabContentsRoot);
-                // VariantGraphInstaller.Install(_container, typeContainers, prefabStage.prefabContentsRoot);
+                VariantGraphInstaller.Install(_container, typeContainers, prefabStage.prefabContentsRoot);
 
                 InstantiateSystems(_container);
                 CreateMenuBuilder();
@@ -89,13 +93,8 @@ namespace GraphExt.Editor
 
         private void CreateMenuBuilder()
         {
-            var graphView = _container.Resolve<UnityEditor.Experimental.GraphView.GraphView>();
-            var menuEntries = BaseGraphInstaller.Container.ResolveGroupWithoutException<IMenuEntry>()
-                .Concat(BehaviorGraphInstaller.Container.ResolveGroupWithoutException<IMenuEntry>())
-                // .Concat(VariantGraphInstaller.Container.ResolveGroupWithoutException<IMenuEntry>())
-                .ToArray()
-            ;
-            _menuBuilder = new MenuBuilder(graphView, menuEntries);
+            foreach (var installer in MenuEntries) installer.Install(_container);
+            _menuBuilder = _container.Instantiate<MenuBuilder>();
         }
 
         private void ClearEditorView(PrefabStage closingStage)

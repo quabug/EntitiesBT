@@ -11,24 +11,24 @@ namespace EntitiesBT.Editor
     public class DynamicPortsPresenter : ITickableWindowSystem
     {
         private readonly IPortViewFactory _portViewFactory;
-        private readonly FindPortData _findPorts;
-        private readonly IBiDictionary<NodeId, Node> _currentNodeViews;
-        private readonly IBiDictionary<PortId, Port> _currentPortViews;
+        private readonly IReadOnlyDictionary<NodeId, Node> _currentNodeViews;
+        private readonly IDictionary<PortId, Port> _currentPortViews;
         private readonly IDictionary<PortId, PortData> _currentPortDataMap;
+        private readonly FindPortData _findPorts;
 
         public DynamicPortsPresenter(
             IPortViewFactory portViewFactory,
-            FindPortData findPorts,
-            IBiDictionary<NodeId, Node> currentNodeViews,
-            IBiDictionary<PortId, Port> currentPortViews,
-            IDictionary<PortId, PortData> currentPortDataMap
+            IReadOnlyDictionary<NodeId, Node> currentNodeViews,
+            IDictionary<PortId, Port> currentPortViews,
+            IDictionary<PortId, PortData> currentPortDataMap,
+            FindPortData findPorts
         )
         {
             _portViewFactory = portViewFactory;
-            _findPorts = findPorts;
             _currentNodeViews = currentNodeViews;
             _currentPortViews = currentPortViews;
             _currentPortDataMap = currentPortDataMap;
+            _findPorts = findPorts;
         }
 
         public void Tick()

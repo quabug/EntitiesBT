@@ -16,27 +16,61 @@ namespace EntitiesBT.Editor
         [SerializeReference, Nuwa.SerializeReferenceDrawer(Nullable = false, RenamePatter = @"\w*\.||")]
         public IGraphViewFactory GraphViewFactory = new DefaultGraphViewFactory();
 
-        [SerializeReference, SerializeReferenceDrawer(Nullable = false, RenamePatter = @"\w*\.||")]
-        public IMenuEntryInstaller[] MenuEntries;
+        [SerializeReference, Nuwa.SerializeReferenceDrawer(Nullable = false, RenamePatter = @"\w*\.||")]
+        public IEdgeViewFactory EdgeViewFactory = new DefaultEdgeViewFactory();
+
+        [SerializeReference, Nuwa.SerializeReferenceDrawer(Nullable = false, RenamePatter = @"\w*\.||")]
+        public IPortViewFactory PortViewFactory = new DefaultPortViewFactory();
 
         public Container Container { get; private set; }
 
-        public void Install(Container container, TypeContainers typeContainers)
+        public void Install(Container rootContainer, TypeContainers typeContainers)
         {
-            container.RegisterInstance(GraphViewFactory);
+            rootContainer.RegisterInstance(GraphViewFactory);
+            rootContainer.RegisterInstance(EdgeViewFactory);
+            rootContainer.RegisterInstance(PortViewFactory);
 
             Container = typeContainers.CreateTypeContainer(
-                container,
+                rootContainer,
                 typeof(IGraphViewFactory),
                 typeof(GraphView),
                 typeof(UnityEditor.Experimental.GraphView.GraphView)
             );
 
-            Container.RegisterSingleton(() => GraphViewFactory.Create(FindCompatiblePorts));
-            container.Register(Container.Resolve<GraphView>);
-            container.Register<UnityEditor.Experimental.GraphView.GraphView>(Container.Resolve<GraphView>);
+            rootContainer.RegisterBiDictionaryInstance(new BiDictionary<NodeId, Node>());
+            rootContainer.RegisterBiDictionaryInstance(new BiDictionary<PortId, Port>());
+            rootContainer.RegisterBiDictionaryInstance(new BiDictionary<EdgeId, Edge>());
+            rootContainer.RegisterDictionaryInstance(new Dictionary<PortId, PortData>());
+            rootContainer.Register<IEnumerable<EdgeId>>(() =>
+                rootContainer.Resolve<GraphRuntime<EntitiesBT.BehaviorTreeNode>>().Edges
+                    .Concat(rootContainer.Resolve<GraphRuntime<VariantNode>>().Edges)
+                    .Distinct()
+            );
 
-            foreach (var entryInstaller in MenuEntries) entryInstaller.Install(Container);
+            Container.RegisterSingleton(() => GraphViewFactory.Create(FindCompatiblePorts));
+            rootContainer.Register(Container.Resolve<GraphView>);
+            rootContainer.Register<UnityEditor.Experimental.GraphView.GraphView>(Container.Resolve<GraphView>);
+
+            Container.RegisterSingleton<EdgeConnectFunc>(CreateEdgeConnectFunc);
+            rootContainer.RegisterSingleton<IWindowSystem>(() => Container.Instantiate<EdgeViewInitializer>());
+            rootContainer.RegisterSingleton<IWindowSystem>(() => Container.Instantiate<EdgeToCreateObserver>());
+
+            rootContainer.RegisterSingleton(FindPortDataFunc);
+            rootContainer.RegisterSingleton<IWindowSystem>(() => Container.Instantiate<DynamicPortsPresenter>());
+
+            FindPortData FindPortDataFunc()
+            {
+                var behaviorGraph = rootContainer.Resolve<ISerializableGraphBackend<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent>>();
+                var variantGraph = rootContainer.Resolve<ISerializableGraphBackend<VariantNode, VariantNodeComponent>>();
+                return (in NodeId nodeId) =>
+                {
+                    if (behaviorGraph.NodeMap.TryGetValue(nodeId, out var behaviorNode))
+                        return behaviorNode.FindNodePorts(behaviorGraph.SerializedObjects[nodeId]);
+                    if (variantGraph.NodeMap.TryGetValue(nodeId, out var variantNode))
+                        return variantNode.FindNodePorts(variantGraph.SerializedObjects[nodeId]);
+                    return Enumerable.Empty<PortData>();
+                };
+            }
 
             IEnumerable<Port> FindCompatiblePorts(Port startPort)
             {
@@ -52,6 +86,18 @@ namespace EntitiesBT.Editor
                 if (behaviorGraphPorts.ContainsKey(startPort)) return behaviorGraphFunc(startPort);
                 // if (variantGraphPorts.ContainsKey(startPort)) return variantGraphFunc(startPort);
                 return Enumerable.Empty<Port>();
+            }
+
+            EdgeConnectFunc CreateEdgeConnectFunc()
+            {
+                var behaviorGraph = rootContainer.Resolve<GraphRuntime<EntitiesBT.BehaviorTreeNode>>();
+                var variantGraph = rootContainer.Resolve<GraphRuntime<VariantNode>>();
+                return (in PortId input, in PortId output) =>
+                {
+                    var edge = new EdgeId(input, output);
+                    if (!behaviorGraph.Edges.Contains(edge)) behaviorGraph.Connect(input: input, output: output);
+                    if (!variantGraph.Edges.Contains(edge)) variantGraph.Connect(input: input, output: output);
+                };
             }
         }
     }
