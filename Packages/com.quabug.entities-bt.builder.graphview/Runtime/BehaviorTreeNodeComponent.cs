@@ -18,7 +18,7 @@ using UnityEditor.Experimental.SceneManagement;
 namespace EntitiesBT
 {
     [DisallowMultipleComponent, ExecuteAlways, AddComponentMenu("")]
-    public class BehaviorTreeNodeComponent : MonoBehaviour, INodeComponent<BehaviorTreeNode, BehaviorTreeNodeComponent>, ITreeNodeComponent
+    public class BehaviorTreeNodeComponent : MonoBehaviour, INodeComponent<BehaviorTreeNode, BehaviorTreeNodeComponent>, ITreeNodeComponent, IGraphNodeComponent
     {
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private string _id;
         public NodeId Id { get => Guid.Parse(_id); set => _id = value.ToString(); }

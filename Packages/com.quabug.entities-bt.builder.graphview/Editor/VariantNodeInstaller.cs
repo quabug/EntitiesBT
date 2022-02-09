@@ -35,19 +35,16 @@ namespace EntitiesBT.Editor
 
             presenterContainer.RegisterSingleton<ConvertToNodeData>(() =>
             {
-                var nodes = container.Resolve<IReadOnlyDictionary<NodeId, VariantNodeComponent>>();
-                var nodeObjects = container.Resolve<IReadOnlyDictionary<NodeId, SerializedObject>>();
-                return (in NodeId nodeId) => nodes[nodeId].FindNodeProperties(nodeObjects[nodeId]);
+                var nodes = container.Resolve<ISerializableGraphBackend<VariantNode, VariantNodeComponent>>();
+                return (in NodeId nodeId) => nodes.NodeMap[nodeId].FindNodeProperties(nodes.SerializedObjects[nodeId]);
             });
 
             presenterContainer.RegisterSingleton<FindPortData>(() =>
             {
-                var nodes = container.Resolve<IReadOnlyDictionary<NodeId, VariantNodeComponent>>();
-                var nodeObjects = container.Resolve<IReadOnlyDictionary<NodeId, SerializedObject>>();
-                return (in NodeId nodeId) => nodes[nodeId].FindNodePorts(nodeObjects[nodeId]);
+                var nodes = container.Resolve<ISerializableGraphBackend<VariantNode, VariantNodeComponent>>();
+                return (in NodeId nodeId) => nodes.NodeMap[nodeId].FindNodePorts(nodes.SerializedObjects[nodeId]);
             });
 
-            // TODO: RX?
             presenterContainer.RegisterSingleton(() =>
             {
                 var graphRuntime = presenterContainer.Resolve<GraphRuntime<VariantNode>>();

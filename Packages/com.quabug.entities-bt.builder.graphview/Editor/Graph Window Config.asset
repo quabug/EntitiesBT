@@ -20,38 +20,41 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeWindowExtension, ns: EntitiesBT.Editor, asm: EntitiesBT.Builder.GraphView.Editor}
+      type: {class: BehaviorTreeGraphWindowExtension, ns: GraphExt.Editor, asm: EntitiesBT.Builder.GraphView.Editor}
       data:
-        Installers:
-        - id: 1
-        - id: 2
-        - id: 3
-        - id: 4
-        MenuEntries:
-        - id: 5
-        AdditionalWindowSystems:
-        - EntitiesBT.Editor.DynamicPortsPresenter, EntitiesBT.Builder.GraphView.Editor,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        BaseGraphInstaller:
+          GraphViewFactory:
+            id: 1
+          MenuEntries: []
+        BehaviorGraphInstaller:
+          NodeViewFactory:
+            id: 2
+          PortViewFactory:
+            id: 3
+          EdgeViewFactory:
+            id: 4
+          MenuEntries:
+          - id: 5
+        VariantGraphInstaller:
+          NodeViewFactory:
+            id: 6
+          PortViewFactory:
+            id: 7
+          EdgeViewFactory:
+            id: 8
+          MenuEntries: []
     00000001:
-      type: {class: BehaviorTreeBasicGraphInstaller, ns: EntitiesBT.Editor, asm: EntitiesBT.Builder.GraphView.Editor}
-      data:
-        GraphViewFactory:
-          id: 6
-        NodeViewFactory:
-          id: 7
-        PortViewFactory:
-          id: 8
-        EdgeViewFactory:
-          id: 9
+      type: {class: DefaultGraphViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000002:
-      type: {class: BehaviorTreeSerializableInstaller, ns: EntitiesBT.Editor, asm: EntitiesBT.Builder.GraphView.Editor}
-    00000003:
-      type: {class: BehaviorTreeNodePropertyInstaller, ns: EntitiesBT.Editor, asm: EntitiesBT.Builder.GraphView.Editor}
-    00000004:
-      type: {class: PrefabStickyNoteGraphInstaller, ns: GraphExt.Editor, asm: GraphExt.StickyNote}
+      type: {class: DefaultNodeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
       data:
-        ViewFactory: GraphExt.Editor.DefaultStickyNoteViewFactory, GraphExt.StickyNote,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        NodePropertyViewFactory:
+          Factories:
+          - id: 9
+    00000003:
+      type: {class: DefaultPortViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
+    00000004:
+      type: {class: DefaultEdgeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000005:
       type: {class: TypeNameMenuEntriesInstaller, ns: GraphExt.Editor, asm: GraphExt.DI}
       data:
@@ -61,16 +64,16 @@ MonoBehaviour:
         - EntitiesBT.Editor.BehaviorTreeSelectionMenuEntry, EntitiesBT.Builder.GraphView.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     00000006:
-      type: {class: DefaultGraphViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
-    00000007:
       type: {class: DefaultNodeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
       data:
         NodePropertyViewFactory:
           Factories:
           - id: 10
-    00000008:
+    00000007:
       type: {class: DefaultPortViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
-    00000009:
+    00000008:
       type: {class: DefaultEdgeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
+    00000009:
+      type: {class: DefaultPropertyViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     0000000A:
       type: {class: DefaultPropertyViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}

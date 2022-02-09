@@ -16,11 +16,16 @@ namespace EntitiesBT.Editor
                 return (in NodeId nodeId) => graph.NodeMap[nodeId].FindNodeProperties(graph.SerializedObjects[nodeId]);
             });
 
-            presenterContainer.RegisterSingleton<FindPortData>(() =>
+            presenterContainer.RegisterSingleton(FindPortDataFunc);
+
+            var dynamicPortPresenterContainer = typeContainers.CreateSystemContainer(container, typeof(DynamicPortsPresenter));
+            dynamicPortPresenterContainer.RegisterSingleton(FindPortDataFunc);
+
+            FindPortData FindPortDataFunc()
             {
                 var graph = container.Resolve<ISerializableGraphBackend<EntitiesBT.BehaviorTreeNode, BehaviorTreeNodeComponent>>();
                 return (in NodeId nodeId) => graph.NodeMap[nodeId].FindNodePorts(graph.SerializedObjects[nodeId]);
-            });
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ using GraphExt.Editor;
 namespace EntitiesBT
 {
     [DisallowMultipleComponent, ExecuteAlways, AddComponentMenu("")]
-    public class VariantNodeComponent : MonoBehaviour, INodeComponent<VariantNode, VariantNodeComponent>
+    public class VariantNodeComponent : MonoBehaviour, INodeComponent<VariantNode, VariantNodeComponent>, IGraphNodeComponent
     {
         [SerializeField] private bool _hideTitle = false;
 
