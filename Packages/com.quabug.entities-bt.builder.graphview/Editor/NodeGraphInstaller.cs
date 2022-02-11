@@ -46,15 +46,29 @@ namespace EntitiesBT.Editor
 
             void RegisterFindCompatiblePort()
             {
-                Func<GraphRuntime<TNode>, IReadOnlyDictionary<PortId, PortData>, IsEdgeCompatibleFunc>
-                    isCompatible = EdgeFunctions.CreateIsCompatibleFunc;
                 Container.RegisterSingleton<IsEdgeCompatibleFunc>(() =>
                 {
-                    var isCompatibleFunc = Container.Call<IsEdgeCompatibleFunc>(isCompatible);
                     var graph = Container.Resolve<GameObjectNodes<TNode, TComponent>>();
-                    return (in PortId input, in PortId output) => isCompatibleFunc(input: input, output: output) &&
-                                                                  graph.IsPortCompatible(input: input, output: output)
-                    ;
+                    var ports = Container.Resolve<IReadOnlyDictionary<PortId, PortData>>();
+                    return (in PortId input, in PortId output) =>
+                    {
+                        var inputPort = ports[input];
+                        var outputPort = ports[output];
+                        graph.Runtime.NodeMap.TryGetValue(input.NodeId, out var inputNode);
+                        graph.Runtime.NodeMap.TryGetValue(output.NodeId, out var outputNode);
+                        return // single port could be handled by Unity Graph
+                            (inputPort.Capacity == 1 || CountConnections(input) < inputPort.Capacity) &&
+                            (outputPort.Capacity == 1 || CountConnections(output) < outputPort.Capacity) &&
+                            (inputNode == null || inputNode.IsPortCompatible(graph.Runtime, input, output)) &&
+                            (outputNode == null || outputNode.IsPortCompatible(graph.Runtime, input, output)) &&
+                            graph.IsPortCompatible(input: input, output: output)
+                        ;
+
+                        int CountConnections(PortId portId)
+                        {
+                            return graph.Runtime.Edges.Count(edge => edge.Contains(portId));
+                        }
+                    };
                 });
 
                 Func<IReadOnlyDictionary<Port, PortId>, IsEdgeCompatibleFunc, GraphExt.Editor.GraphView.FindCompatiblePorts>
