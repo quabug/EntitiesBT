@@ -1,7 +1,0 @@
-#container {
-    flex-direction: row;
-    justify-content: space-between;
-    height: 16px;
-    align-items: center;
-    -unity-text-align: middle-left;
-}

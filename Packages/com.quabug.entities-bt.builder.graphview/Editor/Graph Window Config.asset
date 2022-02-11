@@ -29,17 +29,14 @@ MonoBehaviour:
             id: 2
           PortViewFactory:
             id: 3
-          MenuEntries: []
         BehaviorGraphInstaller:
           NodeViewFactory:
             id: 4
-          MenuEntries:
-          - id: 5
         VariantGraphInstaller:
           NodeViewFactory:
-            id: 6
-          MenuEntries:
-          - id: 7
+            id: 5
+        MenuEntries:
+        - id: 6
     00000001:
       type: {class: DefaultGraphViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000002:
@@ -51,28 +48,24 @@ MonoBehaviour:
       data:
         NodePropertyViewFactory:
           Factories:
-          - id: 8
+          - id: 7
     00000005:
-      type: {class: TypeNameMenuEntriesInstaller, ns: GraphExt.Editor, asm: GraphExt.DI}
-      data:
-        MenuEntries:
-        - EntitiesBT.Editor.BehaviorTreeCreationMenuEntry, EntitiesBT.Builder.GraphView.Editor,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        - EntitiesBT.Editor.BehaviorTreeSelectionMenuEntry, EntitiesBT.Builder.GraphView.Editor,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    00000006:
       type: {class: DefaultNodeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
       data:
         NodePropertyViewFactory:
           Factories:
-          - id: 9
-    00000007:
+          - id: 8
+    00000006:
       type: {class: TypeNameMenuEntriesInstaller, ns: GraphExt.Editor, asm: GraphExt.DI}
       data:
         MenuEntries:
+        - EntitiesBT.Editor.GraphViewSelectionEntry, EntitiesBT.Builder.GraphView.Editor,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - EntitiesBT.Editor.BehaviorTreeCreationMenuEntry, EntitiesBT.Builder.GraphView.Editor,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         - EntitiesBT.Editor.VariantNodeCreationMenuEntry, EntitiesBT.Builder.GraphView.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    00000008:
+    00000007:
       type: {class: DefaultPropertyViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
-    00000009:
+    00000008:
       type: {class: DefaultPropertyViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
