@@ -11,12 +11,12 @@ using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
 {
-    public class BehaviorBlobDataProperty : INodeProperty
+    public class NodeSerializedProperty : INodeProperty
     {
         public int Order => 0;
         public SerializedProperty Property { get; }
 
-        public BehaviorBlobDataProperty(SerializedProperty property)
+        public NodeSerializedProperty(SerializedProperty property)
         {
             Property = property;
         }
@@ -25,14 +25,14 @@ namespace EntitiesBT.Editor
         {
             public INodeProperty Create(MemberInfo memberInfo, object nodeObj, NodeId nodeId, SerializedProperty fieldProperty = null)
             {
-                return new BehaviorBlobDataProperty(fieldProperty);
+                return new NodeSerializedProperty(fieldProperty);
             }
         }
 
         [UsedImplicitly]
-        private class ViewFactory : SingleNodePropertyViewFactory<BehaviorBlobDataProperty>
+        private class ViewFactory : SingleNodePropertyViewFactory<NodeSerializedProperty>
         {
-            protected override VisualElement CreateView(Node node, BehaviorBlobDataProperty property, INodePropertyViewFactory factory)
+            protected override VisualElement CreateView(Node node, NodeSerializedProperty property, INodePropertyViewFactory factory)
             {
                 return new ImmediatePropertyField(property.Property, label: null);
             }

@@ -33,7 +33,6 @@ namespace EntitiesBT
         public INodeComponent.NodeComponentDisconnect OnNodeComponentDisconnect { get; set; }
 
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
-        private readonly Action<Transform> _reorderChildrenTransform = NodeTransform.ReorderChildrenTransformAction(node => node.Position.x);
 
         public IReadOnlySet<EdgeId> GetEdges(GraphRuntime<VariantNode> graph)
         {
@@ -62,11 +61,6 @@ namespace EntitiesBT
             _edges.Remove(edge);
         }
 
-        private void OnTransformChildrenChanged()
-        {
-            _reorderChildrenTransform(transform);
-        }
-
 #if UNITY_EDITOR
         private SerializedProperty[] _variantProperties;
         private readonly EventTitleProperty _titleProperty = new EventTitleProperty();
@@ -84,13 +78,16 @@ namespace EntitiesBT
             var properties = new List<INodeProperty>
             {
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
-                _titleProperty,
+                new LabelValuePortProperty(_titleProperty, null, new PortContainerProperty(VariantNode.INPUT_PORT), new PortContainerProperty(VariantNode.OUTPUT_PORT)),
+                new NodeSerializedProperty(nodeObject.FindProperty(nameof(_node)))
             };
             return new NodeData(properties);
         }
 
         public IEnumerable<PortData> FindNodePorts(SerializedObject nodeObject)
         {
+            yield return new PortData(VariantNode.INPUT_PORT, PortOrientation.Vertical, PortDirection.Input, 1, Node.VariantType);
+            yield return new PortData(VariantNode.OUTPUT_PORT, PortOrientation.Vertical, PortDirection.Output, 1, Node.VariantType);
             _variantProperties ??= GetVariantProperties(nodeObject).ToArray();
             foreach (var variant in _variantProperties)
             {

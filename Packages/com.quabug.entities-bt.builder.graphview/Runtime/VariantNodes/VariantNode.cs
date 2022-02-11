@@ -11,6 +11,8 @@ namespace EntitiesBT
     [Serializable]
     public abstract class VariantNode : INode<GraphRuntime<VariantNode>>
     {
+        public const string INPUT_PORT = "input";
+        public const string OUTPUT_PORT = "output";
         [NodeProperty(Name = "Preview")] public object PreviewValue => Variant.PreviewValue;
 
         public Type VariantType => ConnectedVariants.Any() && Variant != null ? Variant.GetType() : DefaultVariantType;

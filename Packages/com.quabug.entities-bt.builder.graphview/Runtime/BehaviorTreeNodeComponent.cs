@@ -121,7 +121,7 @@ namespace EntitiesBT
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
                 new NodeClassesProperty(behaviorNodeType.ToString().ToLower().Yield()),
                 _titleProperty,
-                new BehaviorBlobDataProperty(GetSerializedNodeBuilder(nodeObject))
+                new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject))
             };
             if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(Node.OutputPortName, 100));
             return new NodeData(properties);
