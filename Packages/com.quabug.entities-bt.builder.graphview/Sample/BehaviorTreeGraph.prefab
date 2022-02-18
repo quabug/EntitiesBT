@@ -75,7 +75,7 @@ MonoBehaviour:
       type: {class: <IVariantReader>/float3GraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        NodeComponent: {fileID: 0}
+        NodeComponent: {fileID: 5485651871277099468}
 --- !u!1 &1720326972275424854
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 1555609388280217174}
   - component: {fileID: 5485651871277099468}
   m_Layer: 0
-  m_Name: ScopeRO<Single>
+  m_Name: ScopeRO<float3>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,7 +124,13 @@ MonoBehaviour:
   _position: {x: 444, y: 493}
   _node:
     id: 0
-  _serializableEdges: []
+  _serializableEdges:
+  - InputNode: 4cecaf6c-3ac1-41f0-86c3-c384f02f8ebf
+    InputPort: _node.Blob.Builders.Array.data[1]._variant|input
+    InputPortId: 
+    OutputNode: 8053c7b0-24b7-4b4d-95c5-4e1877fdb3dc
+    OutputPort: output
+    OutputPortId: 
   references:
     version: 1
     00000000:
@@ -133,7 +139,7 @@ MonoBehaviour:
         Value:
           id: 1
     00000001:
-      type: {class: <IVariantReader>/SingleScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/float3ScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: {fileID: 0}

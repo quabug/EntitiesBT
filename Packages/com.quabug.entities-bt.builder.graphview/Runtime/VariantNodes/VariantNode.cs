@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Variant;
 using GraphExt;
+using Nuwa;
 using Unity.Entities;
 using UnityEngine;
 
@@ -16,17 +17,18 @@ namespace EntitiesBT
 
         public object PreviewValue => Variant.PreviewValue;
 
-        public Type VariantType => ValueType != null && Variant != null ? Variant.GetType() : DefaultVariantType;
+        public Type VariantType => ConnectedVariants.Any() && Variant != null ? Variant.GetType() : DefaultVariantType;
         public virtual string Name => $"{VariantTypeName}{AccessName}<{Variant?.FindValueType()?.Name}>";
         public abstract IVariant Variant { get; set; }
-        public Type ValueType { get; set; } = null;
+        public Type ValueType => ConnectedVariants.FirstOrDefault()?.ValueType;
+        public readonly ISet<GraphNodeVariant.Any> ConnectedVariants = new System.Collections.Generic.HashSet<GraphNodeVariant.Any>();
+        public Type BaseType => ValueType == null ? BaseVariantGenericType : BaseVariantGenericType.MakeGenericType(ValueType);
 
         protected abstract string VariantTypeName { get; }
         protected abstract Type DefaultVariantType { get; }
         protected abstract Type BaseVariantGenericType { get; }
 
         protected string BaseTypeName => BaseType.AssemblyQualifiedName;
-        protected Type BaseType => ValueType == null ? BaseVariantGenericType : BaseVariantGenericType.MakeGenericType(ValueType);
 
         private string AccessName
         {
@@ -58,6 +60,9 @@ namespace EntitiesBT
         }
 
         protected override Type DefaultVariantType => typeof(T);
-        [SerializeReference] public T Value;
+
+        [SerializeReference]
+        [Nuwa.SerializeReferenceDrawer(TypeRestrictBySiblingTypeName = nameof(BaseTypeName), RenamePatter = @"^.*(\.|\+|/)(\w+)$||$2", Nullable = false)]
+        public T Value;
     }
 }
