@@ -24,7 +24,13 @@ namespace EntitiesBT
                 view.name = "node-title-property";
 
                 foreach (var titleView in factory.Create(node, property.TitleProperty, factory))
+                {
+                    titleView.style.marginTop = new StyleLength(0f);
+                    titleView.style.marginBottom = new StyleLength(0f);
+                    titleView.style.marginLeft = new StyleLength(0f);
+                    titleView.style.marginRight = new StyleLength(0f);
                     view.Add(titleView);
+                }
                 var toggleView = factory.Create(node, property.ToggleProperty, factory).SingleOrDefault();
                 if (toggleView != null) view.Add(toggleView);
 
