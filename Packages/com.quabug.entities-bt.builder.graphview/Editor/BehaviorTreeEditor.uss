@@ -16,13 +16,19 @@
 
 Port.port.tree {
     --port-color: rgb(12, 234, 30);
+    height: 8px;
 }
 
 Port.port.tree > #connector {
     border-radius: 0;
 }
 
-Node #title-property {
+Node #node-title-property {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+Node #node-title-property {
     padding-left: 20px;
     padding-right: 20px;
 }

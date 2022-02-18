@@ -12,7 +12,6 @@ using UnityEngine;
 using EntitiesBT.Editor;
 using Nuwa.Editor;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
 #endif
 
 namespace EntitiesBT
@@ -20,6 +19,8 @@ namespace EntitiesBT
     [DisallowMultipleComponent, ExecuteAlways, AddComponentMenu("")]
     public class BehaviorTreeNodeComponent : MonoBehaviour, INodeComponent<BehaviorTreeNode, BehaviorTreeNodeComponent>, ITreeNodeComponent, IGraphNodeComponent
     {
+        [SerializeField] private bool _expanded = false;
+
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private string _id;
         public NodeId Id { get => Guid.Parse(_id); set => _id = value.ToString(); }
 
@@ -120,8 +121,8 @@ namespace EntitiesBT
                 CreateVerticalPorts(Node.InputPortName, -100),
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
                 new NodeClassesProperty(behaviorNodeType.ToString().ToLower().Yield()),
-                _titleProperty,
-                new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject))
+                new NodeTitleProperty { TitleProperty = _titleProperty, ToggleProperty = new FoldoutProperty { BoolProperty = nodeObject.FindProperty(nameof(_expanded)) } },
+                new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject)) { HideFoldoutToggle = true, ToggleProperty = nodeObject.FindProperty(nameof(_expanded)) }
             };
             if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(Node.OutputPortName, 100));
             return new NodeData(properties);

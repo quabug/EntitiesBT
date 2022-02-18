@@ -7,6 +7,8 @@ using JetBrains.Annotations;
 using Nuwa.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
+using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
 namespace EntitiesBT.Editor
@@ -15,6 +17,8 @@ namespace EntitiesBT.Editor
     {
         public int Order => 0;
         public SerializedProperty Property { get; }
+        public bool HideFoldoutToggle { get; set; }= false;
+        public SerializedProperty ToggleProperty { get; set; } = null;
 
         public NodeSerializedProperty(SerializedProperty property)
         {
@@ -34,7 +38,16 @@ namespace EntitiesBT.Editor
         {
             protected override VisualElement CreateView(Node node, NodeSerializedProperty property, INodePropertyViewFactory factory)
             {
-                return new ImmediatePropertyField(property.Property, label: null);
+                var view = new ImmediatePropertyField(property.Property, label: null);
+                var toggle = view.Q<Toggle>();
+                if (property.HideFoldoutToggle && toggle != null) toggle.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+                if (property.ToggleProperty != null && toggle != null)
+                {
+                    Assert.AreEqual(SerializedPropertyType.Boolean, property.ToggleProperty.propertyType);
+                    toggle.BindProperty(property.ToggleProperty);
+                    toggle.SetValueWithoutNotify(property.ToggleProperty.boolValue);
+                }
+                return view;
             }
         }
     }
