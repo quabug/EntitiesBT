@@ -73,7 +73,7 @@ namespace EntitiesBT
 
         public void OnConnected(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data, in EdgeId edge)
         {
-            if (_edges.Contains(edge)) return;
+            if (!data.Runtime.IsTreeEdge(edge) || _edges.Contains(edge)) return;
             _edges.Add(edge);
             // set parent for tree edges
             _treeEdge.ConnectParent(this, edge, data[edge.Output.NodeId].transform);

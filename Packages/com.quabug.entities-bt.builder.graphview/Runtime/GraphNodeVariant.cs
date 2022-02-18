@@ -13,26 +13,17 @@ namespace EntitiesBT
         [Serializable]
         public class Any : IVariant
         {
-            public string PropertyPath { get; set; }
-            public string Name { get; set; }
-
-            public Type VariantType => GetType();
             public Type ValueType => this.FindValueType();
-            // TODO:
-            public int NodeId => 0;//Node.;
-            public bool IsConnected => Node != null;
 
-            [ReadOnly, UnityDrawProperty] public VariantNode Node;
-            [ReadOnly, UnityDrawProperty] public int VariantPortIndex = -1;
-            [ReadOnly, UnityDrawProperty] public int SyntaxNodePortIndex = -1;
+            [ReadOnly, UnityDrawProperty] public VariantNodeComponent NodeComponent;
 
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 // TODO: check validation
-                return Node.Allocate(ref builder, ref blobVariant);
+                return NodeComponent.Node.Allocate(ref builder, ref blobVariant);
             }
 
-            public object PreviewValue => Node == null ? null : Node.PreviewValue;
+            public object PreviewValue => NodeComponent == null ? null : NodeComponent.Node.PreviewValue;
         }
 
         [Serializable] public class Reader<T> : Any, IVariantReader<T> where T : unmanaged {}

@@ -70,6 +70,16 @@ namespace GraphExt.Editor
                 InstantiateSystems(_container);
                 CreateMenuBuilder();
                 ReplaceGraphView(_container.Resolve<UnityEditor.Experimental.GraphView.GraphView>());
+                InjectComponents(prefabStage.prefabContentsRoot);
+            }
+        }
+
+        // TODO: optimize
+        private void InjectComponents(GameObject root)
+        {
+            foreach (var componet in root.GetComponentsInChildren<Component>(includeInactive: true))
+            {
+                _container.InjectAll(componet, componet.GetType());
             }
         }
 
