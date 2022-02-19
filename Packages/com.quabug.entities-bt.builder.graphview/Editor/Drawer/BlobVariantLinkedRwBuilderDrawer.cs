@@ -23,19 +23,43 @@ namespace EntitiesBT.Editor
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             var root = new PropertyFieldFoldOut();
-            root.name = nameof(BlobVariantLinkedRWBuilder);
-            AddPropertyField("_isLinked", "Is Linked");
-            AddPropertyField("_reader", "Reader");
-            AddPropertyField("_writer", "Writer");
-            AddPropertyField("_readerAndWriter", "Reader And Writer");
+            var isLinkedProperty = AddPropertyField("_isLinked", "Is Linked");
+            var readerProperty = AddPropertyField("_reader", "Reader");
+            var writerProperty = AddPropertyField("_writer", "Writer");
+            var readerWriterProperty = AddPropertyField("_readerAndWriter", "Reader And Writer");
+
+            var isLinkedToggle = isLinkedProperty.Q<Toggle>();
+            isLinkedToggle.style.marginLeft = 0;
+            isLinkedToggle.style.marginRight = 0;
+            isLinkedToggle.style.marginTop = 0;
+            isLinkedToggle.style.marginBottom = 0;
+            isLinkedToggle.style.unityTextAlign = TextAnchor.MiddleLeft;
+
+            isLinkedToggle.RegisterValueChangedCallback(evt =>
+            {
+                if (evt.newValue)
+                {
+                    readerWriterProperty.style.display = DisplayStyle.Flex;
+                    readerProperty.style.display = DisplayStyle.None;
+                    writerProperty.style.display = DisplayStyle.None;
+                }
+                else
+                {
+                    readerWriterProperty.style.display = DisplayStyle.None;
+                    readerProperty.style.display = DisplayStyle.Flex;
+                    writerProperty.style.display = DisplayStyle.Flex;
+                }
+            });
+
             return root;
 
-            void AddPropertyField(string relativeProperty, string name)
+            ImmediatePropertyField AddPropertyField(string relativeProperty, string name)
             {
                 var childProperty = property.FindPropertyRelative(relativeProperty);
                 var propertyField = new ImmediatePropertyField(childProperty, name);
                 propertyField.AddToClassList(childProperty.propertyPath);
                 root.Add(propertyField);
+                return propertyField;
             }
         }
     }

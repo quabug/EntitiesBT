@@ -253,7 +253,7 @@ MonoBehaviour:
     00000000:
       type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        _isLinked: 1
+        _isLinked: 0
         _reader:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
@@ -289,7 +289,7 @@ MonoBehaviour:
       type: {class: <IVariantReaderAndWriter>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        ComponentValueName: 
+        ComponentValueName: EntitiesBT.Sample.SampleTimeDelayData.OneSecond
 --- !u!1 &5865042857487375268
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _expanded: 1
+  _expanded: 0
   _id: b9c7b055-7078-4328-8ff6-c88836e42bff
   _position: {x: 428, y: 157}
   _node:
@@ -405,7 +405,7 @@ MonoBehaviour:
     00000000:
       type: {class: BlobVariantLinkedRWBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
       data:
-        _isLinked: 0
+        _isLinked: 1
         _reader:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
