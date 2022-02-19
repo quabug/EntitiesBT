@@ -1,3 +1,4 @@
+using System.Linq;
 using EntitiesBT.Variant;
 using GraphExt;
 using GraphExt.Editor;
@@ -29,15 +30,22 @@ namespace EntitiesBT.Editor
             var root = new VisualElement();
             var inputPortContainer = new PortContainer(VariantPort.CreatePortName(variantProperty, PortDirection.Input))
             {
-                name = "input-port-container"
+                name = "input-port-container",
+                style = { position = Position.Absolute, left = -16 }
             };
+            // HACK: set input port at the edge of left border
+            inputPortContainer.RegisterCallback(new EventCallback<AttachToPanelEvent>(
+                _ => inputPortContainer.style.left = -16 * inputPortContainer.Ancestors().Count(view => view is Foldout))
+            );
             root.Add(inputPortContainer);
             var propertyField = new PropertyFieldWithAncestorName(variantProperty);
             propertyField.AddToClassList(variantProperty.propertyPath);
+            propertyField.style.paddingRight = 12;
             root.Add(propertyField);
             var outputPortContainer = new PortContainer(VariantPort.CreatePortName(variantProperty, PortDirection.Output))
             {
-                name = "output-port-container"
+                name = "output-port-container",
+                style = { position = Position.Absolute, right = -2 }
             };
             root.Add(outputPortContainer);
             root.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);

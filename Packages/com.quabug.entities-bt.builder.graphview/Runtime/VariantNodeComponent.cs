@@ -34,7 +34,7 @@ namespace EntitiesBT
         public INodeComponent.NodeComponentConnect OnNodeComponentConnect { get; set; }
         public INodeComponent.NodeComponentDisconnect OnNodeComponentDisconnect { get; set; }
 
-        [SerializeField] private List<SerializableEdge> _serializableEdges = new List<SerializableEdge>();
+        [SerializeField, HideInInspector] private List<SerializableEdge> _serializableEdges = new List<SerializableEdge>();
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
         private readonly Dictionary<EdgeId, GraphNodeVariant.Any> _variantConnections = new Dictionary<EdgeId, GraphNodeVariant.Any>();
 

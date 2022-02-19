@@ -44,7 +44,7 @@ MonoBehaviour:
     00000003:
       type: {class: DefaultPortViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000004:
-      type: {class: DefaultNodeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
+      type: {class: NodeViewFactory, ns: EntitiesBT.Editor, asm: EntitiesBT.Builder.GraphView}
       data:
         NodePropertyViewFactory:
           Factories:
