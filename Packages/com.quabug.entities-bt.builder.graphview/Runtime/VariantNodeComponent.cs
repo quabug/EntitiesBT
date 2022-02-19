@@ -34,8 +34,9 @@ namespace EntitiesBT
         public INodeComponent.NodeComponentConnect OnNodeComponentConnect { get; set; }
         public INodeComponent.NodeComponentDisconnect OnNodeComponentDisconnect { get; set; }
 
-        [SerializeField, HideInInspector] private List<SerializableEdge> _serializableEdges = new List<SerializableEdge>();
+        [SerializeField] private List<SerializableEdge> _serializableEdges = new List<SerializableEdge>();
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
+        private readonly Dictionary<EdgeId, GraphNodeVariant.Any> _variantConnections = new Dictionary<EdgeId, GraphNodeVariant.Any>();
 
         private GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> _behaviorTreeNodes;
         private GameObjectNodes<VariantNode, VariantNodeComponent> _variantNodes;
@@ -50,7 +51,13 @@ namespace EntitiesBT
             _variantNodes = variantNodes;
 #if UNITY_EDITOR
             Node.ConnectedVariants.Clear();
-            foreach (var edge in _edges) Node.ConnectedVariants.Add(FindGraphNodeVariant(edge));
+            _variantConnections.Clear();
+            foreach (var edge in _edges)
+            {
+                var graphNodeVariant = FindGraphNodeVariant(edge);
+                _variantConnections.Add(edge, graphNodeVariant);
+                Node.ConnectedVariants.Add(graphNodeVariant);
+            }
 #endif
         }
 
@@ -88,6 +95,7 @@ namespace EntitiesBT
             }
 #if UNITY_EDITOR
             graphNodeVariant.NodeComponent = this;
+            _variantConnections.Add(edge, graphNodeVariant);
             Node.ConnectedVariants.Add(graphNodeVariant);
             if (Node.Variant == null || Node.Variant.FindValueType() != Node.ValueType)
             {
@@ -111,10 +119,11 @@ namespace EntitiesBT
         {
             if (!_edges.Contains(edge)) return;
 #if UNITY_EDITOR
-            var graphNodeVariant = FindGraphNodeVariant(edge);
+            _variantConnections.TryGetValue(edge, out var graphNodeVariant);
             if (graphNodeVariant == null) return;
             graphNodeVariant.NodeComponent = null;
             Node.ConnectedVariants.Remove(graphNodeVariant);
+            _variantConnections.Remove(edge);
 #endif
             name = Node.Name;
             _edges.Remove(edge);

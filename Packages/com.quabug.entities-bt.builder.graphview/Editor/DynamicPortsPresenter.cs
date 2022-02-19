@@ -4,12 +4,14 @@ using GraphExt.Editor;
 using JetBrains.Annotations;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
+using GraphView = UnityEditor.Experimental.GraphView.GraphView;
 
 namespace EntitiesBT.Editor
 {
     [UsedImplicitly]
     public class DynamicPortsPresenter : ITickableWindowSystem
     {
+        private readonly GraphView _graphView;
         private readonly IPortViewFactory _portViewFactory;
         private readonly IReadOnlyDictionary<NodeId, Node> _currentNodeViews;
         private readonly IDictionary<PortId, Port> _currentPortViews;
@@ -17,6 +19,7 @@ namespace EntitiesBT.Editor
         private readonly FindPortData _findPorts;
 
         public DynamicPortsPresenter(
+            GraphView graphView,
             IPortViewFactory portViewFactory,
             IReadOnlyDictionary<NodeId, Node> currentNodeViews,
             IDictionary<PortId, Port> currentPortViews,
@@ -24,6 +27,7 @@ namespace EntitiesBT.Editor
             FindPortData findPorts
         )
         {
+            _graphView = graphView;
             _portViewFactory = portViewFactory;
             _currentNodeViews = currentNodeViews;
             _currentPortViews = currentPortViews;
@@ -71,6 +75,7 @@ namespace EntitiesBT.Editor
             void DeletePort(in PortId portId)
             {
                 var portView = _currentPortViews[portId];
+                _graphView.DeleteElements(portView.connections);
                 portView.DisconnectAll();
                 _currentPortViews.Remove(portId);
                 _currentPortDataMap.Remove(portId);

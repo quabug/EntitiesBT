@@ -19,7 +19,7 @@ namespace EntitiesBT
     [DisallowMultipleComponent, ExecuteAlways, AddComponentMenu("")]
     public class BehaviorTreeNodeComponent : MonoBehaviour, INodeComponent<BehaviorTreeNode, BehaviorTreeNodeComponent>, ITreeNodeComponent, IGraphNodeComponent
     {
-        [SerializeField] private bool _expanded = false;
+        [SerializeField, HideInInspector] private bool _expanded = false;
 
         [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private string _id;
         public NodeId Id { get => Guid.Parse(_id); set => _id = value.ToString(); }

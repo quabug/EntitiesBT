@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Variant;
 using GraphExt;
-using Nuwa;
 using Unity.Entities;
 using UnityEngine;
 
@@ -16,20 +15,19 @@ namespace EntitiesBT
         public const string OUTPUT_PORT = "output";
 
         public object PreviewValue => Variant.PreviewValue;
-
-        public Type VariantType => ConnectedVariants.Any() && Variant != null ? Variant.GetType() : DefaultVariantType;
-        public virtual string Name => $"{VariantTypeName}{AccessName}<{Variant?.FindValueType()?.Name}>";
         public abstract IVariant Variant { get; set; }
-        public Type ValueType => ConnectedVariants.FirstOrDefault()?.ValueType;
-        public readonly ISet<GraphNodeVariant.Any> ConnectedVariants = new System.Collections.Generic.HashSet<GraphNodeVariant.Any>();
-        public Type BaseType => ValueType == null ? BaseVariantGenericType : BaseVariantGenericType.MakeGenericType(ValueType);
 
         protected abstract string VariantTypeName { get; }
         protected abstract Type DefaultVariantType { get; }
         protected abstract Type BaseVariantGenericType { get; }
 
-        protected string BaseTypeName => BaseType.AssemblyQualifiedName;
+        public readonly ISet<GraphNodeVariant.Any> ConnectedVariants = new System.Collections.Generic.HashSet<GraphNodeVariant.Any>();
+        public Type VariantType => ConnectedVariants.Any() && Variant != null ? Variant.GetType() : DefaultVariantType;
+        public Type ValueType => ConnectedVariants.FirstOrDefault()?.ValueType;
+        public Type BaseType => ValueType == null ? BaseVariantGenericType : BaseVariantGenericType.MakeGenericType(ValueType);
 
+        public string Name => $"{VariantTypeName}{AccessName}<{Variant?.FindValueType()?.Name}>";
+        protected string BaseTypeName => BaseType.AssemblyQualifiedName;
         private string AccessName
         {
             get

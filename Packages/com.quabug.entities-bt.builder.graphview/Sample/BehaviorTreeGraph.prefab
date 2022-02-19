@@ -43,9 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f12f344c7e4a1093c46610e049feea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _expanded: 0
+  _expanded: 1
   _id: 4cecaf6c-3ac1-41f0-86c3-c384f02f8ebf
-  _position: {x: 903.5, y: 467.5}
+  _position: {x: 770, y: 473.5}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Extensions.UnityMovement.CharacterSimpleMoveNode,
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hideTitle: 0
   _id: 8053c7b0-24b7-4b4d-95c5-4e1877fdb3dc
-  _position: {x: 1261, y: 493.5}
+  _position: {x: 1333, y: 273.5}
   _node:
     id: 0
   _serializableEdges:
@@ -282,17 +282,20 @@ MonoBehaviour:
           _variant:
             id: 3
     00000001:
-      type: {class: <IVariantReader>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        NodeComponent: {fileID: 0}
+        ComponentValueName: 
     00000002:
       type: {class: <IVariantWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         NodeComponent: {fileID: 0}
     00000003:
-      type: {class: , ns: , asm: }
+      type: {class: <IVariantReaderAndWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        NodeComponent: {fileID: 0}
 --- !u!1 &5865042857487375268
 GameObject:
   m_ObjectHideFlags: 0

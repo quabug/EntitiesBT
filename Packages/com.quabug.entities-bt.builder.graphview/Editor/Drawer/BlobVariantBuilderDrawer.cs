@@ -27,11 +27,19 @@ namespace EntitiesBT.Editor
         {
             var variantProperty = property.FindPropertyRelative("_variant");
             var root = new VisualElement();
-            root.Add(new PortContainer(VariantPort.CreatePortName(variantProperty, PortDirection.Input)));
+            var inputPortContainer = new PortContainer(VariantPort.CreatePortName(variantProperty, PortDirection.Input))
+            {
+                name = "input-port-container"
+            };
+            root.Add(inputPortContainer);
             var propertyField = new PropertyFieldWithAncestorName(variantProperty);
             propertyField.AddToClassList(variantProperty.propertyPath);
             root.Add(propertyField);
-            root.Add(new PortContainer(VariantPort.CreatePortName(variantProperty, PortDirection.Output)));
+            var outputPortContainer = new PortContainer(VariantPort.CreatePortName(variantProperty, PortDirection.Output))
+            {
+                name = "output-port-container"
+            };
+            root.Add(outputPortContainer);
             root.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
             return root;
         }
