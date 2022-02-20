@@ -48,10 +48,14 @@ namespace EntitiesBT
 
         public override bool IsPortCompatible(GameObjectNodes<GraphNode, GraphNodeComponent> data, in PortId input, in PortId output)
         {
-            // free to connect each other if they are not tree ports
             var isInputTreePort = data.Runtime.IsTreePort(input);
             var isOutputTreePort = data.Runtime.IsTreePort(output);
-            if (!isInputTreePort && !isOutputTreePort) return true;
+            if (!isInputTreePort && !isOutputTreePort)
+            {
+                var isInputBehaviorNode = data[input.NodeId] is BehaviorNodeComponent;
+                var isOutputBehaviorNode = data[output.NodeId] is BehaviorNodeComponent;
+                return !isInputBehaviorNode || !isOutputBehaviorNode;
+            }
 
             if (input.NodeId == Id && output.NodeId == Id) return false; // same node
             if (input.NodeId == Id) return true; // only check compatible on output/start node
@@ -93,7 +97,7 @@ namespace EntitiesBT
         }
 
 #if UNITY_EDITOR
-        private SerializedProperty[] _variantProperties;
+        private readonly VariantPorts _variantPorts = new VariantPorts();
         private readonly EventTitleProperty _titleProperty = new EventTitleProperty();
 
         static BehaviorNodeComponent()
@@ -135,16 +139,7 @@ namespace EntitiesBT
             else if (behaviorNodeType == BehaviorNodeType.Decorate)
                 yield return CreateBehaviorTreePortData(_node.OutputPortName, PortDirection.Output, 1);
 
-            _variantProperties ??= GetVariantProperties(nodeObject).ToArray();
-            foreach (var variant in _variantProperties)
-            {
-                var variantType = variant.GetManagedFullType();
-                if (variantType != null && typeof(GraphNodeVariant.Any).IsAssignableFrom(variantType))
-                {
-                    yield return CreateVariantPortData(variant, variantType, PortDirection.Input);
-                    yield return CreateVariantPortData(variant, variantType, PortDirection.Output);
-                }
-            }
+            foreach (var variantPort in _variantPorts.FindNodePorts(GetSerializedNodeBuilder(nodeObject))) yield return variantPort;
 
             PortData CreateBehaviorTreePortData(string portName, PortDirection direction, int capacity)
             {
@@ -157,29 +152,6 @@ namespace EntitiesBT
                     "tree",
                     behaviorNodeType.ToString().ToLower()
                 );
-            }
-
-            PortData CreateVariantPortData(SerializedProperty property, Type variantType, PortDirection direction)
-            {
-                return new PortData(
-                    VariantPort.CreatePortName(property, direction),
-                    PortOrientation.Horizontal,
-                    direction,
-                    1,
-                    VariantPort.GetPortType(variantType),
-                    VariantPort.GetPortClasses(variantType).ToArray()
-                );
-            }
-        }
-
-        private IEnumerable<SerializedProperty> GetVariantProperties(SerializedObject nodeObject)
-        {
-            var serializedNodeBuilder = GetSerializedNodeBuilder(nodeObject);
-            while (serializedNodeBuilder.NextVisible(true))
-            {
-                var fieldType = serializedNodeBuilder.GetManagedFieldType();
-                if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
-                    yield return serializedNodeBuilder.Copy();
             }
         }
 

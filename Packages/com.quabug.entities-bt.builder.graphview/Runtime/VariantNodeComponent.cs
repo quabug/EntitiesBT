@@ -56,7 +56,8 @@ namespace EntitiesBT
             if (input.NodeId == Id && output.NodeId == Id) return false; // same node
             Type variantType = null;
 #if UNITY_EDITOR
-            variantType = FindVariantProperty(data, input, output)?.GetManagedFullType();
+            var property = FindVariantProperty(data, input, output);
+            variantType = property?.GetManagedFullType();
 #endif
             return variantType != null && VariantNode.VariantType.IsAssignableFrom(variantType);
         }
@@ -114,7 +115,7 @@ namespace EntitiesBT
         }
 
 #if UNITY_EDITOR
-        private SerializedProperty[] _variantProperties;
+        private readonly VariantPorts _variantPorts = new VariantPorts();
         private readonly EventTitleProperty _titleProperty = new EventTitleProperty();
 
         static VariantNodeComponent()
@@ -127,9 +128,9 @@ namespace EntitiesBT
         private SerializedProperty FindVariantProperty(GameObjectNodes<GraphNode, GraphNodeComponent> nodes, in PortId input, in PortId output)
         {
             if (input.NodeId == Id && input.Name == VariantNode.INPUT_PORT)
-                return output.FindVariantPortProperty(nodes);
+                return VariantPorts.FindVariantPortProperty(output, nodes);
             if (output.NodeId == Id && output.Name == VariantNode.OUTPUT_PORT)
-                return input.FindVariantPortProperty(nodes);
+                return VariantPorts.FindVariantPortProperty(input, nodes);
             return null;
         }
 
@@ -160,42 +161,10 @@ namespace EntitiesBT
 
         public override IEnumerable<PortData> FindNodePorts(SerializedObject nodeObject)
         {
-            var portClasses = VariantPort.GetPortClasses(VariantNode.VariantType).ToArray();
+            var portClasses = VariantPorts.GetPortClasses(VariantNode.VariantType).ToArray();
             yield return new PortData(VariantNode.INPUT_PORT, PortOrientation.Horizontal, PortDirection.Input, int.MaxValue, VariantNode.VariantType, portClasses);
             yield return new PortData(VariantNode.OUTPUT_PORT, PortOrientation.Horizontal, PortDirection.Output, int.MaxValue, VariantNode.VariantType, portClasses);
-            _variantProperties ??= GetVariantProperties(nodeObject).ToArray();
-            foreach (var variant in _variantProperties)
-            {
-                var variantType = variant.GetManagedFullType();
-                if (variantType != null && typeof(GraphNodeVariant.Any).IsAssignableFrom(variantType))
-                {
-                    yield return CreateVariantPortData(variant, variantType, PortDirection.Input);
-                    yield return CreateVariantPortData(variant, variantType, PortDirection.Output);
-                }
-            }
-
-            PortData CreateVariantPortData(SerializedProperty property, Type variantType, PortDirection direction)
-            {
-                return new PortData(
-                    VariantPort.CreatePortName(property, direction),
-                    PortOrientation.Horizontal,
-                    direction,
-                    1,
-                    VariantPort.GetPortType(variantType),
-                    new []{"variant"}
-                );
-            }
-        }
-
-        private IEnumerable<SerializedProperty> GetVariantProperties(SerializedObject nodeObject)
-        {
-            var serializedNodeBuilder = GetSerializedNodeBuilder(nodeObject);
-            while (serializedNodeBuilder.NextVisible(true))
-            {
-                var fieldType = serializedNodeBuilder.GetManagedFieldType();
-                if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
-                    yield return serializedNodeBuilder.Copy();
-            }
+            foreach (var variantPort in _variantPorts.FindNodePorts(GetSerializedNodeBuilder(nodeObject))) yield return variantPort;
         }
 
         private SerializedProperty GetSerializedNodeBuilder(SerializedObject nodeObject)

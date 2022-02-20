@@ -52,11 +52,30 @@ namespace EntitiesBT.Editor
                 rootContainer.RegisterSingleton<GraphView>(() =>
                 {
                     var factory = rootContainer.Resolve<IGraphViewFactory>();
-                    var graph = rootContainer.Resolve<GraphRuntime<GraphNode>>();
-                    var portViewIdMap = rootContainer.Resolve<IReadOnlyDictionary<Port, PortId>>();
+                    var nodes = rootContainer.Resolve<GameObjectNodes<GraphNode, GraphNodeComponent>>();
                     var portIdDataMap = rootContainer.Resolve<IReadOnlyDictionary<PortId, PortData>>();
-                    var isEdgeCompatibleFunc = EdgeFunctions.CreateIsCompatibleFunc(graph, portIdDataMap);
-                    return factory.Create(EdgeFunctions.CreateFindCompatiblePortsFunc(portViewIdMap, isEdgeCompatibleFunc));
+                    var portViewIdMap = rootContainer.Resolve<IReadOnlyDictionary<Port, PortId>>();
+                    var graph = rootContainer.Resolve<GraphRuntime<GraphNode>>();
+
+                    return factory.Create(EdgeFunctions.CreateFindCompatiblePortsFunc(portViewIdMap, IsEdgeCompatibleFunc));
+
+                    bool IsEdgeCompatibleFunc(in PortId input, in PortId output)
+                    {
+                        var inputPort = portIdDataMap[input];
+                        var outputPort = portIdDataMap[output];
+                        var inputNode = nodes[input.NodeId];
+                        var outputNode = nodes[output.NodeId];
+                        return // single port could be handled by Unity Graph
+                            (inputPort.Capacity == 1 || CountConnections(input) < inputPort.Capacity) &&
+                            (outputPort.Capacity == 1 || CountConnections(output) < outputPort.Capacity) &&
+                            graph.GetNodeByPort(input).IsPortCompatible(graph, input, output) &&
+                            graph.GetNodeByPort(output).IsPortCompatible(graph, input, output) &&
+                            inputNode.IsPortCompatible(nodes, input, output) &&
+                            outputNode.IsPortCompatible(nodes, input, output)
+                        ;
+                    }
+
+                    int CountConnections(PortId portId) => graph.Edges.Count(edge => edge.Contains(portId));
                 });
                 rootContainer.Register<GraphView, UnityEditor.Experimental.GraphView.GraphView>();
             }

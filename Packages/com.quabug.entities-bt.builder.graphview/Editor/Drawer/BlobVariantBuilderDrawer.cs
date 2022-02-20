@@ -28,7 +28,7 @@ namespace EntitiesBT.Editor
         {
             var variantProperty = property.FindPropertyRelative("_variant");
             var root = new VisualElement();
-            var inputPortContainer = new PortContainer(VariantPort.CreatePortName(variantProperty, PortDirection.Input))
+            var inputPortContainer = new PortContainer(VariantPorts.CreatePortName(variantProperty, PortDirection.Input))
             {
                 name = "input-port-container",
                 style = { position = Position.Absolute, left = -16 }
@@ -42,7 +42,7 @@ namespace EntitiesBT.Editor
             propertyField.AddToClassList(variantProperty.propertyPath);
             propertyField.style.paddingRight = 12;
             root.Add(propertyField);
-            var outputPortContainer = new PortContainer(VariantPort.CreatePortName(variantProperty, PortDirection.Output))
+            var outputPortContainer = new PortContainer(VariantPorts.CreatePortName(variantProperty, PortDirection.Output))
             {
                 name = "output-port-container",
                 style = { position = Position.Absolute, right = -2 }

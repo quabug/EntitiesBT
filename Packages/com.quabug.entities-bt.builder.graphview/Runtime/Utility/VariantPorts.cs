@@ -2,21 +2,49 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using EntitiesBT.Variant;
 using GraphExt;
+using Nuwa.Editor;
 using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Editor
 {
-    public static class VariantPort
+    public class VariantPorts
     {
+        private SerializedProperty[] _variantProperties;
+
+        public IEnumerable<PortData> FindNodePorts(SerializedProperty property)
+        {
+            _variantProperties ??= GetVariantProperties(property).ToArray();
+            foreach (var variant in _variantProperties)
+            {
+                var variantType = variant.GetManagedFullType();
+                if (variantType != null && typeof(GraphNodeVariant.Any).IsAssignableFrom(variantType))
+                {
+                    yield return CreateVariantPortData(variant, variantType, PortDirection.Input);
+                    yield return CreateVariantPortData(variant, variantType, PortDirection.Output);
+                }
+            }
+        }
+
+        private IEnumerable<SerializedProperty> GetVariantProperties(SerializedProperty property)
+        {
+            while (property.NextVisible(true))
+            {
+                var fieldType = property.GetManagedFieldType();
+                if (fieldType != null && typeof(IVariant).IsAssignableFrom(fieldType))
+                    yield return property.Copy();
+            }
+        }
+
         public static string CreatePortName(SerializedProperty property, PortDirection direction)
         {
             return $"{property.propertyPath}|{direction.ToString().ToLower()}";
         }
 
-        public static void Deconstruct(this in PortId portId, out NodeId nodeId, out string propertyPath, out PortDirection direction)
+        public static void Deconstruct(in PortId portId, out NodeId nodeId, out string propertyPath, out PortDirection direction)
         {
             nodeId = portId.NodeId;
             var portName = portId.Name;
@@ -53,7 +81,7 @@ namespace EntitiesBT.Editor
             return portType;
         }
 
-        public static SerializedProperty FindVariantPortProperty<TNode, TComponent>(this in PortId portId, GameObjectNodes<TNode, TComponent> nodes)
+        public static SerializedProperty FindVariantPortProperty<TNode, TComponent>(in PortId portId, GameObjectNodes<TNode, TComponent> nodes)
             where TNode : INode<GraphRuntime<TNode>>
             where TComponent : MonoBehaviour, INodeComponent<TNode, TComponent>
         {
@@ -72,6 +100,18 @@ namespace EntitiesBT.Editor
         {
             yield return "variant";
             yield return VariantNode.GetVariantAccessName(variantType);
+        }
+
+        public static PortData CreateVariantPortData(SerializedProperty property, Type variantType, PortDirection direction)
+        {
+            return new PortData(
+                CreatePortName(property, direction),
+                PortOrientation.Horizontal,
+                direction,
+                1,
+                GetPortType(variantType),
+                GetPortClasses(variantType).ToArray()
+            );
         }
     }
 }
