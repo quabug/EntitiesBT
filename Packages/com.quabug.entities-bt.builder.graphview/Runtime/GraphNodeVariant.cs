@@ -20,10 +20,10 @@ namespace EntitiesBT
             public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
             {
                 // TODO: check validation
-                return NodeComponent.Node.Allocate(ref builder, ref blobVariant);
+                return NodeComponent.VariantNode.Allocate(ref builder, ref blobVariant);
             }
 
-            public object PreviewValue => NodeComponent == null ? null : NodeComponent.Node.PreviewValue;
+            public object PreviewValue => NodeComponent == null ? null : NodeComponent.VariantNode.PreviewValue;
         }
 
         [Serializable] public class Reader<T> : Any, IVariantReader<T> where T : unmanaged {}

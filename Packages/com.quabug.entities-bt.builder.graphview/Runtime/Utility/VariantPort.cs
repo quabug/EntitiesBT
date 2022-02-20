@@ -53,15 +53,6 @@ namespace EntitiesBT.Editor
             return portType;
         }
 
-        public static SerializedProperty FindVariantPortProperty(
-            this in PortId portId,
-            GameObjectNodes<VariantNode, VariantNodeComponent> variantNodes,
-            GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> behaviorNodes
-        )
-        {
-            return FindVariantPortProperty(portId, variantNodes) ?? FindVariantPortProperty(portId, behaviorNodes);
-        }
-
         public static SerializedProperty FindVariantPortProperty<TNode, TComponent>(this in PortId portId, GameObjectNodes<TNode, TComponent> nodes)
             where TNode : INode<GraphRuntime<TNode>>
             where TComponent : MonoBehaviour, INodeComponent<TNode, TComponent>

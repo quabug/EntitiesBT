@@ -20,52 +20,36 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeGraphWindowExtension, ns: GraphExt.Editor, asm: EntitiesBT.Builder.GraphView.Editor}
+      type: {class: GraphWindowExtension, ns: EntitiesBT.Editor, asm: EntitiesBT.Builder.GraphView.Editor}
       data:
-        BaseGraphInstaller:
+        _installer:
           GraphViewFactory:
             id: 1
-          EdgeViewFactory:
+          NodeViewFactory:
             id: 2
-          PortViewFactory:
+          EdgeViewFactory:
             id: 3
-        BehaviorGraphInstaller:
-          NodeViewFactory:
+          PortViewFactory:
             id: 4
-        VariantGraphInstaller:
-          NodeViewFactory:
-            id: 5
         MenuEntries:
-        - id: 6
+        - id: 5
     00000001:
       type: {class: DefaultGraphViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000002:
-      type: {class: DefaultEdgeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
-    00000003:
-      type: {class: DefaultPortViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
-    00000004:
-      type: {class: NodeViewFactory, ns: EntitiesBT.Editor, asm: EntitiesBT.Builder.GraphView}
-      data:
-        NodePropertyViewFactory:
-          Factories:
-          - id: 7
-    00000005:
       type: {class: DefaultNodeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
       data:
         NodePropertyViewFactory:
           Factories:
-          - id: 8
-    00000006:
+          - id: 6
+    00000003:
+      type: {class: DefaultEdgeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
+    00000004:
+      type: {class: DefaultPortViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
+    00000005:
       type: {class: TypeNameMenuEntriesInstaller, ns: GraphExt.Editor, asm: GraphExt.DI}
       data:
         MenuEntries:
-        - EntitiesBT.Editor.GraphViewSelectionEntry, EntitiesBT.Builder.GraphView.Editor,
+        - EntitiesBT.Editor.BehaviorNodeCreation, EntitiesBT.Builder.GraphView.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        - EntitiesBT.Editor.BehaviorTreeCreationMenuEntry, EntitiesBT.Builder.GraphView.Editor,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        - EntitiesBT.Editor.VariantNodeCreationMenuEntry, EntitiesBT.Builder.GraphView.Editor,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    00000007:
-      type: {class: DefaultPropertyViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
-    00000008:
+    00000006:
       type: {class: DefaultPropertyViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}

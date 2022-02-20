@@ -1,20 +1,18 @@
-using System.Linq;
-using EntitiesBT;
-using EntitiesBT.Editor;
+using System;
+using GraphExt.Editor;
 using JetBrains.Annotations;
+using Nuwa;
 using OneShot;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
-using BehaviorTreeNode = EntitiesBT.BehaviorTreeNode;
 
-namespace GraphExt.Editor
+namespace EntitiesBT.Editor
 {
-    public sealed class BehaviorTreeGraphWindowExtension : IGraphWindowExtension
+    [Serializable]
+    public sealed class GraphWindowExtension : IGraphWindowExtension
     {
-        public BaseGraphInstaller BaseGraphInstaller;
-        public NodeGraphInstaller<BehaviorTreeNode, BehaviorTreeNodeComponent> BehaviorGraphInstaller;
-        public NodeGraphInstaller<VariantNode, VariantNodeComponent> VariantGraphInstaller;
+        [SerializeField] private GraphInstaller _installer;
 
         [SerializeReference, SerializeReferenceDrawer(Nullable = false, RenamePatter = @"\w*\.||")]
         public IMenuEntryInstaller[] MenuEntries;
@@ -63,9 +61,7 @@ namespace GraphExt.Editor
                 _container.RegisterInstance(prefabStage);
                 _container.RegisterInstance(prefabStage.prefabContentsRoot);
 
-                BaseGraphInstaller.Install(_container, typeContainers);
-                BehaviorGraphInstaller.Install(_container, typeContainers, prefabStage.prefabContentsRoot);
-                VariantGraphInstaller.Install(_container, typeContainers, prefabStage.prefabContentsRoot);
+                _installer.Install(_container, typeContainers, prefabStage.prefabContentsRoot);
 
                 InstantiateSystems(_container);
                 CreateMenuBuilder();
@@ -77,9 +73,9 @@ namespace GraphExt.Editor
         // TODO: optimize
         private void InjectComponents(GameObject root)
         {
-            foreach (var componet in root.GetComponentsInChildren<Component>(includeInactive: true))
+            foreach (var component in root.GetComponentsInChildren<Component>(includeInactive: true))
             {
-                _container.InjectAll(componet, componet.GetType());
+                _container.InjectAll(component, component.GetType());
             }
         }
 

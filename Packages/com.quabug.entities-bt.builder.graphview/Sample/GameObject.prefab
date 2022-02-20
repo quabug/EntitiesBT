@@ -1,0 +1,349 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &282758309170501498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8200972013676126180}
+  - component: {fileID: 8027574244685150383}
+  m_Layer: 0
+  m_Name: CharacterSimpleMoveNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8200972013676126180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282758309170501498}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5549069064600217549}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8027574244685150383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282758309170501498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c59a550fbd14fa69f8a73d691835dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Id: eb2c249b-fc97-476b-bb8e-2edfa532f330
+  _Position: {x: 541, y: 272}
+  _expanded: 1
+  _node:
+    Blob:
+      BlobDataType: EntitiesBT.Extensions.UnityMovement.CharacterSimpleMoveNode,
+        EntitiesBT.Extensions.CharacterController, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      FieldNames:
+      - IsLocal
+      - Velocity
+      Builders:
+      - id: 0
+      - id: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: BooleanBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value: 0
+    00000001:
+      type: {class: BlobVariantROBuilder, ns: EntitiesBT.Variant, asm: EntitiesBT.Runtime}
+      data:
+        _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[Unity.Mathematics.float3,
+          Unity.Mathematics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]],
+          EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        IsOptional: 0
+        _variant:
+          id: 2
+    00000002:
+      type: {class: <IVariantReader>/float3GraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        NodeComponent: {fileID: 0}
+--- !u!1 &707945858045018856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5549069064600217549}
+  - component: {fileID: 7877088591987161558}
+  m_Layer: 0
+  m_Name: ErrorRerunOnceNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5549069064600217549
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707945858045018856}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 8200972013676126180}
+  m_Father: {fileID: 1211912928685988438}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7877088591987161558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707945858045018856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c59a550fbd14fa69f8a73d691835dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Id: 15547424-c403-47f2-b6d8-23eaef816388
+  _Position: {x: 548, y: 130}
+  _expanded: 0
+  _node:
+    Blob:
+      BlobDataType: EntitiesBT.Nodes.ErrorRerunOnceNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames: []
+      Builders: []
+  references:
+    version: 1
+--- !u!1 &3497951996607975745
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8651222857877587363}
+  - component: {fileID: 949288326796468617}
+  m_Layer: 0
+  m_Name: LocalRO<>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8651222857877587363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3497951996607975745}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7852097894234948500}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &949288326796468617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3497951996607975745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 504e8699fe604f35865fadbc8b3cc37a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Id: fbd0587e-e707-411e-9288-aecbed023fdf
+  _Position: {x: 1017.5, y: 325}
+  _hideTitle: 0
+  VariantNode:
+    id: 0
+  _serializableEdges: []
+  references:
+    version: 1
+    00000000:
+      type: {class: LocalReaderNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
+      data:
+        Value:
+          id: 1
+    00000001:
+      type: {class: , ns: , asm: }
+--- !u!1 &5748555020961329892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8308033333846195210}
+  - component: {fileID: 7385335834658427638}
+  m_Layer: 0
+  m_Name: CheckInputPhaseNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8308033333846195210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5748555020961329892}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1211912928685988438}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7385335834658427638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5748555020961329892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c59a550fbd14fa69f8a73d691835dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Id: 69d13243-8d5b-4c15-9c6d-fb085dbd93d6
+  _Position: {x: 827, y: 146}
+  _expanded: 0
+  _node:
+    Blob:
+      BlobDataType: EntitiesBT.Extensions.InputSystem.CheckInputPhaseNode, EntitiesBT.Extensions.InputSystem,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - <ActionId>k__BackingField
+      - Phase
+      Builders:
+      - id: 0
+      - id: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: InputActionGuidBuilder, ns: EntitiesBT.Extensions.InputSystem,
+        asm: EntitiesBT.Extensions.InputSystem}
+      data:
+        InputAction: {fileID: 0}
+    00000001:
+      type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        EnumTypeName: UnityEngine.InputSystem.InputActionPhase, Unity.InputSystem,
+          Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+        Value: 0
+--- !u!1 &7677557791198827174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7852097894234948500}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7852097894234948500
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7677557791198827174}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1211912928685988438}
+  - {fileID: 8651222857877587363}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8427403858184446851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1211912928685988438}
+  - component: {fileID: 7498695384513075714}
+  m_Layer: 0
+  m_Name: SelectorNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1211912928685988438
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8427403858184446851}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5549069064600217549}
+  - {fileID: 8308033333846195210}
+  m_Father: {fileID: 7852097894234948500}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7498695384513075714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8427403858184446851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c59a550fbd14fa69f8a73d691835dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Id: b725b2b5-2504-42d4-a8f0-99715013dfc1
+  _Position: {x: 585, y: 10}
+  _expanded: 0
+  _node:
+    Blob:
+      BlobDataType: EntitiesBT.Nodes.SelectorNode, EntitiesBT.Runtime, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames: []
+      Builders: []
+  references:
+    version: 1

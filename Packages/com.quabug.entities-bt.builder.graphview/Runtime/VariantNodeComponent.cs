@@ -18,73 +18,56 @@ using UnityEngine.Assertions;
 namespace EntitiesBT
 {
     [DisallowMultipleComponent, ExecuteAlways, AddComponentMenu("")]
-    public class VariantNodeComponent : MonoBehaviour, INodeComponent<VariantNode, VariantNodeComponent>, IGraphNodeComponent
+    public class VariantNodeComponent : GraphNodeComponent
     {
         [SerializeField] private bool _hideTitle = false;
 
-        [SerializeField, ReadOnly, UnityDrawProperty] private string _id;
-        public NodeId Id { get => Guid.Parse(_id); set => _id = value.ToString(); }
-
-        [SerializeField] private Vector2 _position;
-        public Vector2 Position { get => _position; set => _position = value; }
-
-        [SerializeReference, UnboxSingleProperty, UnityDrawProperty] private VariantNode _node;
-        public VariantNode Node { get => _node; set => _node = value; }
-
-        public INodeComponent.NodeComponentConnect OnNodeComponentConnect { get; set; }
-        public INodeComponent.NodeComponentDisconnect OnNodeComponentDisconnect { get; set; }
+        [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public VariantNode VariantNode;
+        public override GraphNode Node { get => VariantNode; set => VariantNode = (VariantNode)value; }
 
         [SerializeField, HideInInspector] private List<SerializableEdge> _serializableEdges = new List<SerializableEdge>();
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
         private readonly Dictionary<EdgeId, GraphNodeVariant.Any> _variantConnections = new Dictionary<EdgeId, GraphNodeVariant.Any>();
 
-        private GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> _behaviorTreeNodes;
-        private GameObjectNodes<VariantNode, VariantNodeComponent> _variantNodes;
-
         [Inject]
-        void Inject(
-            GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> behaviorTreeNodes,
-            GameObjectNodes<VariantNode, VariantNodeComponent> variantNodes
-        )
+        void Inject(GameObjectNodes<GraphNode, GraphNodeComponent> nodes)
         {
-            _behaviorTreeNodes = behaviorTreeNodes;
-            _variantNodes = variantNodes;
 #if UNITY_EDITOR
-            Node.ConnectedVariants.Clear();
+            VariantNode.ConnectedVariants.Clear();
             _variantConnections.Clear();
             foreach (var edge in _edges)
             {
-                var graphNodeVariant = FindGraphNodeVariant(edge);
+                var graphNodeVariant = FindGraphNodeVariant(nodes, edge);
                 _variantConnections.Add(edge, graphNodeVariant);
-                Node.ConnectedVariants.Add(graphNodeVariant);
+                VariantNode.ConnectedVariants.Add(graphNodeVariant);
             }
 #endif
         }
 
-        public IReadOnlySet<EdgeId> GetEdges(GraphRuntime<VariantNode> graph)
+        public override IReadOnlySet<EdgeId> GetEdges(GraphRuntime<GraphNode> graph)
         {
             _edges.Clear();
             foreach (var edge in _serializableEdges) _edges.Add(edge.ToEdge());
             return _edges;
         }
 
-        public bool IsPortCompatible(GameObjectNodes<VariantNode, VariantNodeComponent> data, in PortId input, in PortId output)
+        public override bool IsPortCompatible(GameObjectNodes<GraphNode, GraphNodeComponent> data, in PortId input, in PortId output)
         {
             if (input.NodeId == Id && output.NodeId == Id) return false; // same node
             Type variantType = null;
 #if UNITY_EDITOR
-            variantType = FindVariantProperty(input, output)?.GetManagedFullType();
+            variantType = FindVariantProperty(data, input, output)?.GetManagedFullType();
 #endif
-            return variantType != null && Node.VariantType.IsAssignableFrom(variantType);
+            return variantType != null && VariantNode.VariantType.IsAssignableFrom(variantType);
         }
 
-        public void OnConnected(GameObjectNodes<VariantNode, VariantNodeComponent> data, in EdgeId edge)
+        public override void OnConnected(GameObjectNodes<GraphNode, GraphNodeComponent> data, in EdgeId edge)
         {
             if (_edges.Contains(edge)) return;
 #if UNITY_EDITOR
-            var graphNodeVariant = FindGraphNodeVariant(edge);
+            var graphNodeVariant = FindGraphNodeVariant(data, edge);
             if (graphNodeVariant == null) return;
-            Assert.IsTrue(Node.ValueType == null || Node.ValueType == graphNodeVariant.ValueType);
+            Assert.IsTrue(VariantNode.ValueType == null || VariantNode.ValueType == graphNodeVariant.ValueType);
 #endif
             var inputNodeId = edge.Input.NodeId;
             var outputNodeId = edge.Output.NodeId;
@@ -96,13 +79,13 @@ namespace EntitiesBT
 #if UNITY_EDITOR
             graphNodeVariant.NodeComponent = this;
             _variantConnections.Add(edge, graphNodeVariant);
-            Node.ConnectedVariants.Add(graphNodeVariant);
-            if (Node.Variant == null || Node.Variant.FindValueType() != Node.ValueType)
+            VariantNode.ConnectedVariants.Add(graphNodeVariant);
+            if (VariantNode.Variant == null || VariantNode.Variant.FindValueType() != VariantNode.ValueType)
             {
                 try
                 {
-                    var variantType = TypeCache.GetTypesDerivedFrom(Node.BaseType).First();
-                    Node.Variant = (IVariant)Activator.CreateInstance(variantType);
+                    var variantType = TypeCache.GetTypesDerivedFrom(VariantNode.BaseType).First();
+                    VariantNode.Variant = (IVariant)Activator.CreateInstance(variantType);
                 }
                 catch
                 {
@@ -110,22 +93,22 @@ namespace EntitiesBT
                 }
             }
 #endif
-            name = Node.Name;
+            name = VariantNode.Name;
             _edges.Add(edge);
             _serializableEdges.Add(edge.ToSerializable());
         }
 
-        public void OnDisconnected(GameObjectNodes<VariantNode, VariantNodeComponent> data, in EdgeId edge)
+        public override void OnDisconnected(GameObjectNodes<GraphNode, GraphNodeComponent> data, in EdgeId edge)
         {
             if (!_edges.Contains(edge)) return;
 #if UNITY_EDITOR
             _variantConnections.TryGetValue(edge, out var graphNodeVariant);
             if (graphNodeVariant == null) return;
             graphNodeVariant.NodeComponent = null;
-            Node.ConnectedVariants.Remove(graphNodeVariant);
+            VariantNode.ConnectedVariants.Remove(graphNodeVariant);
             _variantConnections.Remove(edge);
 #endif
-            name = Node.Name;
+            name = VariantNode.Name;
             _edges.Remove(edge);
             _serializableEdges.Remove(edge.ToSerializable());
         }
@@ -141,45 +124,45 @@ namespace EntitiesBT
             );
         }
 
-        private SerializedProperty FindVariantProperty(in PortId input, in PortId output)
+        private SerializedProperty FindVariantProperty(GameObjectNodes<GraphNode, GraphNodeComponent> nodes, in PortId input, in PortId output)
         {
             if (input.NodeId == Id && input.Name == VariantNode.INPUT_PORT)
-                return output.FindVariantPortProperty(_variantNodes, _behaviorTreeNodes);
+                return output.FindVariantPortProperty(nodes);
             if (output.NodeId == Id && output.Name == VariantNode.OUTPUT_PORT)
-                return input.FindVariantPortProperty(_variantNodes, _behaviorTreeNodes);
+                return input.FindVariantPortProperty(nodes);
             return null;
         }
 
-        private GraphNodeVariant.Any FindGraphNodeVariant(in PortId input, in PortId output)
+        private GraphNodeVariant.Any FindGraphNodeVariant(GameObjectNodes<GraphNode, GraphNodeComponent> nodes, in PortId input, in PortId output)
         {
-            var variantProperty = FindVariantProperty(input, output);
+            var variantProperty = FindVariantProperty(nodes, input, output);
             if (variantProperty == null) return null;
             return (GraphNodeVariant.Any) variantProperty.GetObject();
         }
 
-        private GraphNodeVariant.Any FindGraphNodeVariant(in EdgeId edge)
+        private GraphNodeVariant.Any FindGraphNodeVariant(GameObjectNodes<GraphNode, GraphNodeComponent> nodes, in EdgeId edge)
         {
-            return FindGraphNodeVariant(edge.Input, edge.Output);
+            return FindGraphNodeVariant(nodes, edge.Input, edge.Output);
         }
 
-        public NodeData FindNodeProperties(SerializedObject nodeObject)
+        public override NodeData FindNodeProperties(SerializedObject nodeObject)
         {
             _titleProperty.Title = name;
             var properties = new List<INodeProperty>
             {
-                new NodeClassesProperty("variant-node", Node.AccessName),
-                new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
+                new NodeClassesProperty("variant-node", VariantNode.AccessName),
+                new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_Position)) },
                 new LabelValuePortProperty(_titleProperty, null, new PortContainerProperty(VariantNode.INPUT_PORT), new PortContainerProperty(VariantNode.OUTPUT_PORT)),
-                new NodeSerializedProperty(nodeObject.FindProperty(nameof(_node)))
+                new NodeSerializedProperty(nodeObject.FindProperty(nameof(VariantNode)))
             };
             return new NodeData(properties);
         }
 
-        public IEnumerable<PortData> FindNodePorts(SerializedObject nodeObject)
+        public override IEnumerable<PortData> FindNodePorts(SerializedObject nodeObject)
         {
-            var portClasses = VariantPort.GetPortClasses(Node.VariantType).ToArray();
-            yield return new PortData(VariantNode.INPUT_PORT, PortOrientation.Horizontal, PortDirection.Input, int.MaxValue, Node.VariantType, portClasses);
-            yield return new PortData(VariantNode.OUTPUT_PORT, PortOrientation.Horizontal, PortDirection.Output, int.MaxValue, Node.VariantType, portClasses);
+            var portClasses = VariantPort.GetPortClasses(VariantNode.VariantType).ToArray();
+            yield return new PortData(VariantNode.INPUT_PORT, PortOrientation.Horizontal, PortDirection.Input, int.MaxValue, VariantNode.VariantType, portClasses);
+            yield return new PortData(VariantNode.OUTPUT_PORT, PortOrientation.Horizontal, PortDirection.Output, int.MaxValue, VariantNode.VariantType, portClasses);
             _variantProperties ??= GetVariantProperties(nodeObject).ToArray();
             foreach (var variant in _variantProperties)
             {
@@ -217,7 +200,7 @@ namespace EntitiesBT
 
         private SerializedProperty GetSerializedNodeBuilder(SerializedObject nodeObject)
         {
-            return nodeObject.FindProperty(nameof(_node)).FindPropertyRelative(nameof(VariantNode<IVariant>.Value));
+            return nodeObject.FindProperty(nameof(VariantNode)).FindPropertyRelative(nameof(VariantNode<IVariant>.Value));
         }
 #endif
 

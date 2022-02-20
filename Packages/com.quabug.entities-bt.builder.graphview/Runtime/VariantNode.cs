@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EntitiesBT.Editor;
 using EntitiesBT.Variant;
 using GraphExt;
 using Unity.Entities;
@@ -10,8 +9,10 @@ using UnityEngine;
 namespace EntitiesBT
 {
     [Serializable]
-    public abstract class VariantNode : INode<GraphRuntime<VariantNode>>
+    public abstract class VariantNode : GraphNode, INode<GraphRuntime<VariantNode>>
     {
+        public override Type ComponentType => typeof(VariantNodeComponent);
+
         public const string INPUT_PORT = "input";
         public const string OUTPUT_PORT = "output";
 

@@ -2,54 +2,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EntitiesBT.Core;
+using EntitiesBT.Editor;
 using EntitiesBT.Variant;
 using GraphExt;
 using GraphExt.Editor;
 using Nuwa;
-using UnityEngine;
-
-#if UNITY_EDITOR
-using EntitiesBT.Editor;
 using Nuwa.Editor;
 using UnityEditor;
-#endif
+using UnityEngine;
 
 namespace EntitiesBT
 {
-    [DisallowMultipleComponent, ExecuteAlways, AddComponentMenu("")]
-    public class BehaviorTreeNodeComponent : MonoBehaviour, INodeComponent<BehaviorTreeNode, BehaviorTreeNodeComponent>, ITreeNodeComponent, IGraphNodeComponent
+    public class BehaviorNodeComponent : GraphNodeComponent, ITreeNodeComponent
     {
         [SerializeField, HideInInspector] private bool _expanded = false;
 
-        [SerializeField, Nuwa.ReadOnly, UnityDrawProperty] private string _id;
-        public NodeId Id { get => Guid.Parse(_id); set => _id = value.ToString(); }
-
-        [SerializeField] private Vector2 _position;
-        public Vector2 Position
+        public override Vector2 Position
         {
-            get => _position;
+            get => _Position;
             set
             {
-                _position = value;
-                var parent = transform.parent.GetComponent<BehaviorTreeNodeComponent>();
+                _Position = value;
+                var parent = transform.parent.GetComponent<BehaviorNodeComponent>();
                 if (parent) parent._reorderChildrenTransform(parent.transform);
             }
         }
 
-        [SerializeField, UnboxSingleProperty, UnityDrawProperty] private BehaviorTreeNode _node;
-        public BehaviorTreeNode Node { get => _node; set => _node = value; }
+        [SerializeField, UnboxSingleProperty, UnityDrawProperty] private BehaviorNode _node;
+        public override GraphNode Node { get => _node; set => _node = (BehaviorNode)value; }
 
-        public PortId InputPort => new PortId(Id, Node.InputPortName);
-        public PortId OutputPort => new PortId(Id, Node.OutputPortName);
-
-        public INodeComponent.NodeComponentConnect OnNodeComponentConnect { get; set; }
-        public INodeComponent.NodeComponentDisconnect OnNodeComponentDisconnect { get; set; }
+        public PortId InputPort => new PortId(Id, _node.InputPortName);
+        public PortId OutputPort => new PortId(Id, _node.OutputPortName);
 
         private readonly TreeEdge _treeEdge = new TreeEdge();
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
         private readonly Action<Transform> _reorderChildrenTransform = NodeTransform.ReorderChildrenTransformAction(node => node.Position.x);
 
-        public IReadOnlySet<EdgeId> GetEdges(GraphRuntime<BehaviorTreeNode> graph)
+        public override IReadOnlySet<EdgeId> GetEdges(GraphRuntime<GraphNode> graph)
         {
             _edges.Clear();
             var treeEdge = _treeEdge.Edge(gameObject);
@@ -57,7 +46,7 @@ namespace EntitiesBT
             return _edges;
         }
 
-        public bool IsPortCompatible(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data, in PortId input, in PortId output)
+        public override bool IsPortCompatible(GameObjectNodes<GraphNode, GraphNodeComponent> data, in PortId input, in PortId output)
         {
             // free to connect each other if they are not tree ports
             var isInputTreePort = data.Runtime.IsTreePort(input);
@@ -72,7 +61,7 @@ namespace EntitiesBT
             return !_treeEdge.IsParentInputPort(gameObject, input);
         }
 
-        public void OnConnected(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data, in EdgeId edge)
+        public override void OnConnected(GameObjectNodes<GraphNode, GraphNodeComponent> data, in EdgeId edge)
         {
             if (!data.Runtime.IsTreeEdge(edge) || _edges.Contains(edge)) return;
             _edges.Add(edge);
@@ -80,7 +69,7 @@ namespace EntitiesBT
             _treeEdge.ConnectParent(this, edge, data[edge.Output.NodeId].transform);
         }
 
-        public void OnDisconnected(GameObjectNodes<BehaviorTreeNode, BehaviorTreeNodeComponent> data, in EdgeId edge)
+        public override void OnDisconnected(GameObjectNodes<GraphNode, GraphNodeComponent> data, in EdgeId edge)
         {
             if (!_edges.Contains(edge)) return;
             // reset parent for tree edges
@@ -107,24 +96,24 @@ namespace EntitiesBT
         private SerializedProperty[] _variantProperties;
         private readonly EventTitleProperty _titleProperty = new EventTitleProperty();
 
-        static BehaviorTreeNodeComponent()
+        static BehaviorNodeComponent()
         {
-            GraphUtility.RegisterNameChanged<BehaviorTreeNodeComponent>(node => node._titleProperty.Title = node.name);
+            GraphUtility.RegisterNameChanged<BehaviorNodeComponent>(node => node._titleProperty.Title = node.name);
         }
 
-        public NodeData FindNodeProperties(SerializedObject nodeObject)
+        public override NodeData FindNodeProperties(SerializedObject nodeObject)
         {
             _titleProperty.Title = name;
-            var behaviorNodeType = Node.BehaviorNodeType;
+            var behaviorNodeType = _node.BehaviorNodeType;
             var properties = new List<INodeProperty>
             {
-                CreateVerticalPorts(Node.InputPortName, -100),
-                new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
+                CreateVerticalPorts(_node.InputPortName, -100),
+                new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_Position)) },
                 new NodeClassesProperty("behavior-node", behaviorNodeType.ToString().ToLower()),
                 new NodeTitleProperty { TitleProperty = _titleProperty, ToggleProperty = new FoldoutProperty { BoolProperty = nodeObject.FindProperty(nameof(_expanded)) } },
                 new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject)) { HideFoldoutToggle = true, ToggleProperty = nodeObject.FindProperty(nameof(_expanded)) }
             };
-            if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(Node.OutputPortName, 100));
+            if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(_node.OutputPortName, 100));
             return new NodeData(properties);
 
             VerticalPortsProperty CreateVerticalPorts(string portName, int order)
@@ -136,15 +125,15 @@ namespace EntitiesBT
             }
         }
 
-        public IEnumerable<PortData> FindNodePorts(SerializedObject nodeObject)
+        public override IEnumerable<PortData> FindNodePorts(SerializedObject nodeObject)
         {
-            var behaviorNodeType = Node.BehaviorNodeType;
-            yield return CreateBehaviorTreePortData(Node.InputPortName, PortDirection.Input, 1);
+            var behaviorNodeType = _node.BehaviorNodeType;
+            yield return CreateBehaviorTreePortData(_node.InputPortName, PortDirection.Input, 1);
 
             if (behaviorNodeType == BehaviorNodeType.Composite)
-                yield return CreateBehaviorTreePortData(Node.OutputPortName, PortDirection.Output, int.MaxValue);
+                yield return CreateBehaviorTreePortData(_node.OutputPortName, PortDirection.Output, int.MaxValue);
             else if (behaviorNodeType == BehaviorNodeType.Decorate)
-                yield return CreateBehaviorTreePortData(Node.OutputPortName, PortDirection.Output, 1);
+                yield return CreateBehaviorTreePortData(_node.OutputPortName, PortDirection.Output, 1);
 
             _variantProperties ??= GetVariantProperties(nodeObject).ToArray();
             foreach (var variant in _variantProperties)
@@ -164,7 +153,7 @@ namespace EntitiesBT
                     PortOrientation.Vertical,
                     direction,
                     capacity,
-                    typeof(BehaviorTreeNode),
+                    typeof(BehaviorNode),
                     "tree",
                     behaviorNodeType.ToString().ToLower()
                 );
@@ -196,7 +185,7 @@ namespace EntitiesBT
 
         private SerializedProperty GetSerializedNodeBuilder(SerializedObject nodeObject)
         {
-            return nodeObject.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorTreeNode.Blob));
+            return nodeObject.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorNode.Blob));
         }
 #endif
 
