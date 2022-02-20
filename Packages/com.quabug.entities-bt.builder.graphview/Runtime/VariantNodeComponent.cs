@@ -167,6 +167,7 @@ namespace EntitiesBT
             _titleProperty.Title = name;
             var properties = new List<INodeProperty>
             {
+                new NodeClassesProperty("variant-node", Node.AccessName),
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
                 new LabelValuePortProperty(_titleProperty, null, new PortContainerProperty(VariantNode.INPUT_PORT), new PortContainerProperty(VariantNode.OUTPUT_PORT)),
                 new NodeSerializedProperty(nodeObject.FindProperty(nameof(_node)))
@@ -176,8 +177,9 @@ namespace EntitiesBT
 
         public IEnumerable<PortData> FindNodePorts(SerializedObject nodeObject)
         {
-            yield return new PortData(VariantNode.INPUT_PORT, PortOrientation.Horizontal, PortDirection.Input, int.MaxValue, Node.VariantType);
-            yield return new PortData(VariantNode.OUTPUT_PORT, PortOrientation.Horizontal, PortDirection.Output, int.MaxValue, Node.VariantType);
+            var portClasses = VariantPort.GetPortClasses(Node.VariantType).ToArray();
+            yield return new PortData(VariantNode.INPUT_PORT, PortOrientation.Horizontal, PortDirection.Input, int.MaxValue, Node.VariantType, portClasses);
+            yield return new PortData(VariantNode.OUTPUT_PORT, PortOrientation.Horizontal, PortDirection.Output, int.MaxValue, Node.VariantType, portClasses);
             _variantProperties ??= GetVariantProperties(nodeObject).ToArray();
             foreach (var variant in _variantProperties)
             {

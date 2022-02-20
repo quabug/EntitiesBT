@@ -1,3 +1,29 @@
+Node.behavior-node #node-border {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+Node.behavior-node #selection-border {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+Port.variant.RO {
+    --port-color: #669CE6;
+}
+
+Port.variant.WO {
+    --port-color: #EED620;
+}
+
+Port.variant.RW {
+    --port-color: #AF88F0;
+}
+
 .action .vertical-ports {
     background-color: rgb(29, 157, 168);
 }

@@ -120,7 +120,7 @@ namespace EntitiesBT
             {
                 CreateVerticalPorts(Node.InputPortName, -100),
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_position)) },
-                new NodeClassesProperty(behaviorNodeType.ToString().ToLower().Yield()),
+                new NodeClassesProperty("behavior-node", behaviorNodeType.ToString().ToLower()),
                 new NodeTitleProperty { TitleProperty = _titleProperty, ToggleProperty = new FoldoutProperty { BoolProperty = nodeObject.FindProperty(nameof(_expanded)) } },
                 new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject)) { HideFoldoutToggle = true, ToggleProperty = nodeObject.FindProperty(nameof(_expanded)) }
             };
@@ -165,7 +165,8 @@ namespace EntitiesBT
                     direction,
                     capacity,
                     typeof(BehaviorTreeNode),
-                    new []{"tree", behaviorNodeType.ToString().ToLower()}
+                    "tree",
+                    behaviorNodeType.ToString().ToLower()
                 );
             }
 
@@ -177,7 +178,7 @@ namespace EntitiesBT
                     direction,
                     1,
                     VariantPort.GetPortType(variantType),
-                    new []{"variant"}
+                    VariantPort.GetPortClasses(variantType).ToArray()
                 );
             }
         }

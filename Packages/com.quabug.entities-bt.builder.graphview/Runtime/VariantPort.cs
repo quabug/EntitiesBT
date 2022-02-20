@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 
 using System;
+using System.Collections.Generic;
 using EntitiesBT.Variant;
 using GraphExt;
 using UnityEditor;
@@ -13,6 +14,16 @@ namespace EntitiesBT.Editor
         public static string CreatePortName(SerializedProperty property, PortDirection direction)
         {
             return $"{property.propertyPath}|{direction.ToString().ToLower()}";
+        }
+
+        public static void Deconstruct(this in PortId portId, out NodeId nodeId, out string propertyPath, out PortDirection direction)
+        {
+            nodeId = portId.NodeId;
+            var portName = portId.Name;
+            var splitIndex = portName.LastIndexOf('|');
+            propertyPath = portName.Substring(0, splitIndex);
+            var directionName = portName.Substring(splitIndex + 1);
+            Enum.TryParse(directionName, out direction);
         }
 
         public static Type GetPortType(Type variantType)
@@ -42,16 +53,6 @@ namespace EntitiesBT.Editor
             return portType;
         }
 
-        public static void Deconstruct(this in PortId portId, out NodeId nodeId, out string propertyPath, out PortDirection direction)
-        {
-            nodeId = portId.NodeId;
-            var portName = portId.Name;
-            var splitIndex = portName.LastIndexOf('|');
-            propertyPath = portName.Substring(0, splitIndex);
-            var directionName = portName.Substring(splitIndex + 1);
-            Enum.TryParse(directionName, out direction);
-        }
-
         public static SerializedProperty FindVariantPortProperty(
             this in PortId portId,
             GameObjectNodes<VariantNode, VariantNodeComponent> variantNodes,
@@ -74,6 +75,12 @@ namespace EntitiesBT.Editor
             {
                 return null;
             }
+        }
+
+        public static IEnumerable<string> GetPortClasses(Type variantType)
+        {
+            yield return "variant";
+            yield return VariantNode.GetVariantAccessName(variantType);
         }
     }
 }

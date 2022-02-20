@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EntitiesBT.Editor;
 using EntitiesBT.Variant;
 using GraphExt;
 using Unity.Entities;
@@ -27,17 +28,8 @@ namespace EntitiesBT
         public Type BaseType => ValueType == null ? BaseVariantGenericType : BaseVariantGenericType.MakeGenericType(ValueType);
 
         public string Name => $"{VariantTypeName}{AccessName}<{Variant?.FindValueType()?.Name}>";
-        protected string BaseTypeName => BaseType.AssemblyQualifiedName;
-        private string AccessName
-        {
-            get
-            {
-                if (typeof(IVariantReader).IsAssignableFrom(DefaultVariantType)) return "RO";
-                if (typeof(IVariantWriter).IsAssignableFrom(DefaultVariantType)) return "WO";
-                if (typeof(IVariantReaderAndWriter).IsAssignableFrom(DefaultVariantType)) return "RW";
-                throw new ArgumentException();
-            }
-        }
+        public string BaseTypeName => BaseType.AssemblyQualifiedName;
+        public string AccessName => GetVariantAccessName(DefaultVariantType);
 
         public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
         {
@@ -47,6 +39,14 @@ namespace EntitiesBT
         public bool IsPortCompatible(GraphRuntime<VariantNode> graph, in PortId input, in PortId output) => true;
         public void OnConnected(GraphRuntime<VariantNode> graph, in PortId input, in PortId output) {}
         public void OnDisconnected(GraphRuntime<VariantNode> graph, in PortId input, in PortId output) {}
+
+        public static string GetVariantAccessName(Type variantType)
+        {
+            if (typeof(IVariantReader).IsAssignableFrom(variantType)) return "RO";
+            if (typeof(IVariantWriter).IsAssignableFrom(variantType)) return "WO";
+            if (typeof(IVariantReaderAndWriter).IsAssignableFrom(variantType)) return "RW";
+            throw new ArgumentException();
+        }
     }
 
     public abstract class VariantNode<T> : VariantNode where T : IVariant
