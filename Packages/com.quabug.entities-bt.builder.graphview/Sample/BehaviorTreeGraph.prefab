@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hideTitle: 0
   _id: 8053c7b0-24b7-4b4d-95c5-4e1877fdb3dc
-  _position: {x: 1077.5, y: 390.5}
+  _position: {x: 1221, y: 404.5}
   _node:
     id: 0
   _serializableEdges: []
@@ -351,7 +351,7 @@ MonoBehaviour:
       type: {class: <IVariantReaderAndWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        NodeComponent: {fileID: 0}
+        NodeComponent: {fileID: 6587147138690056499}
 --- !u!1 &5865042857487375268
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,6 +605,7 @@ Transform:
   - {fileID: 1178171666319305832}
   - {fileID: 3208838960519681953}
   - {fileID: 4789293366242616343}
+  - {fileID: 678491089337655662}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -663,3 +664,70 @@ MonoBehaviour:
       Builders: []
   references:
     version: 1
+--- !u!1 &8612272810088839880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 678491089337655662}
+  - component: {fileID: 6587147138690056499}
+  m_Layer: 0
+  m_Name: LocalRW<Single>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &678491089337655662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8612272810088839880}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1114355261066075675}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6587147138690056499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8612272810088839880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e31b764c12c4db7aeaa18a645b62d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hideTitle: 0
+  _id: 071415bb-1f53-48b0-80c5-cd2e7f1f66b2
+  _position: {x: 930, y: 287.5}
+  _node:
+    id: 0
+  _serializableEdges:
+  - InputNode: 071415bb-1f53-48b0-80c5-cd2e7f1f66b2
+    InputPort: input
+    InputPortId: 
+    OutputNode: 76dea85a-90a2-4b0d-a22f-9946bd12c0e0
+    OutputPort: _node.Blob.Builders.Array.data[0]._readerAndWriter._variant|output
+    OutputPortId: 
+  references:
+    version: 1
+    00000000:
+      type: {class: LocalReaderAndWriterNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
+      data:
+        Value:
+          id: 1
+    00000001:
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value: 0

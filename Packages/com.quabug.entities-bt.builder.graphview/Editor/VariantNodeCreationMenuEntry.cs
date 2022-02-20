@@ -43,7 +43,7 @@ namespace EntitiesBT.Editor
                         _graphRuntime.AddNode(id, node);
                         var component = _nodes[id];
                         component.Position = menuPosition;
-                        component.name = type.Name;
+                        component.name = node.Name;
                         EditorSceneManager.MarkSceneDirty(stage.scene);
                     });
                 }
