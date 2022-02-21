@@ -113,7 +113,7 @@ namespace EntitiesBT
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_Position)) },
                 new NodeClassesProperty("behavior-node", behaviorNodeType.ToString().ToLower()),
                 _titleProperty,
-                new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject)) { HideFoldoutToggle = true, ToggleProperty = nodeObject.FindProperty(nameof(_expanded)) }
+                new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject)) { HideFoldoutToggle = true, ToggleProperty = _titleProperty.ToggleProperty }
             };
             if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(_node.OutputPortName, 100));
             return new NodeData(properties);

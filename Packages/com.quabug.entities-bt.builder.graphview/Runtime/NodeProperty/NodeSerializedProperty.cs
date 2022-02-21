@@ -7,7 +7,6 @@ using JetBrains.Annotations;
 using Nuwa.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
 using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
@@ -40,14 +39,20 @@ namespace EntitiesBT.Editor
             {
                 var view = new ImmediatePropertyField(property.Property, label: null);
                 var toggle = view.Q<Toggle>();
+                toggle?.SetValueWithoutNotify(true);
                 if (property.HideFoldoutToggle && toggle != null) toggle.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-                if (property.ToggleProperty != null && toggle != null)
+                if (property.ToggleProperty != null)
                 {
                     Assert.AreEqual(SerializedPropertyType.Boolean, property.ToggleProperty.propertyType);
-                    toggle.BindProperty(property.ToggleProperty);
-                    toggle.SetValueWithoutNotify(property.ToggleProperty.boolValue);
+                    ToggleView(property.ToggleProperty);
+                    Nuwa.Editor.BindingExtensions.TrackPropertyValue(view, property.ToggleProperty, ToggleView);
                 }
                 return view;
+
+                void ToggleView(SerializedProperty toggleProperty)
+                {
+                    view.style.display = toggleProperty.boolValue ? DisplayStyle.Flex : DisplayStyle.None;
+                }
             }
         }
     }

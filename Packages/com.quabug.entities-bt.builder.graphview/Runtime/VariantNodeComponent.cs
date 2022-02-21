@@ -28,7 +28,6 @@ namespace EntitiesBT
         private readonly Dictionary<EdgeId, GraphNodeVariant.Any> _variantConnections = new Dictionary<EdgeId, GraphNodeVariant.Any>();
 
         [SerializeField] private bool _expanded = false;
-        [SerializeField] private bool _hideTitle = false;
 
         [Inject]
         void Inject(GameObjectNodes<GraphNode, GraphNodeComponent> nodes)
@@ -132,9 +131,7 @@ namespace EntitiesBT
 
         static VariantNodeComponent()
         {
-            GraphUtility.RegisterNameChanged<VariantNodeComponent>(variant =>
-                variant._titleProperty.Title = variant._hideTitle ? null : variant.name
-            );
+            GraphUtility.RegisterNameChanged<VariantNodeComponent>(variant => variant._titleProperty.Title = variant.name);
         }
 
         private SerializedProperty FindGraphNodeVariantProperty(GameObjectNodes<GraphNode, GraphNodeComponent> nodes, in PortId input, in PortId output)
@@ -167,7 +164,7 @@ namespace EntitiesBT
                 new NodeClassesProperty("variant-node", VariantNode.AccessName),
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_Position)) },
                 new VariantNodeTitleProperty(_titleProperty, VariantNode.INPUT_PORT, VariantNode.OUTPUT_PORT),
-                new NodeSerializedProperty(nodeObject.FindProperty(nameof(VariantNode)))
+                new NodeSerializedProperty(nodeObject.FindProperty(nameof(VariantNode))) { HideFoldoutToggle = true, ToggleProperty = _titleProperty.ToggleProperty }
             };
             return new NodeData(properties);
         }

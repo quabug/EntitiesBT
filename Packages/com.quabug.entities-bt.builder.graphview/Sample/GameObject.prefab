@@ -229,7 +229,7 @@ MonoBehaviour:
     OutputNode: 6f4f84a3-9629-4b4a-9887-c99702f7ec6b
     OutputPort: output
     OutputPortId: 
-  _expanded: 0
+  _expanded: 1
   _hideTitle: 0
   references:
     version: 1
@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: c1456128-6dc4-457a-b3f0-1b1aead5f242
-  _Position: {x: 1231, y: 268}
+  _Position: {x: 1235, y: 311}
   VariantNode:
     id: 0
   _serializableEdges:
@@ -297,7 +297,7 @@ MonoBehaviour:
     OutputNode: cb1d8ee9-43a4-4fc2-95c0-e6fe4ef28949
     OutputPort: _node.Blob.Builders.Array.data[1]._variant|output
     OutputPortId: 
-  _expanded: 1
+  _expanded: 0
   _hideTitle: 0
   references:
     version: 1
@@ -358,7 +358,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: cb1d8ee9-43a4-4fc2-95c0-e6fe4ef28949
-  _Position: {x: 913, y: 232}
+  _Position: {x: 913, y: 258}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Extensions.UnityMovement.CharacterSimpleMoveNode,
@@ -607,7 +607,7 @@ MonoBehaviour:
       Builders:
       - id: 0
       - id: 1
-  _expanded: 0
+  _expanded: 1
   references:
     version: 1
     00000000:

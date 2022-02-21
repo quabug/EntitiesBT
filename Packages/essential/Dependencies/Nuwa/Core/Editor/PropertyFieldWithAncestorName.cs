@@ -16,7 +16,11 @@ namespace Nuwa.Editor
             if (evt is AttachToPanelEvent)
             {
                 var propertyField = GetFirstAncestorOfType<PropertyField>();
-                if (propertyField != null) label = propertyField.name;
+                if (propertyField != null)
+                {
+                    name = propertyField.name;
+                    label = propertyField.name;
+                }
             }
             base.ExecuteDefaultAction(evt);
         }

@@ -63,6 +63,11 @@ Node #node-title-property > Toggle {
     align-items: center;
 }
 
+Node #node-title-property > Toggle > VisualElement {
+    align-items: center;
+    justify-content: center;
+}
+
 Node #behavior-node-property {
     padding-left: 20px;
     padding-right: 20px;
