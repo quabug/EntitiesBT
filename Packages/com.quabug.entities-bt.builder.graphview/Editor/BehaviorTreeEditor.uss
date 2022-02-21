@@ -50,11 +50,7 @@ Port.port.tree > #connector {
 }
 
 Node #node-title-property {
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-Node #node-title-property {
+    height: 30px;
     padding-left: 20px;
     padding-right: 20px;
 }
@@ -66,4 +62,9 @@ Node #behavior-node-property {
 
 Node.action #contents {
     padding-bottom: 10px;
+}
+
+#variant-node-title-property #connector {
+    margin-left: 1px;
+    margin-right: 1px;
 }

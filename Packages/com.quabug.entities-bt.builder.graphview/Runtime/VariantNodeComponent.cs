@@ -20,14 +20,14 @@ namespace EntitiesBT
     [DisallowMultipleComponent, ExecuteAlways, AddComponentMenu("")]
     public class VariantNodeComponent : GraphNodeComponent
     {
-        [SerializeField] private bool _hideTitle = false;
-
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public VariantNode VariantNode;
         public override GraphNode Node { get => VariantNode; set => VariantNode = (VariantNode)value; }
 
         [SerializeField, HideInInspector] private List<SerializableEdge> _serializableEdges = new List<SerializableEdge>();
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
         private readonly Dictionary<EdgeId, GraphNodeVariant.Any> _variantConnections = new Dictionary<EdgeId, GraphNodeVariant.Any>();
+
+        [SerializeField] private bool _hideTitle = false;
 
         [Inject]
         void Inject(GameObjectNodes<GraphNode, GraphNodeComponent> nodes)
@@ -164,7 +164,7 @@ namespace EntitiesBT
             {
                 new NodeClassesProperty("variant-node", VariantNode.AccessName),
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_Position)) },
-                new LabelValuePortProperty(_titleProperty, null, new PortContainerProperty(VariantNode.INPUT_PORT), new PortContainerProperty(VariantNode.OUTPUT_PORT)),
+                new VariantNodeTitleProperty(_titleProperty, VariantNode.INPUT_PORT, VariantNode.OUTPUT_PORT),
                 new NodeSerializedProperty(nodeObject.FindProperty(nameof(VariantNode)))
             };
             return new NodeData(properties);
