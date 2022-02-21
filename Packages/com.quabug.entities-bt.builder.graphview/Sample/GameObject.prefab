@@ -213,12 +213,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: 6f4f84a3-9629-4b4a-9887-c99702f7ec6b
-  _Position: {x: 299.5, y: 470}
+  _Position: {x: 271.5, y: 192}
   _hideTitle: 0
   VariantNode:
     id: 0
   _serializableEdges:
   - InputNode: eb2c249b-fc97-476b-bb8e-2edfa532f330
+    InputPort: _node.Blob.Builders.Array.data[1]._variant|input
+    InputPortId: 
+    OutputNode: 6f4f84a3-9629-4b4a-9887-c99702f7ec6b
+    OutputPort: output
+    OutputPortId: 
+  - InputNode: cb1d8ee9-43a4-4fc2-95c0-e6fe4ef28949
     InputPort: _node.Blob.Builders.Array.data[1]._variant|input
     InputPortId: 
     OutputNode: 6f4f84a3-9629-4b4a-9887-c99702f7ec6b
@@ -236,6 +242,76 @@ MonoBehaviour:
         asm: Assembly-CSharp}
       data:
         ComponentValueName: Unity.Transforms.Translation.Value
+--- !u!1 &4480897375950921313
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3143066125871397816}
+  - component: {fileID: 7352244763397315294}
+  m_Layer: 0
+  m_Name: LocalRW<float3>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3143066125871397816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4480897375950921313}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7852097894234948500}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7352244763397315294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4480897375950921313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 504e8699fe604f35865fadbc8b3cc37a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Id: c1456128-6dc4-457a-b3f0-1b1aead5f242
+  _Position: {x: 1231, y: 268}
+  _hideTitle: 0
+  VariantNode:
+    id: 0
+  _serializableEdges:
+  - InputNode: c1456128-6dc4-457a-b3f0-1b1aead5f242
+    InputPort: input
+    InputPortId: 
+    OutputNode: cb1d8ee9-43a4-4fc2-95c0-e6fe4ef28949
+    OutputPort: _node.Blob.Builders.Array.data[1]._variant|output
+    OutputPortId: 
+  references:
+    version: 1
+    00000000:
+      type: {class: LocalReaderAndWriterNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
+      data:
+        Value:
+          id: 1
+    00000001:
+      type: {class: <IVariantReaderAndWriter>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value:
+          x: 0
+          y: 0
+          z: 0
 --- !u!1 &4721891897040275518
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +388,7 @@ MonoBehaviour:
       type: {class: <IVariantReader>/float3GraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        NodeComponent: {fileID: 0}
+        NodeComponent: {fileID: 7352244763397315294}
 --- !u!1 &4947112627633126229
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,6 +544,7 @@ Transform:
   - {fileID: 8027981567682839039}
   - {fileID: 7315833254409000405}
   - {fileID: 8423232143250841308}
+  - {fileID: 3143066125871397816}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

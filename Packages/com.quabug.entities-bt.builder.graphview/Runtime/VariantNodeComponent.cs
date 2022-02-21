@@ -54,12 +54,23 @@ namespace EntitiesBT
         public override bool IsPortCompatible(GameObjectNodes<GraphNode, GraphNodeComponent> data, in PortId input, in PortId output)
         {
             if (input.NodeId == Id && output.NodeId == Id) return false; // same node
-            Type variantType = null;
+            Type graphNodeVariantType = null;
 #if UNITY_EDITOR
-            var property = FindVariantProperty(data, input, output);
-            variantType = property?.GetManagedFullType();
+            graphNodeVariantType = FindGraphNodeVariantProperty(data, input, output)?.GetManagedFullType();
 #endif
-            return variantType != null && VariantNode.VariantType.IsAssignableFrom(variantType);
+            if (graphNodeVariantType == null) return false;
+            var graphNodeVariantValueType = graphNodeVariantType.GetInterface(typeof(IVariant<int>).Name).GenericTypeArguments[0];
+            if (VariantNode.ValueType != null && VariantNode.ValueType != graphNodeVariantValueType) return false;
+            var variantType = VariantNode.VariantType;
+            return typeof(IVariantReaderAndWriter).IsAssignableFrom(variantType) ||
+                   HasSameBaseType(typeof(IVariantReader), variantType, graphNodeVariantType) ||
+                   HasSameBaseType(typeof(IVariantWriter), variantType, graphNodeVariantType)
+            ;
+
+            bool HasSameBaseType(Type baseType, Type first, Type second)
+            {
+                return baseType.IsAssignableFrom(first) && baseType.IsAssignableFrom(second);
+            }
         }
 
         public override void OnConnected(GameObjectNodes<GraphNode, GraphNodeComponent> data, in EdgeId edge)
@@ -125,18 +136,18 @@ namespace EntitiesBT
             );
         }
 
-        private SerializedProperty FindVariantProperty(GameObjectNodes<GraphNode, GraphNodeComponent> nodes, in PortId input, in PortId output)
+        private SerializedProperty FindGraphNodeVariantProperty(GameObjectNodes<GraphNode, GraphNodeComponent> nodes, in PortId input, in PortId output)
         {
             if (input.NodeId == Id && input.Name == VariantNode.INPUT_PORT)
-                return VariantPorts.FindVariantPortProperty(output, nodes);
+                return VariantPorts.FindGraphNodeVariantPortProperty(output, nodes);
             if (output.NodeId == Id && output.Name == VariantNode.OUTPUT_PORT)
-                return VariantPorts.FindVariantPortProperty(input, nodes);
+                return VariantPorts.FindGraphNodeVariantPortProperty(input, nodes);
             return null;
         }
 
         private GraphNodeVariant.Any FindGraphNodeVariant(GameObjectNodes<GraphNode, GraphNodeComponent> nodes, in PortId input, in PortId output)
         {
-            var variantProperty = FindVariantProperty(nodes, input, output);
+            var variantProperty = FindGraphNodeVariantProperty(nodes, input, output);
             if (variantProperty == null) return null;
             return (GraphNodeVariant.Any) variantProperty.GetObject();
         }
