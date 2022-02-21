@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using EntitiesBT.Core;
 using EntitiesBT.Editor;
-using EntitiesBT.Variant;
 using GraphExt;
 using GraphExt.Editor;
 using Nuwa;
-using Nuwa.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,8 +12,6 @@ namespace EntitiesBT
 {
     public class BehaviorNodeComponent : GraphNodeComponent, ITreeNodeComponent
     {
-        [SerializeField, HideInInspector] private bool _expanded = false;
-
         public override Vector2 Position
         {
             get => _Position;
@@ -30,6 +25,8 @@ namespace EntitiesBT
 
         [SerializeField, UnboxSingleProperty, UnityDrawProperty] private BehaviorNode _node;
         public override GraphNode Node { get => _node; set => _node = (BehaviorNode)value; }
+
+        [SerializeField] private bool _expanded = false;
 
         public PortId InputPort => new PortId(Id, _node.InputPortName);
         public PortId OutputPort => new PortId(Id, _node.OutputPortName);

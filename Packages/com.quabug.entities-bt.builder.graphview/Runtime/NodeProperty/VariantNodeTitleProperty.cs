@@ -34,13 +34,8 @@ namespace EntitiesBT
 
                 container.name = "variant-node-title-property";
                 container.style.flexDirection = FlexDirection.Row;
-                container.style.height = 20;
 
                 label.name = "title-property";
-                label.style.height = 20;
-                label.style.fontSize = 12;
-                label.style.unityTextAlign = TextAnchor.MiddleCenter;
-                label.style.unityFontStyleAndWeight = FontStyle.BoldAndItalic;
 
                 leftPort.name = "input-port";
                 leftPort.style.alignSelf = Align.Center;

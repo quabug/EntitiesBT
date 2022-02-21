@@ -27,6 +27,7 @@ namespace EntitiesBT
         private readonly GraphExt.HashSet<EdgeId> _edges = new GraphExt.HashSet<EdgeId>();
         private readonly Dictionary<EdgeId, GraphNodeVariant.Any> _variantConnections = new Dictionary<EdgeId, GraphNodeVariant.Any>();
 
+        [SerializeField] private bool _expanded = false;
         [SerializeField] private bool _hideTitle = false;
 
         [Inject]
@@ -127,7 +128,7 @@ namespace EntitiesBT
 
 #if UNITY_EDITOR
         private readonly VariantPorts _variantPorts = new VariantPorts();
-        private readonly EventTitleProperty _titleProperty = new EventTitleProperty();
+        private readonly NodeTitleProperty _titleProperty = new NodeTitleProperty();
 
         static VariantNodeComponent()
         {
@@ -160,6 +161,7 @@ namespace EntitiesBT
         public override NodeData FindNodeProperties(SerializedObject nodeObject)
         {
             _titleProperty.Title = name;
+            _titleProperty.ToggleProperty = nodeObject.FindProperty(nameof(_expanded));
             var properties = new List<INodeProperty>
             {
                 new NodeClassesProperty("variant-node", VariantNode.AccessName),
