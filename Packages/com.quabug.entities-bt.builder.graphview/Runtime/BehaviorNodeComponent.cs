@@ -98,7 +98,7 @@ namespace EntitiesBT
 
 #if UNITY_EDITOR
         private readonly VariantPorts _variantPorts = new VariantPorts();
-        private readonly EventTitleProperty _titleProperty = new EventTitleProperty();
+        private readonly NodeTitleProperty _titleProperty = new NodeTitleProperty();
 
         static BehaviorNodeComponent()
         {
@@ -108,13 +108,14 @@ namespace EntitiesBT
         public override NodeData FindNodeProperties(SerializedObject nodeObject)
         {
             _titleProperty.Title = name;
+            _titleProperty.ToggleProperty = nodeObject.FindProperty(nameof(_expanded));
             var behaviorNodeType = _node.BehaviorNodeType;
             var properties = new List<INodeProperty>
             {
                 CreateVerticalPorts(_node.InputPortName, -100),
                 new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_Position)) },
                 new NodeClassesProperty("behavior-node", behaviorNodeType.ToString().ToLower()),
-                new NodeTitleProperty { TitleProperty = _titleProperty, ToggleProperty = new FoldoutProperty { BoolProperty = nodeObject.FindProperty(nameof(_expanded)) } },
+                _titleProperty,
                 new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject)) { HideFoldoutToggle = true, ToggleProperty = nodeObject.FindProperty(nameof(_expanded)) }
             };
             if (behaviorNodeType != BehaviorNodeType.Action) properties.Add(CreateVerticalPorts(_node.OutputPortName, 100));

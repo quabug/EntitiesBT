@@ -53,6 +53,14 @@ Node #node-title-property {
     height: 30px;
     padding-left: 20px;
     padding-right: 20px;
+    font-size: 14px;
+    -unity-font-style: bold;
+}
+
+Node #node-title-property > Toggle {
+    flex-grow: 1;
+    flex-shrink: 1;
+    align-items: center;
 }
 
 Node #behavior-node-property {

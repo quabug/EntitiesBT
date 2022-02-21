@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: ae897f8a-1928-4426-aaa0-23f2e7e91af4
-  _Position: {x: 670, y: 110}
+  _Position: {x: 680, y: 132}
   _expanded: 0
   _node:
     Blob:
@@ -356,7 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: cb1d8ee9-43a4-4fc2-95c0-e6fe4ef28949
-  _Position: {x: 929, y: 216}
+  _Position: {x: 913, y: 232}
   _expanded: 1
   _node:
     Blob:
@@ -502,7 +502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: d401369b-c061-4ca9-8b3f-cff180c41283
-  _Position: {x: 793, y: 3}
+  _Position: {x: 780, y: -11}
   _expanded: 0
   _node:
     Blob:
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: a206a1e1-0664-4412-9a9a-d091dec7bdeb
-  _Position: {x: 559, y: 524}
+  _Position: {x: 502.5, y: 499}
   _expanded: 0
   _node:
     Blob:
