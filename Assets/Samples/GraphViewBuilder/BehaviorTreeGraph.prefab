@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: 95fee09a-ac38-4da7-adb7-cfc84a2942e1
-  _Position: {x: 727, y: 264}
+  _Position: {x: 742.5, y: 325}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
@@ -156,10 +156,10 @@ MonoBehaviour:
     00000002:
       type: {class: , ns: , asm: }
     00000003:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReaderAndWriter>/SingleGraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        Value: 1
+        NodeComponent: {fileID: 5268773317089460431}
 --- !u!1 &3955289229623670263
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,6 +320,73 @@ MonoBehaviour:
           x: -2
           y: 0
           z: 0
+--- !u!1 &4506602494242159786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3172401160533816378}
+  - component: {fileID: 5268773317089460431}
+  m_Layer: 0
+  m_Name: LocalRW<Single>
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3172401160533816378
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4506602494242159786}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7852097894234948500}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5268773317089460431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4506602494242159786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 504e8699fe604f35865fadbc8b3cc37a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Id: 7659776f-6d1f-40b7-933b-a1142c4537bc
+  _Position: {x: 508, y: 155}
+  VariantNode:
+    id: 0
+  _serializableEdges:
+  - InputNode: 04101362-9d52-4762-923a-bbae828755fa
+    InputPort: _node.Blob.Builders.Array.data[0]._readerAndWriter._variant|input
+    InputPortId: 
+    OutputNode: 7659776f-6d1f-40b7-933b-a1142c4537bc
+    OutputPort: output
+    OutputPortId: 
+  _expanded: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: LocalReaderAndWriterNode, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
+      data:
+        Value:
+          id: 1
+    00000001:
+      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
+        asm: Assembly-CSharp}
+      data:
+        Value: 1
 --- !u!1 &4933966135724725520
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,7 +488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: e8e06e04-6c5e-4995-aa25-a76935a12914
-  _Position: {x: 854, y: -67.5}
+  _Position: {x: 878, y: -53.5}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,
@@ -467,6 +534,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5046464309815054898}
+  - {fileID: 3172401160533816378}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
