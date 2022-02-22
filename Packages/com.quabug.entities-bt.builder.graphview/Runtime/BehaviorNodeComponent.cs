@@ -17,6 +17,7 @@ using EntitiesBT.Editor;
 
 namespace EntitiesBT
 {
+    [ExecuteAlways]
     public class BehaviorNodeComponent : GraphNodeComponent, ITreeNodeComponent, INodeDataBuilder
     {
 #region GraphNode
