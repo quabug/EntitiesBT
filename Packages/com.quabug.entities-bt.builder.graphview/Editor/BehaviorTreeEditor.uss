@@ -77,6 +77,10 @@ Node.action #contents {
     padding-bottom: 10px;
 }
 
+Node #variant-node-title-property {
+    justify-content: space-between;
+}
+
 #variant-node-title-property > #connector {
     margin-left: 1px;
     margin-right: 1px;
