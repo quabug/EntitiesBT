@@ -50,7 +50,6 @@ Port.port.tree > #connector {
 }
 
 Node #node-title-property {
-    height: 30px;
     padding-left: 20px;
     padding-right: 20px;
     font-size: 14px;
@@ -60,12 +59,19 @@ Node #node-title-property {
 Node #node-title-property > Toggle {
     flex-grow: 1;
     flex-shrink: 1;
-    align-items: center;
+    align-items: flex-start;
 }
 
 Node #node-title-property > Toggle > VisualElement {
     align-items: center;
     justify-content: center;
+}
+
+#default-node-name {
+    padding-top: 4px;
+    font-size: 10px;
+    -unity-text-align: lower-center;
+    -unity-font-style: italic;
 }
 
 Node #behavior-node-property {

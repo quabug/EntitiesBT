@@ -108,17 +108,23 @@ namespace EntitiesBT
 #if UNITY_EDITOR
         private readonly VariantPorts _variantPorts = new VariantPorts();
         private readonly NodeTitleProperty _titleProperty = new NodeTitleProperty();
+        private readonly ToggleDisplayProperty _typeTitleController = new ToggleDisplayProperty();
 
         static BehaviorNodeComponent()
         {
-            GraphUtility.RegisterNameChanged<BehaviorNodeComponent>(node => node._titleProperty.Title = node._title);
+            GraphUtility.RegisterNameChanged<BehaviorNodeComponent>(node => node.UpdateNodeTitle());
         }
 
-        private string _title => _node.Name == name ? name : $"{name}({_node.Name})";
+        private void UpdateNodeTitle()
+        {
+            _titleProperty.Title = name;
+            _typeTitleController.IsHidden = name == _node.Name;
+        }
 
         public override NodeData FindNodeProperties(SerializedObject nodeObject)
         {
-            _titleProperty.Title = _title;
+            _typeTitleController.InnerProperty = new LabelProperty(_node.Name, "default-node-name");
+            UpdateNodeTitle();
             _titleProperty.ToggleProperty = nodeObject.FindProperty(nameof(_expanded));
             var behaviorNodeType = _node.BehaviorNodeType;
             var properties = new List<INodeProperty>
@@ -126,6 +132,7 @@ namespace EntitiesBT
                 CreateVerticalPorts(_node.InputPortName, -100),
                 new Editor.NodePositionProperty(Position, position => Position = position),
                 new NodeClassesProperty("behavior-node", behaviorNodeType.ToString().ToLower()),
+                _typeTitleController,
                 _titleProperty,
                 new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject)) { HideFoldoutToggle = true, ToggleProperty = _titleProperty.ToggleProperty }
             };
