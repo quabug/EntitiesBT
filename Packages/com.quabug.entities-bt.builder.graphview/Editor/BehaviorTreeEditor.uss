@@ -79,10 +79,6 @@ Node #behavior-node-property {
     padding-right: 20px;
 }
 
-Node.action #contents {
-    padding-bottom: 10px;
-}
-
 Node #variant-node-title-property {
     justify-content: space-between;
 }
@@ -98,4 +94,12 @@ Node #variant-node-title-property {
     padding-right: 20px;
     font-size: 12px;
     -unity-font-style: bold-and-italic;
+}
+
+#action-bottom-space {
+    height: 10px;
+}
+
+Node.action #node-serialized-property {
+    padding-bottom: 10px;
 }

@@ -38,6 +38,7 @@ namespace EntitiesBT.Editor
             protected override VisualElement CreateView(Node node, NodeSerializedProperty property, INodePropertyViewFactory factory)
             {
                 var view = new ImmediatePropertyField(property.Property, label: null);
+                view.name = "node-serialized-property";
                 var toggle = view.Q<Toggle>();
                 toggle?.SetValueWithoutNotify(true);
                 if (property.HideFoldoutToggle && toggle != null) toggle.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
