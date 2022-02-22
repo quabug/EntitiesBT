@@ -28,6 +28,9 @@ namespace EntitiesBT
                 _Position = value;
                 var parent = transform.parent.GetComponent<BehaviorNodeComponent>();
                 if (parent) parent._reorderChildrenTransform(parent.transform);
+#if UNITY_EDITOR
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+#endif
             }
         }
 
@@ -120,7 +123,7 @@ namespace EntitiesBT
             var properties = new List<INodeProperty>
             {
                 CreateVerticalPorts(_node.InputPortName, -100),
-                new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_Position)) },
+                new Editor.NodePositionProperty(Position, position => Position = position),
                 new NodeClassesProperty("behavior-node", behaviorNodeType.ToString().ToLower()),
                 _titleProperty,
                 new NodeSerializedProperty(GetSerializedNodeBuilder(nodeObject)) { HideFoldoutToggle = true, ToggleProperty = _titleProperty.ToggleProperty }
