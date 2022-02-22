@@ -56,17 +56,24 @@ namespace EntitiesBT.Editor
             }
             else
             {
-                var typeContainers = new TypeContainers();
-                _container = new Container();
-                _container.RegisterInstance(prefabStage);
-                _container.RegisterInstance(prefabStage.prefabContentsRoot);
+                try
+                {
+                    var typeContainers = new TypeContainers();
+                    _container = new Container();
+                    _container.RegisterInstance(prefabStage);
+                    _container.RegisterInstance(prefabStage.prefabContentsRoot);
 
-                _installer.Install(_container, typeContainers, prefabStage.prefabContentsRoot);
+                    _installer.Install(_container, typeContainers, prefabStage.prefabContentsRoot);
 
-                InstantiateSystems(_container);
-                CreateMenuBuilder();
-                ReplaceGraphView(_container.Resolve<UnityEditor.Experimental.GraphView.GraphView>());
-                InjectComponents(prefabStage.prefabContentsRoot);
+                    InstantiateSystems(_container);
+                    CreateMenuBuilder();
+                    ReplaceGraphView(_container.Resolve<UnityEditor.Experimental.GraphView.GraphView>());
+                    InjectComponents(prefabStage.prefabContentsRoot);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex);
+                }
             }
         }
 

@@ -16,6 +16,7 @@ namespace EntitiesBT
         public Type BehaviorNodeDataType => Type.GetType(Blob.BlobDataType);
         public BehaviorNodeAttribute BehaviorNodeAttribute => BehaviorNodeDataType.GetCustomAttribute<BehaviorNodeAttribute>();
         public BehaviorNodeType BehaviorNodeType => BehaviorNodeAttribute.Type;
+        public string Name => BehaviorNodeDataType.Name.TrimEnd("Node");
 
         public string InputPortName => "input-port";
         public string OutputPortName => "output-port";

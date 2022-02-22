@@ -107,12 +107,14 @@ namespace EntitiesBT
 
         static BehaviorNodeComponent()
         {
-            GraphUtility.RegisterNameChanged<BehaviorNodeComponent>(node => node._titleProperty.Title = node.name);
+            GraphUtility.RegisterNameChanged<BehaviorNodeComponent>(node => node._titleProperty.Title = node._title);
         }
+
+        private string _title => _node.Name == name ? name : $"{name}({_node.Name})";
 
         public override NodeData FindNodeProperties(SerializedObject nodeObject)
         {
-            _titleProperty.Title = name;
+            _titleProperty.Title = _title;
             _titleProperty.ToggleProperty = nodeObject.FindProperty(nameof(_expanded));
             var behaviorNodeType = _node.BehaviorNodeType;
             var properties = new List<INodeProperty>
