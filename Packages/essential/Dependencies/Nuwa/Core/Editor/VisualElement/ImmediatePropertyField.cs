@@ -10,7 +10,7 @@ namespace Nuwa.Editor
     public class ImmediatePropertyField : PropertyField
     {
         private const string _EVENT_NAME = "UnityEditor.UIElements.SerializedPropertyBindEvent, UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
-        private readonly Type _propertyEvent = Type.GetType(_EVENT_NAME);
+        private static readonly Type _PROPERTY_EVENT_TYPE = Type.GetType(_EVENT_NAME);
 
         public ImmediatePropertyField(SerializedProperty property, string label) : base(property, label)
         {
@@ -30,9 +30,9 @@ namespace Nuwa.Editor
                     break;
                 }
 
-                if (@params.Length == 1 && @params[0].ParameterType == _propertyEvent)
+                if (@params.Length == 1 && @params[0].ParameterType == _PROPERTY_EVENT_TYPE)
                 {
-                    var pooled = _propertyEvent.GetMethod("GetPooled", BindingFlags.Static | BindingFlags.Public);
+                    var pooled = _PROPERTY_EVENT_TYPE.GetMethod("GetPooled", BindingFlags.Static | BindingFlags.Public);
                     var @event = pooled.Invoke(null, new object[] { property });
                     reset.Invoke(this, new object[] { @event });
                     break;
@@ -43,7 +43,7 @@ namespace Nuwa.Editor
 
         protected override void ExecuteDefaultActionAtTarget(EventBase evt)
         {
-            if (evt.GetType() == _propertyEvent) evt.StopPropagation();
+            if (evt.GetType() == _PROPERTY_EVENT_TYPE) evt.StopPropagation();
         }
     }
 }

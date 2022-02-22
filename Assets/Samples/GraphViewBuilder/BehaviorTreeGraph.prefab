@@ -461,7 +461,7 @@ GameObject:
   - component: {fileID: 2727028965196861384}
   - component: {fileID: 6200251326976249893}
   m_Layer: 0
-  m_Name: SelectorNode
+  m_Name: CharacterMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -516,7 +516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7852097894234948500}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: BehaviorTreeGraph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

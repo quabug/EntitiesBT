@@ -1,17 +1,25 @@
 using System;
 using System.Collections.Generic;
+using EntitiesBT.Components;
 using EntitiesBT.Core;
-using EntitiesBT.Editor;
 using GraphExt;
-using GraphExt.Editor;
 using Nuwa;
-using UnityEditor;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.Entities;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using GraphExt.Editor;
+using UnityEditor;
+using EntitiesBT.Editor;
+#endif
 
 namespace EntitiesBT
 {
-    public class BehaviorNodeComponent : GraphNodeComponent, ITreeNodeComponent
+    public class BehaviorNodeComponent : GraphNodeComponent, ITreeNodeComponent, INodeDataBuilder
     {
+#region GraphNode
         public override Vector2 Position
         {
             get => _Position;
@@ -158,6 +166,33 @@ namespace EntitiesBT
             return nodeObject.FindProperty(nameof(_node)).FindPropertyRelative(nameof(BehaviorNode.Blob));
         }
 #endif
+#endregion
 
+#region NodeDataBuilder
+
+        public int NodeId => _node.BehaviorNodeAttribute.Id;
+        public int NodeIndex { get; set; }
+        public INodeDataBuilder Self => this;
+        public IEnumerable<INodeDataBuilder> Children => Components.Utilities.Children(this);
+        public object GetPreviewValue(string path) => throw new NotSupportedException();
+        public void SetPreviewValue(string path, object value) => throw new NotSupportedException();
+        public unsafe BlobAssetReference Build(Core.ITreeNode<INodeDataBuilder>[] builders)
+        {
+            var nodeType = _node.BehaviorNodeDataType;
+            if (nodeType.IsZeroSizeStruct()) return BlobAssetReference.Null;
+            var blobBuilder = new BlobBuilder(Allocator.Temp, UnsafeUtility.SizeOf(nodeType));
+            try
+            {
+                var dataPtr = blobBuilder.ConstructRootPtrByType(nodeType);
+                _node.Blob.Build(blobBuilder, new IntPtr(dataPtr));
+                return blobBuilder.CreateReferenceByType(nodeType);
+            }
+            finally
+            {
+                blobBuilder.Dispose();
+            }
+        }
+
+#endregion
     }
 }
