@@ -44,6 +44,16 @@ namespace EntitiesBT.Editor
             return $"{property.propertyPath}|{direction.ToString().ToLower()}";
         }
 
+        public static string CreatePortName(string propertyPath, PortDirection direction)
+        {
+            return $"{propertyPath}|{direction.ToString().ToLower()}";
+        }
+
+        public static PortId Construct(in NodeId nodeId, string propertyPath, PortDirection direction)
+        {
+            return new PortId(nodeId, CreatePortName(propertyPath, direction));
+        }
+
         public static void Deconstruct(in PortId portId, out NodeId nodeId, out string propertyPath, out PortDirection direction)
         {
             nodeId = portId.NodeId;

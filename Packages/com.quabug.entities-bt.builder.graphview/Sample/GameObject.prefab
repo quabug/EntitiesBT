@@ -76,7 +76,7 @@ MonoBehaviour:
       type: {class: <IVariantReader>/float3GraphNodeVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
-        NodeComponent: {fileID: 4954922361672073579}
+        NodeComponent: {fileID: 7352244763397315294}
 --- !u!1 &597545225285747402
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,20 +217,13 @@ MonoBehaviour:
   VariantNode:
     id: 0
   _serializableEdges:
-  - InputNode: eb2c249b-fc97-476b-bb8e-2edfa532f330
-    InputPort: _node.Blob.Builders.Array.data[1]._variant|input
-    InputPortId: 
-    OutputNode: 6f4f84a3-9629-4b4a-9887-c99702f7ec6b
-    OutputPort: output
-    OutputPortId: 
   - InputNode: cb1d8ee9-43a4-4fc2-95c0-e6fe4ef28949
     InputPort: _node.Blob.Builders.Array.data[1]._variant|input
     InputPortId: 
     OutputNode: 6f4f84a3-9629-4b4a-9887-c99702f7ec6b
     OutputPort: output
     OutputPortId: 
-  _expanded: 1
-  _hideTitle: 0
+  _expanded: 0
   references:
     version: 1
     00000000:
@@ -287,7 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: c1456128-6dc4-457a-b3f0-1b1aead5f242
-  _Position: {x: 1235, y: 311}
+  _Position: {x: 1257, y: 343}
   VariantNode:
     id: 0
   _serializableEdges:
@@ -297,8 +290,13 @@ MonoBehaviour:
     OutputNode: cb1d8ee9-43a4-4fc2-95c0-e6fe4ef28949
     OutputPort: _node.Blob.Builders.Array.data[1]._variant|output
     OutputPortId: 
+  - InputNode: c1456128-6dc4-457a-b3f0-1b1aead5f242
+    InputPort: input
+    InputPortId: 
+    OutputNode: eb2c249b-fc97-476b-bb8e-2edfa532f330
+    OutputPort: _node.Blob.Builders.Array.data[1]._variant|output
+    OutputPortId: 
   _expanded: 0
-  _hideTitle: 0
   references:
     version: 1
     00000000:
@@ -358,7 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: cb1d8ee9-43a4-4fc2-95c0-e6fe4ef28949
-  _Position: {x: 913, y: 258}
+  _Position: {x: 882.5, y: 208}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Extensions.UnityMovement.CharacterSimpleMoveNode,
@@ -446,7 +444,6 @@ MonoBehaviour:
     OutputPort: output
     OutputPortId: 
   _expanded: 0
-  _hideTitle: 0
   references:
     version: 1
     00000000:
@@ -669,7 +666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: 5c52e5b7-29a9-4533-ba95-6b2ad433b6cd
-  _Position: {x: 1231.5, y: 383}
+  _Position: {x: 1208, y: 411.5}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Nodes.DelayTimerNode, EntitiesBT.Runtime, Version=0.0.0.0,

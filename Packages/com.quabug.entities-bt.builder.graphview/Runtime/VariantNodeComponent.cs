@@ -75,20 +75,29 @@ namespace EntitiesBT
 
         public override void OnConnected(GameObjectNodes<GraphNode, GraphNodeComponent> data, in EdgeId edge)
         {
-            if (_edges.Contains(edge)) return;
 #if UNITY_EDITOR
+            if (_edges.Contains(edge)) return;
             var graphNodeVariant = FindGraphNodeVariant(data, edge);
             if (graphNodeVariant == null) return;
             Assert.IsTrue(VariantNode.ValueType == null || VariantNode.ValueType == graphNodeVariant.ValueType);
-#endif
-            var inputNodeId = edge.Input.NodeId;
-            var outputNodeId = edge.Output.NodeId;
-            foreach (var existEdge in _edges.Where(existEdge => existEdge.Input.NodeId == outputNodeId && existEdge.Output.NodeId == inputNodeId))
+
+            PortId disconnectingPort;
+            if (Id == edge.Input.NodeId)
             {
-                data.Runtime.Disconnect(existEdge.Input, existEdge.Output);
-                break;
+                VariantPorts.Deconstruct(edge.Output, out var nodeId, out var propertyPath, out _);
+                disconnectingPort = VariantPorts.Construct(nodeId, propertyPath, PortDirection.Input);
             }
-#if UNITY_EDITOR
+            else
+            {
+                VariantPorts.Deconstruct(edge.Input, out var nodeId, out var propertyPath, out _);
+                disconnectingPort = VariantPorts.Construct(nodeId, propertyPath, PortDirection.Output);
+            }
+
+            foreach (var disconnectingEdge in data.Runtime.Edges.Where(existEdge => existEdge.Contains(disconnectingPort)).ToArray())
+            {
+                data.Runtime.Disconnect(disconnectingEdge.Input, disconnectingEdge.Output);
+            }
+
             graphNodeVariant.NodeComponent = this;
             _variantConnections.Add(edge, graphNodeVariant);
             VariantNode.ConnectedVariants.Add(graphNodeVariant);
@@ -104,25 +113,26 @@ namespace EntitiesBT
                     // ignored
                 }
             }
-#endif
             name = VariantNode.Name;
             _edges.Add(edge);
             _serializableEdges.Add(edge.ToSerializable());
+#endif
         }
 
         public override void OnDisconnected(GameObjectNodes<GraphNode, GraphNodeComponent> data, in EdgeId edge)
         {
-            if (!_edges.Contains(edge)) return;
 #if UNITY_EDITOR
+            if (!_edges.Contains(edge)) return;
             _variantConnections.TryGetValue(edge, out var graphNodeVariant);
             if (graphNodeVariant == null) return;
             graphNodeVariant.NodeComponent = null;
             VariantNode.ConnectedVariants.Remove(graphNodeVariant);
             _variantConnections.Remove(edge);
-#endif
+
             name = VariantNode.Name;
             _edges.Remove(edge);
             _serializableEdges.Remove(edge.ToSerializable());
+#endif
         }
 
 #if UNITY_EDITOR
