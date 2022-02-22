@@ -149,7 +149,7 @@ namespace EntitiesBT.Editor
                     return new FocusActiveNodePresenter<GraphNodeComponent>(
                         graphView,
                         node => nodeViews[nodes[node]],
-                        () => Selection.activeObject as GraphNodeComponent
+                        () => Selection.activeGameObject == null ? null : Selection.activeGameObject.GetComponent<GraphNodeComponent>()
                     );
                 });
 
