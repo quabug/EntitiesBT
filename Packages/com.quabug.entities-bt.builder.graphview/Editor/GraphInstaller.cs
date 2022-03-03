@@ -144,23 +144,16 @@ namespace EntitiesBT.Editor
                 rootContainer.RegisterSingleton<IWindowSystem>(() =>
                 {
                     var graphView = rootContainer.Resolve<UnityEditor.Experimental.GraphView.GraphView>();
-                    var nodeViews = rootContainer.Resolve<IReadOnlyDictionary<NodeId, Node>>();
-                    var nodes = rootContainer.Resolve<IReadOnlyDictionary<GraphNodeComponent, NodeId>>();
-                    return new FocusActiveNodePresenter<GraphNodeComponent>(
+                    var nodeViews = rootContainer.Resolve<IReadOnlyBiDictionary<NodeId, Node>>();
+                    var nodes = rootContainer.Resolve<IReadOnlyBiDictionary<NodeId, GraphNodeComponent>>();
+                    return new SyncSelectionGraphElementPresenter(
                         graphView,
-                        node => nodeViews[nodes[node]],
-                        () => Selection.activeGameObject == null ? null : Selection.activeGameObject.GetComponent<GraphNodeComponent>()
-                    );
-                });
-
-                rootContainer.RegisterSingleton<IWindowSystem>(() =>
-                {
-                    var nodes = rootContainer.Resolve<IReadOnlyDictionary<NodeId, Node>>();
-                    var nodeObjects = rootContainer.Resolve<IReadOnlyDictionary<NodeId, GraphNodeComponent>>();
-                    return new ActiveSelectedNodePresenter<GraphNodeComponent>(nodes, nodeObjects, node =>
-                    {
-                        if (Selection.activeObject != node) Selection.activeObject = node;
-                    });
+                        selectable => selectable is Node node ? nodes[nodeViews.Reverse[node]].gameObject : null,
+                        obj =>
+                        {
+                            var nodeComponent = obj is GameObject node ? node.GetComponent<GraphNodeComponent>() : null;
+                            return nodeComponent == null ? null : nodeViews[nodes.Reverse[nodeComponent]];
+                        });
                 });
             }
         }
