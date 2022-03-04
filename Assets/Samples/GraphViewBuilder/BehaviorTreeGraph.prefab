@@ -307,7 +307,8 @@ MonoBehaviour:
       BlobDataType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       FieldNames:
-      - Velocity
+      - CountdownSeconds
+      - BreakReturnState
       Builders:
       - id: 0
   _expanded: 0
@@ -440,7 +441,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
       FieldNames: []
       Builders: []
-  _expanded: 0
+  _expanded: 1
   references:
     version: 1
 --- !u!1 &5820254327566272255
