@@ -110,6 +110,7 @@ namespace EntitiesBT
         private readonly NodeTitleProperty _titleProperty = new NodeTitleProperty();
         private readonly ToggleDisplayProperty _typeTitleController = new ToggleDisplayProperty();
 
+
         static BehaviorNodeComponent()
         {
             GraphUtility.RegisterNameChanged<BehaviorNodeComponent>(node => node.UpdateNodeTitle());

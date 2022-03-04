@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: 95fee09a-ac38-4da7-adb7-cfc84a2942e1
-  _Position: {x: 742.5, y: 325}
+  _Position: {x: 746.5, y: 297}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: 258ada8c-8509-4da0-804c-8250b0d372a0
-  _Position: {x: 990.5, y: 280}
+  _Position: {x: 1000.5, y: 305}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: 7659776f-6d1f-40b7-933b-a1142c4537bc
-  _Position: {x: 508, y: 155}
+  _Position: {x: 480, y: 156.5}
   VariantNode:
     id: 0
   _serializableEdges:
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Id: e8e06e04-6c5e-4995-aa25-a76935a12914
-  _Position: {x: 878, y: -53.5}
+  _Position: {x: 871, y: -35}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Nodes.RepeatForeverNode, EntitiesBT.Runtime, Version=0.0.0.0,

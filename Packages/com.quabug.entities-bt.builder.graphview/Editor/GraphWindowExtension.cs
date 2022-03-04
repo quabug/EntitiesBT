@@ -1,8 +1,7 @@
 using System;
+using GraphExt;
 using GraphExt.Editor;
 using JetBrains.Annotations;
-using Nuwa;
-using OneShot;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,7 +13,7 @@ namespace EntitiesBT.Editor
     {
         [SerializeField] private GraphInstaller _installer;
 
-        [SerializeReference, SerializeReferenceDrawer(Nullable = false, RenamePatter = @"\w*\.||")]
+        [SerializeReference, Nuwa.SerializeReferenceDrawer(Nullable = false, RenamePatter = @"\w*\.||")]
         public IMenuEntryInstaller[] MenuEntries;
 
         private Container _container;
@@ -60,8 +59,8 @@ namespace EntitiesBT.Editor
                 {
                     var typeContainers = new TypeContainers();
                     _container = new Container();
-                    _container.RegisterInstance(prefabStage);
-                    _container.RegisterInstance(prefabStage.prefabContentsRoot);
+                    _container.RegisterInstance(prefabStage).AsSelf();
+                    _container.RegisterInstance(prefabStage.prefabContentsRoot).AsSelf();
 
                     _installer.Install(_container, typeContainers, prefabStage.prefabContentsRoot);
 

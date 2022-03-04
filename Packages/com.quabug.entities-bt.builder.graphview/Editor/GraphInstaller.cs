@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GraphExt;
 using GraphExt.Editor;
-using OneShot;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using GraphView = GraphExt.Editor.GraphView;
@@ -28,16 +26,16 @@ namespace EntitiesBT.Editor
 
         public void Install(Container rootContainer, TypeContainers typeContainers, GameObject prefabStageRoot)
         {
-            rootContainer.RegisterInstance<IGraphViewFactory>(GraphViewFactory);
-            rootContainer.RegisterInstance<IEdgeViewFactory>(EdgeViewFactory);
-            rootContainer.RegisterInstance<IPortViewFactory>(PortViewFactory);
-            rootContainer.RegisterInstance<INodeViewFactory>(NodeViewFactory);
+            rootContainer.RegisterInstance(GraphViewFactory).As<IGraphViewFactory>();
+            rootContainer.RegisterInstance(EdgeViewFactory).As<IEdgeViewFactory>();
+            rootContainer.RegisterInstance(PortViewFactory).As<IPortViewFactory>();
+            rootContainer.RegisterInstance(NodeViewFactory).As<INodeViewFactory>();
 
             rootContainer.RegisterBiDictionaryInstance(new BiDictionary<NodeId, Node>());
             rootContainer.RegisterBiDictionaryInstance(new BiDictionary<PortId, Port>());
             rootContainer.RegisterBiDictionaryInstance(new BiDictionary<EdgeId, Edge>());
             rootContainer.RegisterDictionaryInstance(new Dictionary<PortId, PortData>());
-            rootContainer.Register<IEnumerable<EdgeId>>(() => rootContainer.Resolve<GraphRuntime<GraphNode>>().Edges);
+            rootContainer.Register<IEnumerable<EdgeId>>((_, __) => rootContainer.Resolve<GraphRuntime<GraphNode>>().Edges).AsSelf();
 
             RegisterGraphView();
             RegisterGraph();
@@ -49,7 +47,7 @@ namespace EntitiesBT.Editor
 
             void RegisterGraphView()
             {
-                rootContainer.RegisterSingleton<GraphView>(() =>
+                rootContainer.Register((_, __) =>
                 {
                     var factory = rootContainer.Resolve<IGraphViewFactory>();
                     var nodes = rootContainer.Resolve<GameObjectNodes<GraphNode, GraphNodeComponent>>();
@@ -76,92 +74,74 @@ namespace EntitiesBT.Editor
                     }
 
                     int CountConnections(PortId portId) => graph.Edges.Count(edge => edge.Contains(portId));
-                });
-                rootContainer.Register<GraphView, UnityEditor.Experimental.GraphView.GraphView>();
+                }).Singleton().As<GraphView>().As<UnityEditor.Experimental.GraphView.GraphView>();
             }
 
             void RegisterGraph()
             {
                 var graphBackend = new GraphGameObjectNodes(prefabStageRoot);
-                rootContainer.RegisterInstance<GraphGameObjectNodes>(graphBackend);
-                rootContainer.Register<GraphGameObjectNodes, GameObjectNodes<GraphNode, GraphNodeComponent>>();
+                rootContainer.RegisterInstance<GraphGameObjectNodes>(graphBackend).AsSelf().As<GameObjectNodes<GraphNode, GraphNodeComponent>>();
                 rootContainer.RegisterSerializableGraphBackend(graphBackend);
             }
 
             void RegisterEdgePresenter()
             {
-                rootContainer.RegisterSingleton<EdgeConnectFunc>(() => EdgeFunctions.Connect(rootContainer.Resolve<GraphRuntime<GraphNode>>()));
-                rootContainer.RegisterSingleton<EdgeDisconnectFunc>(() => EdgeFunctions.Disconnect(rootContainer.Resolve<GraphRuntime<GraphNode>>()));
-                rootContainer.RegisterSingleton<IWindowSystem>(rootContainer.Instantiate<EdgeViewInitializer>);
-                rootContainer.RegisterSingleton<IWindowSystem>(rootContainer.Instantiate<EdgeViewObserver>);
-                rootContainer.RegisterSingleton<IWindowSystem>(rootContainer.Instantiate<EdgeRuntimeObserver<GraphNode>>);
+                rootContainer.Register<EdgeConnectFunc>((_, __) => EdgeFunctions.Connect(rootContainer.Resolve<GraphRuntime<GraphNode>>())).Singleton().AsSelf();
+                rootContainer.Register<EdgeDisconnectFunc>((_, __) => EdgeFunctions.Disconnect(rootContainer.Resolve<GraphRuntime<GraphNode>>())).Singleton().AsSelf();
+                rootContainer.Register<EdgeViewInitializer>().Singleton().As<IWindowSystem>();
+                rootContainer.Register<EdgeViewObserver>().Singleton().AsSelf();
+                rootContainer.Register<EdgeRuntimeObserver<GraphNode>>().Singleton().AsSelf();
             }
 
             void RegisterPortPresenter()
             {
-                rootContainer.RegisterSingleton<FindPortData>(() =>
+                rootContainer.Register<FindPortData>((_, __) =>
                 {
                     var nodes = rootContainer.Resolve<ISerializableGraphBackend<GraphNode, GraphNodeComponent>>();
                     return (in NodeId nodeId) => nodes.NodeMap[nodeId].FindNodePorts(nodes.SerializedObjects[nodeId]);
-                });
-                rootContainer.RegisterSingleton<IWindowSystem>(rootContainer.Instantiate<DynamicPortsPresenter>);
+                }).AsSelf();
+                rootContainer.Register<DynamicPortsPresenter>().Singleton().As<IWindowSystem>();
             }
 
             void RegisterElementMovedEventEmitter()
             {
-                rootContainer.RegisterSingleton<IWindowSystem>(rootContainer.Instantiate<ElementMovedEventEmitter>);
+                rootContainer.Register<ElementMovedEventEmitter>().Singleton().As<IWindowSystem>();
             }
 
             void RegisterNodePresenter()
             {
-                rootContainer.RegisterSingleton<ConvertToNodeData>(() => {
+                rootContainer.Register<ConvertToNodeData>((_, __) => {
                     var graph = rootContainer.Resolve<ISerializableGraphBackend<GraphNode, GraphNodeComponent>>();
                     return (in NodeId nodeId) => graph.NodeMap[nodeId].FindNodeProperties(graph.SerializedObjects[nodeId]);
-                });
+                }).Singleton().AsSelf();
 
-                rootContainer.RegisterSingleton<NodeViewPresenter.NodeAddedEvent>(() =>
+                rootContainer.Register<NodeViewPresenter.NodeAddedEvent>((_, __) =>
                 {
                     var graphRuntime = rootContainer.Resolve<GraphRuntime<GraphNode>>();
                     var added = new NodeViewPresenter.NodeAddedEvent();
                     graphRuntime.OnNodeAdded += (in NodeId id, GraphNode _) => added.Event?.Invoke(id);
                     return added;
-                });
+                }).Singleton().AsSelf();
 
-                rootContainer.RegisterSingleton<NodeViewPresenter.NodeDeletedEvent>(() =>
+                rootContainer.Register<NodeViewPresenter.NodeDeletedEvent>((_, __) =>
                 {
                     var graphRuntime = rootContainer.Resolve<GraphRuntime<GraphNode>>();
                     var deleted = new NodeViewPresenter.NodeDeletedEvent();
                     graphRuntime.OnNodeWillDelete += (in NodeId id, GraphNode _) => deleted.Event?.Invoke(id);
                     return deleted;
-                });
+                }).Singleton().AsSelf();
 
-                rootContainer.Register<IEnumerable<NodeId>>(() => rootContainer.Resolve<GraphRuntime<GraphNode>>().Nodes.Select(t => t.Item1));
-                rootContainer.RegisterSingleton<IWindowSystem>(rootContainer.Instantiate<NodeViewPresenter>);
+                rootContainer.Register<IEnumerable<NodeId>>((_, __) => rootContainer.Resolve<GraphRuntime<GraphNode>>().Nodes.Select(t => t.Item1)).AsSelf();
+                rootContainer.Register<NodeViewPresenter>().Singleton().As<IWindowSystem>();
             }
 
             void RegisterSelection()
             {
-                rootContainer.RegisterSingleton<IWindowSystem>(() =>
-                {
-                    var graphView = rootContainer.Resolve<UnityEditor.Experimental.GraphView.GraphView>();
-                    var nodeViews = rootContainer.Resolve<IReadOnlyDictionary<NodeId, Node>>();
-                    var nodes = rootContainer.Resolve<IReadOnlyDictionary<GraphNodeComponent, NodeId>>();
-                    return new FocusActiveNodePresenter<GraphNodeComponent>(
-                        graphView,
-                        node => nodeViews[nodes[node]],
-                        () => Selection.activeGameObject == null ? null : Selection.activeGameObject.GetComponent<GraphNodeComponent>()
-                    );
-                });
-
-                rootContainer.RegisterSingleton<IWindowSystem>(() =>
-                {
-                    var nodes = rootContainer.Resolve<IReadOnlyDictionary<NodeId, Node>>();
-                    var nodeObjects = rootContainer.Resolve<IReadOnlyDictionary<NodeId, GraphNodeComponent>>();
-                    return new ActiveSelectedNodePresenter<GraphNodeComponent>(nodes, nodeObjects, node =>
-                    {
-                        if (Selection.activeObject != node) Selection.activeObject = node;
-                    });
-                });
+                var presenterContainer = typeContainers.CreateSystemContainer(rootContainer, typeof(SyncSelectionGraphElementPresenter));
+                presenterContainer.Register<PrefabNodeSelectionConvertor<NodeId, Node, GraphNodeComponent>>()
+                    .Singleton()
+                    .As<SyncSelectionGraphElementPresenter.IConvertor>()
+                ;
             }
         }
     }

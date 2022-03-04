@@ -6,7 +6,6 @@ using EntitiesBT.Variant;
 using GraphExt;
 using Nuwa;
 using Nuwa.Editor;
-using OneShot;
 using UnityEngine;
 
 #if UNITY_EDITOR
