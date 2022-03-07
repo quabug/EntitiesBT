@@ -31,8 +31,7 @@ MonoBehaviour:
             id: 3
           PortViewFactory:
             id: 4
-        MenuEntries:
-        - id: 5
+        MenuEntries: []
     00000001:
       type: {class: DefaultGraphViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000002:
@@ -40,22 +39,10 @@ MonoBehaviour:
       data:
         NodePropertyViewFactory:
           Factories:
-          - id: 6
+          - id: 5
     00000003:
       type: {class: DefaultEdgeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000004:
       type: {class: DefaultPortViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000005:
-      type: {class: TypeNameMenuEntriesInstaller, ns: GraphExt.Editor, asm: GraphExt.DI}
-      data:
-        MenuEntries:
-        - EntitiesBT.Editor.GraphNodeSelectionMenuEntry, EntitiesBT.Builder.GraphView.Editor,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        - EntitiesBT.Editor.BehaviorNodeCreation, EntitiesBT.Builder.GraphView.Editor,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-        - GraphExt.Editor.SeparatorEntry, GraphExt.Editor, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        - EntitiesBT.Editor.VariantNodeCreation, EntitiesBT.Builder.GraphView.Editor,
-          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    00000006:
       type: {class: DefaultPropertyViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}

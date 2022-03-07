@@ -160,7 +160,7 @@ MonoBehaviour:
         asm: Assembly-CSharp}
       data:
         NodeComponent: {fileID: 5268773317089460431}
---- !u!1 &3955289229623670263
+--- !u!1 &4312144050244218970
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,22 +168,85 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2441810121567307347}
-  - component: {fileID: 6818226771756001590}
+  - component: {fileID: 9049374803587313930}
+  - component: {fileID: 3054252289242323824}
   m_Layer: 0
-  m_Name: MoveLeft
+  m_Name: EntityMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2441810121567307347
+--- !u!4 &9049374803587313930
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3955289229623670263}
+  m_GameObject: {fileID: 4312144050244218970}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4915040616196882375}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3054252289242323824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4312144050244218970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c59a550fbd14fa69f8a73d691835dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Id: 258ada8c-8509-4da0-804c-8250b0d372a0
+  _Position: {x: 1000.5, y: 305}
+  _node:
+    Blob:
+      BlobDataType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      FieldNames:
+      - Velocity
+      Builders:
+      - id: 0
+  _expanded: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: float3Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      data:
+        Value:
+          x: -2
+          y: 0
+          z: 0
+--- !u!1 &4490157154551053104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4915040616196882375}
+  - component: {fileID: 9121628576260936709}
+  m_Layer: 0
+  m_Name: Timer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4915040616196882375
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4490157154551053104}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -192,20 +255,20 @@ Transform:
   m_Father: {fileID: 166744219806944375}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6818226771756001590
+--- !u!114 &9121628576260936709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3955289229623670263}
+  m_GameObject: {fileID: 4490157154551053104}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c59a550fbd14fa69f8a73d691835dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Id: 90240d46-b525-4019-8e0c-814e0a090e38
-  _Position: {x: 998.5, y: 155.5}
+  _Id: 49c1abfd-7865-4e70-be10-2e5088aa21a1
+  _Position: {x: 1030.5, y: 162.5}
   _node:
     Blob:
       BlobDataType: EntitiesBT.Nodes.TimerNode, EntitiesBT.Runtime, Version=0.0.0.0,
@@ -243,7 +306,7 @@ MonoBehaviour:
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           IsOptional: 0
           _variant:
-            id: 3
+            id: 2
     00000001:
       type: {class: DynamicIntEnumBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
@@ -252,75 +315,6 @@ MonoBehaviour:
         Value: 0
     00000002:
       type: {class: , ns: , asm: }
-    00000003:
-      type: {class: <IVariantReaderAndWriter>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 1
---- !u!1 &4312144050244218970
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9049374803587313930}
-  - component: {fileID: 3054252289242323824}
-  m_Layer: 0
-  m_Name: EntityMove
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9049374803587313930
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4312144050244218970}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2441810121567307347}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3054252289242323824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4312144050244218970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c59a550fbd14fa69f8a73d691835dfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Id: 258ada8c-8509-4da0-804c-8250b0d372a0
-  _Position: {x: 1000.5, y: 305}
-  _node:
-    Blob:
-      BlobDataType: EntitiesBT.Sample.EntityMoveNode, EntitiesBT.Sample, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      FieldNames:
-      - CountdownSeconds
-      - BreakReturnState
-      Builders:
-      - id: 0
-  _expanded: 0
-  references:
-    version: 1
-    00000000:
-      type: {class: float3Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
-      data:
-        Value:
-          x: -2
-          y: 0
-          z: 0
 --- !u!1 &4506602494242159786
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,7 +411,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 481073783314083978}
-  - {fileID: 2441810121567307347}
+  - {fileID: 4915040616196882375}
   m_Father: {fileID: 5046464309815054898}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

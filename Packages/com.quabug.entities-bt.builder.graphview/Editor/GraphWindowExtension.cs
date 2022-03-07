@@ -38,12 +38,10 @@ namespace EntitiesBT.Editor
 
         public void Clear()
         {
-            _menuBuilder?.Dispose();
-            _menuBuilder = null;
-            _systems?.Dispose();
-            _systems = null;
             _container?.Dispose();
             _container = null;
+            _menuBuilder = null;
+            _systems = null;
         }
 
         private void ResetGraphBackend([CanBeNull] PrefabStage prefabStage)

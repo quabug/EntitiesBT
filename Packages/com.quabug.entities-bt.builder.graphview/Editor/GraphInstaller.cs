@@ -89,8 +89,8 @@ namespace EntitiesBT.Editor
                 rootContainer.Register<EdgeConnectFunc>((_, __) => EdgeFunctions.Connect(rootContainer.Resolve<GraphRuntime<GraphNode>>())).Singleton().AsSelf();
                 rootContainer.Register<EdgeDisconnectFunc>((_, __) => EdgeFunctions.Disconnect(rootContainer.Resolve<GraphRuntime<GraphNode>>())).Singleton().AsSelf();
                 rootContainer.Register<EdgeViewInitializer>().Singleton().As<IWindowSystem>();
-                rootContainer.Register<EdgeViewObserver>().Singleton().AsSelf();
-                rootContainer.Register<EdgeRuntimeObserver<GraphNode>>().Singleton().AsSelf();
+                rootContainer.Register<EdgeViewObserver>().Singleton().As<IWindowSystem>();
+                rootContainer.Register<EdgeRuntimeObserver<GraphNode>>().Singleton().As<IWindowSystem>();
             }
 
             void RegisterPortPresenter()
