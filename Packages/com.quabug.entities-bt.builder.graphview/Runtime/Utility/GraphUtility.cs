@@ -6,6 +6,7 @@ namespace EntitiesBT
     {
         public static void RegisterNameChanged<T>(Action<T> setName)
         {
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.hierarchyChanged -= OnHierarchyChanged;
             UnityEditor.EditorApplication.hierarchyChanged += OnHierarchyChanged;
 
@@ -16,6 +17,7 @@ namespace EntitiesBT
                 foreach (var node in prefabStage.prefabContentsRoot .GetComponentsInChildren<T>())
                     setName(node);
             }
+#endif
         }
     }
 }

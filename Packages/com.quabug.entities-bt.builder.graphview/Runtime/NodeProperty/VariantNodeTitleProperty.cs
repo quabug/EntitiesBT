@@ -1,8 +1,5 @@
 using System.Linq;
 using GraphExt;
-using GraphExt.Editor;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace EntitiesBT
@@ -22,15 +19,16 @@ namespace EntitiesBT
             _outputPortName = outputPortName;
         }
 
-        public class Factory : SingleNodePropertyViewFactory<VariantNodeTitleProperty>
+#if UNITY_EDITOR
+        public class ViewFactory : GraphExt.Editor.SingleNodePropertyViewFactory<VariantNodeTitleProperty>
         {
-            protected override VisualElement CreateView(Node node, VariantNodeTitleProperty property, INodePropertyViewFactory factory)
+            protected override VisualElement CreateView(UnityEditor.Experimental.GraphView.Node node, VariantNodeTitleProperty property, GraphExt.Editor.INodePropertyViewFactory factory)
             {
                 var container = new VisualElement();
 
                 var label = factory.Create(node, property._titleProperty, factory).Single();
-                var leftPort = new PortContainer(property._inputPortName);
-                var rightPort = new PortContainer(property._outputPortName);
+                var leftPort = new GraphExt.Editor.PortContainer(property._inputPortName);
+                var rightPort = new GraphExt.Editor.PortContainer(property._outputPortName);
 
                 container.name = "variant-node-title-property";
                 container.style.flexDirection = FlexDirection.Row;
@@ -50,5 +48,6 @@ namespace EntitiesBT
                 return container;
             }
         }
+#endif
     }
 }

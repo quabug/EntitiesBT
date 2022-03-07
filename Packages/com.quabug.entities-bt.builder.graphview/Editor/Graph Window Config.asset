@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ba7f039e774f7b9f34a9386ac259ed, type: 3}
   m_Name: Graph Window Config
   m_EditorClassIdentifier: 
-  WindowName: Graph Window
+  WindowName: EntitiesBT
   WindowStyleSheet: {fileID: 7433441132597879392, guid: 5022eddd1d5d4486c86383f30e20af58,
     type: 3}
   GraphWindowExtension:
@@ -31,7 +31,8 @@ MonoBehaviour:
             id: 3
           PortViewFactory:
             id: 4
-        MenuEntries: []
+        MenuEntries:
+        - id: 5
     00000001:
       type: {class: DefaultGraphViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000002:
@@ -39,10 +40,20 @@ MonoBehaviour:
       data:
         NodePropertyViewFactory:
           Factories:
-          - id: 5
+          - id: 6
     00000003:
       type: {class: DefaultEdgeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000004:
       type: {class: DefaultPortViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
     00000005:
+      type: {class: TypeNameMenuEntriesInstaller, ns: GraphExt.Editor, asm: GraphExt.DI}
+      data:
+        MenuEntries:
+        - EntitiesBT.Editor.GraphNodeSelectionMenuEntry, EntitiesBT.Builder.GraphView.Editor,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - EntitiesBT.Editor.BehaviorNodeCreation, EntitiesBT.Builder.GraphView.Editor,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - EntitiesBT.Editor.VariantNodeCreation, EntitiesBT.Builder.GraphView.Editor,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    00000006:
       type: {class: DefaultPropertyViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}

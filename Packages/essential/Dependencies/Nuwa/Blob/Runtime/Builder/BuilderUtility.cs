@@ -1,14 +1,13 @@
 using System;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Nuwa.Blob
 {
     public static class BuilderUtility
     {
-        [Conditional("UNITY_EDITOR")]
         public static void SetBlobDataType(Type blobType, ref IBuilder[] builders, ref string[] fieldNames)
         {
+#if UNITY_EDITOR
             var blobFields = blobType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) ?? Array.Empty<FieldInfo>();
             Array.Resize(ref builders, blobFields.Length);
             Array.Resize(ref fieldNames, blobFields.Length);
@@ -26,6 +25,7 @@ namespace Nuwa.Blob
                     fieldNames[i] = blobField.Name;
                 }
             }
+#endif
         }
 
     }

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EntitiesBT.Editor;
 using EntitiesBT.Variant;
 using GraphExt;
 using Nuwa;
-using Nuwa.Editor;
 using UnityEngine;
 
 #if UNITY_EDITOR
+using Nuwa.Editor;
+using EntitiesBT.Editor;
 using UnityEditor;
 using GraphExt.Editor;
 using UnityEngine.Assertions;
@@ -28,10 +28,10 @@ namespace EntitiesBT
 
         [SerializeField] private bool _expanded = false;
 
+#if UNITY_EDITOR
         [Inject]
         void Inject(GameObjectNodes<GraphNode, GraphNodeComponent> nodes)
         {
-#if UNITY_EDITOR
             VariantNode.ConnectedVariants.Clear();
             _variantConnections.Clear();
             foreach (var edge in _edges)
@@ -40,8 +40,8 @@ namespace EntitiesBT
                 _variantConnections.Add(edge, graphNodeVariant);
                 VariantNode.ConnectedVariants.Add(graphNodeVariant);
             }
-#endif
         }
+#endif
 
         public override IReadOnlySet<EdgeId> GetEdges(GraphRuntime<GraphNode> graph)
         {

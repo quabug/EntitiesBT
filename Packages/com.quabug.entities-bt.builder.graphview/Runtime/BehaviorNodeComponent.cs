@@ -131,7 +131,7 @@ namespace EntitiesBT
             var properties = new List<INodeProperty>
             {
                 CreateVerticalPorts(_node.InputPortName, -100),
-                new Editor.NodePositionProperty(Position, position => Position = position),
+                new NodeSerializedPositionProperty { PositionProperty = nodeObject.FindProperty(nameof(_Position)) },
                 new NodeClassesProperty("behavior-node", behaviorNodeType.ToString().ToLower()),
                 _typeTitleController,
                 _titleProperty,
