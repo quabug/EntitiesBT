@@ -1,11 +1,12 @@
 {
   "name": "com.quabug.entities-bt.builder.graphview",
   "description": "Behavior Tree for Unity Entities - GraphView Builder",
-  "version": "0.0.1",
+  "version": "1.4.0",
   "unity": "2020.3",
   "displayName": "EntitiesBT - GraphView Builder",
   "dependencies": {
-    "com.quabug.entities-bt.essential": "1.3.0",
+    "com.quabug.entities-bt.essential": "1.4.0",
+    "com.quabug.entities-bt.builder.component": "1.4.0",
     "com.quabug.graph-ext": "1.9.0"
   },
   "type": "tool"
