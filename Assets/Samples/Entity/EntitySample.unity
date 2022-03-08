@@ -1107,18 +1107,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -1201,18 +1204,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -1472,18 +1478,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -1698,18 +1707,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -1893,18 +1905,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -1987,18 +2002,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -2078,18 +2096,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 1
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 1
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
     00000001:
@@ -2409,18 +2430,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -2566,18 +2590,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -2660,18 +2687,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -3319,18 +3349,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -3496,18 +3529,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -3567,6 +3603,7 @@ GameObject:
   - component: {fileID: 1027940150}
   - component: {fileID: 1027940148}
   - component: {fileID: 1027940147}
+  - component: {fileID: 1027940146}
   m_Layer: 0
   m_Name: WeightRandomSelector
   m_TagString: Untagged
@@ -3574,6 +3611,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1027940146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027940145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2601b251b3b842da8a2256dfe6622a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 1
 --- !u!114 &1027940147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4450,18 +4500,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -4791,18 +4844,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -5232,18 +5288,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -5274,6 +5333,7 @@ GameObject:
   - component: {fileID: 1674485427}
   - component: {fileID: 1674485433}
   - component: {fileID: 1674485428}
+  - component: {fileID: 1674485434}
   m_Layer: 0
   m_Name: RandomSelector
   m_TagString: Untagged
@@ -5408,6 +5468,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
+--- !u!114 &1674485434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674485426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2601b251b3b842da8a2256dfe6622a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Value: 1
 --- !u!1 &1723956082
 GameObject:
   m_ObjectHideFlags: 0
@@ -5472,18 +5545,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 1
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 1
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
     00000001:
@@ -5623,18 +5699,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -5717,18 +5796,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -5811,18 +5893,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -5905,18 +5990,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -6132,18 +6220,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
@@ -6850,18 +6941,21 @@ MonoBehaviour:
           _variantTypeName: EntitiesBT.Variant.IVariantReader`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _writer:
           _variantTypeName: EntitiesBT.Variant.IVariantWriter`1[[System.Single, mscorlib,
             Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 2
         _readerAndWriter:
           _variantTypeName: EntitiesBT.Variant.IVariantReaderAndWriter`1[[System.Single,
             mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
             EntitiesBT.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          IsOptional: 0
           _variant:
             id: 3
     00000001:
