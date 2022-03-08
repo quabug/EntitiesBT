@@ -13,7 +13,7 @@ namespace EntitiesBT
             if (!_NodeObjectMap.ContainsKey(id))
             {
                 var nodeObject = new GameObject(node.GetType().Name);
-                nodeObject.transform.SetParent(_Root.transform);
+                nodeObject.transform.SetParent(Root.transform);
                 var nodeComponent = (GraphNodeComponent)nodeObject.AddComponent(node.ComponentType);
                 nodeComponent.Id = id;
                 nodeComponent.Node = node;

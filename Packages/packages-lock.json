@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.quabug.entities-bt.essential": "1.3.0"
+        "com.quabug.entities-bt.essential": "1.4.0"
       }
     },
     "com.quabug.entities-bt.builder.graphview": {
@@ -13,8 +13,9 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.quabug.entities-bt.essential": "1.3.0",
-        "com.quabug.graph-ext": "1.9.0"
+        "com.quabug.entities-bt.essential": "1.4.0",
+        "com.quabug.entities-bt.builder.component": "1.4.0",
+        "com.quabug.graph-ext": "1.9.2"
       }
     },
     "com.quabug.entities-bt.builder.odin": {
@@ -36,7 +37,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.quabug.entities-bt.essential": "1.3.0"
+        "com.quabug.entities-bt.essential": "1.4.0"
       }
     },
     "com.quabug.entities-bt.deprecated": {
@@ -53,7 +54,7 @@
       "source": "embedded",
       "dependencies": {
         "com.unity.entities": "0.14.0-preview.19",
-        "com.quabug.entities-bt.codegen": "1.3.0"
+        "com.quabug.entities-bt.codegen": "1.4.0"
       }
     },
     "com.quabug.entities-bt.variable.scriptable-object": {
@@ -61,7 +62,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.quabug.entities-bt.essential": "1.3.0"
+        "com.quabug.entities-bt.essential": "1.4.0"
       }
     },
     "com.quabug.entities-bt.variant-expression": {
@@ -73,7 +74,7 @@
       }
     },
     "com.quabug.graph-ext": {
-      "version": "1.9.0",
+      "version": "1.9.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
