@@ -11,7 +11,7 @@ using static EntitiesBT.Core.Utilities;
 namespace EntitiesBT.Variant
 {
     [VariantClass(GUID)]
-    public static class ScopeComponentVariant
+    public static class GlobalComponentVariant
     {
         public const string GUID = "6AB4A2A7-E99F-4940-9FFA-7E734DE771C9";
 
@@ -19,7 +19,7 @@ namespace EntitiesBT.Variant
         public class Any<T> : IVariant<T> where T : unmanaged
         {
             // TODO: check whether `Value` is part of behavior tree or not.
-            public ScopeValues Value;
+            public GlobalValues Value;
 
             [FieldName(DeclaringTypeVariable = nameof(_declaringType), FieldTypeVariable = nameof(_fieldType))]
             public string ValueFieldName;

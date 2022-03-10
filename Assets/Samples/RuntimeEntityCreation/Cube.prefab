@@ -106,7 +106,7 @@ MonoBehaviour:
     00000000:
       type: {class: BehaviorTreeSourceTextAsset, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
       data:
-        _file: {fileID: 4900000, guid: 9dcb89751237088448d924ce9582aef9, type: 3}
+        _file: {fileID: 4900000, guid: 33c02bf2d9f6e477ba7cce0e0c9976bd, type: 3}
 --- !u!114 &-1348069233146754638
 MonoBehaviour:
   m_ObjectHideFlags: 0

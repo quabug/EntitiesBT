@@ -7,7 +7,7 @@
   "dependencies": {
     "com.quabug.entities-bt.essential": "1.4.0",
     "com.quabug.entities-bt.builder.component": "1.4.0",
-    "com.quabug.graph-ext": "1.9.2"
+    "com.quabug.graph-ext": "1.9.4"
   },
   "type": "tool"
 }

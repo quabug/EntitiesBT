@@ -3,7 +3,7 @@ using EntitiesBT.Variant;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 
-public struct TestValues : IScopeValuesBlob
+public struct TestValues : IGlobalValuesBlob
 {
     public int IntValue;
     public int IntValue2;
@@ -12,4 +12,4 @@ public struct TestValues : IScopeValuesBlob
     public int Size => UnsafeUtility.SizeOf<TestValues>() + sizeof(int) * IntArray.Length;
 }
 
-public class TestScopeValues : ScopeValues<TestValues> {}
+public class TestGlobalValues : GlobalValues<TestValues> {}

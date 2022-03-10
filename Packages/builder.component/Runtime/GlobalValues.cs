@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Variant
 {
-    public abstract class ScopeValues : MonoBehaviour, IScopeValuesBuilder
+    public abstract class GlobalValues : MonoBehaviour, IScopeValuesBuilder
     {
         public int Offset { get; set; }
         public abstract IntPtr ValuePtr { get; }
@@ -15,7 +15,7 @@ namespace EntitiesBT.Variant
         public virtual void SetPreviewValue(string path, object value) => throw new NotImplementedException();
     }
 
-    public class ScopeValues<T> : ScopeValues where T : unmanaged, IScopeValuesBlob
+    public class GlobalValues<T> : GlobalValues where T : unmanaged, IGlobalValuesBlob
     {
         public BlobAsset<T> Value;
 

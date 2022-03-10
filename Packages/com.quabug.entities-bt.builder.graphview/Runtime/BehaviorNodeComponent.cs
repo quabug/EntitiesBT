@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
+using EntitiesBT.Entities;
 using GraphExt;
 using Nuwa;
 using Unity.Collections;
@@ -13,6 +15,7 @@ using UnityEngine;
 using GraphExt.Editor;
 using UnityEditor;
 using EntitiesBT.Editor;
+using UnityEditor.Experimental.SceneManagement;
 #endif
 
 namespace EntitiesBT
@@ -206,6 +209,21 @@ namespace EntitiesBT
                 blobBuilder.Dispose();
             }
         }
+
+#endregion
+
+#region Save to File
+
+#if UNITY_EDITOR
+        [ContextMenu("Save to file")]
+        public void SaveToFile()
+        {
+            var path = EditorUtility.SaveFilePanel("save path", Application.dataPath, name, "bytes");
+            if (string.IsNullOrEmpty(path)) return;
+            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(this.FindScopeValuesList(), file);
+            AssetDatabase.Refresh();
+        }
+#endif
 
 #endregion
     }

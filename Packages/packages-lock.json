@@ -15,7 +15,7 @@
       "dependencies": {
         "com.quabug.entities-bt.essential": "1.4.0",
         "com.quabug.entities-bt.builder.component": "1.4.0",
-        "com.quabug.graph-ext": "1.9.2"
+        "com.quabug.graph-ext": "1.9.4"
       }
     },
     "com.quabug.entities-bt.builder.odin": {
@@ -74,7 +74,7 @@
       }
     },
     "com.quabug.graph-ext": {
-      "version": "1.9.2",
+      "version": "1.9.4",
       "depth": 1,
       "source": "registry",
       "dependencies": {

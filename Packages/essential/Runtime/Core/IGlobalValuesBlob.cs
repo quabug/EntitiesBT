@@ -1,6 +1,6 @@
 namespace EntitiesBT.Core
 {
-    public interface IScopeValuesBlob
+    public interface IGlobalValuesBlob
     {
         int Size { get; }
     }

@@ -4,7 +4,7 @@ using Unity.Entities;
 using UnityEngine;
 
 [BehaviorNode("F759A85F-0CEB-4173-8964-DCCC5EC10618")]
-public struct PrintTestScopeValues : INodeData
+public struct PrintTestGlobalValues : INodeData
 {
     public BlobVariantRO<int> IntValue;
     public BlobVariantRO<float> FloatValue;
@@ -20,4 +20,4 @@ public struct PrintTestScopeValues : INodeData
     }
 }
 
-public class IntArrayScopeValuesComponentVariant : ScopeComponentVariant.Reader<BlobArray<int>> {}
+public class IntArrayScopeValuesComponentVariant : GlobalComponentVariant.Reader<BlobArray<int>> {}

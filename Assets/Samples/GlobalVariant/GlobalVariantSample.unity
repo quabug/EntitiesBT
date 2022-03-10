@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 407608393}
   - component: {fileID: 407608395}
   m_Layer: 0
-  m_Name: PrintTestScopeValues
+  m_Name: PrintTestGlobalValues
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,10 +167,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    NodeType: PrintTestScopeValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
+    NodeType: PrintTestGlobalValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: PrintTestScopeValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
+      BlobDataType: PrintTestGlobalValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       FieldNames:
       - IntValue
@@ -212,13 +212,13 @@ MonoBehaviour:
         _variant:
           id: 5
     00000003:
-      type: {class: <IVariantReader>/Int32ScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/Int32GlobalComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: {fileID: 1638146791}
-        ValueFieldName: IntValue2
+        ValueFieldName: IntValue
     00000004:
-      type: {class: <IVariantReader>/SingleScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleGlobalComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: {fileID: 1638146791}
@@ -622,7 +622,7 @@ GameObject:
   - component: {fileID: 2130573362}
   - component: {fileID: 2130573360}
   m_Layer: 0
-  m_Name: PrintTestScopeValues
+  m_Name: PrintTestGlobalValues
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -715,10 +715,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    NodeType: PrintTestScopeValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
+    NodeType: PrintTestGlobalValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     Builder:
-      BlobDataType: PrintTestScopeValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
+      BlobDataType: PrintTestGlobalValues, EntitiesBT.Sample.ScopeVariant, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       FieldNames:
       - IntValue
@@ -760,13 +760,13 @@ MonoBehaviour:
         _variant:
           id: 5
     00000003:
-      type: {class: <IVariantReader>/Int32ScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/Int32GlobalComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: {fileID: 2130573360}
         ValueFieldName: IntValue
     00000004:
-      type: {class: <IVariantReader>/SingleScopeComponentVariant, ns: EntitiesBT.Variant.CodeGen,
+      type: {class: <IVariantReader>/SingleGlobalComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}
       data:
         Value: {fileID: 2130573360}
