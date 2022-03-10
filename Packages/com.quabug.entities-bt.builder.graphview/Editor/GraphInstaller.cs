@@ -44,6 +44,7 @@ namespace EntitiesBT.Editor
             RegisterPortPresenter();
             RegisterElementMovedEventEmitter();
             RegisterSelection();
+            RegisterHierarchyObserver();
 
             void RegisterGraphView()
             {
@@ -142,6 +143,11 @@ namespace EntitiesBT.Editor
                     .Singleton()
                     .As<SyncSelectionGraphElementPresenter.IConvertor>()
                 ;
+            }
+
+            void RegisterHierarchyObserver()
+            {
+                typeContainers.CreateSystemContainer(rootContainer, typeof(NodeHierarchyObserver<GraphNode, GraphNodeComponent>));
             }
         }
     }

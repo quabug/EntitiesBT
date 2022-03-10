@@ -166,43 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe11e62dd054dd5a7b238f1de6db4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedPropertyReader:
-    _reader:
-      id: 0
-  InputMovePropertyReader:
-    _reader:
-      id: 1
-  OutputVelocityPropertyWriter:
-    _isLinked: 1
-    _readerAndWriter:
-      id: 2
-    _reader:
-      id: 3
-    _writer:
-      id: 3
-  references:
-    version: 1
-    00000000:
-      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 2
-    00000001:
-      type: {class: <IVariantReader>/float2NodeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        NodeObject: {fileID: 1332110029}
-        ValueFieldName: Output
-    00000002:
-      type: {class: <IVariantReaderAndWriter>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value:
-          x: 0
-          y: 0
-          z: 0
-    00000003:
-      type: {class: , ns: , asm: }
 --- !u!1 &9309917
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,12 +213,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &72413650
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,7 +237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &72413651
 Transform:
   m_ObjectHideFlags: 0
@@ -299,7 +264,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 969631693c5b4a45b9fa479183204cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enable: 1
 --- !u!1 &83713278
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,12 +310,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_ParallelNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &119268659
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &119268660
 Transform:
   m_ObjectHideFlags: 0
@@ -395,9 +361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 789b644df054407e9a9be7cebb6a63d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputAction: {fileID: -1456999755813938659, guid: e11489ceb77624896bddc0c72ce3be71,
-    type: 3}
-  Phase: 2
 --- !u!1 &254321803
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,7 +460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &447731369
 Transform:
   m_ObjectHideFlags: 0
@@ -526,14 +489,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_RepeatForeverNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
-      data:
-        BreakStates: 0
 --- !u!1 &461176656
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,7 +579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &525316153
 Transform:
   m_ObjectHideFlags: 0
@@ -644,24 +607,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_CharacterSimpleMoveNode, ns: EntitiesBT.Extensions.UnityMovement,
-        asm: Assembly-CSharp}
-      data:
-        IsLocal: 0
-        Velocity:
-          _reader:
-            id: 1
-    00000001:
-      type: {class: <IVariantReader>/float3NodeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        NodeObject: {fileID: 775125229}
-        ValueFieldName: OutputVelocity
 --- !u!1 &551306013
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,7 +714,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &775125228
 Transform:
   m_ObjectHideFlags: 0
@@ -788,43 +741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe11e62dd054dd5a7b238f1de6db4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedPropertyReader:
-    _reader:
-      id: 0
-  InputMovePropertyReader:
-    _reader:
-      id: 1
-  OutputVelocityPropertyWriter:
-    _isLinked: 1
-    _readerAndWriter:
-      id: 2
-    _reader:
-      id: 3
-    _writer:
-      id: 3
-  references:
-    version: 1
-    00000000:
-      type: {class: <IVariantReader>/SingleLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value: 4
-    00000001:
-      type: {class: <IVariantReader>/float2NodeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        NodeObject: {fileID: 1332110029}
-        ValueFieldName: Output
-    00000002:
-      type: {class: <IVariantReaderAndWriter>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value:
-          x: 0
-          y: 0
-          z: 0
-    00000003:
-      type: {class: , ns: , asm: }
 --- !u!1 &866069044
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,12 +787,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &945633982
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,22 +839,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SetTransformRotationNode, ns: EntitiesBT.Extensions.UnityMovement,
-        asm: Assembly-CSharp}
-      data:
-        RotationProperty:
-          _reader:
-            id: 1
-    00000001:
-      type: {class: <IVariantReader>/quaternionComponentVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        ComponentValueName: Unity.Transforms.Rotation.Value
 --- !u!1 &1000532614
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,37 +1065,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9262fcbd9912476da18353a7aa96fb58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputMovePropertyReader:
-    _reader:
-      id: 0
-  OutputDirectionPropertyWriter:
-    _isLinked: 1
-    _readerAndWriter:
-      id: 1
-    _reader:
-      id: 2
-    _writer:
-      id: 2
-  references:
-    version: 1
-    00000000:
-      type: {class: <IVariantReader>/float2NodeVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        NodeObject: {fileID: 1332110029}
-        ValueFieldName: Output
-    00000001:
-      type: {class: <IVariantReaderAndWriter>/quaternionLocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value:
-          value:
-            x: 0
-            y: 0
-            z: 0
-            w: 0
-    00000002:
-      type: {class: , ns: , asm: }
 --- !u!1 &1164989512
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,12 +1194,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &1273432696
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,7 +1218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1273432697
 Transform:
   m_ObjectHideFlags: 0
@@ -1366,15 +1247,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_RepeatTimesNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
-      data:
-        TickTimes: 1
-        BreakStates: 0
 --- !u!1 &1332110027
 GameObject:
   m_ObjectHideFlags: 0
@@ -1418,27 +1298,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6e4272953848828585238a7109ee00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputAction: {fileID: -7458149306784309407, guid: e11489ceb77624896bddc0c72ce3be71,
-    type: 3}
-  Output:
-    _isLinked: 1
-    _readerAndWriter:
-      id: 0
-    _reader:
-      id: 1
-    _writer:
-      id: 1
-  references:
-    version: 1
-    00000000:
-      type: {class: <IVariantReaderAndWriter>/float2LocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value:
-          x: 0
-          y: 0
-    00000001:
-      type: {class: , ns: , asm: }
 --- !u!1 &1348624634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1530,26 +1389,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_CharacterSimpleMoveNode, ns: EntitiesBT.Extensions.UnityMovement,
-        asm: Assembly-CSharp}
-      data:
-        IsLocal: 1
-        Velocity:
-          _reader:
-            id: 1
-    00000001:
-      type: {class: <IVariantReader>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value:
-          x: 0
-          y: 8
-          z: 0
 --- !u!1 &1454846012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1561,12 +1408,12 @@ GameObject:
   - component: {fileID: 1454846014}
   - component: {fileID: 1454846013}
   m_Layer: 0
-  m_Name: SequenceNode
+  m_Name: Unknown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1454846013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1580,12 +1427,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SequenceNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!4 &1454846014
 Transform:
   m_ObjectHideFlags: 0
@@ -1922,26 +1771,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_CharacterSimpleMoveNode, ns: EntitiesBT.Extensions.UnityMovement,
-        asm: Assembly-CSharp}
-      data:
-        IsLocal: 1
-        Velocity:
-          _reader:
-            id: 1
-    00000001:
-      type: {class: <IVariantReader>/float3LocalVariant, ns: EntitiesBT.Variant.CodeGen,
-        asm: Assembly-CSharp}
-      data:
-        Value:
-          x: 0
-          y: 2
-          z: 0
 --- !u!1 &1736258349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1951,11 +1788,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1736258359}
-  - component: {fileID: 1736258358}
   - component: {fileID: 1736258357}
   - component: {fileID: 1736258352}
   - component: {fileID: 1736258351}
-  - component: {fileID: 1736258350}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1963,18 +1798,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1736258350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736258349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1870774babe4d9c83c487cce9fe3130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1736258351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1996,10 +1819,12 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Runtime}
+      type: {class: BehaviorTreeSourceGraphPrefab, ns: EntitiesBT, asm: EntitiesBT.Builder.GraphView}
       data:
-        Root: {fileID: 1454846013}
-        AutoDestroy: 1
+        Root: {fileID: 9063735791148779452, guid: 8dddf886680dc3c4a9c1600df7b9900d,
+          type: 3}
+        _behaviorTree: {fileID: 5848269174455693850, guid: 8dddf886680dc3c4a9c1600df7b9900d,
+          type: 3}
 --- !u!114 &1736258352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2026,25 +1851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConversionMode: 1
---- !u!143 &1736258358
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736258349}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 60
-  m_StepOffset: 0.1
-  m_SkinWidth: 0.001
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  ConversionMode: 0
 --- !u!4 &1736258359
 Transform:
   m_ObjectHideFlags: 0
@@ -2108,12 +1915,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_SelectorNode, ns: EntitiesBT.Nodes, asm: Assembly-CSharp}
 --- !u!1 &1891447500
 GameObject:
   m_ObjectHideFlags: 0
@@ -2160,7 +1969,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1923460355
 Transform:
   m_ObjectHideFlags: 0
@@ -2189,13 +1998,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeData:
-    id: 0
+    NodeType: 
+    Builder:
+      BlobDataType: 
+      FieldNames: []
+      Builders: []
   RunOnMainThread: 0
   references:
     version: 1
-    00000000:
-      type: {class: <Serializable>_RecursiveResetStateNode, ns: EntitiesBT.Nodes,
-        asm: Assembly-CSharp}
 --- !u!1 &1928177375
 GameObject:
   m_ObjectHideFlags: 0
@@ -2212,7 +2022,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1928177376
 Transform:
   m_ObjectHideFlags: 0
@@ -2239,5 +2049,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11456381507f4399b74a4d80532d8d44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputAction: {fileID: 7435767463111511155, guid: e11489ceb77624896bddc0c72ce3be71,
-    type: 3}
