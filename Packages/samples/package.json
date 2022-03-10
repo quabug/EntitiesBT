@@ -1,0 +1,8 @@
+{
+  "name": "com.quabug.entities-bt.samples",
+  "description": "Behavior Tree for Unity Entities - Samples",
+  "version": "1.4.0",
+  "unity": "2020.2",
+  "displayName": "EntitiesBT - Samples",
+  "type": "sample"
+}

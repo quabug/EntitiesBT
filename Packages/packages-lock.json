@@ -53,9 +53,14 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.entities": "0.14.0-preview.19",
-        "com.quabug.entities-bt.codegen": "1.4.0"
+        "com.unity.entities": "0.14.0-preview.19"
       }
+    },
+    "com.quabug.entities-bt.samples": {
+      "version": "file:samples",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.quabug.entities-bt.variable.scriptable-object": {
       "version": "file:variable.scriptable-object",
