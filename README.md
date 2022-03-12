@@ -57,11 +57,7 @@ modify `Packages/manifest.json` as below
 {
   "dependencies": {
     ...
-    "com.quabug.entities-bt.essential": "1.4.0",
-    "com.quabug.entities-bt.builder.component": "1.4.0",
     "com.quabug.entities-bt.builder.graphview": "1.4.0",
-    "com.quabug.entities-bt.debug.component-viewer": "1.4.0",
-    "com.quabug.entities-bt.variable.scriptable-object": "1.4.0"
   },
   "scopedRegistries": [
     {
@@ -79,11 +75,7 @@ or
 
 [OpenUPM](https://openupm.com/docs/getting-started.html#installing-an-upm-package):
 ```
-openupm add com.quabug.entities-bt.essential
-openupm add com.quabug.entities-bt.builder.component
 openupm add com.quabug.entities-bt.builder.graphview
-openupm add com.quabug.entities-bt.debug.component-viewer
-openupm add com.quabug.entities-bt.variable.scriptable-object
 ```
 
 ### Usage
