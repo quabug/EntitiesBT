@@ -39,5 +39,57 @@ namespace EntitiesBT.Components
         {
             return !gameObject.scene.IsValid() && !gameObject.scene.isLoaded;
         }
+
+        [Pure]
+        public static IEnumerable<GameObject> DescendantsAndSelf(this GameObject gameObject)
+        {
+            yield return gameObject;
+
+            foreach (var descendant in
+                from child in Children(gameObject)
+                from descendant in DescendantsAndSelf(child)
+                select descendant
+            ) yield return descendant;
+        }
+
+        [Pure]
+        public static IEnumerable<GameObject> Descendants(this GameObject gameObject)
+        {
+            return DescendantsAndSelf(gameObject).Skip(1); // skip self
+        }
+
+        [Pure, CanBeNull]
+        public static GameObject Parent(this GameObject gameObject)
+        {
+            var parent = gameObject.transform.parent;
+            return parent == null ? null : parent.gameObject;
+        }
+
+        [Pure]
+        public static IEnumerable<GameObject> AncestorsAndSelf(this GameObject gameObject)
+        {
+            var transform = gameObject == null ? null : gameObject.transform;
+            while (transform != null)
+            {
+                yield return transform.gameObject;
+                transform = transform.parent;
+            }
+        }
+
+        [Pure]
+        public static IReadOnlyList<IScopeValuesBuilder> FindScopeValuesList(this GameObject root)
+        {
+            return root.DescendantsAndSelf()
+                .Select(obj => obj.GetComponent<IScopeValuesBuilder>())
+                .Where(scopeValues => scopeValues != null)
+                .ToArray()
+            ;
+        }
+
+        [Pure]
+        public static IReadOnlyList<IScopeValuesBuilder> FindScopeValuesList(this Component root)
+        {
+            return root.gameObject.FindScopeValuesList();
+        }
     }
 }

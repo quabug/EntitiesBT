@@ -1,7 +1,9 @@
 ﻿using System;
 using Nuwa.Editor;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nuwa.Blob.Editor
 {
@@ -18,14 +20,28 @@ namespace Nuwa.Blob.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            var valueProperty = UpdateValueProperty(property);
+            EditorGUI.PropertyField(position, valueProperty, label, includeChildren: true);
+            property.serializedObject.ApplyModifiedProperties();
+        }
+
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            var valueProperty = UpdateValueProperty(property);
+            var propertyField = new ImmediatePropertyField(valueProperty, valueProperty.name);
+            propertyField.AddToClassList(valueProperty.propertyPath);
+            return propertyField;
+        }
+
+        private SerializedProperty UpdateValueProperty(SerializedProperty property)
+        {
             property.serializedObject.Update();
             var valueProperty = ValueProperty(property);
             var valueType = BlobType(property);
             var builderFactory = valueType.GetBuilderFactory(customBuilder: null);
             var value = valueProperty.GetObject();
             if (value == null || value.GetType() != builderFactory.Type) valueProperty.managedReferenceValue = builderFactory.Create();
-            EditorGUI.PropertyField(position, valueProperty, label, includeChildren: true);
-            property.serializedObject.ApplyModifiedProperties();
+            return valueProperty;
         }
 
         private SerializedProperty ValueProperty(SerializedProperty property)

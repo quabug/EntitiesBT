@@ -2,6 +2,7 @@
 using Nuwa.Editor;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nuwa.Blob.Editor
 {
@@ -17,6 +18,38 @@ namespace Nuwa.Blob.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            var array = UpdateArrayElements(property);
+            EditorGUI.PropertyField(position, array, label, includeChildren: true);
+            property.serializedObject.ApplyModifiedProperties();
+        }
+
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            var array = UpdateArrayElements(property);
+            // TODO: set array size by an integer field
+            var root = new PropertyFieldFoldOut();
+            Refresh(array);
+            // TODO: working but throw NullReferenceException?
+            //       NullReferenceException: Object reference not set to an instance of an object
+            //       UnityEditor.UIElements.Bindings.SerializedObjectBindingContext.UpdateValidProperties () (at /Users/bokken/buildslave/unity/build/External/MirroredPackageSources/com.unity.ui/Editor/Bindings/BindingExtensions.cs:800)
+            // root.TrackPropertyValue(array, Refresh);
+            return root;
+
+            void Refresh(SerializedProperty elements)
+            {
+                root.Clear();
+                for (var i = 0; i < elements.arraySize; i++)
+                {
+                    var builder = elements.GetArrayElementAtIndex(i);
+                    var field = new PropertyFieldWithoutLabel(builder);
+                    field.AddToClassList(builder.propertyPath);
+                    root.Add(field);
+                }
+            }
+        }
+
+        private SerializedProperty UpdateArrayElements(SerializedProperty property)
+        {
             property.serializedObject.Update();
             var elementsProperty = FindElementsProperty(property);
             var builderFactory = FindElementType(property).GetBuilderFactory(customBuilder: null);
@@ -30,8 +63,7 @@ namespace Nuwa.Blob.Editor
                     property.serializedObject.ApplyModifiedProperties();
                 }
             }
-            EditorGUI.PropertyField(position, elementsProperty, label, includeChildren: true);
-            property.serializedObject.ApplyModifiedProperties();
+            return elementsProperty;
         }
 
         private SerializedProperty FindElementsProperty(SerializedProperty property) => property.FindPropertyRelative(ElementsPropertyName);

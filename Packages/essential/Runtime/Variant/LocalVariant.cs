@@ -1,21 +1,17 @@
 using System;
 using EntitiesBT.Core;
 using Unity.Entities;
-using UnityEngine;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variant
 {
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class LocalVariantAttribute : PropertyAttribute {}
-
     [VariantClass(GUID)]
     public static class LocalVariant
     {
         public const string GUID = "BF510555-7E38-49BB-BDC1-E4A85A174EEC";
 
         [Serializable]
-        public class Any<T> : IVariant where T : unmanaged
+        public class Any<T> : IVariant<T> where T : unmanaged
         {
             public T Value;
 
@@ -24,9 +20,12 @@ namespace EntitiesBT.Variant
                 blobVariant.VariantId = GuidHashCode(GUID);
                 return builder.Allocate(ref blobVariant, Value);
             }
+
+            public object PreviewValue => Value;
         }
 
         [Serializable] public class Reader<T> : Any<T>, IVariantReader<T> where T : unmanaged {}
+        [Serializable] public class Writer<T> : Any<T>, IVariantWriter<T> where T : unmanaged {}
         [Serializable] public class ReaderAndWriter<T> : Any<T>, IVariantReaderAndWriter<T> where T : unmanaged {}
 
         [RefReaderMethod]

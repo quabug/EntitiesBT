@@ -1,0 +1,105 @@
+Node.behavior-node #node-border {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+Node.behavior-node #selection-border {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+Port.variant.RO {
+    --port-color: #669CE6;
+}
+
+Port.variant.WO {
+    --port-color: #EED620;
+}
+
+Port.variant.RW {
+    --port-color: #AF88F0;
+}
+
+.action .vertical-ports {
+    background-color: rgb(29, 157, 168);
+}
+
+.action #output-ports-vertical {
+    display: none;
+}
+
+.composite .vertical-ports {
+    background-color: rgb(179, 183, 15);
+}
+
+.decorate .vertical-ports {
+    background-color: rgb(97, 51, 178);
+}
+
+Port.port.tree {
+    --port-color: rgb(12, 234, 30);
+    height: 8px;
+}
+
+Port.port.tree > #connector {
+    border-radius: 0;
+}
+
+Node #node-title-property {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 14px;
+    -unity-font-style: bold;
+}
+
+Node #node-title-property > Toggle {
+    flex-grow: 1;
+    flex-shrink: 1;
+    align-items: flex-start;
+}
+
+Node #node-title-property > Toggle > VisualElement {
+    align-items: center;
+    justify-content: center;
+}
+
+#default-node-name {
+    padding-top: 4px;
+    font-size: 10px;
+    -unity-text-align: lower-center;
+    -unity-font-style: italic;
+}
+
+Node #behavior-node-property {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+Node #variant-node-title-property {
+    justify-content: space-between;
+}
+
+#variant-node-title-property > #connector {
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+#variant-node-title-property > #title-property {
+    height: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 12px;
+    -unity-font-style: bold-and-italic;
+}
+
+#action-bottom-space {
+    height: 10px;
+}
+
+Node.action #node-serialized-property {
+    padding-bottom: 10px;
+}

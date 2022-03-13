@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -82,8 +84,8 @@ namespace Nuwa.Editor
                 {
                     i++;
                     var itemIndex = int.Parse(_arrayData.Match(pathList[i]).Groups[1].Value);
-                    var array = ((Array)obj);
-                    obj = array != null && itemIndex < array.Length ? array.GetValue(itemIndex) : null;
+                    var array = (IList)obj;
+                    obj = array != null && itemIndex < array.Count ? array[itemIndex] : null;
                     yield return (obj, fi);
                 }
                 else
@@ -126,9 +128,9 @@ namespace Nuwa.Editor
             return property.GetFieldsByPath().ElementAt(1).fi;
         }
 
-        public static Type GetGenericType(this PropertyDrawer propertyDrawer)
+        public static Type FirstGenericTypeArgument(this PropertyDrawer propertyDrawer)
         {
-            return propertyDrawer.fieldInfo.DeclaringType.GetGenericType();
+            return propertyDrawer.fieldInfo.DeclaringType.FirstGenericTypeArgument();
         }
 
         public static T GetCustomAttribute<T>(this SerializedProperty property) where T : Attribute
@@ -143,7 +145,7 @@ namespace Nuwa.Editor
             return property.serializedObject.targetObject.GetType().GetField(fieldName, flags);
         }
 
-        public static Type GetGenericType(this Type type)
+        public static Type FirstGenericTypeArgument(this Type type)
         {
             while (type != null)
             {
@@ -219,9 +221,32 @@ namespace Nuwa.Editor
             return self;
         }
 
-        public static IEnumerable<T> Yield<T>(this T value)
+        internal static IEnumerable<T> Yield<T>(this T value)
         {
             yield return value;
+        }
+
+        [CanBeNull] public static Type GetManagedFullType([NotNull] this SerializedProperty property)
+        {
+            return property.propertyType != SerializedPropertyType.ManagedReference
+                ? null
+                : GetTypeByTypename(property.managedReferenceFullTypename)
+            ;
+        }
+
+        [CanBeNull] public static Type GetManagedFieldType([NotNull] this SerializedProperty property)
+        {
+            return property.propertyType != SerializedPropertyType.ManagedReference
+                ? null
+                : GetTypeByTypename(property.managedReferenceFieldTypename)
+            ;
+        }
+
+        private static Type GetTypeByTypename(string typename)
+        {
+            if (string.IsNullOrEmpty(typename)) return null;
+            var names = typename.Split(' ');
+            return names.Length != 2 ? null : Type.GetType($"{names[1]}, {names[0]}");
         }
     }
 }

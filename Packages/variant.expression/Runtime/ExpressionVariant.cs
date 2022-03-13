@@ -59,6 +59,8 @@ namespace EntitiesBT.Variant.Expression
                 }
                 return new IntPtr(UnsafeUtility.AddressOf(ref data));
             }
+
+            public object PreviewValue => null;
         }
 
         [ReaderMethod]

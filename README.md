@@ -7,34 +7,6 @@ _____      _   _ _   _           ______ _____
 \____/_| |_|\__|_|\__|_|\___||___/\____/  \_/  
                                                
 ```
-> **Table of contents**
->   * [Why another Behavior Tree framework?](#why-another-behavior-tree-framework)
->   * [Features](#features)
->   * [Disadvantages](#disadvantages)
->   * [HowTo](#howto)
->     - [Installation](#installation)
->     - [Usage](#usage)
->       - [Create behavior tree](#create-behavior-tree)
->       - [Attach behavior tree onto Entity](#attach-behavior-tree-onto-entity)
->       - [Serialization](#serialization)
->       - [Thread control](#thread-control)
->       - [Variant](#variant)
->         - [Variant Types](#variant-types)
->         - [Variant Sources](#variant-sources)
->       - [Multiple trees](#multiple-trees)
->     - [Debug](#debug)
->     - [Custom behavior node](#custom-behavior-node)
->       - [Action](#action)
->       - [Decorator](#decorator)
->       - [Composite](#composite)
->       - [Entity Query](#entityquery)
->       - [Advanced: automatically generate unity components from nodes](#advanced-automatically-generate-unity-components-from-nodes)
->       - [Advanced: customize debug view](#advanced-customize-debug-view)
->       - [Advanced: access other node data](#advanced-access-other-node-data)
->       - [Advanced: behavior tree component](#advanced-behavior-tree-component)
->       - [Advanced: virtual node builder](#advanced-virtual-node-builder)
->   * [Data Structure](#data-structure)
-
 Behavior Tree framework based on and used for Unity Entities (DOTS)
 
 ## Release Notes
@@ -67,11 +39,11 @@ Existing BT frameworks are not support Entities out of box.
 - [essential](Packages/essential): essential part of entities behavior tree, any extension should depend on this package.
 - [codegen](Packages/codegen): automatically generate [entity query accesors](#entityquery) on the methods of nodes.
 - [builder.component](Packages/builder.component): build behavior tree data from unity components.
+- [builder.graphview](Packages/com.quabug.entities-bt.builder.graphview): build behavior tree data by graph with components.
 - [builder.odin](Packages/builder.odin): advanced hierarchy builder based on Odin and its serializer.
 - [builder.visual](Packages/builder.visual): build and use behavior tree by graph of DOTS visual scripting (suspended).
 - [debug.component-viewer](Packages/debug.component-viewer): show selected entity with behavior tree as components in inspector of unity while running.
 - [variable.scriptable-object](Packages/variable.scriptable-object): extension for using scriptable object data as variable source of behavior tree node.
-- [samples](Packages/samples): samples.
 
 ## HowTo
 ### Installation
@@ -85,18 +57,14 @@ modify `Packages/manifest.json` as below
 {
   "dependencies": {
     ...
-    "com.quabug.entities-bt.essential": "1.1.1",
-    "com.quabug.entities-bt.codegen": "1.0.0",
-    "com.quabug.entities-bt.builder.component": "1.0.0",
-    "com.quabug.entities-bt.debug.component-viewer": "1.0.0",
-    "com.quabug.entities-bt.variable.scriptable-object": "1.0.0"
+    "com.quabug.entities-bt.builder.graphview": "1.4.0",
   },
   "scopedRegistries": [
     {
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.quabug.entities-bt"
+        "com.quabug"
       ]
     }
   ]
@@ -107,18 +75,23 @@ or
 
 [OpenUPM](https://openupm.com/docs/getting-started.html#installing-an-upm-package):
 ```
-openupm add com.quabug.entities-bt.essential
-openupm add com.quabug.entities-bt.builder.component
-openupm add com.quabug.entities-bt.debug.component-viewer
-openupm add com.quabug.entities-bt.variable.scriptable-object
+openupm add com.quabug.entities-bt.builder.graphview
 ```
 
 ### Usage
-#### Create behavior tree
-<img width="600" alt="create" src="https://user-images.githubusercontent.com/683655/72404172-5b4f5c00-378f-11ea-94a1-bb8aa5eb2608.gif" />
+#### GraphView Builder
+##### Create behavior tree graph
+<img width="600" alt="create graph" src="https://user-images.githubusercontent.com/683655/158053015-766eeff2-3263-4d3a-b51e-3eebf47c1a46.gif" />
 
-#### Attach behavior tree onto _Entity_
-<img width="600" alt="attach" src="https://user-images.githubusercontent.com/683655/83865297-97905280-a758-11ea-9dd0-0a76bf601895.gif" />
+##### Attach graph of behavior tree onto _Entity_
+<img width="600" alt="attach graph" src="https://user-images.githubusercontent.com/683655/158052727-8a9376fc-c68b-4af1-bdaa-71473938c7aa.gif" />
+
+#### Component Builder
+##### Create behavior tree
+<img width="600" alt="create" src="https://user-images.githubusercontent.com/683655/158053081-c17b41a0-ffae-48ee-955f-be92cdbf277d.gif" />
+
+##### Attach behavior tree onto _Entity_
+<img width="600" alt="attach" src="https://user-images.githubusercontent.com/683655/158053177-b7ee1081-4d81-4732-a4e8-f13f718ef58f.gif" />
 
 #### Serialization
 <img width="600" alt="save-to-file" src="https://user-images.githubusercontent.com/683655/72407209-b7b77900-3799-11ea-9de3-0703b1936f63.gif" />
@@ -157,23 +130,6 @@ openupm add com.quabug.entities-bt.variable.scriptable-object
 
 ##### Code Example
 ``` c#
-    public class BTVariantNode : BTNode<VariantNode>
-    {
-        // have to generate an interface of `Int32VariantReader` to make it possible to serialize and display by Unity.
-        // see "Generate specific types` below
-        [SerializeReference, SerializeReferenceButton] // neccessary for editor
-        public Int32VariantReader IntReader; // an `int` variant reader
-
-        public SingleSerializedReaderAndWriterVariant FloatRW;
-
-        protected override unsafe void Build(ref VariantNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            // save `Int32VariantReader` as `BlobVariantReader<int>` of `VariantNode`
-            IntReader.Allocate(ref builder, ref data.IntVariant, this, tree);
-            FloatRW.Allocate(ref builder, ref data.FloatVariant, this, tree);
-        }
-    }
-
     [BehaviorNode("867BFC14-4293-4D4E-B3F0-280AD4BAA403")]
     public struct VariantNode : INodeData
     {
@@ -196,18 +152,6 @@ openupm add com.quabug.entities-bt.variable.scriptable-object
         {}
     }
 ```
-##### Generate specific types of `IVariant<T>`
-Generic `IVariant<T>` cannot be serialized in Unity, since `[SerializeReference]` is not allowed on a generic type.
-A specific type of `IVariant<T>` must be declared before use.
-- First create a _Scriptable Object_ of _VariantGeneratorSetting_
-<img width="800" alt="Snipaste_2020-03-18_18-57-30" src="https://user-images.githubusercontent.com/683655/76953861-6159e880-694a-11ea-8fbc-33a83b181ebf.png">
-
-- Fill which _Types_ you want to use as variable property.
-- Fill _Filename_, _Namespace_, etc.
-- Create script from this setting and save it in _Assets_
-<img width="600" alt="Snipaste_2020-03-18_18-57-36" src="https://user-images.githubusercontent.com/683655/76953872-63bc4280-694a-11ea-8f03-73af3fa2fec2.png">
-
-- And now you are free to use specific type properties, like `float2Property` etc.
 
 #### Multiple Trees
 Add multiple `BehaviorTreeRoot` onto a single entity gameobject will create multiple behavior tree to control this single entity.
@@ -243,18 +187,6 @@ public struct EntityMoveNode : INodeData
         where TNodeBlob : struct, INodeBlob
         where TBlackboard : struct, IBlackboard
     {}
-}
-
-// builder and editor part of node
-public class EntityMove : BTNode<EntityMoveNode>
-{
-    public Vector3 Velocity;
-
-    protected override void Build(ref EntityMoveNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
-    {
-        // set `NodeData` here
-        data.Velocity = Velocity;
-    }
 }
 
 // debug view (optional)
@@ -293,17 +225,6 @@ public struct RepeatForeverNode : INodeData
     {}
 }
 
-// builder and editor
-public class BTRepeat : BTNode<RepeatForeverNode>
-{
-    public NodeState BreakStates;
-    
-    public override void Build(ref RepeatForeverNode data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
-    {
-        data.BreakStates = BreakStates;
-    }
-}
-
 // debug view (optional)
 public class BTDebugRepeatForever : BTDebugView<RepeatForeverNode> {}
 ```
@@ -328,9 +249,6 @@ public struct SelectorNode : INodeData
         where TBlackboard : struct, IBlackboard
     {}
 }
-
-// builder and editor
-public class BTSelector : BTNode<SelectorNode> {}
 
 // avoid debug view since there's nothing need to be debug for `Selector`
 ```
@@ -410,13 +328,6 @@ public struct SomeNode : INodeData
     }
 }
 ```
-
-#### Advanced: automatically generate unity components from nodes
-<img width="692" alt="image" src="https://user-images.githubusercontent.com/683655/88620751-56218100-d0d1-11ea-9a88-e9b2dfeee252.png">
-
-1. Create a `NodeComponentsGenerator` scriptable object.
-2. Fill values of `NodeComponentGenerator`
-3. Click *GenerateComponents* in the menu of scriptable object.
 
 #### Advanced: customize debug view
 - Behavior Node example: [PrioritySelectorNode.cs](Packages/essential/Runtime/Nodes/Composites/PrioritySelectorNode.cs)

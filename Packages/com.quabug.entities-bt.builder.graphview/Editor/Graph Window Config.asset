@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5ba7f039e774f7b9f34a9386ac259ed, type: 3}
+  m_Name: Graph Window Config
+  m_EditorClassIdentifier: 
+  WindowName: EntitiesBT
+  WindowStyleSheet: {fileID: 7433441132597879392, guid: 5022eddd1d5d4486c86383f30e20af58,
+    type: 3}
+  GraphWindowExtension:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: GraphWindowExtension, ns: EntitiesBT.Editor, asm: EntitiesBT.Builder.GraphView.Editor}
+      data:
+        _installer:
+          GraphViewFactory:
+            id: 1
+          NodeViewFactory:
+            id: 2
+          EdgeViewFactory:
+            id: 3
+          PortViewFactory:
+            id: 4
+        MenuEntries:
+        - id: 5
+    00000001:
+      type: {class: DefaultGraphViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
+    00000002:
+      type: {class: DefaultNodeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
+      data:
+        NodePropertyViewFactory:
+          Factories:
+          - id: 6
+    00000003:
+      type: {class: DefaultEdgeViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
+    00000004:
+      type: {class: DefaultPortViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}
+    00000005:
+      type: {class: TypeNameMenuEntriesInstaller, ns: GraphExt.Editor, asm: GraphExt.DI}
+      data:
+        MenuEntries:
+        - EntitiesBT.Editor.GraphNodeSelectionMenuEntry, EntitiesBT.Builder.GraphView.Editor,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - EntitiesBT.Editor.BehaviorNodeCreation, EntitiesBT.Builder.GraphView.Editor,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        - EntitiesBT.Editor.VariantNodeCreation, EntitiesBT.Builder.GraphView.Editor,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    00000006:
+      type: {class: DefaultPropertyViewFactory, ns: GraphExt.Editor, asm: GraphExt.Editor}

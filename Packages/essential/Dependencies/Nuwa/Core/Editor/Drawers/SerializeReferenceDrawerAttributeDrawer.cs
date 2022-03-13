@@ -60,24 +60,14 @@ namespace Nuwa.Editor
 
             EditorGUI.EndProperty();
 
-            IEnumerable<Func<Type, bool>> GetAllBuiltInTypeRestrictions()
+            Func<Type, bool> GetAllBuiltInTypeRestrictions()
             {
-                var result = new List<Func<Type, bool>>();
-                if (!string.IsNullOrEmpty(attribute.TypeRestrictBySiblingProperty))
-                {
-                    var baseType = property.GetSiblingPropertyInfo(attribute.TypeRestrictBySiblingProperty).PropertyType;
-                    var derivedTypes = TypeCache.GetTypesDerivedFrom(baseType);
-                    result.Add(derivedTypes.Contains);
-                }
-
-                if (!string.IsNullOrEmpty(attribute.TypeRestrictBySiblingTypeName))
-                {
-                    var baseType = Type.GetType((string)property.GetSiblingValue(attribute.TypeRestrictBySiblingTypeName));
-                    var derivedTypes = TypeCache.GetTypesDerivedFrom(baseType);
-                    result.Add(derivedTypes.Contains);
-                }
-
-                return result;
+                var baseType = attribute.TypeRestrict;
+                if (baseType == null && !string.IsNullOrEmpty(attribute.TypeRestrictBySiblingProperty))
+                    baseType = property.GetSiblingPropertyInfo(attribute.TypeRestrictBySiblingProperty).PropertyType;
+                if (baseType == null && !string.IsNullOrEmpty(attribute.TypeRestrictBySiblingTypeName))
+                    baseType = Type.GetType((string)property.GetSiblingValue(attribute.TypeRestrictBySiblingTypeName));
+                return baseType == null ? (Func<Type, bool>)(_ => true) : TypeCache.GetTypesDerivedFrom(baseType).Contains;
             }
 
             void DrawSelectionButtonForManagedReference()
@@ -87,7 +77,7 @@ namespace Nuwa.Editor
                 buttonPosition.width = position.width - EditorGUIUtility.labelWidth - 1 * EditorGUIUtility.standardVerticalSpacing;
                 buttonPosition.height = EditorGUIUtility.singleLineHeight;
 
-                var referenceType = GetTypeFromName(property.managedReferenceFullTypename);
+                var referenceType = property.GetManagedFullType();
 
                 var storedIndent = EditorGUI.indentLevel;
                 EditorGUI.indentLevel = 0;
@@ -187,7 +177,7 @@ namespace Nuwa.Editor
                     if (type.IsClass && type.GetConstructor(Type.EmptyTypes) == null) // Structs still can be created (strangely)
                         continue;
                     // Filter types by provided filters if there is ones
-                    if (filters != null && filters.All(f => f == null || f.Invoke(type)) == false)
+                    if (filters.Invoke(type) == false)
                         continue;
 
                     appropriateTypes.Add(type);

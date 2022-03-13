@@ -9,34 +9,37 @@ namespace EntitiesBT.Entities
 {
     public struct NodeBlob
     {
-        public const int VERSION = 3;
+        public const int VERSION = 4;
 
 #region Serialized Data
         public BlobArray<int> Types;
         public BlobArray<int> EndIndices;
         public BlobArray<int> Offsets; // count = count of nodes + 1
         public BlobArray<byte> DefaultDataBlob;
+        public BlobArray<byte> DefaultScopeValues;
 #endregion
         
 #region NonSerialized Data (runtime only)
         public int RuntimeId;
         public BlobArray<NodeState> States; // states of each nodes
         public BlobArray<byte> RuntimeDataBlob; // initialize from `DefaultDataBlob`
+        public BlobArray<byte> RuntimeScopeValues;
 #endregion
 
         public int Count => Types.Length;
+        public int RuntimeSize => CalculateRuntimeSize(Count, RuntimeDataBlob.Length, RuntimeScopeValues.Length);
 
         [Pure]
-        public static int CalculateDefaultSize(int count, int dataSize) =>
-            UnsafeUtility.SizeOf<NodeBlob>() + dataSize + sizeof(int) * count * 3 /* Types/EndIndices/Offsets */;
+        private static int CalculateDefaultSize(int count, int dataSize, int scopeValuesSize) =>
+            UnsafeUtility.SizeOf<NodeBlob>() + dataSize + scopeValuesSize + sizeof(int) * count * 3/*Types/EndIndices/Offsets*/;
         
         [Pure]
-        public static int CalculateRuntimeSize(int count, int dataSize) =>
-            dataSize/* RuntimeDataBlob */ + sizeof(NodeState) * count;
+        public static int CalculateRuntimeSize(int count, int dataSize, int scopeValuesSize) =>
+            dataSize/*RuntimeDataBlob*/ + scopeValuesSize/*RuntimeScopeValues*/ + sizeof(NodeState) * count;
 
         [Pure]
-        public static int CalculateSize(int count, int dataSize) =>
-            CalculateDefaultSize(count, dataSize) + CalculateRuntimeSize(count, dataSize);
+        public static int CalculateSize(int count, int dataSize, int scopeValuesSize) =>
+            CalculateDefaultSize(count, dataSize, scopeValuesSize) + CalculateRuntimeSize(count, dataSize, scopeValuesSize);
     }
 
     public readonly struct NodeBlobRef : INodeBlob, IEquatable<NodeBlobRef>
@@ -70,6 +73,12 @@ namespace EntitiesBT.Entities
         
         public unsafe IntPtr GetRuntimeDataPtr(int nodeIndex) =>
             (IntPtr) _blob.RuntimeDataBlob.GetUnsafePtr() + _blob.Offsets[nodeIndex];
+
+        public unsafe IntPtr GetDefaultScopeValuePtr(int offset) =>
+            IntPtr.Add(new IntPtr(_blob.DefaultScopeValues.GetUnsafePtr()), offset);
+
+        public unsafe IntPtr GetRuntimeScopeValuePtr(int offset) =>
+            IntPtr.Add(new IntPtr(_blob.RuntimeScopeValues.GetUnsafePtr()), offset);
 
         public NodeState GetState(int nodeIndex) => _blob.States[nodeIndex];
         public void SetState(int nodeIndex, NodeState state) => _blob.States[nodeIndex] = state;

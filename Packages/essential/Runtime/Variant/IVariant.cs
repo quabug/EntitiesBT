@@ -9,6 +9,8 @@ namespace EntitiesBT.Variant
     {
         // return: pointer of meta data
         IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant);
+
+        object PreviewValue { get; }
     }
 
     public interface IVariantReader : IVariant {}
@@ -26,5 +28,22 @@ namespace EntitiesBT.Variant
             var type = variant.GetType();
             return type.GetInterface(typeof(IVariant<int>).Name)?.GenericTypeArguments[0];
         }
+
+        public static bool HasSameTypeWith(this IVariant lhs, IVariant rhs)
+        {
+            return lhs != null && rhs != null &&
+                   lhs.FindValueType() == rhs.FindValueType() &&
+                   (
+                       lhs is IVariantReader && rhs is IVariantReader ||
+                       lhs is IVariantWriter && rhs is IVariantWriter ||
+                       lhs is IVariantReaderAndWriter && rhs is IVariantReaderAndWriter
+                   )
+            ;
+        }
+
+
+        public static bool IsReadOnly(this IVariant variant) => variant is IVariantReader;
+        public static bool IsReadWrite(this IVariant variant) => variant is IVariantReaderAndWriter;
+        public static bool IsWriteOnly(this IVariant variant) => variant is IVariantWriter;
     }
 }

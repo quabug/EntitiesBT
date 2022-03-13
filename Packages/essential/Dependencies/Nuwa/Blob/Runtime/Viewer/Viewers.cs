@@ -5,7 +5,6 @@ using System.Reflection;
 using Unity.Assertions;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
-using UnityEditor;
 using UnityEngine;
 
 namespace Nuwa.Blob
@@ -220,8 +219,10 @@ namespace Nuwa.Blob
         public static TypeFactory FindViewerFactory(this Type dataType, FieldInfo fieldInfo = null)
         {
             var viewerType = typeof(Viewer<>).MakeGenericType(dataType);
-            viewerType = TypeCache.GetTypesDerivedFrom(viewerType).SingleOrDefault();
+#if UNITY_EDITOR
+            viewerType = UnityEditor.TypeCache.GetTypesDerivedFrom(viewerType).SingleOrDefault();
             if (viewerType != null) return new TypeFactory(viewerType);
+#endif
             var dynamicFactory = DynamicViewerFactoryRegister.FindFactory(dataType, fieldInfo);
             if (dynamicFactory != null) return new TypeFactory(dataType, () => dynamicFactory.Create(dataType, fieldInfo));
             throw new ArgumentException($"cannot find proper viewer {dataType}");

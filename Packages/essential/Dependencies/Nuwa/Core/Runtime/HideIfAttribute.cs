@@ -1,5 +1,4 @@
 using System;
-using static System.Int32;
 
 namespace Nuwa
 {
@@ -12,7 +11,7 @@ namespace Nuwa
 
         public HideIfAttribute(string conditionName, bool value = true, bool leaveEmptySpace = false)
         {
-            order = MinValue;
+            order = int.MinValue;
             LeaveEmptySpace = leaveEmptySpace;
             ConditionName = conditionName;
             Value = value;

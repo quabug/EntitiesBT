@@ -25,7 +25,7 @@ namespace EntitiesBT.Variant
                 var valueType = type.GetGenericArguments()[0];
                 Value = Marshal.PtrToStructure(valuePtr, valueType).ToString();
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 Value = "Unable to read";
             }

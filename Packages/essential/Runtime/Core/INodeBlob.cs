@@ -19,6 +19,9 @@ namespace EntitiesBT.Core
         
         [Pure] IntPtr GetDefaultDataPtr(int nodeIndex);
         [Pure] IntPtr GetRuntimeDataPtr(int nodeIndex);
+
+        [Pure] IntPtr GetDefaultScopeValuePtr(int offset);
+        [Pure] IntPtr GetRuntimeScopeValuePtr(int offset);
     }
 
     public static class NodeBlobExtensions

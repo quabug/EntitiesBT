@@ -17,7 +17,7 @@ namespace EntitiesBT.Editor
         {
             if (property.propertyType == SerializedPropertyType.String)
             {
-                if (_genericType == null) _genericType = this.GetGenericType();
+                if (_genericType == null) _genericType = this.FirstGenericTypeArgument();
                 if (_options == null)
                 {
                     _options = Variant.Utilities.GetComponentFields(_genericType)

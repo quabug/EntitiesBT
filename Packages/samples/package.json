@@ -1,58 +1,8 @@
 {
   "name": "com.quabug.entities-bt.samples",
   "description": "Behavior Tree for Unity Entities - Samples",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "unity": "2020.2",
   "displayName": "EntitiesBT - Samples",
-  "type": "sample",
-  "dependencies": {
-    "com.unity.inputsystem": "1.0.0",
-    "com.unity.rendering.hybrid": "0.8.0-preview.19",
-    "com.quabug.entities-bt.builder.component": "1.3.0",
-    "com.quabug.entities-bt.debug.component-viewer": "1.3.0",
-    "com.quabug.entities-bt.essential": "1.3.0",
-    "com.quabug.entities-bt.variant-expression": "0.3.0"
-  },
-  "samples": [
-    {
-      "displayName": "[Test] tests",
-      "description": "test cases of behavior tree",
-      "path": "Tests~"
-    },
-    {
-      "displayName": "[Sample] hybrid-animator",
-      "description": "animator controlled by behavior tree",
-      "path": "Samples~/Animator"
-    },
-    {
-      "displayName": "[Sample] unity-transform",
-      "description": "control transform of game object directly without entity",
-      "path": "Samples~/GameObjectWithoutEntity"
-    },
-    {
-      "displayName": "[Sample] entity",
-      "description": "control translation of entity",
-      "path": "Samples~/Entity"
-    },
-    {
-      "displayName": "[Sample] variable",
-      "description": "variable value from variant source",
-      "path": "Samples~/Variable"
-    },
-    {
-      "displayName": "[Sample] Runtime Entity Creation",
-      "description": "clone an entity at runtime",
-      "path": "Samples~/RuntimeEntityCreation"
-    },
-    {
-      "displayName": "[Sample] Expression",
-      "description": "expression",
-      "path": "Samples~/Expression"
-    },
-    {
-      "displayName": "[Sample] Odin Builder",
-      "description": "odin",
-      "path": "Samples~/Odin"
-    }
-  ]
+  "type": "sample"
 }

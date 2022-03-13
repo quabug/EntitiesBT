@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nuwa.Editor
 {
@@ -16,6 +17,11 @@ namespace Nuwa.Editor
         {
             // [optimize] TODO: only call last `DrawMultiProperty` of same `fieldInfo` in one frame
             MultiPropertyDrawerRegister.DrawMultiProperty(fieldInfo)(position, property, label);
+        }
+
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            return MultiPropertyDrawerRegister.CreatePropertyGUI(fieldInfo, property);
         }
     }
 }

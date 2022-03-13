@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nuwa.Editor
 {
@@ -25,11 +26,16 @@ namespace Nuwa.Editor
             return GetOrCreateCustomDrawer(property).GetPropertyHeight(property, label);
         }
 
-        protected override void OnGUISelf(Rect position, UnityEditor.SerializedProperty property, GUIContent label)
+        protected override void OnGUISelf(Rect position, SerializedProperty property, GUIContent label)
         {
             property.serializedObject.Update();
             GetOrCreateCustomDrawer(property).OnGUI(position, property, label);
             property.serializedObject.ApplyModifiedProperties();
+        }
+
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            return GetOrCreateCustomDrawer(property).CreatePropertyGUI(property);
         }
 
         PropertyDrawer GetOrCreateCustomDrawer(SerializedProperty property)

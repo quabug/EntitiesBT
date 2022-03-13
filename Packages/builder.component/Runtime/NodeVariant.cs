@@ -37,6 +37,8 @@ namespace EntitiesBT.Variant
             {
                 return Allocate<T>(ref builder, ref blobVariant, NodeObject, ValueFieldName);
             }
+
+            public object PreviewValue => null;
         }
 
         [Serializable] public class Reader<T> : Any<T>, IVariantReader<T> where T : unmanaged {}

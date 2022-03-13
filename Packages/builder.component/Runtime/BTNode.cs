@@ -20,6 +20,9 @@ namespace EntitiesBT.Components
         public int NodeIndex { get; set; } = 0;
 
         public virtual IEnumerable<INodeDataBuilder> Children => this.Children();
+        public virtual object GetPreviewValue(string path) => throw new NotImplementedException();
+        public virtual void SetPreviewValue(string path, object value) => throw new NotImplementedException();
+
         public INodeDataBuilder Self => gameObject.activeSelf ? SelfImpl : null;
 
         protected virtual INodeDataBuilder SelfImpl => this;
@@ -94,7 +97,7 @@ namespace EntitiesBT.Components
             path = string.IsNullOrEmpty(path) ? Application.dataPath : Path.GetDirectoryName(path);
             path = UnityEditor.EditorUtility.SaveFilePanel("save path", path, name, "bytes");
             if (string.IsNullOrEmpty(path)) return;
-            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(file);
+            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(this.FindScopeValuesList(), file);
             UnityEditor.AssetDatabase.Refresh();
         }
 #endif

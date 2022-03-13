@@ -33,6 +33,8 @@ namespace EntitiesBT.Variant
                 }
                 return builder.Allocate(ref blobVariant, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
             }
+
+            public object PreviewValue => throw new NotImplementedException();
         }
 
         [Serializable] public class Reader<T> : Any<T>, IVariantReader<T> where T : unmanaged {}

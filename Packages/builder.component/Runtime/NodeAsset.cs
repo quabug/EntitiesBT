@@ -19,6 +19,12 @@ namespace EntitiesBT.Components
 
         public void Build(BlobBuilder builder, IntPtr dataPtr) => Builder.Build(builder, dataPtr);
 
+        public IBuilder FindBuilderByPath(string path)
+        {
+            var pathList = path.Split('.');
+            return pathList.Aggregate((IBuilder)Builder, (builder, name) => builder.GetBuilder(name));
+        }
+
         private string CategoryName(Type type)
         {
             return type?.GetCustomAttribute<BehaviorNodeAttribute>()?.Type.ToString() ?? "";

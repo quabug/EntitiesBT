@@ -11,6 +11,10 @@ namespace EntitiesBT.Components
         public virtual int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
         public virtual INodeDataBuilder Self => this;
         public abstract IEnumerable<INodeDataBuilder> Children { get; }
+
+        public virtual object GetPreviewValue(string path) => throw new System.NotImplementedException();
+        public virtual void SetPreviewValue(string path, object value) => throw new System.NotImplementedException();
+
         public int NodeIndex { get; set; } = 0;
 
         public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
@@ -37,6 +41,9 @@ namespace EntitiesBT.Components
         public int NodeIndex { get; set; } = 0;
         public INodeDataBuilder Self => _self;
         public IEnumerable<INodeDataBuilder> Children => _self.Children;
+
+        public virtual object GetPreviewValue(string path) => throw new System.NotImplementedException();
+        public virtual void SetPreviewValue(string path, object value) => throw new System.NotImplementedException();
     }
     
     public class BTVirtualDecorator<T> : BTVirtualNode<T> where T : unmanaged, INodeData
