@@ -80,12 +80,18 @@ openupm add com.quabug.entities-bt.builder.graphview
 
 ### Usage
 #### GraphView Builder
+##### Create behavior tree graph
+<img width="600" alt="create graph" src="https://user-images.githubusercontent.com/683655/158053015-766eeff2-3263-4d3a-b51e-3eebf47c1a46.gif" />
+
+##### Attach graph of behavior tree onto _Entity_
+<img width="600" alt="attach graph" src="https://user-images.githubusercontent.com/683655/158052727-8a9376fc-c68b-4af1-bdaa-71473938c7aa.gif" />
+
 #### Component Builder
 ##### Create behavior tree
-<img width="600" alt="create" src="https://user-images.githubusercontent.com/683655/72404172-5b4f5c00-378f-11ea-94a1-bb8aa5eb2608.gif" />
+<img width="600" alt="create" src="https://user-images.githubusercontent.com/683655/158053081-c17b41a0-ffae-48ee-955f-be92cdbf277d.gif" />
 
 ##### Attach behavior tree onto _Entity_
-<img width="600" alt="attach" src="https://user-images.githubusercontent.com/683655/83865297-97905280-a758-11ea-9dd0-0a76bf601895.gif" />
+<img width="600" alt="attach" src="https://user-images.githubusercontent.com/683655/158053177-b7ee1081-4d81-4732-a4e8-f13f718ef58f.gif" />
 
 #### Serialization
 <img width="600" alt="save-to-file" src="https://user-images.githubusercontent.com/683655/72407209-b7b77900-3799-11ea-9de3-0703b1936f63.gif" />
