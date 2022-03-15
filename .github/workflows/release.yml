@@ -10,69 +10,77 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: quabug/create-upm-release@v1
+    - uses: quabug/create-upm-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/essential
         upm_tag_prefix: essential/v
+        target: master
+        create_unitypackage: true
+        unitypackage_name: EntitiesBT
   upm-release-builder-component:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: quabug/create-upm-release@v1
+    - uses: quabug/create-upm-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/builder.component
         upm_tag_prefix: builder.component/v
+        target: master
+        create_unitypackage: true
+        unitypackage_name: EntitiesBT
   upm-release-builder-odin:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: quabug/create-upm-release@v1
+    - uses: quabug/create-upm-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/builder.odin
         upm_tag_prefix: builder.odin/v
+        target: master
+        create_unitypackage: true
+        unitypackage_name: EntitiesBT
   upm-release-debug-component-viewer:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: quabug/create-upm-release@v1
+    - uses: quabug/create-upm-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/debug.component-viewer
         upm_tag_prefix: debug.component-viewer/v
+        target: master
+        create_unitypackage: true
+        unitypackage_name: EntitiesBT
   upm-release-variable-scriptable-object:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: quabug/create-upm-release@v1
+    - uses: quabug/create-upm-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upm_package_path: Packages/variable.scriptable-object
         upm_tag_prefix: variable.scriptable-object/v
-  upm-release-samples:
+        target: master
+        create_unitypackage: true
+        unitypackage_name: EntitiesBT
+  upm-release-builder-graphview:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: quabug/create-upm-release@v1
+    - uses: quabug/create-upm-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upm_package_path: Packages/samples
-        upm_tag_prefix: samples/v
-  upm-release-codegen:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: quabug/create-upm-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upm_package_path: Packages/codegen
-          upm_tag_prefix: codegen/v
+        upm_package_path: Packages/com.quabug.entities-bt.builder.graphview
+        upm_tag_prefix: builder.graphview/v
+        target: master
+        create_unitypackage: true
+        unitypackage_name: EntitiesBT
