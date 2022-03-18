@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 namespace EntitiesBT.DebugView
 {
     [UpdateAfter(typeof(VirtualMachineSystem))]
-    public class BehaviorTreeDebugViewerSystem : SystemBase
+    public partial class BehaviorTreeDebugViewerSystem : SystemBase
     {
         private const string _NAME = "__bt_debug_view__";
 
@@ -55,16 +55,16 @@ namespace EntitiesBT.DebugView
             Entities.WithoutBurst()
                 .WithStructuralChanges()
                 .WithNone<BehaviorTreeDebug>()
-                .ForEach((Entity entity, ReferenceObject @ref) =>
+                .ForEach((Entity entity, ReferenceObject referenceObject) =>
                 {
-                    GameObject.Destroy(@ref.Value.gameObject);
+                    GameObject.Destroy(referenceObject.Value.gameObject);
                     EntityManager.RemoveComponent<ReferenceObject>(entity);
                 })
                 .Run();
 
             Entities.WithoutBurst()
                 .WithAll<BehaviorTreeDebug>()
-                .ForEach((ReferenceObject @ref) => @ref.Value.Tick())
+                .ForEach((ReferenceObject referenceObject) => referenceObject.Value.Tick())
                 .Run();
         }
     }

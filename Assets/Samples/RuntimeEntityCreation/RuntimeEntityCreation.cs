@@ -6,7 +6,7 @@ using Random = Unity.Mathematics.Random;
 
 namespace EntitiesBT.Sample
 {
-    public class RuntimeEntitySystem : SystemBase
+    public partial class RuntimeEntitySystem : SystemBase
     {
         protected override void OnUpdate()
         {

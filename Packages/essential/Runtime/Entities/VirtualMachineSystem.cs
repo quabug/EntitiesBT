@@ -8,7 +8,7 @@ using Unity.Jobs;
 namespace EntitiesBT.Entities
 {
     [UpdateInGroup(typeof(SimulationSystemGroup))]
-    public class VirtualMachineSystem : SystemBase
+    public partial class VirtualMachineSystem : SystemBase
     {
         private EndSimulationEntityCommandBufferSystem _endSimulationEntityCommandBufferSystem;
         private EntityQuery _jobQuery;

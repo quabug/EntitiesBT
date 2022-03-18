@@ -16,7 +16,7 @@ namespace EntitiesBT.Entities
     }
     
     [UpdateBefore(typeof(VirtualMachineSystem))]
-    public class BehaviorTreeInitRandomSystem : SystemBase
+    public partial class BehaviorTreeInitRandomSystem : SystemBase
     {
         private struct ExistTag : ISystemStateComponentData {}
         private EntityCommandBufferSystem _ECB;

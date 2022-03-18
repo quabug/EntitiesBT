@@ -9,7 +9,7 @@ namespace EntitiesBT.Entities
     }
     
     [UpdateBefore(typeof(VirtualMachineSystem))]
-    public class BehaviorTreeDeltaTimeSystem : SystemBase
+    public partial class BehaviorTreeDeltaTimeSystem : SystemBase
     {
         protected override void OnUpdate()
         {

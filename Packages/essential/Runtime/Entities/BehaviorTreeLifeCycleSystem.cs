@@ -4,7 +4,7 @@ using Unity.Entities;
 namespace EntitiesBT.Entities
 {
     [UpdateBefore(typeof(VirtualMachineSystem))]
-    public class BehaviorTreeLifeCycleSystem : SystemBase
+    public partial class BehaviorTreeLifeCycleSystem : SystemBase
     {
         private int _runtimeId = 0;
 
@@ -22,13 +22,13 @@ namespace EntitiesBT.Entities
                 .WithoutBurst()
                 .WithStructuralChanges()
                 .WithNone<LastTargetComponent>()
-                .ForEach((Entity entity, in BlackboardDataQuery query, in BehaviorTreeComponent bt, in BehaviorTreeTargetComponent target, in BehaviorTreeOrderComponent order) =>
+                .ForEach((Entity entity, in BlackboardDataQuery blackboardDataQuery, in BehaviorTreeComponent bt, in BehaviorTreeTargetComponent target, in BehaviorTreeOrderComponent order) =>
                 {
                     var blob = new NodeBlobRef(bt.Blob.BlobRef.Clone());
                     blob.RuntimeId = _runtimeId;
                     _runtimeId++;
                     EntityManager.AddComponentData(entity, new LastTargetComponent {Target = target.Value, Blob = blob});
-                    BindBehaviorTree(entity, bt, query, target.Value, order.Value, blob);
+                    BindBehaviorTree(entity, bt, blackboardDataQuery, target.Value, order.Value, blob);
                 }).Run();
 
             // update
@@ -36,12 +36,12 @@ namespace EntitiesBT.Entities
                 .WithoutBurst()
                 .WithStructuralChanges()
                 .WithChangeFilter<BehaviorTreeTargetComponent>()
-                .ForEach((Entity entity, ref LastTargetComponent lastTarget, in BlackboardDataQuery query, in BehaviorTreeComponent bt, in BehaviorTreeTargetComponent target, in BehaviorTreeOrderComponent order) =>
+                .ForEach((Entity entity, ref LastTargetComponent lastTarget, in BlackboardDataQuery blackboardDataQuery, in BehaviorTreeComponent bt, in BehaviorTreeTargetComponent target, in BehaviorTreeOrderComponent order) =>
                 {
                     if (lastTarget.Target != target.Value)
                     {
                         UnbindBehaviorTree(entity, lastTarget.Target);
-                        BindBehaviorTree(entity, bt, query, target.Value, order.Value, lastTarget.Blob);
+                        BindBehaviorTree(entity, bt,  blackboardDataQuery, target.Value, order.Value, lastTarget.Blob);
                         lastTarget.Target = target.Value;
                     }
                 }).Run();
