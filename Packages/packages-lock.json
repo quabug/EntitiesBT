@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.quabug.entities-bt.builder.component": {
-      "version": "file:builder.component",
+      "version": "file:com.quabug.entities-bt.builder.component",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -19,7 +19,7 @@
       }
     },
     "com.quabug.entities-bt.builder.odin": {
-      "version": "file:builder.odin",
+      "version": "file:com.quabug.entities-bt.builder.odin",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -33,7 +33,7 @@
       "dependencies": {}
     },
     "com.quabug.entities-bt.debug.component-viewer": {
-      "version": "file:debug.component-viewer",
+      "version": "file:com.quabug.entities-bt.debug.component-viewer",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -49,7 +49,7 @@
       }
     },
     "com.quabug.entities-bt.essential": {
-      "version": "file:essential",
+      "version": "file:com.quabug.entities-bt.essential",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -63,7 +63,7 @@
       "dependencies": {}
     },
     "com.quabug.entities-bt.variable.scriptable-object": {
-      "version": "file:variable.scriptable-object",
+      "version": "file:com.quabug.entities-bt.variable.scriptable-object",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -71,7 +71,7 @@
       }
     },
     "com.quabug.entities-bt.variant-expression": {
-      "version": "file:variant.expression",
+      "version": "file:com.quabug.entities-bt.variant.expression",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
@@ -166,7 +166,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.vscode": {
-      "version": "1.2.4",
+      "version": "1.2.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -277,7 +277,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.1.29",
+      "version": "1.1.31",
       "depth": 1,
       "source": "registry",
       "dependencies": {
