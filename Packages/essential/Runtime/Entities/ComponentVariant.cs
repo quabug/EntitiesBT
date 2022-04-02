@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Blob;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -22,7 +23,7 @@ namespace EntitiesBT.Variant
         {
             [VariantComponentData] public string ComponentValueName;
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public void Allocate(IBlobStream stream)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
                 var data = GetTypeHashAndFieldOffset(ComponentValueName);
@@ -31,7 +32,7 @@ namespace EntitiesBT.Variant
                     Debug.LogError($"{nameof(ComponentVariant)}({ComponentValueName}) is not valid, fallback to ConstantValue");
                     throw new ArgumentException();
                 }
-                return builder.Allocate(ref blobVariant, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
+                return stream.Allocate(ref blobVariant, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
             }
 
             public object PreviewValue => throw new NotImplementedException();

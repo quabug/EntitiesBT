@@ -69,7 +69,7 @@ namespace EntitiesBT.Test
             };
 
             ref var buildVariant = ref _builder.ConstructRoot<BlobVariant>();
-            expression.Allocate(ref _builder, ref buildVariant);
+            expression.Allocate(_builder, ref buildVariant);
             using var variant = _builder.CreateBlobAssetReference<BlobVariant>(Allocator.Temp);
             var result = BlobVariantExtension.Read<float, MockNodeBlob, MockBlackboard>(ref variant.Value, 0, ref _nodeBlob, ref _bb);
             Assert.That(result, Is.EqualTo((4.1f + 5) * 2 + 10));

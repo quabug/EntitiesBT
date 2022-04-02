@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Blob;
 using EntitiesBT.Core;
 using Unity.Entities;
 using UnityEngine;
@@ -31,10 +32,10 @@ namespace EntitiesBT.Variant
             [VariantScriptableObjectValue(nameof(ScriptableObject))]
             public string ScriptableObjectValueName;
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public void Allocate(IBlobStream stream)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
-                return builder.Allocate(ref blobVariant, (T) PreviewValue);
+                return stream.Allocate(ref blobVariant, (T) PreviewValue);
             }
 
             public object PreviewValue

@@ -17,7 +17,7 @@ namespace EntitiesBT.Test
 
         class InvalidVariant : IVariant
         {
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public void Allocate(IBlobStream stream, ref BlobVariant blobVariant)
             {
                 throw new NotImplementedException();
             }

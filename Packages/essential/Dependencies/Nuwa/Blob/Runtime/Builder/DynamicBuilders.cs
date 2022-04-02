@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using Blob;
+using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Nuwa.Blob
 {
@@ -24,11 +27,36 @@ namespace Nuwa.Blob
         public abstract object Create(Type dataType, FieldInfo fieldInfo);
     }
 
+    public abstract class DynamicBuilder : IBuilder
+    {
+        public int Position { get; private set; }
+        protected abstract Type _Type { get; }
+
+        public void Build(IBlobStream stream)
+        {
+            Position = stream.DataPosition;
+            // TODO: fetch alignment by type?
+            stream.EnsureDataSize(UnsafeUtility.SizeOf(_Type), 4);
+            BuildImpl(stream);
+        }
+
+        protected abstract void BuildImpl([NotNull] IBlobStream stream);
+
+        public virtual IBuilder GetBuilder(string name) => throw new NotImplementedException();
+
+        public virtual object PreviewValue
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+    }
+
     [Serializable]
-    public class DynamicEnumBuilder<T> : IBuilder where T : unmanaged
+    public class DynamicEnumBuilder<T> : DynamicBuilder where T : unmanaged
     {
         public string EnumTypeName;
         public T Value;
+        protected override Type _Type => typeof(T);
 
         public object PreviewValue
         {
@@ -36,9 +64,9 @@ namespace Nuwa.Blob
             set => Value = (T)value;
         }
 
-        public unsafe void Build(BlobBuilder builder, IntPtr dataPtr)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            UnsafeUtility.AsRef<T>(dataPtr.ToPointer()) = Value;
+            stream.WriteValue(Value);
         }
 
         public IBuilder GetBuilder(string name)
@@ -101,19 +129,22 @@ namespace Nuwa.Blob
     }
 
     [Serializable]
-    public class DynamicBlobDataBuilder : IBuilder, IObjectBuilder
+    public class DynamicBlobDataBuilder : DynamicBuilder, IObjectBuilder
     {
         public string BlobDataType;
         public string[] FieldNames;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder[] Builders;
+        protected override Type _Type => Type.GetType(BlobDataType);
 
-        public void Build(BlobBuilder builder, IntPtr dataPtr)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            var fields = Type.GetType(BlobDataType).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var position = stream.DataPosition;
+            var fields = _Type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             for (var i = 0; i < Builders.Length; i++)
             {
+                Assert.AreEqual(FieldNames[i], fields[i].Name);
                 var offset = UnsafeUtility.GetFieldOffset(fields[i]);
-                Builders[i].Build(builder, dataPtr + offset);
+                stream.ToPosition(position + offset).WriteValue(Builders[i]);
             }
         }
 
@@ -154,7 +185,7 @@ namespace Nuwa.Blob
     }
 
     [Serializable]
-    public class DynamicArrayBuilder : IBuilder
+    public class DynamicArrayBuilder : DynamicBuilder
     {
         public string ArrayElementType;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder[] Value;
@@ -168,11 +199,13 @@ namespace Nuwa.Blob
             }
         }
 
-        public void Build(BlobBuilder builder, IntPtr dataPtr)
+        protected override Type _Type => typeof(BlobArray<>).MakeGenericType(Type.GetType(ArrayElementType));
+
+        protected override void BuildImpl(IBlobStream stream)
         {
             var elementType = Type.GetType(ArrayElementType);
-            var arrayBuilder = builder.AllocateDynamicArray(elementType, dataPtr, Value.Length);
-            for (var i = 0; i < Value.Length; i++) Value[i].Build(builder, arrayBuilder[i]);
+            var elementSize = UnsafeUtility.SizeOf(elementType);
+            stream.WritePatchOffset().WriteValue(Value.Length).ToPatchPosition().WriteArray(Value, elementSize, 4);
         }
 
         public IBuilder GetBuilder(string name)
@@ -190,15 +223,15 @@ namespace Nuwa.Blob
     }
 
     [Serializable]
-    public class DynamicPtrBuilder : IBuilder
+    public class DynamicPtrBuilder : DynamicBuilder
     {
         public string DataType;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder Value;
+        protected override Type _Type => typeof(BlobArray<>).MakeGenericType(Type.GetType(DataType));
 
-        public void Build(BlobBuilder builder, IntPtr dataPtr)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            var blobPtr = builder.AllocateDynamicPtr(Type.GetType(DataType), dataPtr);
-            Value.Build(builder, blobPtr);
+            stream.WritePatchOffset().WriteValue(Value);
         }
 
         public IBuilder GetBuilder(string name)

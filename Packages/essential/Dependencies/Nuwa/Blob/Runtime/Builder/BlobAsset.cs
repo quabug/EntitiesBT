@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using Blob;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -31,12 +33,12 @@ namespace Nuwa.Blob
             return pathList.Aggregate(Builder, (builder, name) => builder.GetBuilder(name));
         }
 
-        private unsafe BlobAssetReference<T> Create()
+        private BlobAssetReference<T> Create()
         {
-            using var builder = new BlobBuilder(Allocator.Temp);
-            ref var root = ref builder.ConstructRoot<T>();
-            Builder.Build(builder, new IntPtr(UnsafeUtility.AddressOf(ref root)));
-            return builder.CreateBlobAssetReference<T>(Allocator.Persistent);
+            using var stream = new BlobMemoryStream();
+            Builder.Build(stream);
+            stream.Length = (int)Utilities.Align<T>((int)stream.Length);
+            return BlobAssetReference<T>.Create(stream.ToArray());
         }
 
         public void Dispose()

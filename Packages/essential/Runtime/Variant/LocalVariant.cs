@@ -1,6 +1,6 @@
 using System;
+using Blob;
 using EntitiesBT.Core;
-using Unity.Entities;
 using static EntitiesBT.Core.Utilities;
 
 namespace EntitiesBT.Variant
@@ -15,10 +15,9 @@ namespace EntitiesBT.Variant
         {
             public T Value;
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public void Allocate(IBlobStream stream)
             {
-                blobVariant.VariantId = GuidHashCode(GUID);
-                return builder.Allocate(ref blobVariant, Value);
+                stream.WriteValue(GuidHashCode(GUID)).WritePatchOffset().ToPatchPosition().WriteValue(Value);
             }
 
             public object PreviewValue => Value;

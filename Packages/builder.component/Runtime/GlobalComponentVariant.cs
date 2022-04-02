@@ -27,7 +27,7 @@ namespace EntitiesBT.Variant
             protected Type _declaringType => Value?.BlobType;
             protected Type _fieldType => typeof(T);
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public void Allocate(IBlobStream stream, ref BlobVariant blobVariant)
             {
                 if (Value == null || Value.BlobType == null) throw new ArgumentException();
                 blobVariant.VariantId = GuidHashCode(GUID);
@@ -38,7 +38,7 @@ namespace EntitiesBT.Variant
                     throw new ArgumentException();
                 }
                 var valueOffset = Value.Offset + Marshal.OffsetOf(Value.BlobType, ValueFieldName).ToInt32();
-                return builder.Allocate(ref blobVariant, valueOffset);
+                return stream.Allocate(ref blobVariant, valueOffset);
             }
 
             public object PreviewValue => Value?.GetPreviewValue(ValueFieldName);

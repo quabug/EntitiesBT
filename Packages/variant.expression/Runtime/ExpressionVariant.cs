@@ -41,20 +41,20 @@ namespace EntitiesBT.Variant.Expression
             [SerializeField] internal string _expression;
             [SerializeField] internal Variant[] _sources;
 
-            public unsafe IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public unsafe void Allocate(IBlobStream stream, ref BlobVariant blobVariant)
             {
                 blobVariant.VariantId = GuidHashCode(GUID);
                 ref var blobPtr = ref UnsafeUtility.As<int, BlobPtr<Data>>(ref blobVariant.MetaDataOffsetPtr);
-                ref var data = ref builder.Allocate(ref blobPtr);
+                ref var data = ref stream.Allocate(ref blobPtr);
                 data.ExpressionType = VariantValueTypeRegistry.GetIdByType(typeof(T));
-                builder.AllocateString(ref data.Expression, _expression);
-                var variants = builder.Allocate(ref data.Variants, _sources.Length);
-                var names = builder.Allocate(ref data.VariantNames, _sources.Length);
-                var types = builder.Allocate(ref data.VariantTypes, _sources.Length);
+                stream.AllocateString(ref data.Expression, _expression);
+                var variants = stream.Allocate(ref data.Variants, _sources.Length);
+                var names = stream.Allocate(ref data.VariantNames, _sources.Length);
+                var types = stream.Allocate(ref data.VariantTypes, _sources.Length);
                 for (var i = 0; i < _sources.Length; i++)
                 {
-                    _sources[i].Value.Allocate(ref builder, ref variants[i]);
-                    builder.AllocateString(ref names[i], _sources[i].Name);
+                    _sources[i].Value.Allocate(ref stream, ref variants[i]);
+                    stream.AllocateString(ref names[i], _sources[i].Name);
                     types[i] = VariantValueTypeRegistry.GetIdByType(_sources[i].Value.FindValueType());
                 }
                 return new IntPtr(UnsafeUtility.AddressOf(ref data));

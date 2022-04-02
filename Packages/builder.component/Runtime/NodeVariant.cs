@@ -33,9 +33,9 @@ namespace EntitiesBT.Variant
             public BTNode NodeObject;
             [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public void Allocate(IBlobStream stream, ref BlobVariant blobVariant)
             {
-                return Allocate<T>(ref builder, ref blobVariant, NodeObject, ValueFieldName);
+                return Allocate<T>(ref stream, ref blobVariant, NodeObject, ValueFieldName);
             }
 
             public object PreviewValue => null;

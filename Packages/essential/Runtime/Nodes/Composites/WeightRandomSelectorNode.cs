@@ -1,12 +1,8 @@
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using Nuwa;
 using Nuwa.Blob;
-using Unity.Entities;
-using UnityEngine;
 
 namespace EntitiesBT.Nodes
 {
@@ -48,10 +44,13 @@ namespace EntitiesBT.Nodes
     {
         public int[] Weights;
 
-        public override void Build(BlobBuilder builder, ref BlobArray<float> data)
+        protected override void BuildImpl(BlobBuilder builder)
         {
             float sum = Weights.Sum();
             builder.AllocateArray(ref data, Weights.Select(w => w / sum).ToArray());
+
+            builder.WriteValue(ref Value);
+            return patchPosition;
         }
     }
 }

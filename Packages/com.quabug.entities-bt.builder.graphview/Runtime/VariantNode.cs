@@ -34,7 +34,7 @@ namespace EntitiesBT
 
         public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
         {
-            return Variant.Allocate(ref builder, ref blobVariant);
+            return Variant.Allocate(builder);
         }
 
         public bool IsPortCompatible(GraphRuntime<VariantNode> graph, in PortId input, in PortId output) => true;

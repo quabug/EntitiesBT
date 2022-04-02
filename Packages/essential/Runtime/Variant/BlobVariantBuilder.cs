@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Blob;
 using EntitiesBT.Core;
 using Nuwa;
 using Nuwa.Blob;
@@ -11,7 +12,7 @@ using UnityEngine;
 namespace EntitiesBT.Variant
 {
     [Serializable]
-    public class BlobVariantROBuilder : Builder<BlobVariant>
+    public class BlobVariantROBuilder : Nuwa.Blob.Builder<BlobVariant>
     {
         [SerializeField, HideInInspector] internal string _variantTypeName;
         [SerializeField, HideInInspector] internal bool IsOptional;
@@ -22,9 +23,9 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        public override void Build(BlobBuilder builder, ref BlobVariant data)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            if (_variant != null) _variant.Allocate(ref builder, ref data);
+            _variant?.Allocate(stream);
         }
 
         public class Factory : DynamicBuilderFactory<BlobVariantROBuilder>
@@ -45,7 +46,7 @@ namespace EntitiesBT.Variant
     }
 
     [Serializable]
-    public class BlobVariantWOBuilder : Builder<BlobVariant>
+    public class BlobVariantWOBuilder : Nuwa.Blob.Builder<BlobVariant>
     {
         [SerializeField, HideInInspector] internal string _variantTypeName;
         [SerializeField, HideInInspector] internal bool IsOptional;
@@ -56,9 +57,9 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        public override void Build(BlobBuilder builder, ref BlobVariant data)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            _variant.Allocate(ref builder, ref data);
+            _variant.Allocate(stream);
         }
 
         public class Factory : DynamicBuilderFactory<BlobVariantWOBuilder>
@@ -79,7 +80,7 @@ namespace EntitiesBT.Variant
     }
 
     [Serializable]
-    public class BlobVariantRWBuilder : Builder<BlobVariantRW>
+    public class BlobVariantRWBuilder : Nuwa.Blob.Builder<BlobVariantRW>
     {
         [SerializeField, HideInInspector] internal string _variantTypeName;
         [SerializeField, HideInInspector] internal bool IsOptional;
@@ -90,9 +91,10 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        public override unsafe void Build(BlobBuilder builder, ref BlobVariantRW data)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            var metaDataPtr = _variant.Allocate(ref builder, ref data.Reader);
+            var position = stream.DataPosition;
+            _variant.Allocate(stream);
             data.Writer.VariantId = data.Reader.VariantId;
 
             // HACK: set meta data of writer as same as reader's
@@ -102,7 +104,7 @@ namespace EntitiesBT.Variant
     }
 
     [Serializable]
-    public class BlobVariantLinkedRWBuilder : Builder<BlobVariantRW>
+    public class BlobVariantLinkedRWBuilder : Nuwa.Blob.Builder<BlobVariantRW>
     {
         [SerializeField] private bool _isLinked = true;
         [HideIf(nameof(_isLinked)), SerializeField, UnboxSingleProperty, UnityDrawProperty] private BlobVariantROBuilder _reader;

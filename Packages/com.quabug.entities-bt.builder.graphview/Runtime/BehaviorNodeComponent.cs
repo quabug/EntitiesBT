@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Blob;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
@@ -197,11 +198,11 @@ namespace EntitiesBT
         {
             var nodeType = _node.BehaviorNodeDataType;
             if (nodeType.IsZeroSizeStruct()) return BlobAssetReference.Null;
-            var blobBuilder = new BlobBuilder(Allocator.Temp, UnsafeUtility.SizeOf(nodeType));
+            var blobBuilder = new BlobMemoryStream(UnsafeUtility.SizeOf(nodeType));
             try
             {
-                var dataPtr = blobBuilder.ConstructRootPtrByType(nodeType);
-                _node.Blob.Build(blobBuilder, new IntPtr(dataPtr));
+                _node.Blob.Build(blobBuilder);
+                blobBuilder.WritePatchOffset()
                 return blobBuilder.CreateReferenceByType(nodeType);
             }
             finally

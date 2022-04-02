@@ -1,4 +1,5 @@
-﻿using EntitiesBT.Core;
+﻿using Blob;
+using EntitiesBT.Core;
 using Nuwa.Blob;
 using Unity.Entities;
 using UnityEngine;
@@ -20,13 +21,13 @@ namespace EntitiesBT.Sample
         }
     }
 
-    public class AnimatorTriggerNameBuilder : Builder<int>
+    public class AnimatorTriggerNameBuilder : Nuwa.Blob.Builder<int>
     {
         public string TriggerName;
 
-        public override void Build(BlobBuilder builder, ref int data)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            data = Animator.StringToHash(TriggerName);
+            stream.WriteValue(Animator.StringToHash(TriggerName));
         }
     }
 }

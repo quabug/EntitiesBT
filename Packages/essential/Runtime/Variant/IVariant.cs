@@ -1,4 +1,5 @@
 using System;
+using Blob;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
 using Unity.Entities;
@@ -7,9 +8,7 @@ namespace EntitiesBT.Variant
 {
     public interface IVariant
     {
-        // return: pointer of meta data
-        IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant);
-
+        void Allocate(IBlobStream stream);
         object PreviewValue { get; }
     }
 

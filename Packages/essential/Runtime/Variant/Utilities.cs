@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
+using Blob;
 using EntitiesBT.Core;
-using JetBrains.Annotations;
 using Unity.Assertions;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
@@ -89,49 +88,49 @@ namespace EntitiesBT.Variant
             return builder.Allocate(ref blob.Value, value);
         }
 
-        public static IntPtr AllocateRO<T>(
+        public static void AllocateRO<T>(
             this IVariantReader<T> property
-          , ref BlobBuilder builder
+          , IBlobStream builder
           , ref BlobVariantRO<T> blobVariant
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value);
+        ) where T : unmanaged => property.Allocate(builder);
 
-        public static IntPtr AllocateWO<T>(
+        public static void AllocateWO<T>(
             this IVariantWriter<T> property
-          , ref BlobBuilder builder
+          , IBlobStream builder
           , ref BlobVariantWO<T> blobVariant
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value);
+        ) where T : unmanaged => property.Allocate(builder);
 
-        public static IntPtr AllocateRW<T>(
+        public static void AllocateRW<T>(
             this ISerializedVariantRW<T> property
-            , ref BlobBuilder builder
+            , IBlobStream builder
             , ref BlobVariantRW<T> blobVariant
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant);
+        ) where T : unmanaged => property.Allocate(builder, ref blobVariant);
 
-        public static IntPtr Allocate<T>(
+        public static void Allocate<T>(
             this IVariantReader<T> property
-          , ref BlobBuilder builder
+          , IBlobStream builder
           , ref BlobVariantRO<T> blobVariant
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value);
+        ) where T : unmanaged => property.Allocate(builder);
 
         public static IntPtr Allocate(
             this IVariantReader property
           , ref BlobBuilder builder
           , ref BlobVariantPtrRO blobVariant
-        ) => property.Allocate(ref builder, ref blobVariant.Value);
+        ) => property.Allocate(builder);
 
         public static IntPtr Allocate<T>(
             this IVariantWriter<T> property
           , ref BlobBuilder builder
           , ref BlobVariantWO<T> blobVariant
-        ) where T : unmanaged => property.Allocate(ref builder, ref blobVariant.Value);
+        ) where T : unmanaged => property.Allocate(builder);
 
         public static unsafe IntPtr Allocate<T>(
             this IVariantReaderAndWriter<T> property
-          , ref BlobBuilder builder
+          , IBlobStream builder
           , ref BlobVariantRW<T> blobVariant
         ) where T : unmanaged
         {
-            var metaDataPtr = property.Allocate(ref builder, ref blobVariant.Reader.Value);
+            property.Allocate(builder);
             blobVariant.Writer.Value.VariantId = blobVariant.Reader.Value.VariantId;
             // HACK: set meta data of writer as same as reader's
             ref var writerMetaPtr = ref ToBlobPtr<byte>(ref blobVariant.Writer.Value.MetaDataOffsetPtr);
@@ -150,9 +149,9 @@ namespace EntitiesBT.Variant
             return property.Reader.Allocate(ref builder, ref blobVariant.Reader);
         }
 
-        internal static ref BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : unmanaged
+        internal static ref Unity.Entities.BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : unmanaged
         {
-            return ref UnsafeUtility.As<int, BlobPtr<T>>(ref offsetPtr);
+            return ref UnsafeUtility.As<int, Unity.Entities.BlobPtr<T>>(ref offsetPtr);
         }
 
         public static unsafe void Allocate<T>(
@@ -161,7 +160,7 @@ namespace EntitiesBT.Variant
           , void* blobVariantPtr
         ) where T : unmanaged
         {
-            variant.Allocate(ref builder, ref UnsafeUtility.AsRef<BlobVariant>(blobVariantPtr));
+            variant.Allocate(builder);
         }
 
         public static MethodInfo GetVariantMethodInfo(Type type, string name)
