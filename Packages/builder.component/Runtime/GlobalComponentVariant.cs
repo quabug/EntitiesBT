@@ -27,18 +27,18 @@ namespace EntitiesBT.Variant
             protected Type _declaringType => Value?.BlobType;
             protected Type _fieldType => typeof(T);
 
-            public void Allocate(IBlobStream stream, ref BlobVariant blobVariant)
+            public void Allocate(BlobVariantStream stream)
             {
                 if (Value == null || Value.BlobType == null) throw new ArgumentException();
-                blobVariant.VariantId = GuidHashCode(GUID);
+                stream.SetVariantId(GuidHashCode(GUID));
                 var fieldInfo = Value.BlobType.GetField(ValueFieldName, BindingFlags.Instance | BindingFlags.Public);
                 if (fieldInfo == null || fieldInfo.FieldType != typeof(T))
                 {
                     Debug.LogError($"{Value.BlobType.Name}.{ValueFieldName} is not valid", Value);
                     throw new ArgumentException();
                 }
-                var valueOffset = Value.Offset + Marshal.OffsetOf(Value.BlobType, ValueFieldName).ToInt32();
-                return stream.Allocate(ref blobVariant, valueOffset);
+                var valueOffset = Value.Offset + UnsafeUtility.GetFieldOffset(fieldInfo);
+                stream.SetVariantOffset(valueOffset);
             }
 
             public object PreviewValue => Value?.GetPreviewValue(ValueFieldName);

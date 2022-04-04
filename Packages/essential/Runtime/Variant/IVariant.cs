@@ -1,14 +1,11 @@
 using System;
-using Blob;
-using EntitiesBT.Core;
 using JetBrains.Annotations;
-using Unity.Entities;
 
 namespace EntitiesBT.Variant
 {
     public interface IVariant
     {
-        void Allocate(IBlobStream stream);
+        void Allocate(BlobVariantStream stream);
         object PreviewValue { get; }
     }
 

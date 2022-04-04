@@ -196,19 +196,20 @@ namespace EntitiesBT
         public void SetPreviewValue(string path, object value) => throw new NotSupportedException();
         public unsafe BlobAssetReference Build(Core.ITreeNode<INodeDataBuilder>[] builders)
         {
-            var nodeType = _node.BehaviorNodeDataType;
-            if (nodeType.IsZeroSizeStruct()) return BlobAssetReference.Null;
-            var blobBuilder = new BlobMemoryStream(UnsafeUtility.SizeOf(nodeType));
-            try
-            {
-                _node.Blob.Build(blobBuilder);
-                blobBuilder.WritePatchOffset()
-                return blobBuilder.CreateReferenceByType(nodeType);
-            }
-            finally
-            {
-                blobBuilder.Dispose();
-            }
+            throw new NotImplementedException();
+            // var nodeType = _node.BehaviorNodeDataType;
+            // if (nodeType.IsZeroSizeStruct()) return BlobAssetReference.Null;
+            // var blobBuilder = new BlobMemoryStream(UnsafeUtility.SizeOf(nodeType));
+            // try
+            // {
+            //     _node.Blob.Build(blobBuilder);
+            //     blobBuilder.WritePatchOffset()
+            //     return blobBuilder.CreateReferenceByType(nodeType);
+            // }
+            // finally
+            // {
+            //     blobBuilder.Dispose();
+            // }
         }
 
 #endregion

@@ -74,94 +74,94 @@ namespace EntitiesBT.Variant
             return _VALUE_TYPE_LOOKUP.Value[valueType];
         }
         
-        public static unsafe IntPtr Allocate<TValue>(this BlobBuilder builder, ref BlobVariant blob, TValue value) where TValue : unmanaged
-        {
-            ref var blobPtr = ref ToBlobPtr<TValue>(ref blob.MetaDataOffsetPtr);
-            ref var blobValue = ref builder.Allocate(ref blobPtr);
-            blobValue = value;
-            var ptr = UnsafeUtility.AddressOf(ref blobValue);
-            return new IntPtr(ptr);
-        }
-
-        public static IntPtr Allocate<TValue>(this BlobBuilder builder, ref BlobVariantPtrRO blob, TValue value) where TValue : unmanaged
-        {
-            return builder.Allocate(ref blob.Value, value);
-        }
-
-        public static void AllocateRO<T>(
-            this IVariantReader<T> property
-          , IBlobStream builder
-          , ref BlobVariantRO<T> blobVariant
-        ) where T : unmanaged => property.Allocate(builder);
-
-        public static void AllocateWO<T>(
-            this IVariantWriter<T> property
-          , IBlobStream builder
-          , ref BlobVariantWO<T> blobVariant
-        ) where T : unmanaged => property.Allocate(builder);
-
-        public static void AllocateRW<T>(
-            this ISerializedVariantRW<T> property
-            , IBlobStream builder
-            , ref BlobVariantRW<T> blobVariant
-        ) where T : unmanaged => property.Allocate(builder, ref blobVariant);
-
-        public static void Allocate<T>(
-            this IVariantReader<T> property
-          , IBlobStream builder
-          , ref BlobVariantRO<T> blobVariant
-        ) where T : unmanaged => property.Allocate(builder);
-
-        public static IntPtr Allocate(
-            this IVariantReader property
-          , ref BlobBuilder builder
-          , ref BlobVariantPtrRO blobVariant
-        ) => property.Allocate(builder);
-
-        public static IntPtr Allocate<T>(
-            this IVariantWriter<T> property
-          , ref BlobBuilder builder
-          , ref BlobVariantWO<T> blobVariant
-        ) where T : unmanaged => property.Allocate(builder);
-
-        public static unsafe IntPtr Allocate<T>(
-            this IVariantReaderAndWriter<T> property
-          , IBlobStream builder
-          , ref BlobVariantRW<T> blobVariant
-        ) where T : unmanaged
-        {
-            property.Allocate(builder);
-            blobVariant.Writer.Value.VariantId = blobVariant.Reader.Value.VariantId;
-            // HACK: set meta data of writer as same as reader's
-            ref var writerMetaPtr = ref ToBlobPtr<byte>(ref blobVariant.Writer.Value.MetaDataOffsetPtr);
-            builder.SetPointer(ref writerMetaPtr, ref UnsafeUtility.AsRef<byte>(metaDataPtr.ToPointer()));
-            return metaDataPtr;
-        }
-
-        public static IntPtr Allocate<T>(
-            this ISerializedVariantRW<T> property
-          , ref BlobBuilder builder
-          , ref BlobVariantRW<T> blobVariant
-        ) where T : unmanaged
-        {
-            if (property.IsLinked) return property.ReaderAndWriter.Allocate(ref builder, ref blobVariant);
-            property.Writer.Allocate(ref builder, ref blobVariant.Writer);
-            return property.Reader.Allocate(ref builder, ref blobVariant.Reader);
-        }
+        // public static unsafe IntPtr Allocate<TValue>(this BlobBuilder builder, ref BlobVariant blob, TValue value) where TValue : unmanaged
+        // {
+        //     ref var blobPtr = ref ToBlobPtr<TValue>(ref blob.MetaDataOffsetPtr);
+        //     ref var blobValue = ref builder.Allocate(ref blobPtr);
+        //     blobValue = value;
+        //     var ptr = UnsafeUtility.AddressOf(ref blobValue);
+        //     return new IntPtr(ptr);
+        // }
+        //
+        // public static IntPtr Allocate<TValue>(this BlobBuilder builder, ref BlobVariantPtrRO blob, TValue value) where TValue : unmanaged
+        // {
+        //     return builder.Allocate(ref blob.Value, value);
+        // }
+        //
+        // public static void AllocateRO<T>(
+        //     this IVariantReader<T> property
+        //   , IBlobStream builder
+        //   , ref BlobVariantRO<T> blobVariant
+        // ) where T : unmanaged => property.Allocate(builder);
+        //
+        // public static void AllocateWO<T>(
+        //     this IVariantWriter<T> property
+        //   , IBlobStream builder
+        //   , ref BlobVariantWO<T> blobVariant
+        // ) where T : unmanaged => property.Allocate(builder);
+        //
+        // public static void AllocateRW<T>(
+        //     this ISerializedVariantRW<T> property
+        //     , IBlobStream builder
+        //     , ref BlobVariantRW<T> blobVariant
+        // ) where T : unmanaged => property.Allocate(builder, ref blobVariant);
+        //
+        // public static void Allocate<T>(
+        //     this IVariantReader<T> property
+        //   , IBlobStream builder
+        //   , ref BlobVariantRO<T> blobVariant
+        // ) where T : unmanaged => property.Allocate(builder);
+        //
+        // public static IntPtr Allocate(
+        //     this IVariantReader property
+        //   , ref BlobBuilder builder
+        //   , ref BlobVariantPtrRO blobVariant
+        // ) => property.Allocate(builder);
+        //
+        // public static IntPtr Allocate<T>(
+        //     this IVariantWriter<T> property
+        //   , ref BlobBuilder builder
+        //   , ref BlobVariantWO<T> blobVariant
+        // ) where T : unmanaged => property.Allocate(builder);
+        //
+        // public static unsafe IntPtr Allocate<T>(
+        //     this IVariantReaderAndWriter<T> property
+        //   , IBlobStream builder
+        //   , ref BlobVariantRW<T> blobVariant
+        // ) where T : unmanaged
+        // {
+        //     property.Allocate(builder);
+        //     blobVariant.Writer.Value.VariantId = blobVariant.Reader.Value.VariantId;
+        //     // HACK: set meta data of writer as same as reader's
+        //     ref var writerMetaPtr = ref ToBlobPtr<byte>(ref blobVariant.Writer.Value.MetaDataOffsetPtr);
+        //     builder.SetPointer(ref writerMetaPtr, ref UnsafeUtility.AsRef<byte>(metaDataPtr.ToPointer()));
+        //     return metaDataPtr;
+        // }
+        //
+        // public static IntPtr Allocate<T>(
+        //     this ISerializedVariantRW<T> property
+        //   , ref BlobBuilder builder
+        //   , ref BlobVariantRW<T> blobVariant
+        // ) where T : unmanaged
+        // {
+        //     if (property.IsLinked) return property.ReaderAndWriter.Allocate(ref builder, ref blobVariant);
+        //     property.Writer.Allocate(ref builder, ref blobVariant.Writer);
+        //     return property.Reader.Allocate(ref builder, ref blobVariant.Reader);
+        // }
 
         internal static ref Unity.Entities.BlobPtr<T> ToBlobPtr<T>(ref int offsetPtr) where T : unmanaged
         {
             return ref UnsafeUtility.As<int, Unity.Entities.BlobPtr<T>>(ref offsetPtr);
         }
 
-        public static unsafe void Allocate<T>(
-            this IVariantReader<T> variant
-          , ref BlobBuilder builder
-          , void* blobVariantPtr
-        ) where T : unmanaged
-        {
-            variant.Allocate(builder);
-        }
+        // public static unsafe void Allocate<T>(
+        //     this IVariantReader<T> variant
+        //   , ref BlobBuilder builder
+        //   , void* blobVariantPtr
+        // ) where T : unmanaged
+        // {
+        //     variant.Allocate(builder);
+        // }
 
         public static MethodInfo GetVariantMethodInfo(Type type, string name)
         {

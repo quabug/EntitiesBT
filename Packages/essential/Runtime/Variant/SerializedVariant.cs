@@ -44,7 +44,7 @@ namespace EntitiesBT.Variant
         private object _reader;
         public IVariantReader<T> Reader => (IVariantReader<T>)_reader;
 
-        public void Allocate(IBlobStream stream)
+        public void Allocate(BlobVariantStream stream)
         {
             Reader.Allocate(stream);
         }
@@ -62,7 +62,7 @@ namespace EntitiesBT.Variant
         private object _writer;
         public IVariantWriter<T> Writer => (IVariantWriter<T>)_writer;
 
-        public void Allocate(IBlobStream stream)
+        public void Allocate(BlobVariantStream stream)
         {
             Writer.Allocate(stream);
         }

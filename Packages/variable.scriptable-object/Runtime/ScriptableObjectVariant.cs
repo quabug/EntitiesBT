@@ -32,10 +32,10 @@ namespace EntitiesBT.Variant
             [VariantScriptableObjectValue(nameof(ScriptableObject))]
             public string ScriptableObjectValueName;
 
-            public void Allocate(IBlobStream stream)
+            public void Allocate(BlobVariantStream stream)
             {
-                blobVariant.VariantId = GuidHashCode(GUID);
-                return stream.Allocate(ref blobVariant, (T) PreviewValue);
+                stream.SetVariantId(GuidHashCode(GUID));
+                stream.SetVariantValue((T)PreviewValue);
             }
 
             public object PreviewValue

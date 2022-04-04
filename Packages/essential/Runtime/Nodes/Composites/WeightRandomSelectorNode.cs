@@ -1,5 +1,5 @@
-using System.IO;
 using System.Linq;
+using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Nuwa.Blob;
@@ -44,13 +44,12 @@ namespace EntitiesBT.Nodes
     {
         public int[] Weights;
 
-        protected override void BuildImpl(BlobBuilder builder)
+        protected override void BuildImpl(IBlobStream stream)
         {
             float sum = Weights.Sum();
-            builder.AllocateArray(ref data, Weights.Select(w => w / sum).ToArray());
-
-            builder.WriteValue(ref Value);
-            return patchPosition;
+            // new ArrayBuilder<float>(Weights.Select(w => w / sum).ToArray());
+            // builder.AllocateArray(ref data, Weights.Select(w => w / sum).ToArray());
+            // builder.WriteValue(ref Value);
         }
     }
 }

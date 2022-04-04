@@ -1,5 +1,4 @@
 using System;
-using Blob;
 using EntitiesBT.Core;
 using static EntitiesBT.Core.Utilities;
 
@@ -15,9 +14,10 @@ namespace EntitiesBT.Variant
         {
             public T Value;
 
-            public void Allocate(IBlobStream stream)
+            public void Allocate(BlobVariantStream stream)
             {
-                stream.WriteValue(GuidHashCode(GUID)).WritePatchOffset().ToPatchPosition().WriteValue(Value);
+                stream.SetVariantId(GuidHashCode(GUID));
+                stream.SetVariantValue(Value);
             }
 
             public object PreviewValue => Value;

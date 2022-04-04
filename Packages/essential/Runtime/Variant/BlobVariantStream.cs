@@ -3,14 +3,60 @@ using System.Linq;
 using System.Reflection;
 using Blob;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using Nuwa;
 using Nuwa.Blob;
 using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Variant
 {
+    public class BlobVariantStream
+    {
+        [NotNull] private readonly IBlobStream _stream;
+        private readonly int _idPosition;
+        private readonly int _offsetPosition;
+        private readonly int _patchPosition;
+
+        public BlobVariantStream([NotNull] IBlobStream stream)
+        {
+            _stream = stream;
+            stream.EnsureDataSize<BlobVariant>();
+            _idPosition = stream.DataPosition;
+            _patchPosition = stream.PatchPosition;
+            stream.WriteValue(new BlobVariant().VariantId);
+            _offsetPosition = stream.DataPosition;
+        }
+
+        public void SetVariantId(int id)
+        {
+            _stream.DataPosition = _idPosition;
+            _stream.WriteValue(id);
+        }
+
+        public void SetVariantValue<T>(T value) where T : unmanaged
+        {
+            _stream.DataPosition = _offsetPosition;
+            _stream.WritePatchOffset();
+            _stream.DataPosition = _patchPosition;
+            _stream.WriteValue(value);
+        }
+
+        public void SetVariantValue<T>(IBuilder<T> builder) where T : unmanaged
+        {
+            _stream.DataPosition = _offsetPosition;
+            _stream.WritePatchOffset();
+            _stream.DataPosition = _patchPosition;
+            builder.Build(_stream);
+        }
+
+        public void SetVariantOffset(int offset)
+        {
+            _stream.DataPosition = _offsetPosition;
+            _stream.WriteValue(offset);
+        }
+    }
+
     [Serializable]
     public class BlobVariantROBuilder : Nuwa.Blob.Builder<BlobVariant>
     {
@@ -25,7 +71,7 @@ namespace EntitiesBT.Variant
 
         protected override void BuildImpl(IBlobStream stream)
         {
-            _variant?.Allocate(stream);
+            _variant?.Allocate(new BlobVariantStream(stream));
         }
 
         public class Factory : DynamicBuilderFactory<BlobVariantROBuilder>
@@ -59,7 +105,7 @@ namespace EntitiesBT.Variant
 
         protected override void BuildImpl(IBlobStream stream)
         {
-            _variant.Allocate(stream);
+            _variant.Allocate(new BlobVariantStream(stream));
         }
 
         public class Factory : DynamicBuilderFactory<BlobVariantWOBuilder>
@@ -93,8 +139,7 @@ namespace EntitiesBT.Variant
 
         protected override void BuildImpl(IBlobStream stream)
         {
-            var position = stream.DataPosition;
-            _variant.Allocate(stream);
+            _variant.Allocate(new BlobVariantStream(stream));
             data.Writer.VariantId = data.Reader.VariantId;
 
             // HACK: set meta data of writer as same as reader's
@@ -113,16 +158,16 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _isLinked ? _readerAndWriter.PreviewValue : _reader.PreviewValue; set => throw new NotImplementedException(); }
 
-        public override void Build(BlobBuilder builder, ref BlobVariantRW data)
+        protected override void BuildImpl(IBlobStream stream)
         {
             if (_isLinked)
             {
-                _readerAndWriter.Build(builder, ref data);
+                _readerAndWriter.Build(stream);
             }
             else
             {
-                _reader.Build(builder, ref data.Reader);
-                _writer.Build(builder, ref data.Writer);
+                _reader.Build(stream);
+                _writer.Build(stream);
             }
         }
 

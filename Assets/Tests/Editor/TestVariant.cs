@@ -1,8 +1,6 @@
 using System;
-using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using NUnit.Framework;
-using Unity.Entities;
 
 namespace EntitiesBT.Test
 {
@@ -17,9 +15,8 @@ namespace EntitiesBT.Test
 
         class InvalidVariant : IVariant
         {
-            public void Allocate(IBlobStream stream, ref BlobVariant blobVariant)
+            public void Allocate(BlobVariantStream stream)
             {
-                throw new NotImplementedException();
             }
 
             public object PreviewValue => throw new NotImplementedException();

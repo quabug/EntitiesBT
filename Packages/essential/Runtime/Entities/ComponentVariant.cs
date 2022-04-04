@@ -23,16 +23,16 @@ namespace EntitiesBT.Variant
         {
             [VariantComponentData] public string ComponentValueName;
 
-            public void Allocate(IBlobStream stream)
+            public void Allocate(BlobVariantStream stream)
             {
-                blobVariant.VariantId = GuidHashCode(GUID);
+                stream.SetVariantId(GuidHashCode(GUID));
                 var data = GetTypeHashAndFieldOffset(ComponentValueName);
                 if (data.Type != typeof(T) || data.Hash == 0)
                 {
                     Debug.LogError($"{nameof(ComponentVariant)}({ComponentValueName}) is not valid, fallback to ConstantValue");
                     throw new ArgumentException();
                 }
-                return stream.Allocate(ref blobVariant, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
+                stream.SetVariantValue(new DynamicComponentData { StableHash = data.Hash, Offset = data.Offset });
             }
 
             public object PreviewValue => throw new NotImplementedException();

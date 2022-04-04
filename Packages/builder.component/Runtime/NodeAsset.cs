@@ -17,7 +17,7 @@ namespace EntitiesBT.Components
 
         public DynamicBlobDataBuilder Builder;
 
-        public void Build(BlobBuilder builder, IntPtr dataPtr) => Builder.Build(builder, dataPtr);
+        public void Build(BlobBuilder builder, IntPtr dataPtr) => throw new NotImplementedException();//Builder.Build(builder, dataPtr);
 
         public IBuilder FindBuilderByPath(string path)
         {
