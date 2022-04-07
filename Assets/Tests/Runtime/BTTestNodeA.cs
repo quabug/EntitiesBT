@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using Blob;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Entities;
@@ -33,7 +34,15 @@ namespace EntitiesBT.Test
     public class BTTestNodeA : BTNode<NodeA>
     {
         public int A;
-        protected override void Build(ref NodeA data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __) => data.A = A;
+
+        protected override void Build(
+            UnsafeBlobStreamValue<NodeA> value,
+            IBlobStream stream,
+            ITreeNode<INodeDataBuilder>[] tree
+        )
+        {
+            value.Value.A = A;
+        }
     }
 }
 

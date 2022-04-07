@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using Blob;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Entities;
@@ -45,11 +46,15 @@ namespace EntitiesBT.Test
     {
         public NodeState State;
 
-        protected override void Build(ref TestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected override void Build(
+            UnsafeBlobStreamValue<TestNode> value,
+            IBlobStream stream,
+            ITreeNode<INodeDataBuilder>[] tree
+        )
         {
-            data.State = State;
-            data.ResetTimes = 0;
-            data.TickTimes = 0;
+            value.Value.State = State;
+            value.Value.ResetTimes = 0;
+            value.Value.TickTimes = 0;
         }
     }
 }

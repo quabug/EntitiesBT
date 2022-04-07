@@ -69,11 +69,6 @@ namespace Nuwa.Blob
             stream.WriteValue(Value);
         }
 
-        public IBuilder GetBuilder(string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public class Factory<U> : DynamicBuilderFactory<U> where U : DynamicEnumBuilder<T>, new()
         {
             public override bool IsValid(Type dataType, FieldInfo fieldInfo)
@@ -148,7 +143,7 @@ namespace Nuwa.Blob
             }
         }
 
-        public IBuilder GetBuilder(string name)
+        public override IBuilder GetBuilder(string name)
         {
             var index = Array.IndexOf(FieldNames, name);
             if (index < 0) throw new ArgumentException($"cannot find field by name {name}");
@@ -208,7 +203,7 @@ namespace Nuwa.Blob
             stream.WritePatchOffset().WriteValue(Value.Length).ToPatchPosition().WriteArray(Value, elementSize, 4);
         }
 
-        public IBuilder GetBuilder(string name)
+        public override IBuilder GetBuilder(string name)
         {
             var index = int.Parse(name);
             return Value[index];
@@ -234,7 +229,7 @@ namespace Nuwa.Blob
             stream.WritePatchOffset().WriteValue(Value);
         }
 
-        public IBuilder GetBuilder(string name)
+        public override IBuilder GetBuilder(string name)
         {
             if (name != "*") throw new ArgumentException("it must be * to access builder of BlobPtr");
             return Value;

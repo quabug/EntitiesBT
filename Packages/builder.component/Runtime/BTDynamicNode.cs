@@ -1,7 +1,7 @@
 using System;
+using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
-using Unity.Entities;
 
 namespace EntitiesBT.Components
 {
@@ -13,9 +13,9 @@ namespace EntitiesBT.Components
         protected override Type NodeType => Type.GetType(NodeData.NodeType ?? "") ?? typeof(ZeroNode);
         protected override INodeDataBuilder SelfImpl => RunOnMainThread ? new BTVirtualDecorator<RunOnMainThreadNode>(this) : (INodeDataBuilder) this;
 
-        protected override unsafe void Build(void* dataPtr, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders)
+        protected override void Build(IBlobStream stream, ITreeNode<INodeDataBuilder>[] tree)
         {
-            NodeData.Build(blobBuilder, new IntPtr(dataPtr));
+            NodeData.Build(stream);
         }
     }
 }

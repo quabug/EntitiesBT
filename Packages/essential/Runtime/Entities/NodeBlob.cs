@@ -16,18 +16,18 @@ namespace EntitiesBT.Entities
         public BlobArray<int> EndIndices;
         public BlobArray<int> Offsets; // count = count of nodes + 1
         public BlobArray<byte> DefaultDataBlob;
-        public BlobArray<byte> DefaultScopeValues;
+        public BlobArray<byte> DefaultGlobalValues;
 #endregion
         
 #region NonSerialized Data (runtime only)
         public int RuntimeId;
         public BlobArray<NodeState> States; // states of each nodes
         public BlobArray<byte> RuntimeDataBlob; // initialize from `DefaultDataBlob`
-        public BlobArray<byte> RuntimeScopeValues;
+        public BlobArray<byte> RuntimeGlobalValues;
 #endregion
 
         public int Count => Types.Length;
-        public int RuntimeSize => CalculateRuntimeSize(Count, RuntimeDataBlob.Length, RuntimeScopeValues.Length);
+        public int RuntimeSize => CalculateRuntimeSize(Count, RuntimeDataBlob.Length, RuntimeGlobalValues.Length);
 
         [Pure]
         private static int CalculateDefaultSize(int count, int dataSize, int scopeValuesSize) =>
@@ -75,10 +75,10 @@ namespace EntitiesBT.Entities
             (IntPtr) _blob.RuntimeDataBlob.GetUnsafePtr() + _blob.Offsets[nodeIndex];
 
         public unsafe IntPtr GetDefaultScopeValuePtr(int offset) =>
-            IntPtr.Add(new IntPtr(_blob.DefaultScopeValues.GetUnsafePtr()), offset);
+            IntPtr.Add(new IntPtr(_blob.DefaultGlobalValues.GetUnsafePtr()), offset);
 
         public unsafe IntPtr GetRuntimeScopeValuePtr(int offset) =>
-            IntPtr.Add(new IntPtr(_blob.RuntimeScopeValues.GetUnsafePtr()), offset);
+            IntPtr.Add(new IntPtr(_blob.RuntimeGlobalValues.GetUnsafePtr()), offset);
 
         public NodeState GetState(int nodeIndex) => _blob.States[nodeIndex];
         public void SetState(int nodeIndex, NodeState state) => _blob.States[nodeIndex] = state;

@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
-using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
-using Unity.Entities;
 
 namespace EntitiesBT.Components
 {
@@ -27,23 +26,19 @@ namespace EntitiesBT.Components
 
         protected virtual INodeDataBuilder SelfImpl => this;
 
-        public unsafe BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
+        public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
         {
-            if (NodeType.IsZeroSizeStruct()) return BlobAssetReference.Null;
-            var blobBuilder = new BlobBuilder(Allocator.Temp, UnsafeUtility.SizeOf(NodeType));
-            try
-            {
-                var dataPtr = blobBuilder.ConstructRootPtrByType(NodeType);
-                Build(dataPtr, blobBuilder, builders);
-                return blobBuilder.CreateReferenceByType(NodeType);
-            }
-            finally
-            {
-                blobBuilder.Dispose();
-            }
+            var nodeSize = UnsafeUtility.SizeOf(NodeType);
+            if (nodeSize == 0) return BlobAssetReference.Null;
+
+            using var stream = new BlobMemoryStream(nodeSize);
+            stream.EnsureDataSize(nodeSize, 4);
+            Build(stream, builders);
+            stream.Length = (int)Blob.Utilities.Align(stream.Length, 16);
+            return BlobAssetReference.Create(stream.ToArray());
         }
 
-        protected virtual unsafe void Build(void* dataPtr, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders) {}
+        protected virtual void Build(IBlobStream stream, ITreeNode<INodeDataBuilder>[] builders) {}
 
         protected virtual void Reset() => name = GetType().Name;
 
@@ -107,11 +102,12 @@ namespace EntitiesBT.Components
     {
         protected override Type NodeType => typeof(T);
 
-        protected override unsafe void Build(void* dataPtr, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
+        protected virtual void Build(IBlobStream stream, ITreeNode<INodeDataBuilder>[] builders)
         {
-            Build(ref UnsafeUtility.AsRef<T>(dataPtr), builder, tree);
+            var value = new UnsafeBlobStreamValue<T>(stream, stream.DataPosition);
+            Build(value, stream, builders);
         }
         
-        protected virtual void Build(ref T data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree) {}
+        protected virtual void Build(UnsafeBlobStreamValue<T> value, IBlobStream stream, ITreeNode<INodeDataBuilder>[] tree) {}
     }
 }

@@ -90,7 +90,7 @@ namespace EntitiesBT.Entities
                     }
                 }
 
-                var scopeValues = blobBuilder.Allocate(ref blob.DefaultScopeValues, scopeValuesSize);
+                var scopeValues = blobBuilder.Allocate(ref blob.DefaultGlobalValues, scopeValuesSize);
                 var scopeValuesPtr = new IntPtr(scopeValues.GetUnsafePtr());
                 var scopeValuesOffset = 0;
                 foreach (var values in scopeValuesList)
@@ -99,7 +99,7 @@ namespace EntitiesBT.Entities
                     UnsafeUtility.MemCpy(destPtr.ToPointer(), values.ValuePtr.ToPointer(), values.Size);
                     scopeValuesOffset += values.Size;
                 }
-                var runtimeScopeValues = blobBuilder.Allocate(ref blob.RuntimeScopeValues, scopeValuesSize);
+                var runtimeScopeValues = blobBuilder.Allocate(ref blob.RuntimeGlobalValues, scopeValuesSize);
                 UnsafeUtility.MemCpy(runtimeScopeValues.GetUnsafePtr(), scopeValues.GetUnsafePtr(), scopeValuesSize);
 
                 var states = blobBuilder.Allocate(ref blob.States, nodes.Length);
