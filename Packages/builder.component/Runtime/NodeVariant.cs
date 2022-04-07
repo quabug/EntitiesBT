@@ -1,10 +1,8 @@
 using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using UnityEngine;
 using static EntitiesBT.Core.Utilities;
 
@@ -33,9 +31,9 @@ namespace EntitiesBT.Variant
             public BTNode NodeObject;
             [VariantNodeObject(nameof(NodeObject))] public string ValueFieldName;
 
-            public void Allocate(IBlobStream stream, ref BlobVariant blobVariant)
+            public void Allocate(BlobVariantStream stream)
             {
-                return Allocate<T>(ref stream, ref blobVariant, NodeObject, ValueFieldName);
+                Allocate<T>(stream, NodeObject, ValueFieldName);
             }
 
             public object PreviewValue => null;
@@ -129,9 +127,8 @@ namespace EntitiesBT.Variant
             return IntPtr.Add(ptr, data.Offset);
         }
 
-        public static IntPtr Allocate<T>(
-            ref BlobBuilder builder
-            , ref BlobVariant blobVariant
+        public static void Allocate<T>(
+            BlobVariantStream stream
             , INodeDataBuilder nodeObject
             , string valueFieldName
         ) where T : unmanaged
@@ -145,7 +142,10 @@ namespace EntitiesBT.Variant
 
             var nodeType = VirtualMachine.GetNodeType(nodeObject.NodeId);
             if (string.IsNullOrEmpty(valueFieldName) && nodeType == typeof(T))
-                return builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = 0});
+            {
+                stream.SetVariantValue(new DynamicNodeRefData { Index = index, Offset = 0 });
+                return;
+            }
 
             var fieldInfo = nodeType.GetField(valueFieldName, BindingFlags.Instance | BindingFlags.Public);
             if (fieldInfo == null)
@@ -157,11 +157,11 @@ namespace EntitiesBT.Variant
             var fieldType = fieldInfo.FieldType;
             if (fieldType == typeof(T))
             {
-                blobVariant.VariantId = GuidHashCode(ID_RUNTIME_NODE);
+                stream.SetVariantId(GuidHashCode(ID_RUNTIME_NODE));
             }
             else if (fieldType == typeof(BlobVariantRO<T>) || fieldType == typeof(BlobVariantRW<T>))
             {
-                blobVariant.VariantId = GuidHashCode(ID_RUNTIME_NODE_VARIANT);
+                stream.SetVariantId(GuidHashCode(ID_RUNTIME_NODE_VARIANT));
             }
             else
             {
@@ -169,10 +169,15 @@ namespace EntitiesBT.Variant
                 throw new ArgumentException();
             }
 
-            var fieldOffset = Marshal.OffsetOf(nodeType, valueFieldName).ToInt32();
+            var fieldOffset = UnsafeUtility.GetFieldOffset(fieldInfo);
             if (fieldType == typeof(BlobVariantRW<T>))
-                fieldOffset += Marshal.OffsetOf(typeof(BlobVariantRW<T>) , nameof(BlobVariantRW<T>.Reader)).ToInt32();
-            return builder.Allocate(ref blobVariant, new DynamicNodeRefData{ Index = index, Offset = fieldOffset});
+            {
+                var fi = typeof(BlobVariantRW<T>).GetField(nameof(BlobVariantRW<T>.Reader),
+                    BindingFlags.Instance | BindingFlags.Public)
+                ;
+                fieldOffset += UnsafeUtility.GetFieldOffset(fi);
+            }
+            stream.SetVariantValue(new DynamicNodeRefData{ Index = index, Offset = fieldOffset});
         }
     }
 }

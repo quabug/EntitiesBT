@@ -69,7 +69,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream)
+        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariant> value)
         {
             _variant?.Allocate(new BlobVariantStream(stream));
         }
@@ -103,7 +103,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream)
+        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariant> value)
         {
             _variant.Allocate(new BlobVariantStream(stream));
         }
@@ -137,14 +137,17 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream)
+        protected override unsafe void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariantRW> value)
         {
             _variant.Allocate(new BlobVariantStream(stream));
-            data.Writer.VariantId = data.Reader.VariantId;
-
+            value.Value.Writer.VariantId = value.Value.Reader.VariantId;
             // HACK: set meta data of writer as same as reader's
-            ref var writerMetaPtr = ref Utilities.ToBlobPtr<byte>(ref data.Writer.MetaDataOffsetPtr);
-            builder.SetPointer(ref writerMetaPtr, ref UnsafeUtility.AsRef<byte>(metaDataPtr.ToPointer()));
+            fixed (void* writerDataPtr = &value.Value.Writer.MetaDataOffsetPtr)
+            fixed (void* readerDataPtr = &value.Value.Reader.MetaDataOffsetPtr)
+            {
+                value.Value.Writer.MetaDataOffsetPtr =
+                    value.Value.Reader.MetaDataOffsetPtr + (int)((long)writerDataPtr - (long)readerDataPtr);
+            }
         }
     }
 
@@ -158,7 +161,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _isLinked ? _readerAndWriter.PreviewValue : _reader.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream)
+        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariantRW> value)
         {
             if (_isLinked)
             {

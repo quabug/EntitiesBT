@@ -1,6 +1,6 @@
 using System;
+using Blob;
 using Nuwa.Blob;
-using Unity.Entities;
 using UnityEngine.InputSystem;
 
 namespace EntitiesBT.Extensions.InputSystem
@@ -9,9 +9,9 @@ namespace EntitiesBT.Extensions.InputSystem
     {
         public InputActionReference InputAction;
 
-        public override void Build(BlobBuilder builder, ref Guid data)
+        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<Guid> value)
         {
-            data = InputAction.action.id;
+            value.Value = InputAction.action.id;
         }
     }
 
