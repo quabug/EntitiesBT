@@ -5,6 +5,7 @@ using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
+using Nuwa.Blob;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 

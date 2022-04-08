@@ -3,7 +3,7 @@
 using Blob;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using Unity.Entities;
+using Nuwa.Blob;
 using UnityEngine;
 
 namespace EntitiesBT.Test
