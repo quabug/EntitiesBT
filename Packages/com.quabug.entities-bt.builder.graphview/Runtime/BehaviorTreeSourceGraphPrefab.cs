@@ -18,7 +18,7 @@ namespace EntitiesBT
         {
             Assert.IsTrue(Root.IsPrefab());
             Assert.IsNotNull(_behaviorTree);
-            return _behaviorTree.ToBlob(_behaviorTree.FindScopeValuesList());
+            return _behaviorTree.ToBlob(_behaviorTree.FindGlobalValuesList());
         }
     }
 }

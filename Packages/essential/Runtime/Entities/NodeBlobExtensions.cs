@@ -17,17 +17,17 @@ namespace EntitiesBT.Entities
         [Pure]
         public static BlobAssetReference<NodeBlob> ToBlob(
             [NotNull] this INodeDataBuilder root
-            , IReadOnlyList<IScopeValuesBuilder> scopeValuesList
+            , IReadOnlyList<IGlobalValuesBuilder> globalValuesList
             , Allocator allocator = Allocator.Persistent
         )
         {
-            return root.Flatten(builder => builder.Children, builder => builder.Self).ToArray().ToBlob(scopeValuesList, allocator);
+            return root.Flatten(builder => builder.Children, builder => builder.Self).ToArray().ToBlob(globalValuesList, allocator);
         }
 
         [Pure]
         public static unsafe BlobAssetReference<NodeBlob> ToBlob(
             [NotNull] this ITreeNode<INodeDataBuilder>[] nodes
-            , IReadOnlyList<IScopeValuesBuilder> scopeValuesList
+            , IReadOnlyList<IGlobalValuesBuilder> globalValuesList
             , Allocator allocator
         )
         {
@@ -36,7 +36,7 @@ namespace EntitiesBT.Entities
             try
             {
                 var scopeValuesSize = 0;
-                foreach (var values in scopeValuesList)
+                foreach (var values in globalValuesList)
                 {
                     values.Offset = scopeValuesSize;
                     scopeValuesSize += values.Size;
@@ -93,7 +93,7 @@ namespace EntitiesBT.Entities
                 var scopeValues = blobBuilder.Allocate(ref blob.DefaultGlobalValues, scopeValuesSize);
                 var scopeValuesPtr = new IntPtr(scopeValues.GetUnsafePtr());
                 var scopeValuesOffset = 0;
-                foreach (var values in scopeValuesList)
+                foreach (var values in globalValuesList)
                 {
                     var destPtr = scopeValuesPtr + scopeValuesOffset;
                     UnsafeUtility.MemCpy(destPtr.ToPointer(), values.ValuePtr.ToPointer(), values.Size);
@@ -124,7 +124,7 @@ namespace EntitiesBT.Entities
 
         public static unsafe void SaveToStream(
             [NotNull] this INodeDataBuilder builder
-            , [NotNull] IReadOnlyList<IScopeValuesBuilder> scopeValuesList
+            , [NotNull] IReadOnlyList<IGlobalValuesBuilder> scopeValuesList
             , [NotNull] Stream stream
         )
         {

@@ -222,7 +222,7 @@ namespace EntitiesBT
         {
             var path = EditorUtility.SaveFilePanel("save path", Application.dataPath, name, "bytes");
             if (string.IsNullOrEmpty(path)) return;
-            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(this.FindScopeValuesList(), file);
+            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(this.FindGlobalValuesList(), file);
             AssetDatabase.Refresh();
         }
 #endif

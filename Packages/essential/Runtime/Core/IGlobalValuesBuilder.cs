@@ -2,7 +2,7 @@ using System;
 
 namespace EntitiesBT.Core
 {
-    public interface IScopeValuesBuilder
+    public interface IGlobalValuesBuilder
     {
         IntPtr ValuePtr { get; }
         int Size { get; }
