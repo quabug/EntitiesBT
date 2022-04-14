@@ -5,38 +5,21 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Blob;
 using JetBrains.Annotations;
-using Unity.Entities;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace EntitiesBT.Core
 {
-    public interface ITreeNode<out T>
+    public class TreeNode<T> : ITreeNode<T> where T : unmanaged
     {
-        T Value { get; }
-        ITreeNode<T> Parent { get; }
-        int Index { get; }
-    }
-        
-    public class TreeNode<T> : ITreeNode<T>
-    {
-        public T Value { get; }
-        public ITreeNode<T> Parent { get; }
-        public int Index { get; private set; }
-
-        public TreeNode(T value, ITreeNode<T> parent, int index = -1)
+        public TreeNode(T value, ITreeNode<T> parent)
         {
-            Value = value;
-            Parent = parent;
-            Index = index;
+            ValueBuilder = new ValueBuilder<T>(value);
         }
 
-        public TreeNode<T> UpdateIndex(int index)
-        {
-            Index = index;
-            return this;
-        }
+        public IBuilder<T> ValueBuilder { get; }
+        public IReadOnlyList<ITreeNode<T>> Children { get; }
     }
     
     public static class Utilities
@@ -65,7 +48,7 @@ namespace EntitiesBT.Core
         }
         
         [Pure]
-        internal static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, SelfFunc<T> selfFunc)
+        internal static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, SelfFunc<T> selfFunc) where T : unmanaged
         {
             return selfFunc(node).Flatten(childrenFunc, default, selfFunc).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
         }

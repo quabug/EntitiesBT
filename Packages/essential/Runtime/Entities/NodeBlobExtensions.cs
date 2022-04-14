@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Blob;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
 using Unity.Collections;
@@ -54,11 +55,9 @@ namespace EntitiesBT.Entities
 
                 var size = NodeBlob.CalculateSize(count: nodes.Length, dataSize: dataSize, scopeValuesSize: scopeValuesSize);
 
-                using var blobBuilder = new BlobBuilder(Allocator.Temp, size);
-                ref var blob = ref blobBuilder.ConstructRoot<NodeBlob>();
-                var types = blobBuilder.Allocate(ref blob.Types, nodes.Length);
-                var offsets = blobBuilder.Allocate(ref blob.Offsets, nodes.Length + 1);
-                var unsafeDataPtr = (byte*) blobBuilder.Allocate(ref blob.DefaultDataBlob, dataSize).GetUnsafePtr();
+                var types = new int[nodes.Length];
+                var offsets = new int[nodes.Length + 1];
+                var binary = new byte[dataSize];
                 var offset = 0;
                 for (var i = 0; i < nodes.Length; i++)
                 {

@@ -2,8 +2,8 @@ using System;
 using EntitiesBT.Core;
 using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using Unity.Mathematics;
+using Blob;
 
 namespace EntitiesBT.Entities
 {
@@ -13,9 +13,7 @@ namespace EntitiesBT.Entities
 
 #region Serialized Data
         public BlobArray<int> Types;
-        public BlobArray<int> EndIndices;
-        public BlobArray<int> Offsets; // count = count of nodes + 1
-        public BlobArray<byte> DefaultDataBlob;
+        public BlobTreeAny Tree;
         public BlobArray<byte> DefaultGlobalValues;
 #endregion
         
@@ -28,6 +26,8 @@ namespace EntitiesBT.Entities
 
         public int Count => Types.Length;
         public int RuntimeSize => CalculateRuntimeSize(Count, RuntimeDataBlob.Length, RuntimeGlobalValues.Length);
+
+        public Blob.BlobTreeAny.Node this[int nodeIndex] => Tree[nodeIndex];
 
         [Pure]
         private static int CalculateDefaultSize(int count, int dataSize, int scopeValuesSize) =>
@@ -45,9 +45,9 @@ namespace EntitiesBT.Entities
     public readonly struct NodeBlobRef : INodeBlob, IEquatable<NodeBlobRef>
     {
         private ref NodeBlob _blob => ref BlobRef.Value;
-        public readonly BlobAssetReference<NodeBlob> BlobRef;
+        public readonly Unity.Entities.BlobAssetReference<NodeBlob> BlobRef;
         
-        public NodeBlobRef(BlobAssetReference<NodeBlob> blobRef) => BlobRef = blobRef;
+        public NodeBlobRef(Unity.Entities.BlobAssetReference<NodeBlob> blobRef) => BlobRef = blobRef;
 
         public int RuntimeId
         {
@@ -57,28 +57,28 @@ namespace EntitiesBT.Entities
 
         public int Count => _blob.Count;
         public int GetTypeId(int nodeIndex) => _blob.Types[nodeIndex];
-        public int GetEndIndex(int nodeIndex) => _blob.EndIndices[nodeIndex];
-        public int GetNodeDataSize(int nodeIndex, int count = 1)
+        public int GetEndIndex(int nodeIndex) => _blob[nodeIndex].EndIndex;
+        public int GetNodeDataSize(int nodeIndex) => _blob[nodeIndex].Size;
+        public int GetNodeDataSize(int nodeIndex, int count)
         {
-            var currentOffset = _blob.Offsets[nodeIndex];
-            var nextOffset = _blob.Offsets[math.min(nodeIndex + count, Count)];
+            var currentOffset = _blob[nodeIndex].Offset;
+            var nextOffset = _blob[math.min(nodeIndex + count, Count)].Offset;
             return nextOffset - currentOffset;
         }
 
-        public unsafe void ResetStates(int index, int count = 1) =>
-            UnsafeUtility.MemClear((byte*)_blob.States.GetUnsafePtr() + sizeof(NodeState) * index, sizeof(NodeState) * count);
+        public unsafe void ResetStates(int index, int count) =>
+            UnsafeUtility.MemClear(_blob.States.UnsafePtr + index, sizeof(NodeState) * count);
 
-        public unsafe IntPtr GetDefaultDataPtr(int nodeIndex) =>
-            (IntPtr) _blob.DefaultDataBlob.GetUnsafePtr() + _blob.Offsets[nodeIndex];
+        public unsafe IntPtr GetDefaultDataPtr(int nodeIndex) => (IntPtr) _blob[nodeIndex].UnsafePtr;
         
         public unsafe IntPtr GetRuntimeDataPtr(int nodeIndex) =>
-            (IntPtr) _blob.RuntimeDataBlob.GetUnsafePtr() + _blob.Offsets[nodeIndex];
+            (IntPtr) _blob.RuntimeDataBlob.UnsafePtr + _blob[nodeIndex].Offset;
 
         public unsafe IntPtr GetDefaultScopeValuePtr(int offset) =>
-            IntPtr.Add(new IntPtr(_blob.DefaultGlobalValues.GetUnsafePtr()), offset);
+            IntPtr.Add(new IntPtr(_blob.DefaultGlobalValues.UnsafePtr), offset);
 
         public unsafe IntPtr GetRuntimeScopeValuePtr(int offset) =>
-            IntPtr.Add(new IntPtr(_blob.RuntimeGlobalValues.GetUnsafePtr()), offset);
+            IntPtr.Add(new IntPtr(_blob.RuntimeGlobalValues.UnsafePtr), offset);
 
         public NodeState GetState(int nodeIndex) => _blob.States[nodeIndex];
         public void SetState(int nodeIndex, NodeState state) => _blob.States[nodeIndex] = state;
