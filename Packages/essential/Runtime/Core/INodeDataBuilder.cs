@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Blob;
 using JetBrains.Annotations;
 
 namespace EntitiesBT.Core
@@ -7,13 +8,8 @@ namespace EntitiesBT.Core
     public interface INodeDataBuilder
     {
         int NodeId { get; }
-        BlobAssetReference Build([NotNull] ITreeNode<INodeDataBuilder>[] builders);
         int NodeIndex { get; set; }
-        INodeDataBuilder Self { get; }
-        IEnumerable<INodeDataBuilder> Children { get; }
-
-        object GetPreviewValue(string path);
-        void SetPreviewValue(string path, object value);
+        ITreeNode Node { get; }
     }
 
     public static partial class NodeDataBuilderExtension

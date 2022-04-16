@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
@@ -9,13 +10,11 @@ namespace EntitiesBT.Components
     {
         public NodeAsset NodeData;
         public bool RunOnMainThread = false;
-
         protected override Type NodeType => Type.GetType(NodeData.NodeType ?? "") ?? typeof(ZeroNode);
-        protected override INodeDataBuilder SelfImpl => RunOnMainThread ? new BTVirtualDecorator<RunOnMainThreadNode>(this) : (INodeDataBuilder) this;
-
-        protected override void Build(IBlobStream stream, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            NodeData.Build(stream);
-        }
+        public override IBuilder ValueBuilder => NodeData.Builder;
+        public override IReadOnlyList<ITreeNode> Children => RunOnMainThread ?
+            new[] { new DecoratorBuilder<RunOnMainThreadNode>(new NodeDataBuilder(NodeType, ValueBuilder, base.Children)) } :
+            base.Children
+        ;
     }
 }

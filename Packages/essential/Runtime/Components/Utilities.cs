@@ -29,7 +29,7 @@ namespace EntitiesBT.Components
         }
         
         [Pure]
-        public static IEnumerable<T> Children<T>(this GameObject parent) where T : Component
+        public static IEnumerable<T> Children<T>(this GameObject parent)
         {
             return Children(parent).Select(child => child.GetComponent<T>()).Where(child => child != null);
         }

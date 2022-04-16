@@ -1,16 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
-using Nuwa.Blob;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using IBuilder = Blob.IBuilder;
 
 namespace EntitiesBT.Components
 {
+    public class ComponentTreeNode : ITreeNode
+    {
+        public IBuilder ValueBuilder { get; }
+        public IReadOnlyList<ITreeNode> Children { get; }
+
+        public ComponentTreeNode(GameObject gameObject)
+        {
+            Children = gameObject.Children<INodeDataBuilder>().Select(builder => builder.Node).ToArray();
+        }
+    }
+
     [DisallowMultipleComponent, ExecuteInEditMode]
     public abstract class BTNode : MonoBehaviour, INodeDataBuilder
     {
@@ -19,27 +30,7 @@ namespace EntitiesBT.Components
         protected virtual Type NodeType { get; } = typeof(ZeroNode);
         public int NodeIndex { get; set; } = 0;
 
-        public virtual IEnumerable<INodeDataBuilder> Children => this.Children();
-        public virtual object GetPreviewValue(string path) => throw new NotImplementedException();
-        public virtual void SetPreviewValue(string path, object value) => throw new NotImplementedException();
-
-        public INodeDataBuilder Self => gameObject.activeSelf ? SelfImpl : null;
-
-        protected virtual INodeDataBuilder SelfImpl => this;
-
-        public BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
-        {
-            var nodeSize = UnsafeUtility.SizeOf(NodeType);
-            if (nodeSize == 0) return BlobAssetReference.Null;
-
-            using var stream = new BlobMemoryStream(nodeSize);
-            stream.EnsureDataSize(nodeSize, 4);
-            Build(stream, builders);
-            stream.Length = (int)Blob.Utilities.Align(stream.Length, 16);
-            return BlobAssetReference.Create(stream.ToArray());
-        }
-
-        protected virtual void Build(IBlobStream stream, ITreeNode<INodeDataBuilder>[] builders) {}
+        public ITreeNode Node { get; }
 
         protected virtual void Reset() => name = GetType().Name;
 
@@ -102,13 +93,5 @@ namespace EntitiesBT.Components
     public abstract class BTNode<T> : BTNode where T : unmanaged, INodeData
     {
         protected override Type NodeType => typeof(T);
-
-        protected virtual void Build(IBlobStream stream, ITreeNode<INodeDataBuilder>[] builders)
-        {
-            var value = new UnsafeBlobStreamValue<T>(stream, stream.DataPosition);
-            Build(value, stream, builders);
-        }
-        
-        protected virtual void Build(UnsafeBlobStreamValue<T> value, IBlobStream stream, ITreeNode<INodeDataBuilder>[] tree) {}
     }
 }
