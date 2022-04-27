@@ -13,7 +13,7 @@ namespace EntitiesBT.Sample
 
         private void Awake()
         {
-            _nodeBlobRef = new NodeBlobRef(RootNode.ToBlob(RootNode.FindGlobalValuesList()));
+            _nodeBlobRef = new NodeBlobRef(RootNode.Node.ToBlob(RootNode.FindGlobalValuesList()));
             Destroy(RootNode.gameObject);
             _bb = new GameObjectBlackboard(gameObject);
             VirtualMachine.Reset(ref _nodeBlobRef, ref _bb);

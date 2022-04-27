@@ -34,15 +34,7 @@ namespace EntitiesBT.Test
     public class BTTestNodeA : BTNode<NodeA>
     {
         public int A;
-
-        protected override void Build(
-            UnsafeBlobStreamValue<NodeA> value,
-            IBlobStream stream,
-            ITreeNode<INodeDataBuilder>[] tree
-        )
-        {
-            value.Value.A = A;
-        }
+        protected override NodeA _Value => new NodeA { A = A };
     }
 }
 

@@ -25,7 +25,7 @@ namespace EntitiesBT.Sample
     {
         public string TriggerName;
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<int> value)
+        protected override void BuildImpl(IBlobStream stream, Nuwa.Blob.UnsafeBlobStreamValue<int> value)
         {
             stream.WriteValue(Animator.StringToHash(TriggerName));
         }

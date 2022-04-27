@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Blob;
-using JetBrains.Annotations;
 
 namespace EntitiesBT.Core
 {
@@ -9,7 +8,8 @@ namespace EntitiesBT.Core
     {
         int NodeId { get; }
         int NodeIndex { get; set; }
-        ITreeNode Node { get; }
+        IBuilder BlobStreamBuilder { get; }
+        IEnumerable<INodeDataBuilder> Children { get; }
     }
 
     public static partial class NodeDataBuilderExtension

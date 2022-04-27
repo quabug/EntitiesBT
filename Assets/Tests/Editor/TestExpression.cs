@@ -8,8 +8,6 @@ using Unity.Entities;
 
 namespace EntitiesBT.Test
 {
-    using TreeNodeBuilder = ITreeNode<INodeDataBuilder>;
-
     public class TestExpression
     {
         private BlobBuilder _builder;

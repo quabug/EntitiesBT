@@ -9,11 +9,11 @@ namespace EntitiesBT.Entities
 {
     public struct NodeBlob
     {
-        public const int VERSION = 4;
+        public const int VERSION = 5;
 
 #region Serialized Data
         public BlobArray<int> Types;
-        public BlobTreeAny Tree;
+        public BlobTreeAny Nodes;
         public BlobArray<byte> DefaultGlobalValues;
 #endregion
         
@@ -27,12 +27,12 @@ namespace EntitiesBT.Entities
         public int Count => Types.Length;
         public int RuntimeSize => CalculateRuntimeSize(Count, RuntimeDataBlob.Length, RuntimeGlobalValues.Length);
 
-        public Blob.BlobTreeAny.Node this[int nodeIndex] => Tree[nodeIndex];
+        public BlobTreeAny.Node this[int nodeIndex] => Nodes[nodeIndex];
 
         [Pure]
         private static int CalculateDefaultSize(int count, int dataSize, int scopeValuesSize) =>
             UnsafeUtility.SizeOf<NodeBlob>() + dataSize + scopeValuesSize + sizeof(int) * count * 3/*Types/EndIndices/Offsets*/;
-        
+
         [Pure]
         public static int CalculateRuntimeSize(int count, int dataSize, int scopeValuesSize) =>
             dataSize/*RuntimeDataBlob*/ + scopeValuesSize/*RuntimeScopeValues*/ + sizeof(NodeState) * count;

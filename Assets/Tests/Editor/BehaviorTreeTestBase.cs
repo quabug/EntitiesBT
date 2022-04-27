@@ -78,7 +78,7 @@ namespace EntitiesBT.Test
         protected NodeBlobRef CreateBlob(string tree)
         {
             var root = CreateBTNode(tree).GetComponent<BTNode>();
-            var blob = root.ToBlob(root.FindGlobalValuesList());
+            var blob = root.Node.ToBlob(root.FindGlobalValuesList());
             return new NodeBlobRef(blob);
         }
     

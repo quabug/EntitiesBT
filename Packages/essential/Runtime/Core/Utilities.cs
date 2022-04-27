@@ -11,55 +11,14 @@ using UnityEngine;
 
 namespace EntitiesBT.Core
 {
-    public class TreeNode<T> : ITreeNode<T> where T : unmanaged
-    {
-        public TreeNode(T value, ITreeNode<T> parent)
-        {
-            ValueBuilder = new ValueBuilder<T>(value);
-        }
-
-        public IBuilder<T> ValueBuilder { get; }
-        public IReadOnlyList<ITreeNode<T>> Children { get; }
-    }
-    
     public static class Utilities
     {
-        public delegate IEnumerable<T> ChildrenFunc<T>(T parent);
-        public delegate T SelfFunc<T>(T self);
-        
         [Pure]
         public static IEnumerable<T> Yield<T>(this T self)
         {
             yield return self;
         }
 
-        [Pure]
-        internal static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc)
-        {
-            return node.Flatten(childrenFunc, default(ITreeNode<T>)).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
-        }
-
-        [Pure]
-        private static IEnumerable<TreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, ITreeNode<T> parent)
-        {
-            if (node == null) return Enumerable.Empty<TreeNode<T>>();
-            var treeNode = new TreeNode<T>(node, parent);
-            return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => child.Flatten(childrenFunc, treeNode)));
-        }
-        
-        [Pure]
-        internal static IEnumerable<ITreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, SelfFunc<T> selfFunc) where T : unmanaged
-        {
-            return selfFunc(node).Flatten(childrenFunc, default, selfFunc).Select((treeNode, i) => (ITreeNode<T>)treeNode.UpdateIndex(i));
-        }
-
-        [Pure]
-        private static IEnumerable<TreeNode<T>> Flatten<T>(this T node, ChildrenFunc<T> childrenFunc, ITreeNode<T> parent, SelfFunc<T> selfFunc)
-        {
-            if (node == null) return Enumerable.Empty<TreeNode<T>>();
-            var treeNode = new TreeNode<T>(node, parent);
-            return treeNode.Yield().Concat(childrenFunc(node).SelectMany(child => selfFunc(child).Flatten(childrenFunc, treeNode, selfFunc)));
-        }
         //
         // [Pure]
         // public static IEnumerable<float> NormalizeUnsafe([NotNull] this IEnumerable<float> weights)

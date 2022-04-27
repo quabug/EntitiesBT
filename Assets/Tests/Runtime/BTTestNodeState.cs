@@ -45,17 +45,7 @@ namespace EntitiesBT.Test
     public class BTTestNodeState : BTNode<TestNode>
     {
         public NodeState State;
-
-        protected override void Build(
-            UnsafeBlobStreamValue<TestNode> value,
-            IBlobStream stream,
-            ITreeNode<INodeDataBuilder>[] tree
-        )
-        {
-            value.Value.State = State;
-            value.Value.ResetTimes = 0;
-            value.Value.TickTimes = 0;
-        }
+        protected override TestNode _Value => new TestNode { State = State, ResetTimes = 0, TickTimes = 0 };
     }
 }
 

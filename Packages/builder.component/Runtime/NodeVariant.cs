@@ -33,7 +33,7 @@ namespace EntitiesBT.Variant
 
             public void Allocate(BlobVariantStream stream)
             {
-                Allocate<T>(stream, NodeObject, ValueFieldName);
+                Allocate<T>(stream, NodeObject.Node, ValueFieldName);
             }
 
             public object PreviewValue => null;
