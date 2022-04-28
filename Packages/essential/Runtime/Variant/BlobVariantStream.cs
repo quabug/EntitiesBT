@@ -6,7 +6,6 @@ using EntitiesBT.Core;
 using JetBrains.Annotations;
 using Nuwa;
 using Nuwa.Blob;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace EntitiesBT.Variant

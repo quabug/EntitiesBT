@@ -2,11 +2,10 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using Blob;
 using EntitiesBT.Core;
 using Nuwa;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using UnityEngine;
 using static EntitiesBT.Core.Utilities;
 
@@ -19,11 +18,11 @@ namespace EntitiesBT.Variant.Expression
 
         public struct Data
         {
-            public BlobString Expression;
+            public BlobString<UTF8Encoding> Expression;
             public int ExpressionType;
-            public Unity.Entities.BlobArray<BlobVariantPtrRO> Variants;
-            public Unity.Entities.BlobArray<BlobString> VariantNames;
-            public Unity.Entities.BlobArray<int> VariantTypes;
+            public BlobArray<BlobVariantPtrRO> Variants;
+            public BlobArray<BlobString<UTF8Encoding>> VariantNames;
+            public BlobArray<int> VariantTypes;
         }
 
         private static readonly ConcurrentDictionary<LambdaId, object[]> _expressionParameters = new ConcurrentDictionary<LambdaId, object[]>();
@@ -43,32 +42,25 @@ namespace EntitiesBT.Variant.Expression
             [SerializeField] internal string _expression;
             [SerializeField] internal Variant[] _sources;
 
-            public unsafe void Allocate(BlobVariantStream stream)
+            public void Allocate(BlobVariantStream stream)
             {
-                throw new NotImplementedException();
-                // stream.SetVariantId(GuidHashCode(GUID));
-                // // ref var blobPtr = ref UnsafeUtility.As<int, BlobPtr<Data>>(ref blobVariant.MetaDataOffsetPtr);
-                // var dataBuilder = new StructBuilder<Data>();
-                // dataBuilder.SetValue(ref dataBuilder.Value.ExpressionType, VariantValueTypeRegistry.GetIdByType(typeof(T)));
-                // dataBuilder.SetString(ref dataBuilder.Value.Expression, _expression);
-                // dataBuilder.SetArray(
-                //     ref dataBuilder.Value.Variants,
-                //     _sources.Select(source => source.Value.Allocate())
-                // );
-                // dataBuilder.SetArray(
-                //     ref dataBuilder.Value.VariantNames,
-                //     _sources.Select(source => new UnityBlobStringBuilder(source.Name))
-                // );
-                // var variants = stream.Allocate(ref data.Variants, _sources.Length);
-                // var names = stream.Allocate(ref data.VariantNames, _sources.Length);
-                // var types = stream.Allocate(ref data.VariantTypes, _sources.Length);
-                // for (var i = 0; i < _sources.Length; i++)
-                // {
-                //     _sources[i].Value.Allocate(ref stream, ref variants[i]);
-                //     stream.AllocateString(ref names[i], _sources[i].Name);
-                //     types[i] = VariantValueTypeRegistry.GetIdByType(_sources[i].Value.FindValueType());
-                // }
-                // return new IntPtr(UnsafeUtility.AddressOf(ref data));
+                stream.SetVariantId(GuidHashCode(GUID));
+                var dataBuilder = new StructBuilder<Data>();
+                dataBuilder.SetString(ref dataBuilder.Value.Expression, _expression);
+                dataBuilder.SetValue(ref dataBuilder.Value.ExpressionType, VariantValueTypeRegistry.GetIdByType(typeof(T)));
+                dataBuilder.SetArray(
+                    ref dataBuilder.Value.Variants,
+                    _sources.Select(source => new VariantBuilder<BlobVariantPtrRO>(source.Value))
+                );
+                dataBuilder.SetArray(
+                    ref dataBuilder.Value.VariantNames,
+                    _sources.Select(source => new StringBuilder<UTF8Encoding>(source.Name))
+                );
+                dataBuilder.SetArray(
+                    ref dataBuilder.Value.VariantTypes,
+                    _sources.Select(source => VariantValueTypeRegistry.GetIdByType(source.Value.FindValueType()))
+                );
+                stream.SetVariantValue(dataBuilder);
             }
 
             public object PreviewValue => null;
