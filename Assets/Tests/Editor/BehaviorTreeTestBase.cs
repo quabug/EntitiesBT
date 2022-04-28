@@ -2,26 +2,40 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using EntitiesBT.Components;
+using Blob;
 using EntitiesBT.Core;
-using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace EntitiesBT.Test
 {
     public class BehaviorTreeTestBase
     {
-        class Sequence : BTNode<SequenceNode> {}
-        class Selector : BTNode<SelectorNode> {}
-        class Parallel : BTNode<ParallelNode> {}
-
-        private readonly Dictionary<string, Func<string, BTNode>> _nodeCreators = new Dictionary<string, Func<string, BTNode>>
+        public abstract class NodeDataBuilder : INodeDataBuilder
         {
-            { "seq", Create<Sequence> }
-          , { "sel", Create<Selector> }
-          , { "par", Create<Parallel> }
+            public abstract Type NodeType { get; }
+            public abstract int NodeId { get; }
+            public int NodeIndex { get; set; }
+            public abstract IBuilder BlobStreamBuilder { get; }
+            public IEnumerable<INodeDataBuilder> Children => ChildrenList;
+            public readonly List<NodeDataBuilder> ChildrenList = new List<NodeDataBuilder>();
+        }
+        
+        public class NodeDataBuilder<T> : NodeDataBuilder where T : unmanaged, INodeData
+        {
+            public override Type NodeType => typeof(T);
+            public override int NodeId => typeof(T).GetBehaviorNodeAttribute().Id;
+            public override IBuilder BlobStreamBuilder => new ValueBuilder<T>(Value);
+            public T Value { get; }
+            public NodeDataBuilder() : this(default) {}
+            public NodeDataBuilder(T value) => Value = value;
+        }
+
+        private readonly Dictionary<string, Func<string, NodeDataBuilder>> _nodeCreators = new Dictionary<string, Func<string, NodeDataBuilder>>
+        {
+            { "seq", _ => new NodeDataBuilder<SequenceNode>() }
+          , { "sel", _ => new NodeDataBuilder<SelectorNode>() }
+          , { "par", _ => new NodeDataBuilder<ParallelNode>() }
           , { "yes", CreateTestNode(NodeState.Success) }
           , { "no", CreateTestNode(NodeState.Failure) }
           , { "run", CreateTestNode(NodeState.Running) }
@@ -75,44 +89,32 @@ namespace EntitiesBT.Test
             _blackboard = new Blackboard();
         }
 
-        protected NodeBlobRef CreateBlob(string tree)
+        protected ManagedNodeBlobRef CreateBlob(string tree)
         {
-            var root = CreateBTNode(tree).GetComponent<BTNode>();
-            var blob = root.Node.ToBlob(root.FindGlobalValuesList());
-            return new NodeBlobRef(blob);
+            var root = CreateRootBuilder(tree);
+            var blob = root.ToBuilder(Enumerable.Empty<IGlobalValuesBuilder>()).CreateManagedBlobAssetReference();
+            return new ManagedNodeBlobRef(blob);
         }
     
-        private static BTNode CreateA(string @params)
+        private static NodeDataBuilder CreateA(string @params)
         {
-            var nodeA = Create<BTTestNodeA>();
-            nodeA.A = int.Parse(@params);
-            return nodeA;
+            return new NodeDataBuilder<NodeA>(new NodeA { A = int.Parse(@params) });
         }
         
-        private static BTNode CreateB(string @params)
+        private static NodeDataBuilder CreateB(string @params)
         {
-            var nodeB = Create<BTTestNodeB>();
             var paramArray = @params.Split(',');
-            nodeB.B = int.Parse(paramArray[0].Trim());
-            nodeB.BB = int.Parse(paramArray[1].Trim());
-            return nodeB;
-        }
-
-        private static Func<string, BTNode> CreateTestNode(NodeState state)
-        {
-            return @params =>
+            var node = new NodeB
             {
-                var testNodeState = Create<BTTestNodeState>();
-                testNodeState.State = state;
-                return testNodeState;
+                B = int.Parse(paramArray[0].Trim()),
+                BB = int.Parse(paramArray[1].Trim())
             };
+            return new NodeDataBuilder<NodeB>(node);
         }
 
-        private static T Create<T>(string @params = "") where T : BTNode
+        private static Func<string, NodeDataBuilder> CreateTestNode(NodeState state)
         {
-            var obj = new GameObject(typeof(T).Name);
-            var comp = obj.AddComponent<T>();
-            return comp;
+            return @params => new NodeDataBuilder<TestNode>(new TestNode { State = state } );
         }
 
         // sample 1: "!seq>yes|no|run|a:10";
@@ -124,14 +126,14 @@ namespace EntitiesBT.Test
         //   a:10
         //   b:1,2
         // ";
-        protected GameObject CreateBTNode(string branch)
+        protected NodeDataBuilder CreateRootBuilder(string branch)
         {
             if (branch.First() == '!') return ParseSingleLine(branch.Substring(1));
 
             using (var reader = new StringReader(branch))
                 return ParseMultiLines(reader);
 
-            GameObject ParseMultiLines(StringReader reader)
+            NodeDataBuilder ParseMultiLines(StringReader reader)
             {
                 throw new NotImplementedException();
                 // var splits = branch.Split('>');
@@ -145,7 +147,7 @@ namespace EntitiesBT.Test
                 // return parent;
             }
 
-            GameObject ParseSingleLine(string branchString)
+            NodeDataBuilder ParseSingleLine(string branchString)
             {
                 var splits = branchString.Split('>');
                 Assert.AreEqual(splits.Length, 2);
@@ -153,17 +155,17 @@ namespace EntitiesBT.Test
                 foreach (var nodeString in splits[1].Split('|'))
                 {
                     var child = Create(nodeString.Trim());
-                    child.transform.SetParent(parent.transform, false);
+                    parent.ChildrenList.Add(child);
                 }
                 return parent;
             }
 
-            GameObject Create(string nodeString)
+            NodeDataBuilder Create(string nodeString)
             {
                 var nameParamsArray = nodeString.Split(':');
                 var name = nameParamsArray[0].Trim();
                 var @params = nameParamsArray.Length >= 2 ? nameParamsArray[1].Trim() : "";
-                return _nodeCreators[name](@params).gameObject;
+                return _nodeCreators[name](@params);
             }
         }
     }

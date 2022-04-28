@@ -84,39 +84,38 @@ namespace EntitiesBT.Test
         [Test]
         public void should_create_behavior_tree_objects_from_single_line_of_string()
         {
-            var root = CreateBTNode("!seq>yes|yes|b:1,1|a:111");
-            Assert.AreEqual(root.name, "Sequence");
-            Assert.AreEqual(root.transform.childCount, 4);
+            var root = CreateRootBuilder("!seq>yes|yes|b:1,1|a:111");
+            Assert.AreEqual(root.NodeType, typeof(SequenceNode));
+            Assert.AreEqual(root.ChildrenList.Count, 4);
             
-            var children = root.Children<BTNode>().ToArray();
+            var children = root.ChildrenList;
             
-            Assert.AreEqual(children[0].name, "BTTestNodeState");
-            Assert.AreEqual(children[0].transform.childCount, 0);
+            Assert.AreEqual(children[0].NodeType, typeof(TestNode));
+            Assert.AreEqual(children[0].ChildrenList.Count, 0);
             
-            Assert.AreEqual(children[1].name, "BTTestNodeState");
-            Assert.AreEqual(children[1].transform.childCount, 0);
+            Assert.AreEqual(children[1].NodeType, typeof(TestNode));
+            Assert.AreEqual(children[1].ChildrenList.Count, 0);
             
-            Assert.AreEqual(children[2].name, "BTTestNodeB");
-            Assert.AreEqual(children[2].transform.childCount, 0);
+            Assert.AreEqual(children[2].NodeType, typeof(NodeB));
+            Assert.AreEqual(children[2].ChildrenList.Count, 0);
             
-            Assert.AreEqual(children[3].name, "BTTestNodeA");
-            Assert.AreEqual(children[3].transform.childCount, 0);
+            Assert.AreEqual(children[3].NodeType, typeof(NodeA));
+            Assert.AreEqual(children[3].ChildrenList.Count, 0);
         }
 
         [Test]
         public void should_generate_blob_from_nodes()
         {
-            var root = CreateBTNode("!seq>yes|no|b:1,1|a:111|run");
-            var rootNode = root.GetComponent<BTNode>();
-            var blobRef = rootNode.Node.ToBlob(rootNode.FindGlobalValuesList());
+            var root = CreateRootBuilder("!seq>yes|no|b:1,1|a:111|run");
+            using var blobRef = root.ToBuilder(Enumerable.Empty<IGlobalValuesBuilder>()).CreateManagedBlobAssetReference();
             
-            Assert.True(blobRef.IsCreated);
+            Assert.True(blobRef.Length > 0);
             Assert.AreEqual(blobRef.Value.Count, 6);
 
             var types = new[] {typeof(SequenceNode), typeof(TestNode), typeof(TestNode), typeof(NodeB), typeof(NodeA), typeof(TestNode)};
             Assert.AreEqual(blobRef.Value.Types.ToArray(), types.Select(t => t.GetBehaviorNodeAttribute().Id));
-            Assert.AreEqual(blobRef.Value.Nodes.Data.Offsets.ToArray(), new [] { 0, 0, 16, 32, 40, 44, 60 });
             Assert.AreEqual(blobRef.Value.Nodes.EndIndices.ToArray(), new [] { 6, 2, 3, 4, 5, 6 });
+            Assert.AreEqual(blobRef.Value.Nodes.Data.Offsets.ToArray(), new [] { 0, 0, 16, 32, 40, 44, 60 });
             Assert.AreEqual(blobRef.Value.Nodes.DataSize, 60);
             Assert.AreEqual(GetDefaultData<NodeB>(3), new NodeB {B = 1, BB = 1});
             Assert.AreEqual(GetDefaultData<NodeA>(4), new NodeA {A = 111});

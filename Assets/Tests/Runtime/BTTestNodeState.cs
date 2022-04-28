@@ -1,9 +1,7 @@
 #if UNITY_EDITOR
 
-using Blob;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using Nuwa.Blob;
 using UnityEngine.Assertions;
 
 namespace EntitiesBT.Test
