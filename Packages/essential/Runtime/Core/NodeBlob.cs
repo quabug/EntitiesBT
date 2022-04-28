@@ -1,11 +1,10 @@
 using System;
-using EntitiesBT.Core;
 using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
 using Blob;
 
-namespace EntitiesBT.Entities
+namespace EntitiesBT.Core
 {
     public struct NodeBlob
     {

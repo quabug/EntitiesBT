@@ -1,5 +1,6 @@
 using System;
 using EntitiesBT.Components;
+using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Nuwa;
 using Unity.Entities;
