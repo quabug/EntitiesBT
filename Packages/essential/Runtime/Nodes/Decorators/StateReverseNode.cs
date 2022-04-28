@@ -1,7 +1,9 @@
+using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
+    [StructLayout(LayoutKind.Explicit)]
     [BehaviorNode("E99D019A-78E4-49B1-AE0D-6A1D0101E080", BehaviorNodeType.Decorate)]
     public struct StateReverseNode : INodeData
     {

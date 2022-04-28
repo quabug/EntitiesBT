@@ -1,7 +1,9 @@
+using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
+    [StructLayout(LayoutKind.Explicit)]
     [BehaviorNode("B1C31393-4041-47E6-98CA-2F5E3BE4E1BD", BehaviorNodeType.Decorate)]
     public struct ErrorRerunOnceNode : INodeData
     {
