@@ -22,7 +22,6 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "nunit.framework.dll",
-        "Moq.dll",
         "Mono.Cecil.dll",
         "Mono.Cecil.Mdb.dll",
         "Mono.Cecil.Pdb.dll",
