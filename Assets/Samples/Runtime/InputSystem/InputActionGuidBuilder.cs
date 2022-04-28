@@ -9,7 +9,7 @@ namespace EntitiesBT.Extensions.InputSystem
     {
         public InputActionReference InputAction;
 
-        protected override void BuildImpl(IBlobStream stream, Nuwa.Blob.UnsafeBlobStreamValue<Guid> value)
+        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<Guid> value)
         {
             value.Value = InputAction.action.id;
         }

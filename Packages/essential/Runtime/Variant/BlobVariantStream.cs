@@ -69,7 +69,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream, Nuwa.Blob.UnsafeBlobStreamValue<BlobVariant> value)
+        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariant> value)
         {
             _variant?.Allocate(new BlobVariantStream(stream));
         }
@@ -103,7 +103,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream, Nuwa.Blob.UnsafeBlobStreamValue<BlobVariant> value)
+        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariant> value)
         {
             _variant.Allocate(new BlobVariantStream(stream));
         }
@@ -137,7 +137,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override unsafe void BuildImpl(IBlobStream stream, Nuwa.Blob.UnsafeBlobStreamValue<BlobVariantRW> value)
+        protected override unsafe void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariantRW> value)
         {
             _variant.Allocate(new BlobVariantStream(stream));
             value.Value.Writer.VariantId = value.Value.Reader.VariantId;
@@ -161,7 +161,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _isLinked ? _readerAndWriter.PreviewValue : _reader.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream, Nuwa.Blob.UnsafeBlobStreamValue<BlobVariantRW> value)
+        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariantRW> value)
         {
             if (_isLinked)
             {

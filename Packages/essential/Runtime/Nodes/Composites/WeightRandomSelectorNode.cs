@@ -47,9 +47,7 @@ namespace EntitiesBT.Nodes
         protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobArray<float>> value)
         {
             float sum = Weights.Sum();
-            // new ArrayBuilder<float>(Weights.Select(w => w / sum).ToArray());
-            // builder.AllocateArray(ref data, Weights.Select(w => w / sum).ToArray());
-            // builder.WriteValue(ref Value);
+            new Blob.ArrayBuilder<float>(Weights.Select(w => w / sum).ToArray()).Build(stream);
         }
     }
 }

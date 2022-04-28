@@ -6,31 +6,41 @@ using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
+using JetBrains.Annotations;
 using UnityEngine;
-using IBuilder = Blob.IBuilder;
 
 namespace EntitiesBT.Components
 {
-    public class ComponentTreeNode : ITreeNode
-    {
-        public IBuilder ValueBuilder { get; }
-        public IReadOnlyList<ITreeNode> Children { get; }
-
-        public ComponentTreeNode(GameObject gameObject)
-        {
-            Children = gameObject.Children<INodeDataBuilder>().Select(builder => builder.Node).ToArray();
-        }
-    }
-
     [DisallowMultipleComponent, ExecuteInEditMode]
-    public abstract class BTNode : MonoBehaviour, INodeDataBuilder
+    public abstract class BTNode : MonoBehaviour
     {
+        public class Builder : INodeDataBuilder
+        {
+            [NotNull] private readonly BTNode _node;
+
+            public int NodeId => _node.NodeId;
+
+            public int NodeIndex { get; set; } = -1;
+
+            public IBuilder BlobStreamBuilder => _node.BlobStreamBuilder;
+
+            public IEnumerable<INodeDataBuilder> Children => _node.Children()
+                .Where(child => child.IsValid)
+                .Select(child => child.Node)
+            ;
+
+            public Builder([NotNull] BTNode node)
+            {
+                _node = node;
+            }
+        }
+
         public BehaviorNodeType BehaviorNodeType => NodeType.GetBehaviorNodeAttribute().Type;
         public int NodeId => NodeType.GetBehaviorNodeAttribute().Id;
         protected virtual Type NodeType { get; } = typeof(ZeroNode);
-        public int NodeIndex { get; set; } = 0;
-
-        public ITreeNode Node { get; }
+        public abstract IBuilder BlobStreamBuilder { get; }
+        public virtual bool IsValid => gameObject.activeInHierarchy;
+        public virtual INodeDataBuilder Node => new Builder(this);
 
         protected virtual void Reset() => name = GetType().Name;
 
@@ -84,7 +94,7 @@ namespace EntitiesBT.Components
             path = string.IsNullOrEmpty(path) ? Application.dataPath : Path.GetDirectoryName(path);
             path = UnityEditor.EditorUtility.SaveFilePanel("save path", path, name, "bytes");
             if (string.IsNullOrEmpty(path)) return;
-            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(this.FindGlobalValuesList(), file);
+            using (var file = new FileStream(path, FileMode.OpenOrCreate)) Node.SaveToStream(this.FindGlobalValuesList(), file);
             UnityEditor.AssetDatabase.Refresh();
         }
 #endif
@@ -93,5 +103,7 @@ namespace EntitiesBT.Components
     public abstract class BTNode<T> : BTNode where T : unmanaged, INodeData
     {
         protected override Type NodeType => typeof(T);
+        public override IBuilder BlobStreamBuilder => new ValueBuilder<T>(_Value);
+        protected virtual T _Value => default;
     }
 }
