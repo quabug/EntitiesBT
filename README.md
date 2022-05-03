@@ -23,15 +23,15 @@ Existing BT frameworks do not support Entities out of the box.
 - Separate runtime nodes and editor nodes.
 - Easy to extend.
 - Also compatible with Unity GameObject without any entity.
-- Able to serialize behavior tree into binary file.
-- Flexible thread control: force on main thread, force on job thread, controlled by behavior tree.
+- Able to serialize behavior tree into the binary file.
+- Flexible thread control: force on the main thread, force on job thread, controlled by behavior tree.
 - Runtime debug window to show the states of nodes.
 - Optimized. 0 GC allocated by behavior tree itself after initialized, only 64Byte GC allocated every tick by [`CreateArchetypeChunkArrayAsync`](Packages/essential/Runtime/Entities/VirtualMachineSystem.cs#L59). 
 
 ## Disadvantages
 - Incompatible with burst.
 - Incompatible with il2cpp.
-- Lack of action nodes. (Will add some actions as extension if I personally need them)
+- Lack of action nodes. (Will add some actions as extensions if I need them)
 - Not easy to modify tree structure at runtime.
 - Node data must be compatible with `Blob` and created by [`BlobBuilder`](https://docs.unity3d.com/Packages/com.unity.entities@0.11/api/Unity.Entities.BlobBuilder.html)
 
@@ -99,8 +99,8 @@ openupm add com.quabug.entities-bt.builder.graphview
 #### Thread control
 <img width="400" alt="thread-control" src="https://user-images.githubusercontent.com/683655/72407274-ee8d8f00-3799-11ea-9847-76ad6fdc5a37.png" />
 
-- Force Run on Main Thread: running on main thread only, will not use job to tick behavior tree. Safe to call `UnityEngine` method.
-- Force Run on Job: running on job threads only, will not use main thread to tick behavior tree. Not safe to call `UnityEngine` method.
+- Force Run on Main Thread: running on the main thread only, will not use job to tick behavior tree. Safe to call `UnityEngine` method.
+- Force Run on Job: running on job threads only, will not use the main thread to tick the behavior tree. Not safe to call `UnityEngine` method.
 - Controlled by Behavior Tree: Running on job threads by default, but will switch to main thread once meet decorator of [`RunOnMainThread`](Packages/essential/Runtime/Nodes/Decorators/RunOnMainThreadNode.cs)
 <img width="300" alt="" src="https://user-images.githubusercontent.com/683655/72407836-cdc63900-379b-11ea-8979-605e725ab0f7.png" />
 
@@ -114,12 +114,12 @@ openupm add com.quabug.entities-bt.builder.graphview
 - `LocalVariant`: regular variable, custom value will save into `NodeData`.
 
 - `ComponentVariant`: fetch data from `Component` on `Entity`
-  - _Component Value Name_: which value should be access from component
-  - _Copy To Local Node_: Will read component data into local node and never write back into component data. (Force `ReadOnly` access)
+  - _Component Value Name_: which value should be accessed from component
+  - _Copy To Local Node_: Will read component data into a local node and never write back into component data. (Force `ReadOnly` access)
 
-- `NodeVariant`: fetch data from blob of another node
-  - _Node Object_: another node should be access by this variable, must be in the same behavior tree.
-  - _Value Field Name_: the name of data field in another node.
+- `NodeVariant`: fetch data from the blob of another node
+  - _Node Object_: another node should be accessed by this variable, and must be in the same behavior tree.
+  - _Value Field Name_: the name of the data field in another node.
   - _Access Runtime Data_:
     - false: will copy data to local blob node while building, value change of _Node Object_ won't effect variable once build.
     - true: will access data field of _Node Object_ at runtime, something like reference value of _Node Object_.
@@ -154,7 +154,7 @@ openupm add com.quabug.entities-bt.builder.graphview
 ```
 
 #### Multiple Trees
-Add multiple `BehaviorTreeRoot` onto a single entity gameobject will create multiple behavior tree to control this single entity.
+Adding multiple `BehaviorTreeRoot` onto a single entity gameobject will create numerous behavior trees to control this single entity.
 Behavior tree sorted by `Order` of `BehaviorTreeRoot`.
 
 <img width="400" alt="" src="https://user-images.githubusercontent.com/683655/82422698-5db32100-9ab5-11ea-8bc6-eb3c67ac7676.png">
@@ -250,11 +250,11 @@ public struct SelectorNode : INodeData
     {}
 }
 
-// avoid debug view since there's nothing need to be debug for `Selector`
+// avoid debugging view since there's nothing that needs to debug for `Selector`
 ```
 
 #### `EntityQuery`
-Behavior tree need some extra information for generating `EntityQuery`.
+The behavior tree needs some extra information for generating `EntityQuery`.
 
 ``` c#
 public struct SomeNode : INodeData
@@ -300,7 +300,7 @@ public struct SomeNode : INodeData
 }
 ```
 
-make sure to mark outside method call with right access attributes to generate right access type on `Tick` or `Reset` method of node
+make sure to mark the outside method call with the proper access attributes to generate the appropriate access type on `Tick` or `Reset` method of the node
 
 ```c#
 
@@ -334,8 +334,8 @@ public struct SomeNode : INodeData
 - Debug View example: [BTDebugPrioritySelector.cs](Packages/debug.component-viewer/Runtime/BTDebugPrioritySelector.cs)
 
 #### Advanced: access other node data
-`NodeBlob` store all internal data of behavior tree, and it can be access from any node.
-To access specific node data, just store its index and access by `INodeData.GetNodeData<T>(index)`.
+`NodeBlob` stores all the behavioral tree's internal data, and it can be accessed from any node.
+To access specific node data, just store its index and access it by `INodeData.GetNodeData<T>(index)`.
 - Behavior Node example: [ModifyPriorityNode.cs](Packages/essential/Runtime/Nodes/Actions/ModifyPriorityNode.cs)
 - Editor/Builder example: [BTModifyPriority.cs](Packages/builder.component/Runtime/Components/BTModifyPriority.cs)
 
@@ -356,16 +356,16 @@ public class BehaviorTreeDeltaTimeSystem : ComponentSystem
     }
 }
 ```
-The components of behavior will add into `Entity` automatically on the stage of convert `GameObject` to `Entity`, if `AutoAddBehaviorTreeComponents` is enabled.
+The components of behavior will automatically add to `Entity` on the stage of converting `GameObject` to `Entity`, if `AutoAddBehaviorTreeComponents` is enabled.
 
 <img width="600" alt="" src="https://user-images.githubusercontent.com/683655/72411453-d7549e80-37a5-11ea-925a-b3949180dd16.png" />
 
 #### Advanced: virtual node builder
-A single builder node is able to product multiple behavior nodes while building.
+A single builder node can produce multiple behavior nodes while building.
 ``` C#
 public class BTSequence : BTNode<SequenceNode>
 {
-    [Tooltip("Enable this will re-evaluate node state from first child until running node instead of skip to running node directly.")]
+    [Tooltip("Enable this will re-evaluate node state from the first child until running node instead of skip to the running node directly.")]
     [SerializeField] private bool _recursiveResetStatesBeforeTick;
 
     public override INodeDataBuilder Self => _recursiveResetStatesBeforeTick
