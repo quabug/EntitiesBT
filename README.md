@@ -13,7 +13,7 @@ Behavior Tree framework based on and used for Unity Entities (DOTS)
 - [1.2.0](https://github.com/quabug/EntitiesBT/pull/160#issue-696822887)
 
 ## Why another Behavior Tree framework?
-Existing BT frameworks are not support Entities out of box.
+Existing BT frameworks do not support Entities out of the box.
 
 ## Features
 - Actions are easy to read/write data from/to entity.
