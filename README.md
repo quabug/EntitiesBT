@@ -22,28 +22,28 @@ Existing BT frameworks do not support Entities out of the box.
 - Node has no internal states.
 - Separate runtime nodes and editor nodes.
 - Easy to extend.
-- Also compatible with Unity GameObject without any entity.
-- Able to serialize behavior tree into the binary file.
-- Flexible thread control: force on the main thread, force on job thread, controlled by behavior tree.
+- Also compatible with Unity GameObject without entity.
+- Able to serialize the behavior tree into a binary file.
+- Flexible thread control: force on the main thread, force on job thread, controlled by the behavior tree.
 - Runtime debug window to show the states of nodes.
-- Optimized. 0 GC allocated by behavior tree itself after initialized, only 64Byte GC allocated every tick by [`CreateArchetypeChunkArrayAsync`](Packages/essential/Runtime/Entities/VirtualMachineSystem.cs#L59). 
+- Optimized. 0 GC allocated by behavior tree itself after initializing, only 64Byte GC allocated every tick by [`CreateArchetypeChunkArrayAsync`](Packages/essential/Runtime/Entities/VirtualMachineSystem.cs#L59). 
 
 ## Disadvantages
 - Incompatible with burst.
 - Incompatible with il2cpp.
 - Lack of action nodes. (Will add some actions as extensions if I need them)
-- Not easy to modify tree structure at runtime.
+- Difficult to change tree structure at runtime.
 - Node data must be compatible with `Blob` and created by [`BlobBuilder`](https://docs.unity3d.com/Packages/com.unity.entities@0.11/api/Unity.Entities.BlobBuilder.html)
 
 ## Packages
 - [essential](Packages/essential): essential part of entities behavior tree, any extension should depend on this package.
-- [codegen](Packages/codegen): automatically generate [entity query accesors](#entityquery) on the methods of nodes.
+- [codegen](Packages/codegen): auto-generate [entity query accesors](#entityquery) on the methods of nodes.
 - [builder.component](Packages/builder.component): build behavior tree data from unity components.
 - [builder.graphview](Packages/com.quabug.entities-bt.builder.graphview): build behavior tree data by graph with components.
 - [builder.odin](Packages/builder.odin): advanced hierarchy builder based on Odin and its serializer.
 - [builder.visual](Packages/builder.visual): build and use behavior tree by graph of DOTS visual scripting (suspended).
 - [debug.component-viewer](Packages/debug.component-viewer): show selected entity with behavior tree as components in inspector of unity while running.
-- [variable.scriptable-object](Packages/variable.scriptable-object): extension for using scriptable object data as variable source of behavior tree node.
+- [variable.scriptable-object](Packages/variable.scriptable-object): extension for using scriptable object data as a variable source of behavior tree node.
 
 ## HowTo
 ### Installation
@@ -52,7 +52,7 @@ Requirement: Unity >= 2020.2 and entities package >= 0.14.0-preview.19
 Install the packages either by
 
 [UPM](https://docs.unity3d.com/Manual/upm-ui-giturl.html):
-modify `Packages/manifest.json` as below
+modify `Packages/manifest.json` as below:
 ```
 {
   "dependencies": {
@@ -108,20 +108,20 @@ openupm add com.quabug.entities-bt.builder.graphview
 ##### Variant Types
 - `BlobVariantReader`: read-only variant
 - `BlobVariantWriter`: write-only variant
-- `BlobVariantReaderAndWriter`: read-write variant, able to link to same source.
+- `BlobVariantReaderAndWriter`: read-write variant, able to link to the same source.
 
 ##### Variant Sources
 - `LocalVariant`: regular variable, custom value will save into `NodeData`.
 
 - `ComponentVariant`: fetch data from `Component` on `Entity`
-  - _Component Value Name_: which value should be accessed from component
+  - _Component Value Name_: which value should be accessed from the component
   - _Copy To Local Node_: Will read component data into a local node and never write back into component data. (Force `ReadOnly` access)
 
 - `NodeVariant`: fetch data from the blob of another node
   - _Node Object_: another node should be accessed by this variable, and must be in the same behavior tree.
   - _Value Field Name_: the name of the data field in another node.
   - _Access Runtime Data_:
-    - false: will copy data to local blob node while building, value change of _Node Object_ won't effect variable once build.
+    - false: will copy data to local blob node while building, value change of _Node Object_ won't affect variable once build.
     - true: will access data field of _Node Object_ at runtime, something like reference value of _Node Object_.
 
 - `ScriptableObjectVariant`
@@ -209,7 +209,7 @@ public struct RepeatForeverNode : INodeData
         // short-cut to tick first only children
         var childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
         if (childState == 0) // 0 means no child was ticked
-                             // tick a already completed `Sequence` or `Selector` will return 0
+                             // tick an already completed `Sequence` or `Selector` will return 0
         {
             blob.ResetChildren(index, blackboard);
             childState = blob.TickChildrenReturnFirstOrDefault(index, blackboard);
@@ -240,7 +240,7 @@ public struct SelectorNode : INodeData
         where TNodeBlob : struct, INodeBlob
         where TBlackboard : struct, IBlackboard
     {
-        // tick children and break if child state is running or success.
+        // tick children and break if the child state is running or success.
         return blob.TickChildrenReturnLastOrDefault(index, blackboard, breakCheck: state => state.IsRunningOrSuccess());
     }
 
@@ -317,7 +317,7 @@ public struct SomeNode : INodeData
         where TNodeBlob : struct, INodeBlob
         where TBlackboard : struct, IBlackboard
     {
-        // the following call will generate access attributes on `Tick` like below:
+        // the following call will generate access attributes on `Tick` as below:
         // [ReadOnly(typeof(FooComponent))]
         // [ReadWrite(typeof(BarComponent))]
         // [ReadWrite(typeof(int))]
@@ -334,7 +334,7 @@ public struct SomeNode : INodeData
 - Debug View example: [BTDebugPrioritySelector.cs](Packages/debug.component-viewer/Runtime/BTDebugPrioritySelector.cs)
 
 #### Advanced: access other node data
-`NodeBlob` stores all the behavioral tree's internal data, and it can be accessed from any node.
+`NodeBlob` stores all the behavioral tree's internal data, which can be accessed from any node.
 To access specific node data, just store its index and access it by `INodeData.GetNodeData<T>(index)`.
 - Behavior Node example: [ModifyPriorityNode.cs](Packages/essential/Runtime/Nodes/Actions/ModifyPriorityNode.cs)
 - Editor/Builder example: [BTModifyPriority.cs](Packages/builder.component/Runtime/Components/BTModifyPriority.cs)
@@ -369,7 +369,7 @@ public class BTSequence : BTNode<SequenceNode>
     [SerializeField] private bool _recursiveResetStatesBeforeTick;
 
     public override INodeDataBuilder Self => _recursiveResetStatesBeforeTick
-        // add `RecursiveResetStateNode` as parent of `this` node
+        // add `RecursiveResetStateNode` as the parent of `this` node
         ? new BTVirtualDecorator<RecursiveResetStateNode>(this)
         : base.Self
     ;
