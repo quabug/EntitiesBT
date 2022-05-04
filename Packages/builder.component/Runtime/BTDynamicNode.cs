@@ -11,6 +11,13 @@ namespace EntitiesBT.Components
         public bool RunOnMainThread = false;
         protected override Type NodeType => Type.GetType(NodeData.NodeType ?? "") ?? typeof(ZeroNode);
         public override IBuilder BlobStreamBuilder => NodeData.Builder;
-        public override INodeDataBuilder Node => RunOnMainThread ? new DecoratorNode<RunOnMainThreadNode>(base.Node) : base.Node;
+        public override INodeDataBuilder Node => RunOnMainThread ? _mainThreadNodeBuilder : base.Node;
+
+        private readonly DecoratorNode<RunOnMainThreadNode> _mainThreadNodeBuilder;
+
+        public BTDynamicNode()
+        {
+            _mainThreadNodeBuilder = new DecoratorNode<RunOnMainThreadNode>(base.Node);
+        }
     }
 }

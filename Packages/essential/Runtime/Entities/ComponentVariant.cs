@@ -51,8 +51,8 @@ namespace EntitiesBT.Variant
         [AccessorMethod]
         private static IEnumerable<ComponentType> GetDynamicAccess(ref BlobVariant blobVariant)
         {
-            var hash = blobVariant.As<DynamicComponentData>().StableHash;
-            var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(hash);
+            ref var data = ref blobVariant.As<DynamicComponentData>();
+            var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(data.StableHash);
             return ComponentType.FromTypeIndex(typeIndex).Yield();
         }
 

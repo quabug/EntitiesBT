@@ -221,7 +221,7 @@ MonoBehaviour:
     00000000:
       type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Component}
       data:
-        Root: {fileID: 340380320}
+        Root: {fileID: 1723425238}
         AutoDestroy: 0
 --- !u!114 &1392768647
 MonoBehaviour:

@@ -40,7 +40,12 @@ namespace EntitiesBT.Components
         protected virtual Type NodeType { get; } = typeof(ZeroNode);
         public abstract IBuilder BlobStreamBuilder { get; }
         public virtual bool IsValid => gameObject.activeInHierarchy;
-        public virtual INodeDataBuilder Node => new Builder(this);
+        public virtual INodeDataBuilder Node { get; }
+
+        public BTNode()
+        {
+            Node = new Builder(this);
+        }
 
         protected virtual void Reset() => name = GetType().Name;
 
