@@ -44,12 +44,19 @@ namespace EntitiesBT.Test
             _variantStream = new BlobVariantStream(_blobStream);
         }
         
+        struct ComponentVariableData : IComponentData
+        {
+            public float FloatValue;
+            public int IntValue;
+            public long LongValue;
+        }
+        
         [Test]
         public void should_find_value_type_of_variant()
         {
             var variant = new ComponentVariant.ReaderAndWriter<int>();
-            var type = Type.GetType("EntitiesBT.Sample.ComponentVariableData");
-            variant.ComponentValueName = $"{type.FullName}.IntValue";
+            var type = typeof(ComponentVariableData);
+            variant.ComponentValueName = $"{type.FullName}.{nameof(ComponentVariableData.IntValue)}";
             variant.Allocate(_variantStream);
             var blob = new ManagedBlobAssetReference<BlobVariant>(_blobStream.ToArray());
             Assert.That(blob.Value.VariantId, Is.EqualTo(Guid.Parse(ComponentVariant.GUID).GetHashCode()));
