@@ -1,5 +1,6 @@
 using System;
 using Blob;
+using Nuwa.Blob;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
 
@@ -35,7 +36,7 @@ namespace EntitiesBT.Core
         public unsafe IntPtr GetDefaultDataPtr(int nodeIndex) => (IntPtr) _blob[nodeIndex].UnsafePtr;
         
         public unsafe IntPtr GetRuntimeDataPtr(int nodeIndex) =>
-            (IntPtr) _blob.RuntimeDataBlob.UnsafePtr + _blob[nodeIndex].Offset;
+            IntPtr.Add(new IntPtr(_blob.RuntimeDataBlob.UnsafePtr), _blob[nodeIndex].Offset);
 
         public unsafe IntPtr GetDefaultScopeValuePtr(int offset) =>
             IntPtr.Add(new IntPtr(_blob.DefaultGlobalValues.UnsafePtr), offset);
