@@ -7,19 +7,11 @@ using EntitiesBT.Variant;
 using EntitiesBT.Variant.Expression;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
 
 namespace EntitiesBT.Test
 {
-    public struct TestComponentVariableData : IComponentData
-    {
-        public float FloatValue;
-        public int IntValue;
-        public long LongValue;
-    }
-    
     [BehaviorNode("F5451E3F-B230-4207-A11B-B5E7D728F1E0")]
     public struct SingleVariantNode : INodeData
     {
@@ -89,7 +81,6 @@ namespace EntitiesBT.Test
                 Assert.That(defaultNode.Variant.Read(0, ref blob, ref _bb), Is.EqualTo(value));
                 
                 ref var node = ref blob.GetNodeData<SingleVariantNode, ManagedNodeBlobRef>(0);
-                // ref var node = ref blob.BlobRef.Value.Nodes[0].GetValue<SingleVariantNode>();
                 Assert.That(node.Variant.Value.VariantId, Is.EqualTo(Guid.Parse(variantGUID).GetHashCode()));
                 Assert.That(node.Variant.Value.MetaDataOffsetPtr, Is.EqualTo(4));
                 Assert.That(node.Variant.Read(0, ref blob, ref _bb), Is.EqualTo(value));

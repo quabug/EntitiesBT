@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd078efebeb340edaa2b83df6eba9a83, type: 3}
   m_Name: TestVariables
   m_EditorClassIdentifier: 
-  IntValue: 0
+  IntValue: 222
   FloatValue: 0
   AnotherFloatValue: 0
   <FloatProperty>k__BackingField: 0
