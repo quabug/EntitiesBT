@@ -13,7 +13,7 @@ namespace EntitiesBT.Variant
         private readonly IVariant _variant;
         public VariantBuilder(IVariant variant) => _variant = variant;
         
-        protected override void BuildImpl(IBlobStream stream)
+        protected override void BuildImpl(IBlobStream stream, ref T value)
         {
             _variant.Allocate(new BlobVariantStream(stream));
         }

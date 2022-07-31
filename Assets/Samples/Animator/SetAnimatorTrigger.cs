@@ -25,9 +25,9 @@ namespace EntitiesBT.Sample
     {
         public string TriggerName;
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<int> value)
+        protected override void BuildImpl(IBlobStream stream, ref int value)
         {
-            stream.WriteValue(Animator.StringToHash(TriggerName));
+            value = Animator.StringToHash(TriggerName);
         }
     }
 }

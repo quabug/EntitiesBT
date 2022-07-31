@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 
 namespace EntitiesBT.Extensions.InputSystem
 {
-    public class InputActionGuidBuilder : PlainDataBuilder<Guid>
+    public class InputActionGuidBuilder : Nuwa.Blob.Builder<Guid>
     {
         public InputActionReference InputAction;
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<Guid> value)
+        protected override void BuildImpl(IBlobStream stream, ref Guid value)
         {
-            value.Value = InputAction.action.id;
+            value = InputAction.action.id;
         }
     }
 

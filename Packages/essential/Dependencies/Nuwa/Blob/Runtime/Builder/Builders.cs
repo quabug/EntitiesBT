@@ -25,20 +25,8 @@ namespace Nuwa.Blob
         IReadOnlyList<IBuilder> GetBuilders();
     }
 
-    public abstract class Builder<T> : IBuilder where T : unmanaged
+    public abstract class Builder<T> : global::Blob.Builder<T>, IBuilder where T : unmanaged
     {
-        public int Position { get; private set; }
-
-        public void Build(IBlobStream stream)
-        {
-            Position = stream.DataPosition;
-            stream.EnsureDataSize<T>();
-            var value = new UnsafeBlobStreamValue<T>(stream, Position);
-            BuildImpl(stream, value);
-        }
-
-        protected abstract void BuildImpl([NotNull] IBlobStream stream, UnsafeBlobStreamValue<T> value);
-
         public virtual IBuilder GetBuilder(string name) => throw new NotImplementedException();
 
         public virtual object PreviewValue
@@ -59,9 +47,9 @@ namespace Nuwa.Blob
     {
         public T Value;
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<T> value)
+        protected override void BuildImpl(IBlobStream stream, ref T value)
         {
-            value.Value = Value;
+            value = Value;
         }
 
         public override object PreviewValue
@@ -88,9 +76,9 @@ namespace Nuwa.Blob
             BuilderUtility.SetBlobDataType(typeof(T), ref Builders, ref FieldNames);
         }
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<T> value)
+        protected override void BuildImpl(IBlobStream stream, ref T value)
         {
-            var dataPosition = stream.DataPosition;
+            var dataPosition = stream.Position;
             var fields = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             for (var i = 0; i < Builders.Length; i++)
             {
@@ -129,7 +117,7 @@ namespace Nuwa.Blob
     {
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder[] Value;
 
-        protected override unsafe void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobArray<T>> value)
+        protected override unsafe void BuildImpl(IBlobStream stream, ref BlobArray<T> value)
         {
             stream.WritePatchOffset()
                 .WriteValue(Value.Length)
@@ -155,6 +143,23 @@ namespace Nuwa.Blob
     }
 
     [Serializable, DefaultBuilder]
+    public class UnityStringBuilder : Builder<Unity.Entities.BlobString>
+    {
+        public string Value;
+
+        public override object PreviewValue
+        {
+            get => Value;
+            set => Value = (string)value;
+        }
+
+        protected override void BuildImpl(IBlobStream stream, ref Unity.Entities.BlobString data)
+        {
+            new global::Blob.UnityStringBuilder(Value).Build(stream);
+        }
+    }
+
+    [Serializable, DefaultBuilder]
     public class StringBuilder : Builder<BlobString>
     {
         public string Value;
@@ -165,14 +170,9 @@ namespace Nuwa.Blob
             set => Value = (string)value;
         }
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobString> value)
+        protected override void BuildImpl(IBlobStream stream, ref BlobString data)
         {
-            var stringBytes = Encoding.UTF8.GetBytes(Value);
-            stream.WritePatchOffset()
-                .WriteValue(stringBytes.Length)
-                .ToPatchPosition()
-                .WriteArray(stringBytes)
-            ;
+            new StringBuilder<UTF8Encoding>(Value).Build(stream);
         }
     }
 
@@ -184,7 +184,7 @@ namespace Nuwa.Blob
     {
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder Value;
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobPtr<T>> value)
+        protected override void BuildImpl(IBlobStream stream, ref BlobPtr<T> value)
         {
             stream.WritePatchOffset().ToPatchPosition().WriteValue(Value);
         }

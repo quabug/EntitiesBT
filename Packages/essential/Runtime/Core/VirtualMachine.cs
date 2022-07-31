@@ -21,7 +21,7 @@ namespace EntitiesBT.Core
         {
             var typeId = blob.GetTypeId(index);
             var ptr = blob.GetRuntimeDataPtr(index);
-            var state = MetaNodeRegister<TNodeBlob, TBlackboard>.NODES[typeId].Tick.Invoke(ptr, index, blob, bb);
+            var state = MetaNodeRegister<TNodeBlob, TBlackboard>.NODES[typeId].Tick.Invoke(ptr, index, ref blob, ref bb);
             blob.SetState(index, state);
             return state;
         }
@@ -36,7 +36,7 @@ namespace EntitiesBT.Core
             {
                 var typeId = blob.GetTypeId(i);
                 var ptr = blob.GetRuntimeDataPtr(i);
-                MetaNodeRegister<TNodeBlob, TBlackboard>.NODES[typeId].Reset.Invoke(ptr, i, blob, bb);
+                MetaNodeRegister<TNodeBlob, TBlackboard>.NODES[typeId].Reset.Invoke(ptr, i, ref blob, ref bb);
             }
         }
 

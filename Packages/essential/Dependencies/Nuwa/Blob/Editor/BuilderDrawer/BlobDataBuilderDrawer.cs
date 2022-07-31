@@ -104,13 +104,14 @@ namespace Nuwa.Blob.Editor
                 var blobField = blobFields[i];
                 var builderFactory = blobField.FindBuilderCreator();
                 var builder = builders[i];
-                if (builder == null || builder.GetType() != builderFactory.Type || blobField.Name != fieldNames[i])
+                var isSameType = builder?.GetType() == builderFactory.Type;
+                if (builder == null || !isSameType || blobField.Name != fieldNames[i])
                 {
                     fieldNamesProperty.GetArrayElementAtIndex(i).stringValue = blobField.Name;
                     var builderIndex = Array.IndexOf(fieldNames, blobField.Name);
                     object newBuilder = null;
-                    if (builderIndex >= 0) newBuilder = builders[builderIndex];
-                    else if (builder != null && builder.GetType() == builderFactory.Type) newBuilder = builder;
+                    if (builderIndex >= 0 && isSameType) newBuilder = builders[builderIndex];
+                    else if (builder != null && isSameType) newBuilder = builder;
                     else newBuilder = builderFactory.Create();
                     buildersProperty.GetArrayElementAtIndex(i).managedReferenceValue = newBuilder;
                     property.serializedObject.ApplyModifiedPropertiesWithoutUndo();

@@ -49,7 +49,7 @@ namespace EntitiesBT.Core
             builder.SetArray(ref builder.Value.States, new NodeState[typeList.Count]);
             builder.SetBuilder(
                 ref builder.Value.RuntimeDataBlob,
-                new ArrayBuilderWithMemoryCopy<byte, Blob.BlobArray<byte>>(() => (treeBuilder.ArrayBuilder.PatchPosition, treeBuilder.ArrayBuilder.PatchSize)) { Alignment = treeBuilder.Alignment }
+                new ArrayBuilderWithMemoryCopy<Blob.BlobArray<byte>>(treeBuilder.ArrayBuilder.DataBuilder)
             );
             builder.SetArray(ref builder.Value.RuntimeGlobalValues, globalValuesStream.ToArray());
             return builder;

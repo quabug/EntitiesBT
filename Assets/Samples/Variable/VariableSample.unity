@@ -221,7 +221,7 @@ MonoBehaviour:
     00000000:
       type: {class: BehaviorTreeSourceGameObject, ns: EntitiesBT.Components, asm: EntitiesBT.Component}
       data:
-        Root: {fileID: 1723425238}
+        Root: {fileID: 340380320}
         AutoDestroy: 0
 --- !u!114 &1392768647
 MonoBehaviour:
@@ -439,15 +439,19 @@ MonoBehaviour:
         _variant:
           id: 7
     00000001:
-      type: {class: StringBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      type: {class: UnityStringBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 233213adffda
+        Value: 3214jklfdajkl
     00000002:
-      type: {class: DynamicArrayBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
+      type: {class: DynamicBlobDataBuilder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        ArrayElementType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-        Value:
+        BlobDataType: Unity.Entities.BlobArray`1[[System.Int32, mscorlib, Version=4.0.0.0,
+          Culture=neutral, PublicKeyToken=b77a5c561934e089]], Unity.Entities, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        FieldNames:
+        - m_OffsetPtr
+        - m_Length
+        Builders:
         - id: 8
         - id: 9
     00000003:
@@ -505,11 +509,11 @@ MonoBehaviour:
     00000008:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 333
+        Value: 0
     00000009:
       type: {class: Int32Builder, ns: Nuwa.Blob, asm: Nuwa.Blob}
       data:
-        Value: 444
+        Value: 0
     0000000A:
       type: {class: <IVariantWriter>/Int64ComponentVariant, ns: EntitiesBT.Variant.CodeGen,
         asm: Assembly-CSharp}

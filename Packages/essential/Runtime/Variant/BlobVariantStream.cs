@@ -21,37 +21,37 @@ namespace EntitiesBT.Variant
         {
             _stream = stream;
             stream.EnsureDataSize<BlobVariant>();
-            _idPosition = stream.DataPosition;
+            _idPosition = stream.Position;
             _patchPosition = stream.PatchPosition;
             stream.WriteValue(new BlobVariant().VariantId);
-            _offsetPosition = stream.DataPosition;
+            _offsetPosition = stream.Position;
         }
 
         public void SetVariantId(int id)
         {
-            _stream.DataPosition = _idPosition;
+            _stream.Position = _idPosition;
             _stream.WriteValue(id);
         }
 
         public void SetVariantValue<T>(T value) where T : unmanaged
         {
-            _stream.DataPosition = _offsetPosition;
+            _stream.Position = _offsetPosition;
             _stream.WritePatchOffset();
-            _stream.DataPosition = _patchPosition;
+            _stream.Position = _patchPosition;
             _stream.WriteValue(value);
         }
 
         public void SetVariantValue<T>(IBuilder<T> builder) where T : unmanaged
         {
-            _stream.DataPosition = _offsetPosition;
+            _stream.Position = _offsetPosition;
             _stream.WritePatchOffset();
-            _stream.DataPosition = _patchPosition;
+            _stream.Position = _patchPosition;
             builder.Build(_stream);
         }
 
         public void SetVariantOffset(int offset)
         {
-            _stream.DataPosition = _offsetPosition;
+            _stream.Position = _offsetPosition;
             _stream.WriteValue(offset);
         }
     }
@@ -68,7 +68,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariant> value)
+        protected override void BuildImpl(IBlobStream stream, ref BlobVariant value)
         {
             _variant?.Allocate(new BlobVariantStream(stream));
         }
@@ -102,7 +102,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariant> value)
+        protected override void BuildImpl(IBlobStream stream, ref BlobVariant value)
         {
             _variant.Allocate(new BlobVariantStream(stream));
         }
@@ -136,16 +136,15 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _variant.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override unsafe void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariantRW> value)
+        protected override unsafe void BuildImpl(IBlobStream stream, ref BlobVariantRW value)
         {
             _variant.Allocate(new BlobVariantStream(stream));
-            value.Value.Writer.VariantId = value.Value.Reader.VariantId;
+            value.Writer.VariantId = value.Reader.VariantId;
             // HACK: set meta data of writer as same as reader's
-            fixed (void* writerDataPtr = &value.Value.Writer.MetaDataOffsetPtr)
-            fixed (void* readerDataPtr = &value.Value.Reader.MetaDataOffsetPtr)
+            fixed (void* writerDataPtr = &value.Writer.MetaDataOffsetPtr)
+            fixed (void* readerDataPtr = &value.Reader.MetaDataOffsetPtr)
             {
-                value.Value.Writer.MetaDataOffsetPtr =
-                    value.Value.Reader.MetaDataOffsetPtr + (int)((long)writerDataPtr - (long)readerDataPtr);
+                value.Writer.MetaDataOffsetPtr = value.Reader.MetaDataOffsetPtr + (int)((byte*)writerDataPtr - (byte*)readerDataPtr);
             }
         }
     }
@@ -160,7 +159,7 @@ namespace EntitiesBT.Variant
 
         public override object PreviewValue { get => _isLinked ? _readerAndWriter.PreviewValue : _reader.PreviewValue; set => throw new NotImplementedException(); }
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobVariantRW> value)
+        protected override unsafe void BuildImpl(IBlobStream stream, ref BlobVariantRW value)
         {
             if (_isLinked)
             {
@@ -169,6 +168,8 @@ namespace EntitiesBT.Variant
             else
             {
                 _reader.Build(stream);
+                // HACK: set position to variant of writer
+                stream.Position = _reader.DataPosition + sizeof(BlobVariant);
                 _writer.Build(stream);
             }
         }

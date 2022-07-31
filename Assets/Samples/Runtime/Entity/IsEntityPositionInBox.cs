@@ -29,9 +29,9 @@ namespace EntitiesBT.Sample
         public Transform Transform;
         public BoxCollider Box;
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<Bounds> value)
+        protected override void BuildImpl(IBlobStream stream, ref Bounds value)
         {
-            stream.WriteValue(new Bounds(Box.center + Transform.position, Box.size));
+            value = new Bounds(Box.center + Transform.position, Box.size);
         }
     }
 }

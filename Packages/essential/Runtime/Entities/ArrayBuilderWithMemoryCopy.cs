@@ -1,28 +1,22 @@
-using System;
+using JetBrains.Annotations;
 
 namespace Blob
 {
-    public class ArrayBuilderWithMemoryCopy<TValue, TArray> : Builder<TArray>
-        where TArray : unmanaged
-        where TValue : unmanaged
+    public class ArrayBuilderWithMemoryCopy<TArray> : Builder<TArray> where TArray : unmanaged
     {
-        private readonly Func<(int position, int length)> _getDataFunc;
-        public int Alignment { get; set; } = 0;
+        [NotNull] private readonly IBuilder _builder;
 
-        public ArrayBuilderWithMemoryCopy(Func<(int position, int length)> getDataFunc)
+        public ArrayBuilderWithMemoryCopy([NotNull] IBuilder builder)
         {
-            _getDataFunc = getDataFunc;
+            _builder = builder;
         }
 
-        protected override unsafe void BuildImpl(IBlobStream stream)
+        protected override unsafe void BuildImpl(IBlobStream stream, ref TArray data)
         {
-            if (Alignment <= 0) Alignment = Utilities.AlignOf<TValue>();
-            var (position, length) = _getDataFunc();
-            var size = (length + sizeof(TValue) - 1) / sizeof(TValue);
-            stream.EnsureDataSize<TArray>().WriteArrayMeta(size).ToPatchPosition();
-            fixed (void* ptr = &stream.Buffer[position])
+            stream.WriteArrayMeta(_builder.PatchSize).ToPatchPosition();
+            fixed (void* ptr = &stream.Buffer[_builder.PatchPosition])
             {
-                stream.Write((byte*)ptr, size, Alignment);
+                stream.Write((byte*)ptr, _builder.PatchSize);
             }
         }
     }

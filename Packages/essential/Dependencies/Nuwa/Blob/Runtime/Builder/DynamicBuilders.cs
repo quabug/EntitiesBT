@@ -29,15 +29,25 @@ namespace Nuwa.Blob
 
     public abstract class DynamicBuilder : IBuilder
     {
-        public int Position { get; private set; }
+        public int DataAlignment { get; set; } = 0;
+        public int PatchAlignment { get; set; } = 0;
+        
+        public int DataPosition { get; private set; }
+        public int DataSize { get; private set; }
+        public int PatchPosition { get; private set; }
+        public int PatchSize { get; private set; }
+        
         protected abstract Type _Type { get; }
 
         public void Build(IBlobStream stream)
         {
-            Position = stream.DataPosition;
-            // TODO: fetch alignment by type?
-            stream.EnsureDataSize(UnsafeUtility.SizeOf(_Type), 4);
+            DataPosition = stream.Position;
+            DataSize = UnsafeUtility.SizeOf(_Type);
+            stream.EnsureDataSize(DataSize, stream.GetAlignment(DataAlignment));
+            PatchPosition = stream.PatchPosition;
             BuildImpl(stream);
+            if (PatchPosition != stream.PatchPosition) stream.AlignPatch(stream.GetAlignment(PatchAlignment));
+            PatchSize = stream.PatchPosition - PatchPosition;
         }
 
         protected abstract void BuildImpl([NotNull] IBlobStream stream);
@@ -133,7 +143,7 @@ namespace Nuwa.Blob
 
         protected override void BuildImpl(IBlobStream stream)
         {
-            var position = stream.DataPosition;
+            var position = stream.Position;
             var fields = _Type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             for (var i = 0; i < Builders.Length; i++)
             {

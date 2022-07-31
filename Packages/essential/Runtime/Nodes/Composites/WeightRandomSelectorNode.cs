@@ -40,11 +40,11 @@ namespace EntitiesBT.Nodes
         }
     }
 
-    public class NormalizedWeightBuilder : PlainDataBuilder<BlobArray<float>>
+    public class NormalizedWeightBuilder : Nuwa.Blob.Builder<BlobArray<float>>
     {
         public int[] Weights;
 
-        protected override void BuildImpl(IBlobStream stream, UnsafeBlobStreamValue<BlobArray<float>> value)
+        protected override void BuildImpl(IBlobStream stream, ref BlobArray<float> data)
         {
             float sum = Weights.Sum();
             new Blob.ArrayBuilder<float>(Weights.Select(w => w / sum).ToArray()).Build(stream);

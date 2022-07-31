@@ -101,25 +101,25 @@ namespace EntitiesBT.Core
         where TNodeBlob : struct, INodeBlob
         where TBlackboard : struct, IBlackboard
     {
-        internal delegate NodeState TickFunc(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb);
+        internal delegate NodeState TickFunc(IntPtr ptr, int index, ref TNodeBlob blob, ref TBlackboard bb);
         
         [Preserve]
-        private static unsafe NodeState Tick<TNodeData>(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb)
+        private static unsafe NodeState Tick<TNodeData>(IntPtr ptr, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeData : unmanaged, INodeData
         {
             return UnsafeUtility.AsRef<TNodeData>((void*)ptr).Tick(index, ref blob, ref bb);
         }
         
-        internal delegate void ResetFunc(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb);
+        internal delegate void ResetFunc(IntPtr ptr, int index, ref TNodeBlob blob, ref TBlackboard bb);
         
         [Preserve]
-        private static unsafe void Reset<TNodeData>(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb)
+        private static unsafe void Reset<TNodeData>(IntPtr ptr, int index, ref TNodeBlob blob, ref TBlackboard bb)
             where TNodeData : unmanaged, ICustomResetAction
         {
             UnsafeUtility.AsRef<TNodeData>((void*)ptr).Reset(index, ref blob, ref bb);
         }
 
-        private static void DefaultReset(IntPtr ptr, int index, TNodeBlob blob, TBlackboard bb) {}
+        private static void DefaultReset(IntPtr ptr, int index, ref TNodeBlob blob, ref TBlackboard bb) {}
 
         internal class Node
         {
