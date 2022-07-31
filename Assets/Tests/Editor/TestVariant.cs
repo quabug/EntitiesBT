@@ -71,30 +71,30 @@ namespace EntitiesBT.Test
             public BlobVariantRO<int> IntRO;
             public BlobVariantRW<float> FloatRW;
         }
-
-        [Test]
-        public void should_find_value_type_of_variant_()
-        {
-            var type = typeof(ComponentVariableData);
-            var intRO = new ComponentVariant.Reader<int>();
-            intRO.ComponentValueName = $"{type.FullName}.{nameof(ComponentVariableData.IntValue)}";
-            var floatRW = new ComponentVariant.ReaderAndWriter<float>();
-            floatRW.ComponentValueName = $"{type.FullName}.{nameof(ComponentVariableData.FloatValue)}";
-            var builder = new StructBuilder<Variants>();
-            builder.SetBuilder(ref builder.Value.IntRO, new VariantBuilder<BlobVariantRO<int>>(intRO));
-            builder.SetBuilder(ref builder.Value.FloatRW, new VariantBuilder<BlobVariantRW<float>>(floatRW));
-            builder.Build(_blobStream);
-            var blob = new ManagedBlobAssetReference<Variants>(_blobStream.ToArray());
-            
-            Assert.That(blob.Value.IntRO.Value.VariantId, Is.EqualTo(Guid.Parse(ComponentVariant.GUID).GetHashCode()));
-            Assert.That(blob.Value.IntRO.Value.MetaDataOffsetPtr, Is.EqualTo(24));
-            ref var intVariantData = ref blob.Value.IntRO.Value.As<ComponentVariant.DynamicComponentData>();
-            Assert.That(intVariantData.StableHash, Is.EqualTo(TypeHash.CalculateStableTypeHash(type)));
-            
-            // Assert.That(blob.Value.FloatRW.Reader.Value.VariantId, Is.EqualTo(Guid.Parse(ComponentVariant.GUID).GetHashCode()));
-            // Assert.That(blob.Value.FloatRW.Value.MetaDataOffsetPtr, Is.EqualTo(16));
-            // ref var intVariantData = ref blob.Value.FloatRW.Value.As<ComponentVariant.DynamicComponentData>();
-            // Assert.That(intVariantData.StableHash, Is.EqualTo(TypeHash.CalculateStableTypeHash(type)));
-        }
+        //
+        // [Test]
+        // public void should_find_value_type_of_variant_()
+        // {
+        //     var type = typeof(ComponentVariableData);
+        //     var intRO = new ComponentVariant.Reader<int>();
+        //     intRO.ComponentValueName = $"{type.FullName}.{nameof(ComponentVariableData.IntValue)}";
+        //     var floatRW = new ComponentVariant.ReaderAndWriter<float>();
+        //     floatRW.ComponentValueName = $"{type.FullName}.{nameof(ComponentVariableData.FloatValue)}";
+        //     var builder = new StructBuilder<Variants>();
+        //     builder.SetBuilder(ref builder.Value.IntRO, new VariantBuilder<BlobVariantRO<int>>(intRO));
+        //     builder.SetBuilder(ref builder.Value.FloatRW, new VariantBuilder<BlobVariantRW<float>>(floatRW));
+        //     builder.Build(_blobStream);
+        //     var blob = new ManagedBlobAssetReference<Variants>(_blobStream.ToArray());
+        //     
+        //     Assert.That(blob.Value.IntRO.Value.VariantId, Is.EqualTo(Guid.Parse(ComponentVariant.GUID).GetHashCode()));
+        //     Assert.That(blob.Value.IntRO.Value.MetaDataOffsetPtr, Is.EqualTo(24));
+        //     ref var intVariantData = ref blob.Value.IntRO.Value.As<ComponentVariant.DynamicComponentData>();
+        //     Assert.That(intVariantData.StableHash, Is.EqualTo(TypeHash.CalculateStableTypeHash(type)));
+        //     
+        //     // Assert.That(blob.Value.FloatRW.Reader.Value.VariantId, Is.EqualTo(Guid.Parse(ComponentVariant.GUID).GetHashCode()));
+        //     // Assert.That(blob.Value.FloatRW.Value.MetaDataOffsetPtr, Is.EqualTo(16));
+        //     // ref var intVariantData = ref blob.Value.FloatRW.Value.As<ComponentVariant.DynamicComponentData>();
+        //     // Assert.That(intVariantData.StableHash, Is.EqualTo(TypeHash.CalculateStableTypeHash(type)));
+        // }
     }
 }

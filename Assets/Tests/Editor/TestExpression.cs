@@ -14,7 +14,7 @@ namespace EntitiesBT.Test
 
         private struct MockNodeBlob : INodeBlob
         {
-            public int RuntimeId { get; }
+            public int RuntimeId { get; set; }
             public int Count { get; }
             public int GetTypeId(int nodeIndex) => throw new NotImplementedException();
             public int GetEndIndex(int nodeIndex) => throw new NotImplementedException();
@@ -42,7 +42,7 @@ namespace EntitiesBT.Test
         [SetUp]
         public void SetUp()
         {
-            _nodeBlob = new MockNodeBlob();
+            _nodeBlob = new MockNodeBlob { RuntimeId = 123 };
             _bb = new MockBlackboard();
         }
 

@@ -15,7 +15,7 @@ namespace EntitiesBT.Sample
         private void Awake()
         {
             var blobRef = RootNode.Node.ToBuilder(RootNode.FindGlobalValuesList()).CreateManagedBlobAssetReference();
-            _nodeBlobRef = new ManagedNodeBlobRef(blobRef);
+            _nodeBlobRef = new ManagedNodeBlobRef(blobRef, gameObject.GetInstanceID());
             Destroy(RootNode.gameObject);
             _bb = new GameObjectBlackboard(gameObject);
             VirtualMachine.Reset(ref _nodeBlobRef, ref _bb);

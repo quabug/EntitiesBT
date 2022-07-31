@@ -11,7 +11,11 @@ namespace EntitiesBT.Core
         private ref NodeBlob _blob => ref BlobRef.Value;
         public readonly ManagedBlobAssetReference<NodeBlob> BlobRef;
         
-        public ManagedNodeBlobRef(ManagedBlobAssetReference<NodeBlob> blobRef) => BlobRef = blobRef;
+        public ManagedNodeBlobRef(ManagedBlobAssetReference<NodeBlob> blobRef, int runtimeId = -1)
+        {
+            BlobRef = blobRef;
+            RuntimeId = runtimeId;
+        }
 
         public int RuntimeId
         {

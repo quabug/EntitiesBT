@@ -144,7 +144,7 @@ namespace EntitiesBT.Variant
             fixed (void* writerDataPtr = &value.Writer.MetaDataOffsetPtr)
             fixed (void* readerDataPtr = &value.Reader.MetaDataOffsetPtr)
             {
-                value.Writer.MetaDataOffsetPtr = value.Reader.MetaDataOffsetPtr + (int)((byte*)writerDataPtr - (byte*)readerDataPtr);
+                value.Writer.MetaDataOffsetPtr = value.Reader.MetaDataOffsetPtr - (int)((byte*)writerDataPtr - (byte*)readerDataPtr);
             }
         }
     }

@@ -97,7 +97,7 @@ namespace EntitiesBT.Test
             var prefabPath = Path.Combine(directory, $"{prefabName}.prefab");
             var blob = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath).GetComponent<BTDynamicNode>();
             var blobRef = blob.Node.ToBuilder(blob.FindGlobalValuesList()).CreateManagedBlobAssetReference();
-            return new ManagedNodeBlobRef(blobRef);
+            return new ManagedNodeBlobRef(blobRef, blob.GetInstanceID());
         }
     }
 }
