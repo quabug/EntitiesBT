@@ -1,9 +1,0 @@
-{
-  "name": "com.quabug.entities-bt.deprecated",
-  "version": "1.3.0",
-  "unity": "2020.2",
-  "displayName": "EntitiesBT - Deprecated Features",
-  "dependencies": {
-    "com.quabug.entities-bt.essential": "1.3.0"
-  }
-}

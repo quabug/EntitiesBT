@@ -1,7 +1,7 @@
 using System;
+using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Nodes;
-using Unity.Entities;
 
 namespace EntitiesBT.Components
 {
@@ -9,13 +9,15 @@ namespace EntitiesBT.Components
     {
         public NodeAsset NodeData;
         public bool RunOnMainThread = false;
-
         protected override Type NodeType => Type.GetType(NodeData.NodeType ?? "") ?? typeof(ZeroNode);
-        protected override INodeDataBuilder SelfImpl => RunOnMainThread ? new BTVirtualDecorator<RunOnMainThreadNode>(this) : (INodeDataBuilder) this;
+        public override IBuilder BlobStreamBuilder => NodeData.Builder;
+        public override INodeDataBuilder Node => RunOnMainThread ? _mainThreadNodeBuilder : base.Node;
 
-        protected override unsafe void Build(void* dataPtr, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders)
+        private readonly DecoratorNode<RunOnMainThreadNode> _mainThreadNodeBuilder;
+
+        public BTDynamicNode()
         {
-            NodeData.Build(blobBuilder, new IntPtr(dataPtr));
+            _mainThreadNodeBuilder = new DecoratorNode<RunOnMainThreadNode>(base.Node);
         }
     }
 }

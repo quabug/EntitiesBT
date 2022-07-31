@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Nuwa.Blob;
 using Unity.Collections.LowLevel.Unsafe;

@@ -1,4 +1,5 @@
 using System;
+using Blob;
 using EntitiesBT.Variant;
 using Nuwa;
 using Unity.Entities;
@@ -17,10 +18,10 @@ namespace EntitiesBT
 
             [ReadOnly, UnityDrawProperty] public VariantNodeComponent NodeComponent;
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public void Allocate(BlobVariantStream stream)
             {
                 // TODO: check validation
-                return NodeComponent.VariantNode.Allocate(ref builder, ref blobVariant);
+                NodeComponent.VariantNode.Allocate(stream);
             }
 
             public object PreviewValue => NodeComponent == null ? null : NodeComponent.VariantNode.PreviewValue;

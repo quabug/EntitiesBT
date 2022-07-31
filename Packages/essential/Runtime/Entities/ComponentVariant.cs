@@ -22,16 +22,16 @@ namespace EntitiesBT.Variant
         {
             [VariantComponentData] public string ComponentValueName;
 
-            public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public void Allocate(BlobVariantStream stream)
             {
-                blobVariant.VariantId = GuidHashCode(GUID);
+                stream.SetVariantId(GuidHashCode(GUID));
                 var data = GetTypeHashAndFieldOffset(ComponentValueName);
                 if (data.Type != typeof(T) || data.Hash == 0)
                 {
                     Debug.LogError($"{nameof(ComponentVariant)}({ComponentValueName}) is not valid, fallback to ConstantValue");
                     throw new ArgumentException();
                 }
-                return builder.Allocate(ref blobVariant, new DynamicComponentData{StableHash = data.Hash, Offset = data.Offset});
+                stream.SetVariantValue(new DynamicComponentData { StableHash = data.Hash, Offset = data.Offset });
             }
 
             public object PreviewValue => throw new NotImplementedException();
@@ -50,8 +50,8 @@ namespace EntitiesBT.Variant
         [AccessorMethod]
         private static IEnumerable<ComponentType> GetDynamicAccess(ref BlobVariant blobVariant)
         {
-            var hash = blobVariant.As<DynamicComponentData>().StableHash;
-            var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(hash);
+            ref var data = ref blobVariant.As<DynamicComponentData>();
+            var typeIndex = TypeManager.GetTypeIndexFromStableTypeHash(data.StableHash);
             return ComponentType.FromTypeIndex(typeIndex).Yield();
         }
 

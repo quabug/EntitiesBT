@@ -1,3 +1,4 @@
+using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Components;
 using EntitiesBT.Entities;
@@ -8,12 +9,13 @@ namespace EntitiesBT.Sample
     public class BTController : MonoBehaviour
     {
         public BTNode RootNode;
-        private NodeBlobRef _nodeBlobRef;
+        private ManagedNodeBlobRef _nodeBlobRef;
         private GameObjectBlackboard _bb;
 
         private void Awake()
         {
-            _nodeBlobRef = new NodeBlobRef(RootNode.ToBlob(RootNode.FindScopeValuesList()));
+            var blobRef = RootNode.Node.ToBuilder(RootNode.FindGlobalValuesList()).CreateManagedBlobAssetReference();
+            _nodeBlobRef = new ManagedNodeBlobRef(blobRef, gameObject.GetInstanceID());
             Destroy(RootNode.gameObject);
             _bb = new GameObjectBlackboard(gameObject);
             VirtualMachine.Reset(ref _nodeBlobRef, ref _bb);
@@ -27,7 +29,7 @@ namespace EntitiesBT.Sample
 
         private void OnDestroy()
         {
-            _nodeBlobRef.BlobRef.Dispose();
+            _nodeBlobRef.Dispose();
         }
     }
 }

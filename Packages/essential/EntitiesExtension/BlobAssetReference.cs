@@ -1,5 +1,9 @@
 using System;
+using JetBrains.Annotations;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace EntitiesBT.Core
 {
@@ -39,7 +43,35 @@ namespace EntitiesBT.Core
         {
             return new BlobAssetReference { _data = blobData };
         }
-       
+
+        public static unsafe BlobAssetReference Create(void* ptr, int length)
+        {
+            byte* buffer = (byte*) Memory.Unmanaged.Allocate(sizeof(BlobAssetHeader) + length, 16, Allocator.Persistent);
+            UnsafeUtility.MemCpy(buffer + sizeof(BlobAssetHeader), ptr, length);
+
+            BlobAssetHeader* header = (BlobAssetHeader*) buffer;
+            *header = new BlobAssetHeader();
+
+            header->Length = length;
+            header->Allocator = Allocator.Persistent;
+
+            // @TODO use 64bit hash
+            header->Hash = math.hash(ptr, length);
+
+            BlobAssetReference blobAssetReference;
+            blobAssetReference._data.m_Align8Union = 0;
+            header->ValidationPtr = blobAssetReference._data.m_Ptr = buffer + sizeof(BlobAssetHeader);
+            return blobAssetReference;
+        }
+
+        public static unsafe BlobAssetReference Create([NotNull] byte[] data)
+        {
+            fixed (byte* ptr = &data[0])
+            {
+                return Create(ptr, data.Length);
+            }
+        }
+
         public static BlobAssetReference Null => new BlobAssetReference();
 
         public static unsafe bool operator ==(BlobAssetReference lhs, BlobAssetReference rhs)

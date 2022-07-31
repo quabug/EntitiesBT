@@ -1,9 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using EntitiesBT.Entities;
+﻿using EntitiesBT.Core;
 using Unity.Entities;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace EntitiesBT.Components
 {

@@ -2,7 +2,6 @@
 
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using Unity.Entities;
 using UnityEngine.Assertions;
 
 namespace EntitiesBT.Test
@@ -44,13 +43,7 @@ namespace EntitiesBT.Test
     public class BTTestNodeState : BTNode<TestNode>
     {
         public NodeState State;
-
-        protected override void Build(ref TestNode data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            data.State = State;
-            data.ResetTimes = 0;
-            data.TickTimes = 0;
-        }
+        protected override TestNode _Value => new TestNode { State = State, ResetTimes = 0, TickTimes = 0 };
     }
 }
 

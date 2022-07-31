@@ -109,21 +109,6 @@ namespace EntitiesBT.Test
         }
         
         [Test]
-        public void should_get_all_descendants_of_root_gameobject()
-        {
-            for (var i = 0; i < _objectNames.Length; i++)
-            {
-                var obj = _objects[i];
-                var objName = _objectNamesWithoutT[i];
-                
-                var childrenNames = Descendants(objName).ToArray();
-                var objectNames = obj.Flatten(Utilities.Children).Select(o => o.Value.name).ToArray();
-                
-                Assert.AreEqual(objectNames, childrenNames);
-            }
-        }
-        
-        [Test]
         public void should_get_all_children_with_certain_component_of_parent_gameobject()
         {
             for (var i = 0; i < _objectNames.Length; i++)
@@ -137,21 +122,5 @@ namespace EntitiesBT.Test
                 Assert.AreEqual(objectNames, childrenNames);
             }
         }
-        
-        [Test]
-        public void should_get_all_descendants_with_certain_component_of_root_gameobject()
-        {
-            for (var i = 0; i < _objectNames.Length; i++)
-            {
-                var obj = _objects[i].GetComponent<TestComponent>();
-                var objName = _objectNamesWithoutT[i];
-                
-                var childrenNames = _objectNames[i].EndsWith("T") ? DescendantsWithT(objName).ToArray() : new string[0];
-                var objectNames = obj == null ? new string[0] : obj.Flatten(Utilities.Children).Select(o => o.Value.name).ToArray();
-                
-                Assert.AreEqual(objectNames, childrenNames);
-            }
-        }
-        
     }
 }

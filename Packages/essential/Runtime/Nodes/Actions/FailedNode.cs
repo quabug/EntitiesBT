@@ -1,7 +1,9 @@
+using System.Runtime.InteropServices;
 using EntitiesBT.Core;
 
 namespace EntitiesBT.Nodes
 {
+    [StructLayout(LayoutKind.Explicit)]
     [BehaviorNode("AC5CB763-5F7A-4301-9670-D4E38A5557CB")]
     public struct FailedNode : INodeData
     {

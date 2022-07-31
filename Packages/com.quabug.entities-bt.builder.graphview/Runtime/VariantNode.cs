@@ -32,9 +32,9 @@ namespace EntitiesBT
         public string BaseTypeName => BaseType.AssemblyQualifiedName;
         public string AccessName => GetVariantAccessName(DefaultVariantType);
 
-        public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+        public void Allocate(BlobVariantStream stream)
         {
-            return Variant.Allocate(ref builder, ref blobVariant);
+            Variant.Allocate(stream);
         }
 
         public bool IsPortCompatible(GraphRuntime<VariantNode> graph, in PortId input, in PortId output) => true;

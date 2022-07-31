@@ -1,4 +1,5 @@
 using System;
+using Blob;
 using EntitiesBT.Core;
 using Nuwa.Blob;
 using Unity.Entities;
@@ -23,14 +24,14 @@ namespace EntitiesBT.Sample
     }
 
     [DefaultBuilder]
-    public class ColliderBoundsBuilder : Builder<Bounds>
+    public class ColliderBoundsBuilder : Nuwa.Blob.Builder<Bounds>
     {
         public Transform Transform;
         public BoxCollider Box;
 
-        public override void Build(BlobBuilder builder, ref Bounds data)
+        protected override void BuildImpl(IBlobStream stream, ref Bounds value)
         {
-            data = new Bounds(Box.center + Transform.position, Box.size);
+            value = new Bounds(Box.center + Transform.position, Box.size);
         }
     }
 }

@@ -5,6 +5,7 @@
   "unity": "2020.2",
   "displayName": "EntitiesBT - Essential",
   "dependencies": {
+    "com.quabug.blob": "1.4.0",
     "com.unity.entities": "0.14.0-preview.19"
   }
 }

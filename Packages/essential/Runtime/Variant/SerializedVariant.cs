@@ -1,4 +1,5 @@
 using System;
+using Blob;
 using Nuwa;
 using EntitiesBT.Core;
 using Nuwa.Blob;
@@ -43,9 +44,9 @@ namespace EntitiesBT.Variant
         private object _reader;
         public IVariantReader<T> Reader => (IVariantReader<T>)_reader;
 
-        public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+        public void Allocate(BlobVariantStream stream)
         {
-            return Reader.Allocate(ref builder, ref blobVariant);
+            Reader.Allocate(stream);
         }
 
         public object PreviewValue => Reader.PreviewValue;
@@ -61,9 +62,9 @@ namespace EntitiesBT.Variant
         private object _writer;
         public IVariantWriter<T> Writer => (IVariantWriter<T>)_writer;
 
-        public IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+        public void Allocate(BlobVariantStream stream)
         {
-            return Writer.Allocate(ref builder, ref blobVariant);
+            Writer.Allocate(stream);
         }
 
         public object PreviewValue => Writer.PreviewValue;

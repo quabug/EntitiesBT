@@ -1,49 +1,51 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using EntitiesBT.Nodes;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
+using JetBrains.Annotations;
 using UnityEngine;
-using Unity.Entities;
 
 namespace EntitiesBT.Components
 {
     [DisallowMultipleComponent, ExecuteInEditMode]
-    public abstract class BTNode : MonoBehaviour, INodeDataBuilder
+    public abstract class BTNode : MonoBehaviour
     {
-        public BehaviorNodeType BehaviorNodeType => NodeType.GetBehaviorNodeAttribute().Type;
-        public int NodeId => NodeType.GetBehaviorNodeAttribute().Id;
-        protected virtual Type NodeType { get; } = typeof(ZeroNode);
-        public int NodeIndex { get; set; } = 0;
-
-        public virtual IEnumerable<INodeDataBuilder> Children => this.Children();
-        public virtual object GetPreviewValue(string path) => throw new NotImplementedException();
-        public virtual void SetPreviewValue(string path, object value) => throw new NotImplementedException();
-
-        public INodeDataBuilder Self => gameObject.activeSelf ? SelfImpl : null;
-
-        protected virtual INodeDataBuilder SelfImpl => this;
-
-        public unsafe BlobAssetReference Build(ITreeNode<INodeDataBuilder>[] builders)
+        public class Builder : INodeDataBuilder
         {
-            if (NodeType.IsZeroSizeStruct()) return BlobAssetReference.Null;
-            var blobBuilder = new BlobBuilder(Allocator.Temp, UnsafeUtility.SizeOf(NodeType));
-            try
+            [NotNull] private readonly BTNode _node;
+
+            public int NodeId => _node.NodeId;
+
+            public int NodeIndex { get; set; } = -1;
+
+            public IBuilder BlobStreamBuilder => _node.BlobStreamBuilder;
+
+            public IEnumerable<INodeDataBuilder> Children => _node.Children()
+                .Where(child => child.IsValid)
+                .Select(child => child.Node)
+            ;
+
+            public Builder([NotNull] BTNode node)
             {
-                var dataPtr = blobBuilder.ConstructRootPtrByType(NodeType);
-                Build(dataPtr, blobBuilder, builders);
-                return blobBuilder.CreateReferenceByType(NodeType);
-            }
-            finally
-            {
-                blobBuilder.Dispose();
+                _node = node;
             }
         }
 
-        protected virtual unsafe void Build(void* dataPtr, BlobBuilder blobBuilder, ITreeNode<INodeDataBuilder>[] builders) {}
+        public BehaviorNodeType BehaviorNodeType => NodeType.GetBehaviorNodeAttribute().Type;
+        public int NodeId => NodeType.GetBehaviorNodeAttribute().Id;
+        protected virtual Type NodeType { get; } = typeof(ZeroNode);
+        public abstract IBuilder BlobStreamBuilder { get; }
+        public virtual bool IsValid => gameObject.activeInHierarchy;
+        public virtual INodeDataBuilder Node { get; }
+
+        public BTNode()
+        {
+            Node = new Builder(this);
+        }
 
         protected virtual void Reset() => name = GetType().Name;
 
@@ -97,7 +99,7 @@ namespace EntitiesBT.Components
             path = string.IsNullOrEmpty(path) ? Application.dataPath : Path.GetDirectoryName(path);
             path = UnityEditor.EditorUtility.SaveFilePanel("save path", path, name, "bytes");
             if (string.IsNullOrEmpty(path)) return;
-            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(this.FindScopeValuesList(), file);
+            using (var file = new FileStream(path, FileMode.OpenOrCreate)) Node.SaveToStream(this.FindGlobalValuesList(), file);
             UnityEditor.AssetDatabase.Refresh();
         }
 #endif
@@ -106,12 +108,7 @@ namespace EntitiesBT.Components
     public abstract class BTNode<T> : BTNode where T : unmanaged, INodeData
     {
         protected override Type NodeType => typeof(T);
-
-        protected override unsafe void Build(void* dataPtr, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree)
-        {
-            Build(ref UnsafeUtility.AsRef<T>(dataPtr), builder, tree);
-        }
-        
-        protected virtual void Build(ref T data, BlobBuilder builder, ITreeNode<INodeDataBuilder>[] tree) {}
+        public override IBuilder BlobStreamBuilder => new ValueBuilder<T>(_Value);
+        protected virtual T _Value => default;
     }
 }

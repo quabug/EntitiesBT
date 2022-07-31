@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
+using Blob;
 using EntitiesBT.Core;
 using Nuwa;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using UnityEngine;
 using static EntitiesBT.Core.Utilities;
 
@@ -17,10 +18,10 @@ namespace EntitiesBT.Variant.Expression
 
         public struct Data
         {
-            public BlobString Expression;
+            public BlobString<UTF8Encoding> Expression;
             public int ExpressionType;
             public BlobArray<BlobVariantPtrRO> Variants;
-            public BlobArray<BlobString> VariantNames;
+            public BlobArray<BlobString<UTF8Encoding>> VariantNames;
             public BlobArray<int> VariantTypes;
         }
 
@@ -41,23 +42,25 @@ namespace EntitiesBT.Variant.Expression
             [SerializeField] internal string _expression;
             [SerializeField] internal Variant[] _sources;
 
-            public unsafe IntPtr Allocate(ref BlobBuilder builder, ref BlobVariant blobVariant)
+            public void Allocate(BlobVariantStream stream)
             {
-                blobVariant.VariantId = GuidHashCode(GUID);
-                ref var blobPtr = ref UnsafeUtility.As<int, BlobPtr<Data>>(ref blobVariant.MetaDataOffsetPtr);
-                ref var data = ref builder.Allocate(ref blobPtr);
-                data.ExpressionType = VariantValueTypeRegistry.GetIdByType(typeof(T));
-                builder.AllocateString(ref data.Expression, _expression);
-                var variants = builder.Allocate(ref data.Variants, _sources.Length);
-                var names = builder.Allocate(ref data.VariantNames, _sources.Length);
-                var types = builder.Allocate(ref data.VariantTypes, _sources.Length);
-                for (var i = 0; i < _sources.Length; i++)
-                {
-                    _sources[i].Value.Allocate(ref builder, ref variants[i]);
-                    builder.AllocateString(ref names[i], _sources[i].Name);
-                    types[i] = VariantValueTypeRegistry.GetIdByType(_sources[i].Value.FindValueType());
-                }
-                return new IntPtr(UnsafeUtility.AddressOf(ref data));
+                stream.SetVariantId(GuidHashCode(GUID));
+                var dataBuilder = new StructBuilder<Data>();
+                dataBuilder.SetString(ref dataBuilder.Value.Expression, _expression);
+                dataBuilder.SetValue(ref dataBuilder.Value.ExpressionType, VariantValueTypeRegistry.GetIdByType(typeof(T)));
+                dataBuilder.SetArray(
+                    ref dataBuilder.Value.Variants,
+                    _sources.Select(source => new VariantBuilder<BlobVariantPtrRO>(source.Value))
+                );
+                dataBuilder.SetArray(
+                    ref dataBuilder.Value.VariantNames,
+                    _sources.Select(source => new StringBuilder<UTF8Encoding>(source.Name))
+                );
+                dataBuilder.SetArray(
+                    ref dataBuilder.Value.VariantTypes,
+                    _sources.Select(source => VariantValueTypeRegistry.GetIdByType(source.Value.FindValueType()))
+                );
+                stream.SetVariantValue(dataBuilder);
             }
 
             public object PreviewValue => null;

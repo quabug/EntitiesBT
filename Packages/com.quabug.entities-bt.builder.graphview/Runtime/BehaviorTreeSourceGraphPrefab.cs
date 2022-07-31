@@ -1,5 +1,6 @@
 using System;
 using EntitiesBT.Components;
+using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Nuwa;
 using Unity.Entities;
@@ -18,7 +19,7 @@ namespace EntitiesBT
         {
             Assert.IsTrue(Root.IsPrefab());
             Assert.IsNotNull(_behaviorTree);
-            return _behaviorTree.ToBlob(_behaviorTree.FindScopeValuesList());
+            return _behaviorTree.NodeBuilder.ToBlob(_behaviorTree.FindGlobalValuesList());
         }
     }
 }

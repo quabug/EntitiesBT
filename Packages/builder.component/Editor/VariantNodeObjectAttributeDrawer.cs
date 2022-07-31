@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using Nuwa.Editor;
@@ -12,7 +13,7 @@ namespace EntitiesBT.Editor
     [CustomPropertyDrawer(typeof(VariantNodeObjectAttribute))]
     public class VariantNodeObjectAttributeDrawer : PropertyDrawer
     {
-        private INodeDataBuilder _nodeObject;
+        private BTNode _nodeObject;
         private string[] _options = new string[0];
         private Type _genericType;
         private VariantNodeObjectAttribute _attribute;
@@ -23,7 +24,7 @@ namespace EntitiesBT.Editor
             {
                 if (_genericType == null) _genericType = this.FirstGenericTypeArgument();
                 if (_attribute == null) _attribute = (VariantNodeObjectAttribute)attribute;
-                var nodeObject = (INodeDataBuilder)property.GetSiblingFieldValue(_attribute.NodeObjectFieldName);
+                var nodeObject = (BTNode)property.GetSiblingFieldValue(_attribute.NodeObjectFieldName);
                 if (!Equals(nodeObject, _nodeObject))
                 {
                     var readerType = typeof(BlobVariantRO<>).MakeGenericType(_genericType);

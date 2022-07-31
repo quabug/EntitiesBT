@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EntitiesBT.Variant
 {
-    public abstract class GlobalValues : MonoBehaviour, IScopeValuesBuilder
+    public abstract class GlobalValues : MonoBehaviour, IGlobalValuesBuilder
     {
         public int Offset { get; set; }
         public abstract IntPtr ValuePtr { get; }

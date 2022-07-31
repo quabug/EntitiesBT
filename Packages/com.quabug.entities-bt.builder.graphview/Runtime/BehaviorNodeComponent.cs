@@ -1,27 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Blob;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using GraphExt;
+using JetBrains.Annotations;
 using Nuwa;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using UnityEngine;
 
 #if UNITY_EDITOR
 using GraphExt.Editor;
 using UnityEditor;
 using EntitiesBT.Editor;
-using UnityEditor.Experimental.SceneManagement;
 #endif
 
 namespace EntitiesBT
 {
     [ExecuteAlways]
-    public class BehaviorNodeComponent : GraphNodeComponent, ITreeNodeComponent, INodeDataBuilder
+    public class BehaviorNodeComponent : GraphNodeComponent, ITreeNodeComponent
     {
 #region GraphNode
         public override Vector2 Position
@@ -186,30 +185,30 @@ namespace EntitiesBT
 #endregion
 
 #region NodeDataBuilder
-
-        public int NodeId => _node.BehaviorNodeAttribute.Id;
-        public int NodeIndex { get; set; }
-        public INodeDataBuilder Self => this;
-        public IEnumerable<INodeDataBuilder> Children => Components.Utilities.Children(this);
-        public object GetPreviewValue(string path) => throw new NotSupportedException();
-        public void SetPreviewValue(string path, object value) => throw new NotSupportedException();
-        public unsafe BlobAssetReference Build(Core.ITreeNode<INodeDataBuilder>[] builders)
+        public class Builder : INodeDataBuilder
         {
-            var nodeType = _node.BehaviorNodeDataType;
-            if (nodeType.IsZeroSizeStruct()) return BlobAssetReference.Null;
-            var blobBuilder = new BlobBuilder(Allocator.Temp, UnsafeUtility.SizeOf(nodeType));
-            try
+            [NotNull] private readonly BehaviorNodeComponent _component;
+
+            public int NodeId => _component.NodeId;
+
+            public int NodeIndex { get; set; } = -1;
+
+            public IBuilder BlobStreamBuilder => _component._node.Blob;
+
+            public IEnumerable<INodeDataBuilder> Children => _component.Children()
+                .Where(child => child.gameObject.activeInHierarchy)
+                .Select(child => child.NodeBuilder)
+            ;
+
+            public Builder([NotNull] BehaviorNodeComponent component)
             {
-                var dataPtr = blobBuilder.ConstructRootPtrByType(nodeType);
-                _node.Blob.Build(blobBuilder, new IntPtr(dataPtr));
-                return blobBuilder.CreateReferenceByType(nodeType);
-            }
-            finally
-            {
-                blobBuilder.Dispose();
+                _component = component;
             }
         }
+        
+        public int NodeId => _node.BehaviorNodeAttribute.Id;
 
+        public Builder NodeBuilder => new Builder(this);
 #endregion
 
 #region Save to File
@@ -220,7 +219,7 @@ namespace EntitiesBT
         {
             var path = EditorUtility.SaveFilePanel("save path", Application.dataPath, name, "bytes");
             if (string.IsNullOrEmpty(path)) return;
-            using (var file = new FileStream(path, FileMode.OpenOrCreate)) this.SaveToStream(this.FindScopeValuesList(), file);
+            using (var file = new FileStream(path, FileMode.OpenOrCreate)) NodeBuilder.SaveToStream(this.FindGlobalValuesList(), file);
             AssetDatabase.Refresh();
         }
 #endif

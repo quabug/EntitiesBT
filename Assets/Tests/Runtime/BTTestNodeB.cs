@@ -1,8 +1,9 @@
 #if UNITY_EDITOR
 
+using Blob;
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using Unity.Entities;
+using Nuwa.Blob;
 using UnityEngine;
 
 namespace EntitiesBT.Test
@@ -36,11 +37,7 @@ namespace EntitiesBT.Test
         public int B;
         public int BB;
 
-        protected override void Build(ref NodeB data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __)
-        {
-            data.B = B;
-            data.BB = BB;
-        }
+        protected override NodeB _Value => new NodeB { B = B, BB = BB };
     }
 }
 

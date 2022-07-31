@@ -1,4 +1,5 @@
 using System;
+using EntitiesBT.Core;
 using EntitiesBT.Entities;
 using Unity.Entities;
 
@@ -14,7 +15,7 @@ namespace EntitiesBT.Components
             var isPrefab = Root.gameObject.IsPrefab();
             if (!isPrefab && !Root.GetComponent<StopConvertToEntity>())
                 Root.gameObject.AddComponent<StopConvertToEntity>();
-            var blob = Root.ToBlob(Root.FindScopeValuesList());
+            var blob = Root.Node.ToBlob(Root.FindGlobalValuesList());
             if (!isPrefab && AutoDestroy) UnityEngine.Object.Destroy(Root.gameObject);
             return blob;
         }

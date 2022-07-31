@@ -1,10 +1,13 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Blob;
 using EntitiesBT.Core;
+using JetBrains.Annotations;
 using Nuwa;
 using Nuwa.Blob;
 using Unity.Entities;
+using IBuilder = Nuwa.Blob.IBuilder;
 
 namespace EntitiesBT.Components
 {
@@ -17,7 +20,7 @@ namespace EntitiesBT.Components
 
         public DynamicBlobDataBuilder Builder;
 
-        public void Build(BlobBuilder builder, IntPtr dataPtr) => Builder.Build(builder, dataPtr);
+        public void Build([NotNull] IBlobStream stream) => Builder.Build(stream);
 
         public IBuilder FindBuilderByPath(string path)
         {

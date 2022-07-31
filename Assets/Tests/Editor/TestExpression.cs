@@ -1,24 +1,20 @@
 using System;
+using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Variant;
 using EntitiesBT.Variant.Expression;
 using NUnit.Framework;
-using Unity.Collections;
-using Unity.Entities;
 
 namespace EntitiesBT.Test
 {
-    using TreeNodeBuilder = ITreeNode<INodeDataBuilder>;
-
     public class TestExpression
     {
-        private BlobBuilder _builder;
         private MockNodeBlob _nodeBlob;
         private MockBlackboard _bb;
 
         private struct MockNodeBlob : INodeBlob
         {
-            public int RuntimeId { get; }
+            public int RuntimeId { get; set; }
             public int Count { get; }
             public int GetTypeId(int nodeIndex) => throw new NotImplementedException();
             public int GetEndIndex(int nodeIndex) => throw new NotImplementedException();
@@ -46,15 +42,8 @@ namespace EntitiesBT.Test
         [SetUp]
         public void SetUp()
         {
-            _builder = new BlobBuilder(Allocator.Temp);
-            _nodeBlob = new MockNodeBlob();
+            _nodeBlob = new MockNodeBlob { RuntimeId = 123 };
             _bb = new MockBlackboard();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            _builder.Dispose();
         }
 
         [Test]
@@ -68,9 +57,17 @@ namespace EntitiesBT.Test
                 new ExpressionVariant.Reader<float>.Variant {Value = new LocalVariant.Reader<int> {Value = 5}, Name = "y"},
             };
 
-            ref var buildVariant = ref _builder.ConstructRoot<BlobVariant>();
-            expression.Allocate(ref _builder, ref buildVariant);
-            using var variant = _builder.CreateBlobAssetReference<BlobVariant>(Allocator.Temp);
+            var builder = new VariantBuilder<BlobVariant>(expression);
+            using var variant = builder.CreateManagedBlobAssetReference();
+            ref var expressionData = ref variant.Value.As<ExpressionVariant.Data>();
+            Assert.That(expressionData.Expression.ToString(), Is.EqualTo(expression._expression));
+            Assert.That(expressionData.ExpressionType, Is.EqualTo(VariantValueTypeRegistry.GetIdByType(typeof(float))));
+            for (var i = 0; i < expression._sources.Length; i++)
+            {
+                var source = expression._sources[i];
+                Assert.That(expressionData.VariantNames[i].ToString(), Is.EqualTo(source.Name));
+                Assert.That(expressionData.VariantTypes[i], Is.EqualTo(VariantValueTypeRegistry.GetIdByType(source.Value.FindValueType())));
+            }
             var result = BlobVariantExtension.Read<float, MockNodeBlob, MockBlackboard>(ref variant.Value, 0, ref _nodeBlob, ref _bb);
             Assert.That(result, Is.EqualTo((4.1f + 5) * 2 + 10));
         }

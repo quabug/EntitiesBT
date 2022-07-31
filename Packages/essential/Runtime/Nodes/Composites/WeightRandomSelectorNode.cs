@@ -1,12 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
-using EntitiesBT.Components;
+using Blob;
 using EntitiesBT.Core;
 using EntitiesBT.Entities;
-using Nuwa;
 using Nuwa.Blob;
-using Unity.Entities;
-using UnityEngine;
 
 namespace EntitiesBT.Nodes
 {
@@ -44,14 +40,14 @@ namespace EntitiesBT.Nodes
         }
     }
 
-    public class NormalizedWeightBuilder : PlainDataBuilder<BlobArray<float>>
+    public class NormalizedWeightBuilder : Nuwa.Blob.Builder<BlobArray<float>>
     {
         public int[] Weights;
 
-        public override void Build(BlobBuilder builder, ref BlobArray<float> data)
+        protected override void BuildImpl(IBlobStream stream, ref BlobArray<float> data)
         {
             float sum = Weights.Sum();
-            builder.AllocateArray(ref data, Weights.Select(w => w / sum).ToArray());
+            new Blob.ArrayBuilder<float>(Weights.Select(w => w / sum).ToArray()).Build(stream);
         }
     }
 }

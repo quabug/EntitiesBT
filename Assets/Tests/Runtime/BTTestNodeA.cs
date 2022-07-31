@@ -2,7 +2,6 @@
 
 using EntitiesBT.Components;
 using EntitiesBT.Core;
-using Unity.Entities;
 using UnityEngine;
 
 namespace EntitiesBT.Test
@@ -33,7 +32,7 @@ namespace EntitiesBT.Test
     public class BTTestNodeA : BTNode<NodeA>
     {
         public int A;
-        protected override void Build(ref NodeA data, BlobBuilder _, ITreeNode<INodeDataBuilder>[] __) => data.A = A;
+        protected override NodeA _Value => new NodeA { A = A };
     }
 }
 

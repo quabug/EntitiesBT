@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using Blob;
+using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
-using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Nuwa.Blob
 {
@@ -24,11 +27,46 @@ namespace Nuwa.Blob
         public abstract object Create(Type dataType, FieldInfo fieldInfo);
     }
 
+    public abstract class DynamicBuilder : IBuilder
+    {
+        public int DataAlignment { get; set; } = 0;
+        public int PatchAlignment { get; set; } = 0;
+        
+        public int DataPosition { get; private set; }
+        public int DataSize { get; private set; }
+        public int PatchPosition { get; private set; }
+        public int PatchSize { get; private set; }
+        
+        protected abstract Type _Type { get; }
+
+        public void Build(IBlobStream stream)
+        {
+            DataPosition = stream.Position;
+            DataSize = UnsafeUtility.SizeOf(_Type);
+            stream.EnsureDataSize(DataSize, stream.GetAlignment(DataAlignment));
+            PatchPosition = stream.PatchPosition;
+            BuildImpl(stream);
+            if (PatchPosition != stream.PatchPosition) stream.AlignPatch(stream.GetAlignment(PatchAlignment));
+            PatchSize = stream.PatchPosition - PatchPosition;
+        }
+
+        protected abstract void BuildImpl([NotNull] IBlobStream stream);
+
+        public virtual IBuilder GetBuilder(string name) => throw new NotImplementedException();
+
+        public virtual object PreviewValue
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+    }
+
     [Serializable]
-    public class DynamicEnumBuilder<T> : IBuilder where T : unmanaged
+    public class DynamicEnumBuilder<T> : DynamicBuilder where T : unmanaged
     {
         public string EnumTypeName;
         public T Value;
+        protected override Type _Type => typeof(T);
 
         public object PreviewValue
         {
@@ -36,14 +74,9 @@ namespace Nuwa.Blob
             set => Value = (T)value;
         }
 
-        public unsafe void Build(BlobBuilder builder, IntPtr dataPtr)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            UnsafeUtility.AsRef<T>(dataPtr.ToPointer()) = Value;
-        }
-
-        public IBuilder GetBuilder(string name)
-        {
-            throw new NotImplementedException();
+            stream.WriteValue(Value);
         }
 
         public class Factory<U> : DynamicBuilderFactory<U> where U : DynamicEnumBuilder<T>, new()
@@ -101,23 +134,26 @@ namespace Nuwa.Blob
     }
 
     [Serializable]
-    public class DynamicBlobDataBuilder : IBuilder, IObjectBuilder
+    public class DynamicBlobDataBuilder : DynamicBuilder, IObjectBuilder
     {
         public string BlobDataType;
         public string[] FieldNames;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder[] Builders;
+        protected override Type _Type => Type.GetType(BlobDataType);
 
-        public void Build(BlobBuilder builder, IntPtr dataPtr)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            var fields = Type.GetType(BlobDataType).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var position = stream.Position;
+            var fields = _Type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             for (var i = 0; i < Builders.Length; i++)
             {
+                Assert.AreEqual(FieldNames[i], fields[i].Name);
                 var offset = UnsafeUtility.GetFieldOffset(fields[i]);
-                Builders[i].Build(builder, dataPtr + offset);
+                stream.ToPosition(position + offset).WriteValue(Builders[i]);
             }
         }
 
-        public IBuilder GetBuilder(string name)
+        public override IBuilder GetBuilder(string name)
         {
             var index = Array.IndexOf(FieldNames, name);
             if (index < 0) throw new ArgumentException($"cannot find field by name {name}");
@@ -154,7 +190,7 @@ namespace Nuwa.Blob
     }
 
     [Serializable]
-    public class DynamicArrayBuilder : IBuilder
+    public class DynamicArrayBuilder : DynamicBuilder
     {
         public string ArrayElementType;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder[] Value;
@@ -168,14 +204,16 @@ namespace Nuwa.Blob
             }
         }
 
-        public void Build(BlobBuilder builder, IntPtr dataPtr)
+        protected override Type _Type => typeof(BlobArray<>).MakeGenericType(Type.GetType(ArrayElementType));
+
+        protected override void BuildImpl(IBlobStream stream)
         {
             var elementType = Type.GetType(ArrayElementType);
-            var arrayBuilder = builder.AllocateDynamicArray(elementType, dataPtr, Value.Length);
-            for (var i = 0; i < Value.Length; i++) Value[i].Build(builder, arrayBuilder[i]);
+            var elementSize = UnsafeUtility.SizeOf(elementType);
+            stream.WritePatchOffset().WriteValue(Value.Length).ToPatchPosition().WriteArray(Value, elementSize, 4);
         }
 
-        public IBuilder GetBuilder(string name)
+        public override IBuilder GetBuilder(string name)
         {
             var index = int.Parse(name);
             return Value[index];
@@ -190,18 +228,18 @@ namespace Nuwa.Blob
     }
 
     [Serializable]
-    public class DynamicPtrBuilder : IBuilder
+    public class DynamicPtrBuilder : DynamicBuilder
     {
         public string DataType;
         [SerializeReference, UnboxSingleProperty, UnityDrawProperty] public IBuilder Value;
+        protected override Type _Type => typeof(BlobArray<>).MakeGenericType(Type.GetType(DataType));
 
-        public void Build(BlobBuilder builder, IntPtr dataPtr)
+        protected override void BuildImpl(IBlobStream stream)
         {
-            var blobPtr = builder.AllocateDynamicPtr(Type.GetType(DataType), dataPtr);
-            Value.Build(builder, blobPtr);
+            stream.WritePatchOffset().WriteValue(Value);
         }
 
-        public IBuilder GetBuilder(string name)
+        public override IBuilder GetBuilder(string name)
         {
             if (name != "*") throw new ArgumentException("it must be * to access builder of BlobPtr");
             return Value;
